@@ -1,6 +1,7 @@
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_state.dart';
+import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui/template/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,17 +66,18 @@ class _InnerHomeViewState extends State<InnerHomeView> {
     );
   }
 
-  Widget buildGetTotalValue(double totalValue, double btcSpecial){
+  Widget buildGetTotalValue(double totalValue, double btcSpecial) {
     double dollarValue = btcSpecial * totalValue;
     return Column(
       children: <Widget> [
         Text(
           "B: " + totalValue.toStringAsFixed(8),
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
         Text(
           "\$" + dollarValue.toStringAsFixed(2),
-          style: TextStyle(fontSize: 25),
+          style: TextStyle(fontSize: 25, color: Colors.white,
+            fontWeight: FontWeight.bold),
         ),
       ],
     );

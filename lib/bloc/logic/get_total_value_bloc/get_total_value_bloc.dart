@@ -28,6 +28,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
     if (event is FetchGetTotalValueEvent) {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
+      double usdSpecial = 0.0;
       yield GetTotalValueLoadingState();
       try {
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
@@ -36,10 +37,16 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         /// TODO: add together total values
         List<BinanceGetPricesModel> binanceGetPricesModel = await binanceGetPricesRepository.getBinancePricesInfo();
         Map binanceGetPricesMap = Map.fromIterable(binanceGetPricesModel, key: (e) => e.symbol, value: (e) => e.price);
+        var btcPrice = binanceGetPricesMap['BTCUSDT'];
         for(BinanceGetAllModel coins in binanceGetAllModel) {
           if(coins.coin == 'BTC') {
             btcSpecial = coins.free;
             totalValue += btcSpecial;
+            log(totalValue.toString());
+            log((btcSpecial * btcPrice).toString());
+            // log("AHJOFIDJSF");
+          } else if (coins.coin == 'USDT') {
+            usdSpecial += coins.free;
           } else {
 
             // what do we have
@@ -57,10 +64,12 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
             }
           }
         }
-        log("sup");
-        btcSpecial = binanceGetPricesMap['BTCUSDT'];
+        // log("sup");
+        btcSpecial = btcPrice;
+        log(totalValue.toString());
+        log(btcSpecial.toString());
         yield GetTotalValueLoadedState(totalValue: totalValue, btcSpecial: btcSpecial);
-        log("nothing is happening here?");
+        // log("nothing is happening here?");
       } catch (e) {
         log("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());

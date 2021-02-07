@@ -23,6 +23,8 @@ dependencies:
   crypto: ^2.1.5
   equatable: ^1.2.5
   meta: ^1.2.4
+  crypto_font_icons: ^0.1.0+1
+  typicons_flutter: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +32,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+  - graphics/icons/crypto/bitcoin_white_2.png

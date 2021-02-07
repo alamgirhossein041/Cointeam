@@ -23,7 +23,7 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
     /// ##### Start API Request ######
     /// Build our signature and HMAC hash for Binance
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000';
+    String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
     var sapiHmac = utf8.encode(sapi);
     var signatureBuilderHmac = utf8.encode(signatureBuilder);
     var hmac256 = new Hmac(sha256, sapiHmac);

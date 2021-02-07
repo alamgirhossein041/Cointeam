@@ -1,4 +1,4 @@
-import 'package:coinsnap/firebase/flutterfire.dart';
+import 'package:coinsnap/firebase/fireauth.dart';
 import 'package:flutter/material.dart';
 import '../resource/sizes_helper.dart';
 import '../resource/colors_helper.dart';

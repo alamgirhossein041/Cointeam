@@ -10,19 +10,23 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		oG5/OGn+vw7vp/nu5DUDoZJ4nFc=
+		4fkxaSg2G1h0M8GpZeWw8wNsLpE=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
-		vKJkVIcw+LGHFnKJGwrQwCREv68=
+		aM9LjTxWRPfaYHGdQUYPtNFsAl8=
 		</data>
 		<key>flutter_assets/NOTICES</key>
 		<data>
-		BRO9faVNYi4rcuSj4hbZxYa39XY=
+		FSUtvbbk6PKx3LYf0ejMp5ozofE=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
 		XxTTbEdqMMr+614Mzm3EJYMaT9I=
+		</data>
+		<key>flutter_assets/graphics/icons/crypto/bitcoin_white_2.png</key>
+		<data>
+		znAZaz8SU2706NHHuGBE+DNxdjU=
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
@@ -30,11 +34,19 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		mF0ohT9sxi6gfI0qc0UA5NefGSw=
+		0HzJFjWR3SnEbZJ4dYNMUgVPuXA=
+		</data>
+		<key>flutter_assets/packages/crypto_font_icons/font/cryptofont-webfont.ttf</key>
+		<data>
+		X0OsZsfJkGJaeU2hOXFo6RkhNSA=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
 		P7bb/oR3EhwqCIH1M6LyTuBIWYU=
+		</data>
+		<key>flutter_assets/packages/typicons_flutter/fonts/typicons.ttf</key>
+		<data>
+		Lcmom8vnzBKb1r2ST20D/kMQ8E4=
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
@@ -47,33 +59,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			oG5/OGn+vw7vp/nu5DUDoZJ4nFc=
+			4fkxaSg2G1h0M8GpZeWw8wNsLpE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Sps95+7JukayebvM0TLjL1LW1VXXndpKp/O8tOm9ZR8=
+			8fLkftQQ7+IRAxrgysiuT5hjb4pGMEux+J/VB5NYd+4=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vKJkVIcw+LGHFnKJGwrQwCREv68=
+			aM9LjTxWRPfaYHGdQUYPtNFsAl8=
 			</data>
 			<key>hash2</key>
 			<data>
-			zX4DZFvESy3Ue3y2JvUcTsv1Whl6t3JBYotHrBZfviE=
+			a5tWiaE6PqExQDJEOeMHf9A4MGLZ5rNJKVsqU6/lxU0=
 			</data>
 		</dict>
 		<key>flutter_assets/NOTICES</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			BRO9faVNYi4rcuSj4hbZxYa39XY=
+			FSUtvbbk6PKx3LYf0ejMp5ozofE=
 			</data>
 			<key>hash2</key>
 			<data>
-			6KgXYW436emjrl1Xa7mYCK/ZfblGOaMscnVczh4JmRA=
+			Wmh7ZuRltgy3S5OT79q25rFvnASeJ0HxI3kPvbMvsO8=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -85,6 +97,17 @@
 			<key>hash2</key>
 			<data>
 			Nt7OTUXA/dkAWXOmvWbTlkJLC1yvAxfCcd3OIaLWdQQ=
+			</data>
+		</dict>
+		<key>flutter_assets/graphics/icons/crypto/bitcoin_white_2.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			znAZaz8SU2706NHHuGBE+DNxdjU=
+			</data>
+			<key>hash2</key>
+			<data>
+			GnNW5iFTIakyLpymJMzdbWe4bdqsvdfzC6/fh8eKlnA=
 			</data>
 		</dict>
 		<key>flutter_assets/isolate_snapshot_data</key>
@@ -102,11 +125,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mF0ohT9sxi6gfI0qc0UA5NefGSw=
+			0HzJFjWR3SnEbZJ4dYNMUgVPuXA=
 			</data>
 			<key>hash2</key>
 			<data>
-			2ua5zdmtnxfCJ+ylN1U6CO10RyCZSFk7b3CEsO/xCQM=
+			S5C7xCTy5PlU+buzX/P8w5Y7QFDO/bxRZmHI6v5MSDA=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/crypto_font_icons/font/cryptofont-webfont.ttf</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			X0OsZsfJkGJaeU2hOXFo6RkhNSA=
+			</data>
+			<key>hash2</key>
+			<data>
+			pLDeNQmvfrc50Zd6trWrzFmOoKh0GNcj39+xk4flhvk=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
@@ -118,6 +152,17 @@
 			<key>hash2</key>
 			<data>
 			x6NX+tjyECiQtyzbbjyY8U2zoZ7GDbJtE+T+k/dzgI0=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/typicons_flutter/fonts/typicons.ttf</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Lcmom8vnzBKb1r2ST20D/kMQ8E4=
+			</data>
+			<key>hash2</key>
+			<data>
+			kZNauLnNklKnP7MAqJijIaLXH1z9o+Psghajcqh4UFs=
 			</data>
 		</dict>
 		<key>flutter_assets/vm_snapshot_data</key>
