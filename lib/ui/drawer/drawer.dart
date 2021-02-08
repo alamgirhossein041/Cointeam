@@ -9,15 +9,16 @@ class MyDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Settings\n\n\n\n\n\nEarn Doge'),
+            child: Text('Settings\n\n\n\n\n\nEarn Doge - Does nothing yet'),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
           ),
           ListTile(
-            title: Text('Portfolio 1 - Live'),
+            /// title: Text('Portfolio 1 - Live'),
+            title: Text('Go to Dashboard'),
             onTap: () {
-
+              Navigator.pushNamed(context, '/homeviewreal');
             },
           ),
           ListTile(
@@ -40,7 +41,7 @@ class MyDrawer extends StatelessWidget {
               ),
               child: Text('Logout'),
               onPressed: () {
-                
+                Navigator.pushNamed(context, '/home');
               },
             ),
           ),

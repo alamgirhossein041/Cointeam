@@ -39,11 +39,11 @@ class FtxGetBalanceRepositoryImpl implements IFtxGetBalanceRepository {
 
     if(response.statusCode == 200) {
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      log(body.toString());
+      // log(body.toString());
 
       FtxGetBalanceModel ftxGetBalanceModel = FtxGetBalanceModel.fromJson(Map.from(json.decode(response.body)));
 
-      log(ftxGetBalanceModel.toString());
+      // log(ftxGetBalanceModel.toString());
       return ftxGetBalanceModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       throw Exception();
