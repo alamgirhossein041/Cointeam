@@ -1,6 +1,6 @@
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
-import 'package:coinsnap/ui/home_content.dart';
+import 'package:coinsnap/ui/template/home_content.dart';
 import 'package:flutter/material.dart';
 
 class PriceContainer extends StatelessWidget {
@@ -11,9 +11,9 @@ class PriceContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [appPurple, appBlue],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [Colors.blue, appPurple],
         ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),

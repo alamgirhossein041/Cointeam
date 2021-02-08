@@ -1,8 +1,10 @@
 import 'package:coinsnap/firebase/fireauth.dart';
+import 'package:coinsnap/ui/template/home/home_list_view.dart';
+import 'package:coinsnap/ui/template/home/home_view_real.dart';
 import 'package:flutter/material.dart';
 import '../resource/sizes_helper.dart';
 import '../resource/colors_helper.dart';
-import 'home_view.dart';
+import 'template/home_old/home_view.dart';
 
 class Authentication extends StatefulWidget {
   Authentication({Key key}) : super(key: key);
@@ -75,7 +77,7 @@ class _AuthenticationState extends State<Authentication> {
                 onPressed: () async {
                   bool shouldNavigate = await register(_emailField.text, _passwordField.text);
                   if(shouldNavigate) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeViewReal()));
                   } else {
                     print("error");
                   }
@@ -97,7 +99,7 @@ class _AuthenticationState extends State<Authentication> {
                 onPressed: () async {
                   bool shouldNavigate = await signIn(_emailField.text, _passwordField.text);
                   if(shouldNavigate) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeViewReal()));
                   } else {
                     print("error");
                   }

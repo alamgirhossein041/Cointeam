@@ -1,6 +1,6 @@
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
-import 'package:coinsnap/ui/home_content.dart';
+import 'package:coinsnap/ui/template/home_content.dart';
 import 'package:flutter/material.dart';
 
 class PriceContainer extends StatelessWidget {

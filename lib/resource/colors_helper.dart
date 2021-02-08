@@ -10,3 +10,6 @@ const appNavy = Color(0xFF263F6B);
 const appBlack = Color(0xFF0E0E0E);
 const appPurple = Color(0xFF440086);
 const appBlue = Color(0xFF17408a);
+
+
+const appMariner = Color(0xFF2660E3);

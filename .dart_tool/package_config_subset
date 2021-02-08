@@ -22,6 +22,14 @@ charcode
 2.12
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.2.0-nullsafety.3/
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.2.0-nullsafety.3/lib/
+charts_common
+2.3
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charts_common-0.9.0/
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charts_common-0.9.0/lib/
+charts_flutter
+1.23
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charts_flutter-0.9.0/
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/charts_flutter-0.9.0/lib/
 clock
 2.12
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0-nullsafety.3/
@@ -118,6 +126,10 @@ js
 2.12
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3-nullsafety.3/
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3-nullsafety.3/lib/
+logging
+2.12
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/logging-1.0.0/
+file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/logging-1.0.0/lib/
 matcher
 2.12
 file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.10-nullsafety.3/

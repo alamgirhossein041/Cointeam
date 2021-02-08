@@ -15,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
 
-import 'home_content.dart';
+import 'template/home_content.dart';
 
 /// class HomeView extends StatefulWidget {
 ///   HomeView({Key key}) : super(key: key);
