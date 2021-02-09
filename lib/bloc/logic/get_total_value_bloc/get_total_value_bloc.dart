@@ -10,11 +10,13 @@ import 'package:coinsnap/data/respository/auth/get_all/coinbase_get_account.dart
 import 'package:coinsnap/data/respository/auth/get_all/ftx_get_balance.dart';
 import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
 import 'dart:developer';
+
+import 'package:coinsnap/data/respository/unauth/prices/ftx_get_prices.dart';
 // import 'package:meta/meta.dart';
 
 class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
   
-  GetTotalValueBloc({this.binanceGetAllRepository, this.coinbaseGetAccountRepository, this.ftxGetBalanceRepository, this.binanceGetPricesRepository}) : super(GetTotalValueInitialState());
+  GetTotalValueBloc({this.binanceGetAllRepository, this.coinbaseGetAccountRepository, this.ftxGetBalanceRepository, this.binanceGetPricesRepository, this.ftxGetPricesRepository}) : super(GetTotalValueInitialState());
   /// initialState has been changed to the above: https://github.com/felangel/bloc/issues/1304
 
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
@@ -22,15 +24,21 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
   FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
 
   BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
+  FtxGetPricesRepositoryImpl ftxGetPricesRepository;
+
 
   @override
   Stream<GetTotalValueState> mapEventToState(GetTotalValueEvent event) async* {
+    log(ftxGetBalanceRepository.toString());
     if (event is FetchGetTotalValueEvent) {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
       double usdSpecial = 0.0;
       yield GetTotalValueLoadingState();
       try {
+
+        /// ###### Binance ######
+        log(binanceGetAllRepository.toString());
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
         /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
@@ -64,6 +72,20 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
             }
           }
         }
+
+        /// ###### BINANCE ######
+        /// 
+        /// ###### FTX ######
+        /// 
+        
+        ///   
+        log("HELLO WORLD");
+        FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
+        log("HELLO WORLD");
+        List<BinanceGetPricesModel> ftxGetPricesModel = await ftxGetPricesRepository.getFtxPricesInfo();
+        log("i am lost");
+        Map ftxGetPricesMap = Map.fromIterable(binanceGetPricesModel, key: (e) => e.symbol, value: (e) => e.price);
+
         // log("sup");
         btcSpecial = btcPrice;
         log(totalValue.toString());

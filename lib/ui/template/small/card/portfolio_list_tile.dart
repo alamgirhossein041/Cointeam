@@ -23,11 +23,13 @@ class PortfolioListTile extends StatelessWidget {
     return InkWell(
       // child: Container(
         // width: displayWidth(context) * 0.75,
+      child: Container(
         child: Row(
           children: <Widget> [
             Test(cryptoData, index),
           ]
         ),
+      ),
       // ),
     );
   }
@@ -54,6 +56,9 @@ class Test extends StatelessWidget {
     //   create: (BuildContext context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
     //   child: Container(
         return Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
           child: GestureDetector(
           onTap: () {
             log("cryptoData: " + cryptoData.toString());
@@ -83,19 +88,21 @@ class Test extends StatelessWidget {
             );
           },
           child: Container(
-            padding: EdgeInsets.fromLTRB(10,10,10,0),
-            height: displayWidth(context) * 0.5,
+            padding: EdgeInsets.fromLTRB(10,0,10,0),
+            height: displayWidth(context) * 0.35,
             // width: double.maxFinite,
             width: displayWidth(context),
             child: Card(
-              elevation: 5,
+              // elevation: 5,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      width: 2.0, color: cryptoData[index]['iconColor']),
-                  ),
-                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  // border: Border(
+                  //   top: BorderSide(
+                  //   ),
+                  //     // width: 2.0, color: cryptoData[index]['iconColor']),
+                  // ),
+                  color: tilePurple,
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(7),
@@ -151,7 +158,7 @@ class Test extends StatelessWidget {
         child: Icon(
           data['icon'],
           color: data['iconColor'],
-          size: 40,
+          size: 30,
         ),
       ),
     );
@@ -164,18 +171,18 @@ class Test extends StatelessWidget {
         text: TextSpan(
           text: "${data['name']}",
           style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20
+            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16
           ),
-          children: <TextSpan>[
-            TextSpan(
-              text: "\n${data['symbol']}",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 15,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ],
+          // children: <TextSpan>[
+          //   TextSpan(
+          //     text: "\n${data['symbol']}",
+          //     style: TextStyle(
+          //       color: Colors.grey,
+          //       fontSize: 15,
+          //       fontWeight: FontWeight.bold
+          //     ),
+          //   ),
+          // ],
         ),
       ),
     );
@@ -188,18 +195,18 @@ class Test extends StatelessWidget {
         text: TextSpan(
           text: "${data['change']}",
           style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.green, fontSize: 20
+            fontWeight: FontWeight.bold, color: Colors.green, fontSize: 14
           ),
-          children: <TextSpan>[
-            TextSpan(
-              text: "\n+${data['changeValue']}",
-              style: TextStyle(
-                color: data['changeColor'],
-                fontSize: 15,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ],
+          // children: <TextSpan>[
+          //   TextSpan(
+          //     text: "\n+${data['changeValue']}",
+          //     style: TextStyle(
+          //       color: data['changeColor'],
+          //       fontSize: 15,
+          //       fontWeight: FontWeight.bold
+          //     ),
+          //   ),
+          // ],
         ),
       ),
     );
@@ -213,10 +220,11 @@ class Test extends StatelessWidget {
       ? Icon(
         Typicons.arrow_sorted_up,
         color: data['changeColor'],
-        size: 30,
+        size: 16,
       ) : Icon(
         Typicons.arrow_sorted_down,
         color: data['changeColor'],
+        size: 16,
       ),
     );
   }
@@ -231,19 +239,25 @@ class Test extends StatelessWidget {
             RichText(
               textAlign: TextAlign.left,
               text: TextSpan(
-                text: "\n${data['value']}",
+                text: "\n0.00451349",
+                // text: "\n${data['value']}",
                 style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 35,
+                  // fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                  color: textGrey,
+                  fontSize: 16,
                 ),
+                
                 children: <TextSpan>[
                   TextSpan(
-                    text: "\n0.1349",
+                    // text: "\n0.1349",
+                    text: "\n${data['value']}",
                     style: TextStyle(
-                      color: Colors.grey,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
+                      color: textGrey,
+                      // fontStyle: FontStyle.italic,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 22,
+                      // fontWeight: FontWeight.bold
                     ),
                   ),
                 ],

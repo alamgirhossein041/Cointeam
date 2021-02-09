@@ -28,7 +28,7 @@ class Result {
   double availableWithoutBorrow;
   String coin;
   double free;
-  int spotBorrow;
+  double spotBorrow;
   double total;
   double usdValue;
 

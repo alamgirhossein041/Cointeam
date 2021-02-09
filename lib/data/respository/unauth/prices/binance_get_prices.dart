@@ -14,7 +14,6 @@ class BinanceGetPricesRepositoryImpl implements IBinanceGetPricesRepository {
   @override
   Future getBinancePricesInfo() async {
     String requestUrl = 'https://api.binance.com/api/v3/ticker/price';
-    // log("ahnyong");
 
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {

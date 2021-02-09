@@ -13,3 +13,8 @@ const appBlue = Color(0xFF17408a);
 
 
 const appMariner = Color(0xFF2660E3);
+
+
+const tilePurple = Color(0xFF1A1B37);
+
+const textGrey = Color(0xFFDFDFE2);

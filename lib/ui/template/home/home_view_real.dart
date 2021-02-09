@@ -93,7 +93,7 @@ class HomeStateReal extends State<HomeViewReal> {
                     SizedBox(height: displayHeight(context) * 0.025),
                     // SizedBox(height: displayHeight(context) * 0.32),
                     Container(
-                      height: displayHeight(context) * 0.32,
+                      height: displayHeight(context) * 0.27,
                       child: CustomMeasureTickCount.withSampleData(),
                     ),
                     Container(
@@ -105,6 +105,7 @@ class HomeStateReal extends State<HomeViewReal> {
                               width: displayWidth(context),
                               child: ListView.builder(
                                 itemCount: cryptoData.length,
+                                padding: EdgeInsets.fromLTRB(0,4,0,0),
                                 itemBuilder: (context, index) {
                                   return PortfolioListTile(cryptoData, index);
                                 },

@@ -2,7 +2,9 @@ import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/data/respository/auth/get_all/ftx_get_balance.dart';
 import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/respository/unauth/prices/ftx_get_prices.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui/pages/builder/builder.dart';
 import 'package:coinsnap/ui/pages/builder/test.dart';
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<GetTotalValueBloc>(
-          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetPricesRepository: FtxGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
         ),
         BlocProvider<GetPriceInfoBloc>(
           create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
