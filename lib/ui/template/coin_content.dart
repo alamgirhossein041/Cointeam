@@ -21,8 +21,6 @@ class InnerCoinView extends StatefulWidget {
 
 class _InnerCoinViewState extends State<InnerCoinView> {
 
-
-
   @override
   void initState() {
     /// TODO: stuff

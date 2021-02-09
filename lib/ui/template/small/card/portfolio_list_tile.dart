@@ -1,9 +1,12 @@
+import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
+import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui/pages/coin_view/coin_view.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:typicons_flutter/typicons.dart';
 
 import 'dart:developer';
@@ -18,11 +21,14 @@ class PortfolioListTile extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return InkWell(
-      child: Row(
-        children: <Widget> [
-          Test(cryptoData, index),
-        ]
-      ),
+      // child: Container(
+        // width: displayWidth(context) * 0.75,
+        child: Row(
+          children: <Widget> [
+            Test(cryptoData, index),
+          ]
+        ),
+      // ),
     );
   }
 }
@@ -43,86 +49,97 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // GetPriceInfoBloc getPriceInfoBloc = BlocProvider.of<GetPriceInfoBloc>(context);
+    // return BlocProvider<GetPriceInfoBloc>(
+    //   create: (BuildContext context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+    //   child: Container(
+        return Container(
+          child: GestureDetector(
+          onTap: () {
+            log("cryptoData: " + cryptoData.toString());
+            log("index: " + index.toString());
+            // final Test test1 = Test(cryptoData, index);
+            // Navigator.pushNamed(context, '/coinview');
+            Navigator.pushNamed(
+              context,
+              '/coinview',
+              arguments: {'cryptoData' : cryptoData, 'index' : index},
 
-        log(cryptoData.toString());
-    // var tmpIndex = index;
-
-    return Container(
-      child: GestureDetector(
-        onTap: () {
-          log("cryptoData: " + cryptoData.toString());
-          log("index: " + index.toString());
-          // final Test test1 = Test(cryptoData, index);
-          // Navigator.pushNamed(context, '/coinview');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CoinView(),
-              // Pass the arguments as part of the RouteSettings. The
-              // DetailScreen reads the arguments from these settings.
-              settings: RouteSettings(
-                arguments: {'cryptoData' : cryptoData, 'index' : index}
-              ),
-            ),
-          );
-        },
-        child: Container(
-          padding: EdgeInsets.fromLTRB(10,10,10,0),
-          height: displayWidth(context) * 0.5,
-          // width: double.maxFinite,
-          width: displayWidth(context),
-          child: Card(
-            elevation: 5,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    width: 2.0, color: cryptoData[index]['iconColor']),
+              // MaterialPageRoute(
+              //   builder: (context) => BlocProvider.value(
+              //     value: BlocProvider.of<GetPriceInfoBloc>(context),
+              //     child: CoinView(),
+              //   ),
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => CoinView(),
+            //     // Pass the arguments as part of the RouteSettings. The
+            //     // DetailScreen reads the arguments from these settings.
+            //     settings: RouteSettings(
+            //       arguments: {'cryptoData' : cryptoData, 'index' : index}
+            //     ),
+            //   ),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(10,10,10,0),
+            height: displayWidth(context) * 0.5,
+            // width: double.maxFinite,
+            width: displayWidth(context),
+            child: Card(
+              elevation: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      width: 2.0, color: cryptoData[index]['iconColor']),
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(7),
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 5),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    cryptoIcon(cryptoData[index]),
-                                    // SizedBox(height: displayHeight(context) * 0.05),
-                                    cryptoNameSymbol(cryptoData[index]),
-                                    Spacer(),
-                                    cryptoChange(cryptoData[index]),
-                                    // SizedBox(width: displayWidth(context) * 0.1),
-                                    changeIcon(cryptoData[index]),
-                                    // SizedBox(width: displayWidth(context) * 0.2),
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget> [
-                                    cryptoAmount(cryptoData[index]),
-                                  ]
-                                ),
-                              ]
+                child: Padding(
+                  padding: EdgeInsets.all(7),
+                  child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Stack(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      cryptoIcon(cryptoData[index]),
+                                      // SizedBox(height: displayHeight(context) * 0.05),
+                                      cryptoNameSymbol(cryptoData[index]),
+                                      Spacer(),
+                                      cryptoChange(cryptoData[index]),
+                                      // SizedBox(width: displayWidth(context) * 0.1),
+                                      changeIcon(cryptoData[index]),
+                                      // SizedBox(width: displayWidth(context) * 0.2),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget> [
+                                      cryptoAmount(cryptoData[index]),
+                                    ]
+                                  ),
+                                ]
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ]
+                    ]
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
+      // ),
     );
   }
 

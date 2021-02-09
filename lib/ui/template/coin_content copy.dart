@@ -28,7 +28,7 @@ class _InnerCoinViewState extends State<InnerCoinView> {
     /// TODO: stuff
     super.initState();
     getPriceInfoBloc = BlocProvider.of<GetPriceInfoBloc>(context);
-    getPriceInfoBloc.add(FetchGetPriceInfoEvent(widget.coinTicker)); /// TODO: INSERT COIN TICKER HERE
+    getPriceInfoBloc.add(FetchGetPriceInfoEvent(coinTicker: widget.coinTicker)); /// TODO: INSERT COIN TICKER HERE
   }
 
   @override

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
+import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui/drawer/drawer.dart';
 import 'package:coinsnap/ui/template/portfolio_list_view.dart';
 import 'package:coinsnap/ui/template/price_container.dart';
+import 'package:coinsnap/ui/template/small/card/portfolio_list_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +35,7 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
+    var cryptoData = CryptoData.getData;
     return Scaffold(
       key: scaffoldState,
       drawer: MyDrawer(),
@@ -74,7 +77,24 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
             SizedBox(height: displayHeight(context) * 0.025),
             PriceContainer(),
             SizedBox(height: displayHeight(context) * 0.32),
-            PortfolioListView(),
+            Container(
+              child: Column (
+                children: <Widget> [
+                  Container(
+                    child: SizedBox(
+                      height: displayHeight(context) * 0.35,
+                      width: displayWidth(context),
+                      child: ListView.builder(
+                        itemCount: cryptoData.length,
+                        itemBuilder: (context, index) {
+                          return PortfolioListTile(cryptoData, index);
+                        },
+                      )
+                    )
+                  )
+                ]
+              )
+            ),
             // Text("Hello", style: TextStyle(color: Colors.white)),
           ]
         ),

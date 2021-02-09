@@ -46,12 +46,12 @@ class CoinState extends State<CoinView> {
 
   @override
   void initState() {
-    GetPriceInfoBloc getPriceInfoBloc = GetPriceInfoBloc();
     /// TODO: stuff
     // loginBloc = BlocProvider.of<LoginBloc>(context);
     super.initState();
-    // getTotalValueBloc = BlocProvider.of<GetTotalValueBloc>(context);
-    // getTotalValueBloc.add(FetchGetTotalValueEvent());
+    // getPriceInfoBloc = BlocProvider.of<GetPriceInfoBloc>(context);
+    /// this is not receving bloc from anything
+    getPriceInfoBloc.add(FetchGetPriceInfoEvent());
   }
 
   @override
@@ -66,7 +66,7 @@ class CoinState extends State<CoinView> {
       coinTicker = arguments['cryptoData'][arguments['index']]['symbol'];
       log("Coin Ticker is: " + coinTicker);
 
-    getPriceInfoBloc.add(FetchGetPriceInfoEvent(coinTicker));
+    getPriceInfoBloc.add(FetchGetPriceInfoEvent(coinTicker: coinTicker));
     }
 
   
@@ -116,7 +116,7 @@ class CoinState extends State<CoinView> {
             ),
             RefreshIndicator(
               onRefresh: () async {
-                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                BlocProvider.of<GetPriceInfoBloc>(context).add(FetchGetPriceInfoEvent(coinTicker: coinTicker));
               },
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),

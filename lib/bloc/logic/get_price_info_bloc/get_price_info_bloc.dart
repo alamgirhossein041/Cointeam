@@ -21,7 +21,7 @@ class GetPriceInfoBloc extends Bloc<GetPriceInfoEvent, GetPriceInfoState> {
         List<BinanceGetPricesModel> binanceGetPricesModel = await binanceGetPricesRepository.getBinancePricesInfo();
         Map binanceGetPricesMap = Map.fromIterable(binanceGetPricesModel, key: (e) => e.symbol, value: (e) => e.price);
         
-        var coinPrice = binanceGetPricesMap[event.ticker + 'USDT'];
+        var coinPrice = binanceGetPricesMap[event.coinTicker + 'USDT'];
         
         log("Coin Price is: " + coinPrice.toString());
         /// do logic

@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
+import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui/drawer/drawer.dart';
 import 'package:coinsnap/ui/template/chart/test/test_simple.dart';
 import 'package:coinsnap/ui/template/portfolio_list_view.dart';
 import 'package:coinsnap/ui/template/price_container.dart';
+import 'package:coinsnap/ui/template/small/card/portfolio_list_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +40,7 @@ class HomeStateReal extends State<HomeViewReal> {
 
   @override
   Widget build(BuildContext context) {
+    var cryptoData = CryptoData.getData;
     GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldState,
@@ -92,7 +96,24 @@ class HomeStateReal extends State<HomeViewReal> {
                       height: displayHeight(context) * 0.32,
                       child: CustomMeasureTickCount.withSampleData(),
                     ),
-                    PortfolioListView(),
+                    Container(
+                      child: Column (
+                        children: <Widget> [
+                          Container(
+                            child: SizedBox(
+                              height: displayHeight(context) * 0.35,
+                              width: displayWidth(context),
+                              child: ListView.builder(
+                                itemCount: cryptoData.length,
+                                itemBuilder: (context, index) {
+                                  return PortfolioListTile(cryptoData, index);
+                                },
+                              )
+                            )
+                          )
+                        ]
+                      )
+                    ),
                   ]
                 ),
               ),

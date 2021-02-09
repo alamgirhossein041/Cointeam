@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 abstract class GetPriceInfoEvent extends Equatable {}
 
 class FetchGetPriceInfoEvent extends GetPriceInfoEvent {
-  final String ticker;
+  final String coinTicker;
 
-  FetchGetPriceInfoEvent(this.ticker);
+  FetchGetPriceInfoEvent({this.coinTicker});
   @override
   /// TODO: stuff
   List<Object> get props => null;
