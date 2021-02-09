@@ -50,6 +50,7 @@ class CoinState extends State<CoinView> {
     // loginBloc = BlocProvider.of<LoginBloc>(context);
     super.initState();
     // getPriceInfoBloc = BlocProvider.of<GetPriceInfoBloc>(context);
+    getPriceInfoBloc = BlocProvider.of<GetPriceInfoBloc>(context);
     /// this is not receving bloc from anything
     getPriceInfoBloc.add(FetchGetPriceInfoEvent());
   }

@@ -26,18 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<GetTotalValueBloc>(
-          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        ),
-        BlocProvider<GetPriceInfoBloc>(
-          create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        ),
-        // BlocProvider<BlocC>(
-        //   create: (BuildContext context) => BlocC(),
-        // ),
-      ],
+    return BlocProvider<GetTotalValueBloc>(
+      create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -57,25 +47,5 @@ class MyApp extends StatelessWidget {
         }
       ),
     );
-      // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-      // child: MaterialApp(
-      //   theme: ThemeData(
-      //     primarySwatch: Colors.blue,
-      //   ),
-      //   initialRoute: '/home',
-      //   routes: {
-      //     /// '/home': (context) => HomeViewReal(),
-      //     '/home': (context) => Authentication(), /// TODO: Change this to Authentication() for production
-      //     '/builder': (context) => PortfolioBuilderView(), /// TODO: Have {id} subroutes? If possible
-      //     '/testview': (context) => TestView(),
-      //     '/homeviewreal': (context) => BlocProvider<GetPriceInfoBloc>(
-      //       create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-      //       child: HomeViewReal(),
-      //     ),
-      //     '/coinview': (context) => CoinView(),
-      //     // '/portfolio': (context) => PriceContai
-      //   }
-      // ),
-    // );
   }
 }
