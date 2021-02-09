@@ -82,4 +82,12 @@ class _InnerHomeViewState extends State<InnerHomeView> {
       ],
     );
   }
+
+  Widget buildTicker(context, double btcSpecial) {
+    return Container(
+      height: displayHeight(context) * 0.02,
+      child: Text("BTC: \$" + btcSpecial.toInt().toString()),
+    );
+  }
+
 }
