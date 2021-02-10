@@ -5,6 +5,7 @@ import 'package:coinsnap/data/model/auth/get_all/binance_get_all_model.dart';
 import 'package:coinsnap/data/model/auth/get_all/coinbase_get_account_model.dart';
 import 'package:coinsnap/data/model/auth/get_all/ftx_get_balance_model.dart';
 import 'package:coinsnap/data/model/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/model/unauth/prices/ftx_get_prices.dart';
 import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
 import 'package:coinsnap/data/respository/auth/get_all/coinbase_get_account.dart';
 import 'package:coinsnap/data/respository/auth/get_all/ftx_get_balance.dart';
@@ -48,13 +49,17 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         var btcPrice = binanceGetPricesMap['BTCUSDT'];
         for(BinanceGetAllModel coins in binanceGetAllModel) {
           if(coins.coin == 'BTC') {
-            btcSpecial = coins.free;
+            btcSpecial += coins.locked;
+            btcSpecial += coins.free;
+            // btcSpecial += coins.withdrawing; // We must not do withdrawing because sometimes the withdraw can be complete yet still count as 'withdrawing' within Binance
             totalValue += btcSpecial;
             log(totalValue.toString());
             log((btcSpecial * btcPrice).toString());
             // log("AHJOFIDJSF");
           } else if (coins.coin == 'USDT') {
+            usdSpecial += coins.locked;
             usdSpecial += coins.free;
+            // usdSpecial += coins.withdrawing;
           } else {
 
             // what do we have
@@ -66,7 +71,9 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
             // 
 
             try{
+              totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.locked;
               totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.free;
+              // totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.withdrawing;
             } catch (e) {
               log(coins.coin + " does not have a BTC pair");
             }
@@ -79,12 +86,26 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         /// 
         
         ///   
-        log("HELLO WORLD");
+        log("HELLO WORLD: " + totalValue.toString());
         FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
         log("HELLO WORLD");
-        List<BinanceGetPricesModel> ftxGetPricesModel = await ftxGetPricesRepository.getFtxPricesInfo();
+        FtxGetPricesModel ftxGetPricesModel = await ftxGetPricesRepository.getFtxPricesInfo();
         log("i am lost");
-        Map ftxGetPricesMap = Map.fromIterable(binanceGetPricesModel, key: (e) => e.symbol, value: (e) => e.price);
+        Map ftxGetPricesMap = Map.fromIterable(ftxGetPricesModel.result, key: (e) => e.name, value: (e) => e.price);
+        for(dynamic coins in ftxGetBalanceModel.result) {
+          if(coins.coin == 'BTC') {
+            btcSpecial += coins.total;
+            totalValue += coins.total;
+          } else if (coins.coin == 'USD' || coins.coin == 'USDT') {
+            usdSpecial += coins.total;
+          } else {
+            try{
+              totalValue += ftxGetPricesMap[coins.coin + '/BTC'] * coins.total;
+            } catch (e) {
+              log(coins.coin + " does not have a BTC pair");
+            }
+          }
+        }
 
         // log("sup");
         btcSpecial = btcPrice;

@@ -236,8 +236,20 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "path_provider",
+      "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.27",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "path_provider_linux",
       "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "path_provider_macos",
+      "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+8",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -288,6 +300,12 @@
       "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.1.5",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "sembast",
+      "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/sembast-2.4.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.9"
     },
     {
       "name": "shared_preferences",
@@ -356,6 +374,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "synchronized",
+      "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-2.2.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.8"
+    },
+    {
       "name": "term_glyph",
       "rootUri": "file:///Users/ac/playground/devpackages/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0-nullsafety.3",
       "packageUri": "lib/",
@@ -404,7 +428,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-09T09:47:27.061474Z",
+  "generated": "2021-02-10T02:41:05.331224Z",
   "generator": "pub",
   "generatorVersion": "2.12.0-259.0.dev"
 }

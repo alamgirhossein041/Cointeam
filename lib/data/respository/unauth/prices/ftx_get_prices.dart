@@ -14,11 +14,13 @@ class FtxGetPricesRepositoryImpl implements IFtxGetPricesRepository {
   @override
 
   Future getFtxPricesInfo() async {
-    String requestUrl = 'https://ftx.com/api/markets/DOGE-PERP'; /// GET /markets/{market_name}
+    String requestUrl = 'https://ftx.com/api/markets'; /// GET /markets/{market_name}
 
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
-      List<FtxGetPricesModel> ftxGetPricesModel = json.decode(response.body).cast<Map<String, dynamic>>().map<FtxGetPricesModel>((json) => FtxGetPricesModel.fromJson(json)).toList();
+      // List<FtxGetPricesModel> ftxGetPricesModel = json.decode(response.body).cast<Map<String, dynamic>>().map<FtxGetPricesModel>((json) => FtxGetPricesModel.fromJson(json)).toList();
+      FtxGetPricesModel ftxGetPricesModel = FtxGetPricesModel.fromJson(Map.from(json.decode(response.body)));
+
       log(ftxGetPricesModel.toString());
       return ftxGetPricesModel;
     }
