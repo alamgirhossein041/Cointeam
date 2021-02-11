@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coinsnap/bloc/unauth/exchange/ftx_exchange_info_bloc/ftx_exchange_info_event.dart';
 import 'package:coinsnap/bloc/unauth/exchange/ftx_exchange_info_bloc/ftx_exchange_info_state.dart';
 import 'package:coinsnap/data/model/unauth/exchange/ftx_exchange_info_model.dart';
-import 'package:coinsnap/data/respository/unauth/exchange/ftx_get_exchange_info.dart';
+import 'package:coinsnap/data/repository/unauth/exchange/ftx_get_exchange_info.dart';
 import 'package:meta/meta.dart';
 
 class FtxExchangeInfoBloc extends Bloc<FtxExchangeInfoEvent, FtxExchangeInfoState> {

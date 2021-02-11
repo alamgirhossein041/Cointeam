@@ -4,10 +4,10 @@ import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_state.d
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/data/model/unauth/prices/binance_get_prices.dart';
-import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
-import 'package:coinsnap/data/respository/auth/sell_coin.dart/binance_sell_coin.dart';
-import 'package:coinsnap/data/respository/unauth/exchange/binance_get_exchange_info.dart';
-import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
+import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui/drawer/drawer.dart';
@@ -83,9 +83,10 @@ class HomeView extends StatelessWidget{
                               child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
                                 listener: (context, state) {
                                   if (state is GetTotalValueErrorState) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(state.errorMessage)),
-                                    );
+                                    log("Error in GetTotalValueErrorState in home_view.dart");
+                                    // ScaffoldMessenger.of(context).showSnackBar(
+                                    //   SnackBar(content: Text(state.errorMessage)),
+                                    // );
                                   }
                                 },
                                 child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>(

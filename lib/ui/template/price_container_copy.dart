@@ -54,9 +54,9 @@ class PriceContainerState extends State<PriceContainer> {
               BlocListener<GetTotalValueBloc, GetTotalValueState>(
                 listener: (context, state) {
                   if (state is GetTotalValueErrorState) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.errorMessage)),
-                    );
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(content: Text(state.errorMessage)),
+                    // );
                   }
                 },
                 child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)

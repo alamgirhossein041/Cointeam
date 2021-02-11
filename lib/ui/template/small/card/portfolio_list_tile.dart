@@ -1,5 +1,5 @@
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
-import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';

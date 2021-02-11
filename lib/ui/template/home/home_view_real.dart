@@ -51,7 +51,7 @@ class HomeStateReal extends State<HomeViewReal> {
         ),
         child: Column(
           children: <Widget> [
-            SizedBox(height: displayHeight(context) * 0.05),
+            SizedBox(height: displayHeight(context) * 0.03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget> [

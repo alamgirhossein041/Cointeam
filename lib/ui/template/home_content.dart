@@ -34,9 +34,10 @@ class _InnerHomeViewState extends State<InnerHomeView> {
       child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
         listener: (context, state) {
           if (state is GetTotalValueErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
-            );
+            log("error in GetTotalValueErrorState in home_content.dart");
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text(state.errorMessage)),
+            // );
           }
         },
         child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)

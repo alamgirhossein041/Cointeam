@@ -150,9 +150,10 @@ class CoinState extends State<CoinView> {
                               /// InnerCoinView(coinTicker: coinTicker),
                               listener: (context, state) {
                                 if (state is GetPriceInfoErrorState) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(state.errorMessage)),
-                                  );
+                                  log("error at getPriceInfoErrorState in coin_view.dart");
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //   SnackBar(content: Text(state.errorMessage)),
+                                  // );
                                 }
                               },
                               child: BlocBuilder<GetPriceInfoBloc, GetPriceInfoState> (

@@ -1,8 +1,8 @@
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
-import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
-import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui/pages/builder/builder.dart';
 import 'package:coinsnap/ui/pages/builder/test.dart';

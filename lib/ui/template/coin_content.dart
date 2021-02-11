@@ -36,9 +36,10 @@ class _InnerCoinViewState extends State<InnerCoinView> {
       child: BlocListener<GetPriceInfoBloc, GetPriceInfoState>(
         listener: (context, state) {
           if (state is GetPriceInfoErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
-            );
+            log("error in GetPriceInfoErrorState in coin_content.dart");
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text(state.errorMessage)),
+            // );
           }
         },
         child: BlocBuilder<GetPriceInfoBloc, GetPriceInfoState>( /// Both bloc types to be built (refactor existing controllers)
