@@ -35,11 +35,11 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                'Portfolio 1',
+                'Build New Portfolio',
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
-
+                Navigator.pushNamed(context, '/builder');
               },
             ),
             ListTile(

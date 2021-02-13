@@ -1,5 +1,7 @@
 ### Flutter Generated
 
+build/
+
 # Miscellaneous
 *.class
 *.lock

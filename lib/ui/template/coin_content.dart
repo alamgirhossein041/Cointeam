@@ -54,7 +54,7 @@ class _InnerCoinViewState extends State<InnerCoinView> {
             } else if (state is GetPriceInfoLoadedState) {
               log("GetPriceInfoLoadedState");
               // tmpBtcSpecial = state.btcSpecial;
-              return buildGetPriceInfo(tmpCoinPrice);
+              return buildGetPriceInfo(state.coinPrice);
             } else if (state is GetPriceInfoErrorState) {
               log("GetPriceInfoErrorState");
               return buildErrorTemplate(state.errorMessage);
