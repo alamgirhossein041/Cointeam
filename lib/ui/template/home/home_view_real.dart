@@ -100,9 +100,9 @@ class HomeStateReal extends State<HomeViewReal> {
                       child: Column (
                         children: <Widget> [
                           Container(
+                            height: displayHeight(context) * 0.35,
+                            width: displayWidth(context),
                             child: SizedBox(
-                              height: displayHeight(context) * 0.35,
-                              width: displayWidth(context),
                               child: ListView.builder(
                                 itemCount: cryptoData.length,
                                 padding: EdgeInsets.fromLTRB(0,4,0,0),

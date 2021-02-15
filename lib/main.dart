@@ -63,7 +63,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/home',
         routes: {
           /// '/home': (context) => HomeViewReal(),
-          '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
+          // '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
+          '/home': (context) => Authentication(),
           '/builder': (context) => PortfolioBuilderView(), /// TODO: Have {id} subroutes? If possible
           '/testview': (context) => TestView(),
           // '/homeviewreal': (context) => BlocProvider<GetPriceInfoBloc>(
