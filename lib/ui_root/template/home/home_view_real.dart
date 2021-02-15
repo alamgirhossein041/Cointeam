@@ -100,14 +100,12 @@ class HomeStateReal extends State<HomeViewReal> {
                           SliverToBoxAdapter(
                             /// Chart
                             // height: displayHeight(context) * 0.27,
-                            // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so..
+                            // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so.. RAGE AGAINST THE MACHINE
                             child: SizedBox(
                               height: displayHeight(context) * 0.27,
                               child: ChartOverall(),
                             ),
                           ),
-                          
-                           
                           SliverList(
                             delegate: SliverChildBuilderDelegate((context, index) {
                             // itemCount: cryptoData.length,

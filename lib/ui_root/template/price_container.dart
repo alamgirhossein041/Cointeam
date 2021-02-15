@@ -7,8 +7,10 @@ import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui_root/template/loading.dart';
 import 'package:coinsnap/ui_root/template/home_content.dart';
+import 'package:coinsnap/ui_root/template/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import 'dart:developer';
 
@@ -33,6 +35,7 @@ class PriceContainerState extends State<PriceContainer> {
   @override
   Widget build(BuildContext context) {
     double tmpBtcSpecial = 0;
+    // double _value = 40.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -98,29 +101,40 @@ class PriceContainerState extends State<PriceContainer> {
             ),
           ),
           Container(
-            child: Positioned(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: 
-                  MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed))
-                        return Colors.green;
-                      return Colors.deepOrange[700]; // Use the component's default.
-                    },
+            width: displayWidth(context) * 0.85,
+            child: Row(
+              children: <Widget> [
+                Container(
+                  width: displayWidth(context) * 0.33,
+                  child: ContainerSlider()
+                ),
+                Container(
+                  child: Positioned(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: 
+                        MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed))
+                              return Colors.green;
+                            return Colors.deepOrange[700]; // Use the component's default.
+                          },
+                        ),
+                      ),
+                      child: Text("Sell All"),
+                      onPressed: () {
+                        BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent());
+                      },
+                    ),
+                    right: 0,
+                    left: 0,
+                    bottom: 50,
                   ),
                 ),
-                child: Text("Sell All"),
-                onPressed: () {
-                  BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent());
-                },
-              ),
-              right: 0,
-              left: 0,
-              bottom: 50,
+              ],
             ),
           ),
-        ]
+        ],
       ),
           // child: Text("helloWorld"),
     );
@@ -214,8 +228,6 @@ class PriceContainerState extends State<PriceContainer> {
     );
   }
 }
-
-	
   // class CustomLayoutDelegate extends SingleChildLayoutDelegate {
   
   //   CustomLayoutDelegate(this.size) : super(relayout: size);
