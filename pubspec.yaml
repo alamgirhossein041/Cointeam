@@ -31,6 +31,8 @@ dependencies:
   data_connection_checker: ^0.3.4
   local_auth: ^0.6.3+4
   syncfusion_flutter_charts: ^18.4.42
+  syncfusion_flutter_sliders: ^18.4.42-beta
+  syncfusion_flutter_core: ^18.4.42
 
 dev_dependencies:
   hive_generator: ^0.5.1
