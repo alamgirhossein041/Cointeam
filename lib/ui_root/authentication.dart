@@ -1,6 +1,6 @@
 import 'package:coinsnap/firebase/fireauth.dart';
-import 'package:coinsnap/ui/template/home/home_list_view.dart';
-import 'package:coinsnap/ui/template/home/home_view_real.dart';
+import 'package:coinsnap/ui_root/template/home/home_list_view.dart';
+import 'package:coinsnap/ui_root/template/home/home_view_real.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import '../resource/sizes_helper.dart';

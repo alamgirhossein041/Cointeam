@@ -3,7 +3,7 @@ import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
-import 'package:coinsnap/ui/pages/coin_view/coin_view.dart';
+import 'package:coinsnap/ui_root/pages/coin_view/coin_view.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

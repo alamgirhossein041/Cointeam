@@ -7,12 +7,11 @@ import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.d
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
-import 'package:coinsnap/ui/drawer/drawer.dart';
-import 'package:coinsnap/ui/template/chart/test/test_simple.dart';
-import 'package:coinsnap/ui/template/coin_content.dart';
-import 'package:coinsnap/ui/template/portfolio_list_view.dart';
-import 'package:coinsnap/ui/template/price_container.dart';
-import 'package:coinsnap/ui/template/small/card/portfolio_list_tile.dart';
+import 'package:coinsnap/ui_root/drawer/drawer.dart';
+import 'package:coinsnap/ui_root/template/coin_content.dart';
+import 'package:coinsnap/ui_root/template/portfolio_list_view.dart';
+import 'package:coinsnap/ui_root/template/price_container.dart';
+import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

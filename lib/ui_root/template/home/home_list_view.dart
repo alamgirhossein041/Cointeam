@@ -1,7 +1,7 @@
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
-import 'package:coinsnap/ui/template/small/card/portfolio_list_tile.dart';
+import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class HomeListView extends StatelessWidget {

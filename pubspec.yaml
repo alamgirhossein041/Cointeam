@@ -25,12 +25,12 @@ dependencies:
   meta: ^1.2.4
   crypto_font_icons: ^0.1.0+1
   typicons_flutter: ^0.2.1
-  charts_flutter: ^0.9.0
   path_provider: ^1.5.1
   hive: ^1.0.0
   hive_flutter: ^0.2.1
   data_connection_checker: ^0.3.4
   local_auth: ^0.6.3+4
+  syncfusion_flutter_charts: ^18.4.42
 
 dev_dependencies:
   hive_generator: ^0.5.1

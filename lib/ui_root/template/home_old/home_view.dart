@@ -10,7 +10,7 @@ import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_in
 import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
-import 'package:coinsnap/ui/drawer/drawer.dart';
+import 'package:coinsnap/ui_root/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

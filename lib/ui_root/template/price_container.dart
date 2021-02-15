@@ -5,8 +5,8 @@ import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_bloc.dart
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
-import 'package:coinsnap/ui/template/home_content.dart';
-import 'package:coinsnap/ui/template/loading.dart';
+import 'package:coinsnap/ui_root/template/loading.dart';
+import 'package:coinsnap/ui_root/template/home_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
