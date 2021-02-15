@@ -94,16 +94,15 @@ class Test extends StatelessWidget {
             width: displayWidth(context),
             child: Card(
               // elevation: 5,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
                   // border: Border(
                   //   top: BorderSide(
                   //   ),
                   //     // width: 2.0, color: cryptoData[index]['iconColor']),
                   // ),
                   color: tilePurple,
-                ),
                 child: Padding(
                   padding: EdgeInsets.all(7),
                   child: Stack(
@@ -142,7 +141,7 @@ class Test extends StatelessWidget {
                     ]
                   ),
                 ),
-              ),
+              // ),
             ),
           ),
         ),

@@ -37,8 +37,8 @@ class PriceContainerState extends State<PriceContainer> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [Colors.blue, appPurple],
         ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -98,23 +98,26 @@ class PriceContainerState extends State<PriceContainer> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [appPink, appPurple],
-              ),
-            ),
             child: Positioned(
               child: ElevatedButton(
-                child: Text("Press Me"),
+                style: ButtonStyle(
+                  backgroundColor: 
+                  MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed))
+                        return Colors.green;
+                      return Colors.deepOrange[700]; // Use the component's default.
+                    },
+                  ),
+                ),
+                child: Text("Sell All"),
                 onPressed: () {
                   BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent());
                 },
               ),
               right: 0,
               left: 0,
-              bottom: 0,
+              bottom: 50,
             ),
           ),
         ]
@@ -137,20 +140,20 @@ class PriceContainerState extends State<PriceContainer> {
               left: 117,
               top: 5,
               child: Column(
-            children: <Widget> [
-              SizedBox(height: displayHeight(context) * 0.02),
-              Image(image: AssetImage('graphics/icons/crypto/bitcoin_white_2.png')),  
-              SizedBox(height: displayHeight(context) * 0.015),
-              Text(
-                "B: " + totalValue.toStringAsFixed(8),
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
-              Text(
-                "\$" + dollarValue.toStringAsFixed(2),
-                style: TextStyle(fontSize: 25, color: Colors.white,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
+                children: <Widget> [
+                  SizedBox(height: displayHeight(context) * 0.02),
+                  Image(image: AssetImage('graphics/icons/crypto/bitcoin_white_2.png')),  
+                  SizedBox(height: displayHeight(context) * 0.015),
+                  Text(
+                    "B: " + totalValue.toStringAsFixed(8),
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                  Text(
+                    "\$" + dollarValue.toStringAsFixed(2),
+                    style: TextStyle(fontSize: 25, color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
             // Container(
             //   alignment: Alignment.topCenter,
             //   child: buildTicker(btcSpecial),
@@ -210,7 +213,6 @@ class PriceContainerState extends State<PriceContainer> {
       ),
     );
   }
-
 }
 
 	
@@ -240,3 +242,5 @@ class PriceContainerState extends State<PriceContainer> {
   //     return size != oldDelegate.size;
   //   }
   // }
+
+  

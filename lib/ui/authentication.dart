@@ -1,10 +1,13 @@
 import 'package:coinsnap/firebase/fireauth.dart';
 import 'package:coinsnap/ui/template/home/home_list_view.dart';
 import 'package:coinsnap/ui/template/home/home_view_real.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import '../resource/sizes_helper.dart';
 import '../resource/colors_helper.dart';
 import 'template/home_old/home_view.dart';
+
+import 'dart:async';
 
 class Authentication extends StatefulWidget {
   Authentication({Key key}) : super(key: key);
@@ -16,6 +19,12 @@ class Authentication extends StatefulWidget {
 class _AuthenticationState extends State<Authentication> {
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    CheckInternet().checkConnection(context);
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -112,4 +121,59 @@ class _AuthenticationState extends State<Authentication> {
       ),
     );
   }
+
+  // @override
+  // void dispose() {
+  //   CheckInternet().listener.cancel();
+  //   super.dispose();
+  // }
 }
+
+class CheckInternet {
+
+  StreamSubscription<DataConnectionStatus> listener;
+  var internetStatus = "Unknown";
+  var contentMessage = "Unknown";
+
+  checkConnection(BuildContext context) async {
+    listener = DataConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case DataConnectionStatus.connected:
+          // internetStatus = "Connected to the Internet";
+          // contentMessage = "Connected to the Internet";
+          // _showDialog(internetStatus, contentMessage, context);
+          break;
+        case DataConnectionStatus.disconnected:
+          internetStatus = "You are not connected to the Internet";
+          contentMessage = "Please check your connection to the Internet";
+          _showDialog(internetStatus, contentMessage, context);
+          break;
+      }
+    });
+    return await DataConnectionChecker().connectionStatus;
+  }
+  void closeStream() {
+  listener.cancel();
+}
+}
+
+void _showDialog(String title, String content, BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Error"),
+        content: Text(content),
+        actions: <Widget> [
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close")
+          )
+        ]
+      );
+    }
+  );
+}
+

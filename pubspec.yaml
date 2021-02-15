@@ -29,6 +29,8 @@ dependencies:
   path_provider: ^1.5.1
   hive: ^1.0.0
   hive_flutter: ^0.2.1
+  data_connection_checker: ^0.3.4
+  local_auth: ^0.6.3+4
 
 dev_dependencies:
   hive_generator: ^0.5.1

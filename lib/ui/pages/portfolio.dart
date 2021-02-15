@@ -206,9 +206,9 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                                           //   onPressed: () {/* ... */},
                                           // ),
                                           // SizedBox(width: 8),
-                                            child: Row(
-                                              children: <Widget> [
-                                                SizedBox(width: 20),
+                                        child: Row(
+                                          children: <Widget> [
+                                            SizedBox(width: 20),
                                           Icon(Icons.ac_unit, size: 50),
                                           SizedBox(width: 20),
                                           Container(
