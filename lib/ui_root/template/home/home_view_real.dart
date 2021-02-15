@@ -94,31 +94,34 @@ class HomeStateReal extends State<HomeViewReal> {
                     SizedBox(height: displayHeight(context) * 0.025),
                     // SizedBox(height: displayHeight(context) * 0.32),
                     Container(
-                      /// Chart
-                      height: displayHeight(context) * 0.27,
-                      // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so..
-                      child: ChartOverall(),
-                    ),
-                    Container(
-                      child: Column (
-                        children: <Widget> [
-                          Container(
-                            height: displayHeight(context) * 0.35,
-                            width: displayWidth(context),
+                      height: displayHeight(context) * 0.62,
+                      child: CustomScrollView(
+                        slivers: <Widget> [
+                          SliverToBoxAdapter(
+                            /// Chart
+                            // height: displayHeight(context) * 0.27,
+                            // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so..
                             child: SizedBox(
-                              child: ListView.builder(
-                                itemCount: cryptoData.length,
-                                padding: EdgeInsets.fromLTRB(0,4,0,0),
-                                itemBuilder: (context, index) {
-                                  return PortfolioListTile(cryptoData, index);
-                                },
-                              )
-                            )
-                          )
-                        ]
-                      )
+                              height: displayHeight(context) * 0.27,
+                              child: ChartOverall(),
+                            ),
+                          ),
+                          
+                           
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate((context, index) {
+                            // itemCount: cryptoData.length,
+                            // padding: EdgeInsets.fromLTRB(0,4,0,0),
+                            // itemBuilder: (context, index) {
+                                return PortfolioListTile(cryptoData, index);
+                              },
+                              childCount: cryptoData.length,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ]
+                  ],
                 ),
               ),
             ),
