@@ -102,7 +102,40 @@ class PriceContainerState extends State<PriceContainer> {
           ),
           Container(
             width: displayWidth(context) * 0.85,
-            child: ContainerSlider(),
+            child: Row(
+              children: <Widget> [
+                Container(
+                  width: displayWidth(context) * 0.33,
+                ),
+                Container(
+                  child: Positioned(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: 
+                        MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed))
+                              return Colors.green;
+                            return Colors.deepOrange[700]; // Use the component's default.
+                          },
+                        ),
+                      ),
+                      child: Text("Sell All"),
+                      onPressed: () {
+                        BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent());
+                      },
+                    ),
+                    right: 0,
+                    left: 0,
+                    bottom: 50,
+                  ),
+                ),
+                Container(
+                  width: displayWidth(context) * 0.33,
+                  child: ContainerSlider(),
+                ),
+              ],
+            ),
           ),
         ],
       ),
