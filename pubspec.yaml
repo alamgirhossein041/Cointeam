@@ -33,6 +33,7 @@ dependencies:
   syncfusion_flutter_charts: ^18.4.42
   syncfusion_flutter_sliders: ^18.4.42-beta
   syncfusion_flutter_core: ^18.4.42
+  menu_button: ^1.2.1
 
 dev_dependencies:
   hive_generator: ^0.5.1

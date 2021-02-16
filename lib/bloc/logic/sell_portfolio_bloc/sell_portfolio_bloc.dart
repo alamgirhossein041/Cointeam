@@ -19,6 +19,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
 
   double totalValue = 0.0;
+  double pctToSell = 1.0;
   /// initialState has been changed to the above: https://github.com/felangel/bloc/issues/1304
 
   FtxSellCoinRepositoryImpl ftxSellCoinRepository;
@@ -35,6 +36,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   @override
   Stream<SellPortfolioState> mapEventToState(SellPortfolioEvent event) async* {
     if (event is FetchSellPortfolioEvent) {
+      pctToSell = event.value / 100;
       yield SellPortfolioLoadingState();
       try {
 
@@ -76,10 +78,10 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               /// minimum size
               /// and minimum BTC lot size
               /// make the API call
-              /// if not idk print the condition
+              /// if not idk print the conditiond
               double divisor = double.parse(binanceSymbols[coins.coin + 'BTC'][2].stepSize);
               // log(divisor.toString());
-              var tmp = coins.free;
+              var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
               if (tmp >= divisor) {
