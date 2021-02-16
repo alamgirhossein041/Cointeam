@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
-import 'package:coinsnap/data/model/internal/chart/overall/chart_cartesian.dart';
+import 'package:coinsnap/ui_root/template/data/chart/overall/chart_cartesian.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
