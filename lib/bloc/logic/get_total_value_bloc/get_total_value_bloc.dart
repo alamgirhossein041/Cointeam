@@ -6,13 +6,13 @@ import 'package:coinsnap/data/model/auth/get_all/coinbase_get_account_model.dart
 import 'package:coinsnap/data/model/auth/get_all/ftx_get_balance_model.dart';
 import 'package:coinsnap/data/model/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/data/model/unauth/prices/ftx_get_prices.dart';
-import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
-import 'package:coinsnap/data/respository/auth/get_all/coinbase_get_account.dart';
-import 'package:coinsnap/data/respository/auth/get_all/ftx_get_balance.dart';
-import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/data/repository/auth/get_all/coinbase_get_account.dart';
+import 'package:coinsnap/data/repository/auth/get_all/ftx_get_balance.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'dart:developer';
 
-import 'package:coinsnap/data/respository/unauth/prices/ftx_get_prices.dart';
+import 'package:coinsnap/data/repository/unauth/prices/ftx_get_prices.dart';
 // import 'package:meta/meta.dart';
 
 class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
@@ -30,7 +30,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
 
   @override
   Stream<GetTotalValueState> mapEventToState(GetTotalValueEvent event) async* {
-    log(ftxGetBalanceRepository.toString());
+    // log(ftxGetBalanceRepository.toString());
     if (event is FetchGetTotalValueEvent) {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
@@ -39,7 +39,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       try {
 
         /// ###### Binance ######
-        log(binanceGetAllRepository.toString());
+        // log(binanceGetAllRepository.toString());
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
         /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();

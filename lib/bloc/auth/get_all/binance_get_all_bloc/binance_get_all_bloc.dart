@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/data/model/auth/get_all/binance_get_all_model.dart';
-import 'package:coinsnap/data/respository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
 import 'package:meta/meta.dart';
 import 'package:coinsnap/bloc/auth/get_all/binance_get_all_bloc/binance_get_all_event.dart';
 import 'package:coinsnap/bloc/auth/get_all/binance_get_all_bloc/binance_get_all_state.dart';

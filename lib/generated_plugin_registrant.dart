@@ -17,5 +17,5 @@ void registerPlugins(Registrar registrar) {
   FirebaseAuthWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
   SharedPreferencesPlugin.registerWith(registrar);
-  registrar.registerMessageHandler();
+  // registrar.registerMessageHandler();
 }

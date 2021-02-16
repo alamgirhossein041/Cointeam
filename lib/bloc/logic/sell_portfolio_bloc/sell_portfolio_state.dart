@@ -18,6 +18,11 @@ class SellPortfolioLoadingState extends SellPortfolioState {
 }
 
 class SellPortfolioLoadedState extends SellPortfolioState {
+
+  double totalValue;
+
+  SellPortfolioLoadedState({@required this.totalValue});
+
   /// THIS IS THE MAIN ONE
   
   @override
@@ -26,6 +31,10 @@ class SellPortfolioLoadedState extends SellPortfolioState {
 }
 
 class SellPortfolioErrorState extends SellPortfolioState {
+
+  String errorMessage;
+
+  SellPortfolioErrorState({@required this.errorMessage});
 
   @override
   /// TODO: stuff

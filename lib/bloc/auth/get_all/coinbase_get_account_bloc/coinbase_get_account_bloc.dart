@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coinsnap/bloc/auth/get_all/coinbase_get_account_bloc/coinbase_get_account_event.dart';
 import 'package:coinsnap/bloc/auth/get_all/coinbase_get_account_bloc/coinbase_get_account_state.dart';
 import 'package:coinsnap/data/model/auth/get_all/coinbase_get_account_model.dart';
-import 'package:coinsnap/data/respository/auth/get_all/coinbase_get_account.dart';
+import 'package:coinsnap/data/repository/auth/get_all/coinbase_get_account.dart';
 import 'package:meta/meta.dart';
 
 class CoinbaseGetAccountBloc extends Bloc<CoinbaseGetAccountEvent, CoinbaseGetAccountState> {

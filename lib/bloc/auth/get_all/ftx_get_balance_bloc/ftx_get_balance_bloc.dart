@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coinsnap/bloc/auth/get_all/ftx_get_balance_bloc/ftx_get_balance_event.dart';
 import 'package:coinsnap/bloc/auth/get_all/ftx_get_balance_bloc/ftx_get_balance_state.dart';
 import 'package:coinsnap/data/model/auth/get_all/ftx_get_balance_model.dart';
-import 'package:coinsnap/data/respository/auth/get_all/ftx_get_balance.dart';
+import 'package:coinsnap/data/repository/auth/get_all/ftx_get_balance.dart';
 import 'package:meta/meta.dart';
 
 class FtxGetBalanceBloc extends Bloc<FtxGetBalanceEvent, FtxGetBalanceState> {

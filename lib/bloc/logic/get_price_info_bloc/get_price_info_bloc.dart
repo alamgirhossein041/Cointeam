@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_event.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
 import 'package:coinsnap/data/model/unauth/prices/binance_get_prices.dart';
-import 'package:coinsnap/data/respository/unauth/prices/binance_get_prices.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 
 class GetPriceInfoBloc extends Bloc<GetPriceInfoEvent, GetPriceInfoState> {
   

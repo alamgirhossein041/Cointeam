@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coinsnap/bloc/unauth/exchange/coinbase_exchange_info_bloc/coinbase_exchange_info_event.dart';
 import 'package:coinsnap/bloc/unauth/exchange/coinbase_exchange_info_bloc/coinbase_exchange_info_state.dart';
 import 'package:coinsnap/data/model/unauth/exchange/coinbase_exchange_info_model.dart';
-import 'package:coinsnap/data/respository/unauth/exchange/coinbase_get_exchange_info.dart';
+import 'package:coinsnap/data/repository/unauth/exchange/coinbase_get_exchange_info.dart';
 import 'package:meta/meta.dart';
 
 class CoinbaseExchangeInfoBloc extends Bloc<CoinbaseExchangeInfoEvent, CoinbaseExchangeInfoState> {
