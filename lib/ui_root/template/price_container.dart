@@ -32,8 +32,12 @@ class PriceContainerState extends State<PriceContainer> {
     getTotalValueBloc.add(FetchGetTotalValueEvent());
   }
 
+  double _height = 125.0;
+  Widget _widget = Container();
+
   @override
   Widget build(BuildContext context) {
+    
     double tmpBtcSpecial = 0;
     // double _value = 40.0;
 
@@ -46,65 +50,101 @@ class PriceContainerState extends State<PriceContainer> {
         ),
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      child: Column(
-        children: <Widget> [
-          Container(
-            height: displayHeight(context) * 0.17,
-            width: displayWidth(context) * 0.85,
-            child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
-              listener: (context, state) {
-                if (state is GetTotalValueErrorState) {
-                  log("error in GetTotalValueErrorState in price_container.dart");
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(content: Text(state.errorMessage)),
-                  // );
-                }
-              },
-              child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
-                builder: (context, state) {
-                  if (state is GetTotalValueInitialState) {
-                    log("GetTotalValueInitialState");
-                    return buildLoadingTemplate();
-                  } else if (state is GetTotalValueLoadingState) {
-                    log("GetTotalValueLoadingState");
-                    // return buildLoadingTemplate();
-                    // return buildGetTotalValue(tmpTotalValue, tmpBtcSpecial);
-                    return buildGetTotalValue(0, 0);
-                  } else if (state is GetTotalValueLoadedState) {
-                    log("GetTotalValueLoadedState");
-                    // tmpTotalValue = state.totalValue;
-                    tmpBtcSpecial = state.btcSpecial;
-                    return Container(
-                      child: buildGetTotalValue(state.totalValue, state.btcSpecial)
-                      // child: Row(
-                      //   children: <Widget> [
-                      //     // SizedBox(width: displayWidth(context) * 0.1),
-                      //     buildGetTotalValue(state.totalValue, state.btcSpecial),
-                      //     Column( /// refactor into a function like buildGetTotalValue
-                      //       mainAxisAlignment: MainAxisAlignment.start,
-                      //       crossAxisAlignment: CrossAxisAlignment.end,
-                      //       children: <Widget> [
-                      //         buildTicker(context, tmpBtcSpecial),
-                      //       ]
-                      //     ),
-                      //   ]
-                      // ),
-                    );
-                  } else if (state is GetTotalValueErrorState) {
-                    log("GetTotalValueErrorState");
-                    return buildErrorTemplate(state.errorMessage);
-                  } else {
-                    return null;
+      child: Container(
+        width: displayWidth(context) * 0.85,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget> [
+            Positioned(
+              top: 20,
+              left: 20,
+              child: Container(
+                child: IconButton(
+                  icon: Icon(Icons.flag),
+                  onPressed: () {
+                    setState(() {
+                      _height = displayHeight(context) * 0.17;
+                      _widget = ContainerSlider();
+                    });
                   }
-                }
+                ),
               ),
             ),
-          ),
-          Container(
-            width: displayWidth(context) * 0.85,
-            child: ContainerSlider(),
-          ),
-        ],
+            Column(
+              children: <Widget> [
+                AnimatedContainer(
+                  duration: Duration(seconds: 2),
+                  // height: displayHeight(context) * 0.17,
+                  height: _height,
+                  width: displayWidth(context) * 0.65,
+                  child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
+                    listener: (context, state) {
+                      if (state is GetTotalValueErrorState) {
+                        log("error in GetTotalValueErrorState in price_container.dart");
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(content: Text(state.errorMessage)),
+                        // );
+                      }
+                    },
+                    child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+                      builder: (context, state) {
+                        if (state is GetTotalValueInitialState) {
+                          log("GetTotalValueInitialState");
+                          return buildLoadingTemplate();
+                        } else if (state is GetTotalValueLoadingState) {
+                          log("GetTotalValueLoadingState");
+                          // return buildLoadingTemplate();
+                          // return buildGetTotalValue(tmpTotalValue, tmpBtcSpecial);
+                          return buildGetTotalValue(0, 0);
+                        } else if (state is GetTotalValueLoadedState) {
+                          log("GetTotalValueLoadedState");
+                          // tmpTotalValue = state.totalValue;
+                          tmpBtcSpecial = state.btcSpecial;
+                          return Container(
+                            child: buildGetTotalValue(state.totalValue, state.btcSpecial)
+                            // child: Row(
+                            //   children: <Widget> [
+                            //     // SizedBox(width: displayWidth(context) * 0.1),
+                            //     buildGetTotalValue(state.totalValue, state.btcSpecial),
+                            //     Column( /// refactor into a function like buildGetTotalValue
+                            //       mainAxisAlignment: MainAxisAlignment.start,
+                            //       crossAxisAlignment: CrossAxisAlignment.end,
+                            //       children: <Widget> [
+                            //         buildTicker(context, tmpBtcSpecial),
+                            //       ]
+                            //     ),
+                            //   ]
+                            // ),
+                          );
+                        } else if (state is GetTotalValueErrorState) {
+                          log("GetTotalValueErrorState");
+                          return buildErrorTemplate(state.errorMessage);
+                        } else {
+                          return null;
+                        }
+                      }
+                    ),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: Duration(seconds: 2),
+                  width: displayWidth(context) * 0.65,
+                  height: displayHeight(context) * 0.03,
+                  // child: ContainerSlider(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget> [
+                      Positioned(
+                        left: -40,
+                        child: _widget,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
           // child: Text("helloWorld"),
     );
@@ -121,7 +161,7 @@ class PriceContainerState extends State<PriceContainer> {
           alignment: Alignment.center,
           children: <Widget> [
             Positioned(
-              left: 117,
+              left: 77,
               top: 5,
               child: Column(
                 children: <Widget> [
@@ -155,11 +195,11 @@ class PriceContainerState extends State<PriceContainer> {
           ],
         ),
         Positioned(
-        top: 10,
-        right: 20,
-        child: buildTicker(btcSpecial),
-      ),
-      ]
+          top: 10,
+          right: 0,
+          child: buildTicker(btcSpecial),
+        ),
+      ],
     );
   }
   // Widget buildGetTotalValue(double totalValue, double btcSpecial) {

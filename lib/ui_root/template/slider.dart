@@ -64,7 +64,7 @@ class ContainerSliderState extends State<ContainerSlider> {
     );
     return Row(
       children: <Widget> [
-        SizedBox(width: displayWidth(context) * 0.05),
+        SizedBox(width: displayWidth(context) * 0.07),
         Container(
           width: displayWidth(context) * 0.22, // items: ["BTC", "ETH", "USDT", "DOGE"],
           child: MenuButton(
