@@ -137,7 +137,7 @@ class ContainerSliderState extends State<ContainerSlider> {
               ),
               child: Text("Sell All"),
               onPressed: () {
-                BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: _value));
+                BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: _value, coinTicker: selectedKey));
               },
             // ),
             // right: 0,

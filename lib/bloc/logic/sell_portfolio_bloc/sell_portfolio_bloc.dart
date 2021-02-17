@@ -20,6 +20,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
   double totalValue = 0.0;
   double pctToSell = 1.0;
+  String coinTicker = "BTC";
   /// initialState has been changed to the above: https://github.com/felangel/bloc/issues/1304
 
   FtxSellCoinRepositoryImpl ftxSellCoinRepository;
@@ -37,6 +38,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   Stream<SellPortfolioState> mapEventToState(SellPortfolioEvent event) async* {
     if (event is FetchSellPortfolioEvent) {
       pctToSell = event.value / 100;
+      coinTicker = event.coinTicker;
+
       yield SellPortfolioLoadingState();
       try {
 
@@ -59,10 +62,10 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           /// We actually need to do OCO orders otherwise existing limit order will block our order
           /// We will just delete all orders
           /// We can save list of all existing orders first
-          if(coins.coin == 'BTC') {
+          if(coins.coin == coinTicker) {
             /// Skip I guess, maybe increment some info later
             /// We could return a final state with total current BTC to save time... maybe
-            log("Skipping BTC... Because we don't sell BTC to BTC!");
+            log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
 
             // what do we have
@@ -79,7 +82,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               /// and minimum BTC lot size
               /// make the API call
               /// if not idk print the conditiond
-              double divisor = double.parse(binanceSymbols[coins.coin + 'BTC'][2].stepSize);
+              double divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
               // log(divisor.toString());
               var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
@@ -91,7 +94,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('Post-Modulo: ' + zeroTarget.toString()); 
                 log('To Sell: ' + tmp.toString());
                 log('\n');
-                var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + 'BTC', tmp);
+                var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
                 if(result['code'] == null) {
                   /// potentially save result into a Model which saves the result
                   /// ..... this Model could be the snapshot?
@@ -101,7 +104,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               }
 
             } catch (e) {
-              log(coins.coin + " does not have a BTC pair on Binance");
+              log(coins.coin + " does not have a $coinTicker pair on Binance");
             }
           }
           log(totalValue.toString());
@@ -117,47 +120,50 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         Map ftxSymbols = Map.fromIterable(ftxExchangeInfoModel.result, key: (e) => e.name, value: (e) => e.sizeIncrement); /// we need more than just a key and value so maybe change this from Map to something else
         log("error4");
 
-        for (var coins in ftxGetBalanceModel.result) {
-          log("error5");
+/// ### Uncomment below for FTX integration (check bugs) ###
+        // for (var coins in ftxGetBalanceModel.result) {
+        //   log("error5");
 
-          if (coins.coin == 'BTC//USDT') {
-            log("ftx coins.coin = 'BTC/USDT'");
-          } else if (coins.coin == 'BTC/USD') {
-            log("ftx coins.coin = 'BTC/USD'");
-          } else {
-            try {
-              double divisor = ftxSymbols[coins.coin];
-              var tmp = coins.free;
-              var zeroTarget = tmp % divisor;
-              tmp -= zeroTarget;
-              if (tmp >= divisor) {
-                log('Coin: ' + coins.coin);
-                log('Coin Qty to sell: ' + coins.free.toString());
-                log('Divisor(stepSize): ' + divisor.toString());
-                log('Post-Modulo: ' + zeroTarget.toString()); 
-                log('To Sell: ' + tmp.toString());
-                log('\n');
-              }
+        //   if (coins.coin == 'BTC/USDT') {
+        //     log("ftx coins.coin = 'BTC/USDT'");
+        //   } else if (coins.coin == 'BTC/USD') {
+        //     log("ftx coins.coin = 'BTC/USD'");
+        //   } else {
+        //     try {
+        //       double divisor = ftxSymbols[coins.coin];
+        //       var tmp = coins.free;
+        //       var zeroTarget = tmp % divisor;
+        //       tmp -= zeroTarget;
+        //       if (tmp >= divisor) {
+        //         log('Coin: ' + coins.coin);
+        //         log('Coin Qty to sell: ' + coins.free.toString());
+        //         log('Divisor(stepSize): ' + divisor.toString());
+        //         log('Post-Modulo: ' + zeroTarget.toString()); 
+        //         log('To Sell: ' + tmp.toString());
+        //         log('\n');
+        //       }
 
-              /// sell logic here
+        //       /// sell logic here
               
-              var result = await ftxSellCoinRepository.ftxSellCoin(coins.coin + '/BTC', tmp);
-              //  {
-              //   log('Coin: ' + coins.coin);
-              //   var result = await ftxSell`CoinRepository.ftxSellCoin(coins.coin);
-              // }
-              log(result.toString());
-            } catch (e) {
-              log(coins.coin + " does not have a BTC pair on FTX");
-            }
-          }
-        }
+        //       var result = await ftxSellCoinRepository.ftxSellCoin(coins.coin + '/BTC', tmp);
+        //       //  {
+        //       //   log('Coin: ' + coins.coin);
+        //       //   var result = await ftxSell`CoinRepository.ftxSellCoin(coins.coin);
+        //       // }
+        //       log(result.toString());
+        //     } catch (e) {
+        //       log(coins.coin + " does not have a BTC pair on FTX");
+        //     }
+        //   }
+        // }
 
 
         // log("sup");
         // // btcSpecial = binanceGetPricesMap['BTCUSDT'];
         // // yield GetTotalValueLoadedState(totalValue: totalValue, btcSpecial: btcSpecial);
         // log("nothing is happening here?");
+
+/// ### Uncomment above for ftx integration ### ///
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
         log("wallah");
