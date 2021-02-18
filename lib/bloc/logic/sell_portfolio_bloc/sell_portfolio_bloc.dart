@@ -23,7 +23,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
-  Map<String, double> toFirestore = {};
+  Map<String, dynamic> toFirestore = {};
 
   final firestoreInstance = FirebaseFirestore.instance;
   // var firestoreUser = FirebaseFirestore.instance.collection('User');
@@ -82,6 +82,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
             }
           }
           toFirestore['SoldUSDT'] = totalValue;
+          toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
         }
 
@@ -97,7 +98,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         firestoreInstance
           .collection("Users")
           .doc("Wtf")
-          .update({"PortfolioMap": {"Portfolio1": toFirestore}})
+          .update({"PortfolioMap.Portfolio3": toFirestore})
           .then((_){});
 
         

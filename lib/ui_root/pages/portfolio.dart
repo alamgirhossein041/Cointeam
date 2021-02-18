@@ -22,31 +22,38 @@ class PortfolioBuilderView extends StatefulWidget {
 
 class PortfolioBuilderState extends State<PortfolioBuilderView> {
 
-  List<String> added = [];
+  Map<String, dynamic> added = {};
   String currentText = "";
+  Map<String, dynamic> toFirestore = {};
+
   // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
   final List<GlobalObjectKey<AutoCompleteTextFieldState<String>>> formKeyList = List.generate(10, (index) => GlobalObjectKey<AutoCompleteTextFieldState<String>>(index));
   /// https://stackoverflow.com/questions/49862572/multiple-widgets-used-the-same-globalkey bottom suggestion
 
+  Map<int, dynamic> coinTicker = {};
   List<SimpleAutoCompleteTextField> textField = [];
   bool showWhichErrorText = false;
-  int i = 0;
+  int i = 0, k = 0;
 
   PortfolioBuilderState() {
     textField.add(SimpleAutoCompleteTextField(
       key: formKeyList[i],
       // decoration: InputDecoration(errorText: "Beans"),
       decoration: InputDecoration(helperText: "Insert a coin"),
-      controller: TextEditingController(text: ""),
+      controller: TextEditingController(text: currentText),
       suggestions: suggestions,
       textChanged: (text) => currentText = text,
-      clearOnSubmit: true,
+      clearOnSubmit: false,
       textSubmitted: (text) => setState(() {
-            if (text != "") {
-              added.add(text);
-            }
-          }),
-    ),
+        if (text != "") {
+          added[text] = 10.0;
+          coinTicker[k] = text;
+          k++;
+          }
+        }),
+      ),
+      // textSubmitted: (text) => setState(() {
+      // }),
     );
   }
 
@@ -55,40 +62,40 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
     "Ethereum",
     "Ripple",
     "Bitcoin Cash",
-    "Badcoin",
-    "Argentina",
-    "Australia",
-    "Antarctica",
-    "Blueberry",
-    "Cheese",
-    "Danish",
-    "Eclair",
-    "Fudge",
-    "Granola",
-    "Hazelnut",
-    "Ice Cream",
-    "Jely",
-    "Kiwi Fruit",
-    "Lamb",
-    "Macadamia",
-    "Nachos",
-    "Oatmeal",
-    "Palm Oil",
-    "Quail",
-    "Rabbit",
-    "Salad",
-    "T-Bone Steak",
-    "Urid Dal",
-    "Vanilla",
-    "Waffles",
-    "Yam",
-    "Zest"
+    "USDT",
+    "Binance Coin",
+    "Polkadot",
+    "Cardano",
+    "Litecoin",
+    "Chainlink",
+    "Stellar",
+    "USDC",
+    "Dogecoin",
+    "Wrapped Bitcoin",
+    "Uniswap",
+    "Aave",
+    "Cosmos",
+    "Monero",
+    "EOS",
+    "Bitcoin SV",
+    "TRON",
+    "NEM",
+    "IOTA",
+    "THETA",
+    "Tezos",
+    "VeChain",
+    "Avalanche",
+    "Neo",
+    "Terra",
+    "Huobi Token",
+    "Dash",
+    "The Graph"
   ];
 
   // List<Widget> listOfCoins = [Text("Hello")];
 
   final firestoreInstance = FirebaseFirestore.instance;
-  var firestoreUser = FirebaseFirestore.instance.collection('User');
+  // var firestoreUser = FirebaseFirestore.instance.collection('User');
   var firebaseAuth = FirebaseAuth.instance;
 
   var coinWidgets = List<Widget>();
@@ -168,11 +175,11 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                         SizedBox(height: displayHeight(context) * 0.02),
                         SizedBox(height: displayHeight(context) * 0.015),
                         Text(
-                          "B: 0.22481241",
+                          "B: 0.00023149",
                           style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                         Text(
-                          "\$8184.25",
+                          "\$179.58",
                           style: TextStyle(fontSize: 25, color: Colors.white,
                             fontWeight: FontWeight.bold
                           ),
@@ -196,7 +203,7 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                   Positioned(
                     top: 10,
                     right: 20,
-                    child: Text("\$28341", style: TextStyle(color: Colors.white)),
+                    child: Text("\$51320", style: TextStyle(color: Colors.white)),
                   ),
                 ]
               ),
@@ -231,6 +238,7 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                       // width: displayWidth(context),
                       child: FloatingActionButton(
                         onPressed: () {
+                          var j = i;
                           coinWidgets.add(
                             Container(
                               // decoration: BoxDecoration(
@@ -276,7 +284,7 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                                           Icon(Icons.ac_unit, size: 50),
                                           SizedBox(width: 20),
                                           Container(
-                                            width: displayWidth(context) * 0.55,
+                                            width: displayWidth(context) * 0.35,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -291,7 +299,33 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                                         //     ),)
                                         //   ),
                                         // ],
-                                      ),)
+                                      ),),
+                                      SizedBox(width: displayWidth(context) * 0.06),
+                                      Container( /// Maybe TODO: We'll make this it's own stateful widget so setState is isolated here, also going to require a callback
+                                        width: displayWidth(context) * 0.12,
+                                        child: IconButton(
+                                          icon: Icon(Icons.lock),
+                                          onPressed: () {
+                                            log("Hello World");
+                                            log("i = " + i.toString());
+                                            log("j = " + j.toString());
+                                            log("coinTicker[0] = " + coinTicker[0]);
+                                            log("coinTicker[j] = " + coinTicker[j]);
+                                            // log("coinTicker[i] = " + coinTicker[i]);
+                                            // if (added.isEmpty) {
+                                              firestoreInstance
+                                                .collection("Users")
+                                                .doc("Wtf")
+                                                .update({"PortfolioMap.BPortfolio1." + coinTicker[j]: added[coinTicker[j]]})
+                                                .then((_){});
+                                            // }
+
+                                            setState(() {
+
+                                            });
+                                          }
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -304,18 +338,25 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                             textField.add(SimpleAutoCompleteTextField(
                               key: formKeyList[i],
                               // decoration: InputDecoration(errorText: "Beans"),
+                              decoration: InputDecoration(helperText: "Insert a coin"),
                               controller: TextEditingController(text: ""),
                               suggestions: suggestions,
                               textChanged: (text) => currentText = text,
-                              clearOnSubmit: true,
+                              clearOnSubmit: false,
+                              // textSubmitted: (text) => {}
+                              
                               textSubmitted: (text) => setState(() {
-                                    if (text != "") {
-                                      added.add(text);
-                                    }
-                                  }),
-                                ),
-                              );
-                            });
+                                  if (text != "") {
+                                    log("???");
+                                    added[text] = 10.0;
+                                    coinTicker[k] = text;
+                                    k++;
+                                    log("!!!");
+                                  }
+                                }),
+                              ),
+                            );
+                          });
                           
                       /// child: FloatingActionButton(
                       ///   onPressed: () {
