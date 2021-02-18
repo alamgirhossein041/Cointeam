@@ -19,8 +19,7 @@ class TestView extends StatefulWidget {
 class TestState extends State<TestView> {
 
   final firestoreInstance = FirebaseFirestore.instance;
-  var firestoreUser = FirebaseFirestore.instance.collection('User');
-  var firebaseAuth = FirebaseAuth.instance;
+  // var firebaseAuth = FirebaseAuth.instance;
 
   CryptoCompareRepositoryImpl cryptoCompareRepository = CryptoCompareRepositoryImpl();
 
@@ -88,8 +87,38 @@ class TestState extends State<TestView> {
           ElevatedButton(
             child: Text("Test Add To Firestore"),
             onPressed: () {
+              var firebaseUser = FirebaseAuth.instance.currentUser;
+              firestoreInstance.collection("Users").doc(firebaseUser.uid).set(
+                {
+                  "ExchangeLink": {
+                    "BinanceAPI": {
+                      "api": "cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU",
+                      "sapi": "mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD",
+                    }
+                  },
+                  "Friends": {
+                    "UserID": "Sudo",
+                    "UserIDZ": "Max",
+                  },
+                  "Portfolio": {
+                    "Portfolio1Pct": {
+                      "BTC": 0.55,
+                      "ETH": 0.32,
+                      "XRP": 0.13,
+                      "SoldUSDT": 10000
+                    },
+                    "Portfolio1Abs": {
+                      "BTC": 5500,
+                      "ETH": 3200,
+                      "XRP": 1300,
+                    }
+                  },
+                }).then((_){
+                  print("Success!");
+                  log("Success!");
+                });
                 /// firestoreInstance.collection("User").document('Snapshot-1').add(
-                firestoreUser.add({'Something': 'something', 'uid': firebaseAuth.currentUser.uid.toString()})
+                // firestoreUser.add({'Something': 'something', 'uid': firebaseAuth.currentUser.uid.toString()})
                   // {
                   //   "coin" : "BTC",
                   //   "age" : 50,
@@ -99,9 +128,9 @@ class TestState extends State<TestView> {
                   //     "city" : "new york"
                   //   }
                   // })
-                  .then((value){
-                    log(value.id);
-                  });
+                  // .then((value){
+                  //   log(value.id);
+                  // });
             }
           ),
           ElevatedButton(

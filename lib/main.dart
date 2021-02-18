@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:coinsnap/bloc/logic/buy_portfolio_bloc_TEST_DELETE/buy_portfolio_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/data/repository/auth/buy_coin/binance_buy_coin.dart';
 import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
 import 'package:coinsnap/data/repository/auth/get_all/ftx_get_balance.dart';
 import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
@@ -50,6 +52,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SellPortfolioBloc>(
           create: (context) => SellPortfolioBloc(binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+        ),
+         BlocProvider<BuyPortfolioBloc>(
+          create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
         // BlocProvider<BlocC>(
         //   create: (BuildContext context) => BlocC(),

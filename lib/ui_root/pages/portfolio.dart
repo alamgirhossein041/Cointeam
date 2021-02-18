@@ -8,6 +8,7 @@ import 'package:coinsnap/ui_root/template/price_container_no_icon.dart';
 import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 import 'dart:developer';
 
@@ -20,6 +21,69 @@ class PortfolioBuilderView extends StatefulWidget {
 }
 
 class PortfolioBuilderState extends State<PortfolioBuilderView> {
+
+  List<String> added = [];
+  String currentText = "";
+  // GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
+  final List<GlobalObjectKey<AutoCompleteTextFieldState<String>>> formKeyList = List.generate(10, (index) => GlobalObjectKey<AutoCompleteTextFieldState<String>>(index));
+  /// https://stackoverflow.com/questions/49862572/multiple-widgets-used-the-same-globalkey bottom suggestion
+
+  List<SimpleAutoCompleteTextField> textField = [];
+  bool showWhichErrorText = false;
+  int i = 0;
+
+  PortfolioBuilderState() {
+    textField.add(SimpleAutoCompleteTextField(
+      key: formKeyList[i],
+      // decoration: InputDecoration(errorText: "Beans"),
+      decoration: InputDecoration(helperText: "Insert a coin"),
+      controller: TextEditingController(text: ""),
+      suggestions: suggestions,
+      textChanged: (text) => currentText = text,
+      clearOnSubmit: true,
+      textSubmitted: (text) => setState(() {
+            if (text != "") {
+              added.add(text);
+            }
+          }),
+    ),
+    );
+  }
+
+  List<String> suggestions = [
+    "Bitcoin",
+    "Ethereum",
+    "Ripple",
+    "Bitcoin Cash",
+    "Badcoin",
+    "Argentina",
+    "Australia",
+    "Antarctica",
+    "Blueberry",
+    "Cheese",
+    "Danish",
+    "Eclair",
+    "Fudge",
+    "Granola",
+    "Hazelnut",
+    "Ice Cream",
+    "Jely",
+    "Kiwi Fruit",
+    "Lamb",
+    "Macadamia",
+    "Nachos",
+    "Oatmeal",
+    "Palm Oil",
+    "Quail",
+    "Rabbit",
+    "Salad",
+    "T-Bone Steak",
+    "Urid Dal",
+    "Vanilla",
+    "Waffles",
+    "Yam",
+    "Zest"
+  ];
 
   // List<Widget> listOfCoins = [Text("Hello")];
 
@@ -173,7 +237,7 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                               //   borderRadius: BorderRadius.all(Radius.circular(20)),
                               // ),
                               padding: EdgeInsets.fromLTRB(30,0,30,0),
-                              height: displayHeight(context) * 0.11,
+                              height: displayHeight(context) * 0.12,
                               // width: displayWidth(context) * 0.1,
                               // height: displayHeight(context) * 0.11,
                               child: Card(
@@ -217,7 +281,11 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget> [
-                                                Text("BTC/USD", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                                // Text("BTC/USD", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                                Container(
+                                                  width: displayWidth(context) * 0.35,
+                                                  child: textField[i],
+                                                ),
                                                 Text("SELL: 10 coins", style: TextStyle(color: Colors.white)),
                                               ],
                                         //     ),)
@@ -231,7 +299,23 @@ class PortfolioBuilderState extends State<PortfolioBuilderView> {
                             ),
                           );
                           log(coinWidgets.length.toString());
-                          setState(() {});
+                          setState(() {
+                            i++;
+                            textField.add(SimpleAutoCompleteTextField(
+                              key: formKeyList[i],
+                              // decoration: InputDecoration(errorText: "Beans"),
+                              controller: TextEditingController(text: ""),
+                              suggestions: suggestions,
+                              textChanged: (text) => currentText = text,
+                              clearOnSubmit: true,
+                              textSubmitted: (text) => setState(() {
+                                    if (text != "") {
+                                      added.add(text);
+                                    }
+                                  }),
+                                ),
+                              );
+                            });
                           
                       /// child: FloatingActionButton(
                       ///   onPressed: () {
