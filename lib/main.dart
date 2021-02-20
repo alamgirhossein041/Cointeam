@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_bloc.dart';
+import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_event.dart';
 import 'package:coinsnap/bloc/logic/buy_portfolio_bloc_TEST_DELETE/buy_portfolio_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
@@ -9,6 +11,7 @@ import 'package:coinsnap/data/repository/auth/buy_coin/binance_buy_coin.dart';
 import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
 import 'package:coinsnap/data/repository/auth/get_all/ftx_get_balance.dart';
 import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
+import 'package:coinsnap/data/repository/firestore/firestore_get_user_data.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
 import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/data/repository/unauth/prices/ftx_get_prices.dart';
@@ -56,6 +59,10 @@ class MyApp extends StatelessWidget {
          BlocProvider<BuyPortfolioBloc>(
           create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
+        BlocProvider<FirestoreGetUserDataBloc> (
+          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+          create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl()),
+        )
         // BlocProvider<BlocC>(
         //   create: (BuildContext context) => BlocC(),
         // ),

@@ -29,8 +29,8 @@ class GetTotalValueLoadedState extends GetTotalValueState {
   
 
 
-  double totalValue;
-  double btcSpecial;
+  final double totalValue;
+  final double btcSpecial;
 
   GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial});
 
@@ -42,7 +42,7 @@ class GetTotalValueLoadedState extends GetTotalValueState {
 
 class GetTotalValueErrorState extends GetTotalValueState {
 
-  String errorMessage;
+  final String errorMessage;
 
   GetTotalValueErrorState({@required this.errorMessage});
 

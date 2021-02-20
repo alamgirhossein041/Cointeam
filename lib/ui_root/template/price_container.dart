@@ -1,3 +1,5 @@
+import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_bloc.dart';
+import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_event.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_state.dart';
@@ -28,8 +30,14 @@ class PriceContainerState extends State<PriceContainer> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    log("PRINT ME TWICE (PRICE_CONTAINER)");
     getTotalValueBloc = BlocProvider.of<GetTotalValueBloc>(context);
     getTotalValueBloc.add(FetchGetTotalValueEvent());
+    super.didChangeDependencies();
   }
 
   double _height = 125.0;
