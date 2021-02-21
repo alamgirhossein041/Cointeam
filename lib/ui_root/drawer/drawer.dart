@@ -94,18 +94,50 @@ class MyDrawerState extends State<MyDrawer> {
                   // tmpBtcSpecial = state.btcSpecial;
                   var tmp = state.portfolioMap;
                   log("tmp['HistPortfolios']: " + tmp['HistPortfolios'].toString());
-                  int i = 0;
                   log("tmp['HistPorfolios'][0]['BTC']: " + tmp['HistPortfolios'][0]['BTC'].toString());
-                  return Column(
+                  // int i = 0;
+                  // return Column(
                     
-                    children: <Widget> [ 
+                  //   children: <Widget> [ 
+                  //     Column(
+                  //       children: tmp['HistPortfolios'][0]
+                  //         // .values.map<Widget>((v) => Text("Wallah", style: TextStyle(color: Colors.white))) /// THIS IS WHERE I AM UP TO 20FEB
+                  //         .values.map<Widget>((v) => ListTile(title: Text(
+                  //           "Portfolio " + i.toString(),
+                  //           style: TextStyle(color: Colors.white),
+                  //         ),
+                  //         onTap: () {
+                  //           Navigator.pushNamed(context, '/homeviewreal');
+                  //         }
+                  //         ))
+                  //         .toList(),
+                  //     ),
+                  //   ],
+                  // );
+
+                  return Column(
+                    children: <Widget> [
                       Column(
-                        children: tmp['HistPortfolios'][0]
-                          .values.map<Widget>((v) => Text("Wallah", style: TextStyle(color: Colors.white))) /// THIS IS WHERE I AM UP TO 20FEB
-                          .toList(),
-                      ),
-                    ],
-                  );
+                        children: <Widget> [
+                          for(int i=0; tmp['BuildPortfolios'].length > i; i++) ListTile(title: Text(
+                            "Built Portfolio " + i.toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/homeviewreal');
+                          }
+                        )
+                      ]),
+                      Column(children: <Widget> [
+                        for(int i=0; tmp['HistPortfolios'].length > i; i++) ListTile(title: Text(
+                          "Historical Portfolio " + i.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/homeviewreal');
+                        }
+                      )]),
+                    ]);
                     
                     // ListTile(
                     //   title: TextButton(
