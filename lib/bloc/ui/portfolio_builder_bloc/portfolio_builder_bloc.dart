@@ -4,10 +4,15 @@ import 'package:coinsnap/bloc/ui/portfolio_builder_bloc/portfolio_builder_state.
 import 'package:coinsnap/bloc/unauth/exchange/binance_exchange_info_bloc/binance_exchange_info_event.dart';
 import 'package:coinsnap/bloc/unauth/exchange/binance_exchange_info_bloc/binance_exchange_info_state.dart';
 import 'package:coinsnap/data/model/unauth/exchange/binance_exchange_info_model.dart';
+import 'package:coinsnap/data/repository/ui/portfolio_builder_repository.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
 import 'package:meta/meta.dart';
 
-// class PortfolioBuilderBloc extends Bloc<PortfolioBuilderEvent, PortfolioBuilderState> {
+class PortfolioBuilderBloc extends Bloc<PortfolioBuilderEvent, PortfolioBuilderState> {
+
+  PortfolioBuilderRepositoryImpl repository;
+
+  PortfolioBuilderBloc({@required this.repository}) : super(PortfolioBuilderInitialState());
   
   // PortfolioBuilderBloc({@required this.repository}) : super(PortfolioBuilderInitialState());
   /// initialState has been changed to the above: https://github.com/felangel/bloc/issues/1304
@@ -16,7 +21,7 @@ import 'package:meta/meta.dart';
 
   @override
   Stream<PortfolioBuilderState> mapEventToState(PortfolioBuilderEvent event) async* {
-    if (event is FetchBinanceExchangeInfoEvent) {
+    if (event is FetchPortfolioBuilderEvent) {
       yield PortfolioBuilderLoadingState();
 
       try {
@@ -28,4 +33,4 @@ import 'package:meta/meta.dart';
       }
     }
   }
-// }
+}

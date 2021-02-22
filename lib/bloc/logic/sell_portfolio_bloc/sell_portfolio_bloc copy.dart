@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_state.dart';
 import 'package:coinsnap/data/model/auth/get_all/binance_get_all_model.dart';
@@ -11,7 +10,6 @@ import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
 import 'package:coinsnap/data/repository/auth/sell_coin/ftx_sell_coin.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/ftx_get_exchange_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
@@ -23,12 +21,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
-  Map<String, dynamic> toFirestore = {};
-
-  final firestoreInstance = FirebaseFirestore.instance;
-  // var firestoreUser = FirebaseFirestore.instance.collection('User');
-  // var firebaseAuth = FirebaseAuth.instance;
-  final firebaseUser = FirebaseAuth.instance.currentUser;
 
   FtxSellCoinRepositoryImpl ftxSellCoinRepository;
   FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
@@ -69,11 +61,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('To Sell: ' + tmp.toString());
                 log('\n');
                 var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
-                log(result['code'].toString());
                 if(result['code'] == null) {
-                  totalValue += double.parse(result['cummulativeQuoteQty']);
-                  log("What's wrong now?");
-                  toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
+                  totalValue += result['cummulativeQuoteQty'];
                   log("Running totalValue is $totalValue");
                 }
               }
@@ -81,30 +70,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               log(coins.coin + " does not have a $coinTicker pair on Binance");
             }
           }
-          toFirestore['SoldUSDT'] = totalValue;
-          toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
         }
-
-        // log(toFirestore.toString());
-        // firestoreInstance
-        //   .collection("Users")
-        //   .doc("Wtf")
-        //   .set(toFirestore)
-        //   .then((_){});
-
-
-        log(toFirestore.toString());
-        firestoreInstance
-          .collection("Users")
-          .doc("Wtf")
-          .update({"PortfolioMap.Portfolio3": toFirestore})
-          .then((_){});
-
-        
-
-        totalValue = 0.0;
-        log("pushed to firestore");
         log("error1");
 
         FtxExchangeInfoModel ftxExchangeInfoModel = await ftxExchangeInfoRepository.getFtxExchangeInfo();

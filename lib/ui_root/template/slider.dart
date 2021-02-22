@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:coinsnap/bloc/logic/buy_portfolio_bloc_TEST_DELETE/buy_portfolio_bloc.dart';
+import 'package:coinsnap/bloc/logic/buy_portfolio_bloc_TEST_DELETE/buy_portfolio_event.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
@@ -145,29 +147,50 @@ class ContainerSliderState extends State<ContainerSlider> {
             // bottom: 50,
           ),
         ),
-        Container(
-          width: displayWidth(context) * 0.33,
-          child: SfSliderTheme(
-            data: SfSliderThemeData(
-              tooltipBackgroundColor: Colors.red[500],
+        Container( /// Remove this after testing, then uncomment below
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: 
+              MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed))
+                    return Colors.green;
+                  return Colors.green; // Use the component's default.
+                },
+              ),
             ),
-            child: SfSlider(
-              min: 0.0,
-              max: 100.0,
-              value: _value,
-              interval: 100,
-              showTicks: false,
-              showLabels: false,
-              enableTooltip: true,
-              // minorTicksPerInterval: 1,
-              onChanged: (dynamic value) {
-                setState(() {
-                  _value = value;
-                });
-              }
-            ),
+            child: Text("Buy All"),
+            onPressed: () {
+              BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(quoteOrderQty: 180, coinTicker: "USDT"));
+            },
           ),
-        ),
+        )
+
+        /// #### UNCOMMENT BELOW #### ///
+        // Container(
+        //   width: displayWidth(context) * 0.33,
+        //   child: SfSliderTheme(
+        //     data: SfSliderThemeData(
+        //       tooltipBackgroundColor: Colors.red[500],
+        //     ),
+        //     child: SfSlider(
+        //       min: 0.0,
+        //       max: 100.0,
+        //       value: _value,
+        //       interval: 100,
+        //       showTicks: false,
+        //       showLabels: false,
+        //       enableTooltip: true,
+        //       // minorTicksPerInterval: 1,
+        //       onChanged: (dynamic value) {
+        //         setState(() {
+        //           _value = value;
+        //         });
+        //       }
+        //     ),
+        //   ),
+        // ),
+        /// #### UNCOMMENT ABOVE #### ///
       ],
     );
   }

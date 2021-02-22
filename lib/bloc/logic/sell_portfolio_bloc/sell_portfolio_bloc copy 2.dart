@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_state.dart';
 import 'package:coinsnap/data/model/auth/get_all/binance_get_all_model.dart';
@@ -11,7 +10,6 @@ import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
 import 'package:coinsnap/data/repository/auth/sell_coin/ftx_sell_coin.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
 import 'package:coinsnap/data/repository/unauth/exchange/ftx_get_exchange_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
@@ -23,12 +21,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
-  Map<String, dynamic> toFirestore = {};
-
-  final firestoreInstance = FirebaseFirestore.instance;
-  // var firestoreUser = FirebaseFirestore.instance.collection('User');
-  // var firebaseAuth = FirebaseAuth.instance;
-  final firebaseUser = FirebaseAuth.instance.currentUser;
+  /// initialState has been changed to the above: https://github.com/felangel/bloc/issues/1304
 
   FtxSellCoinRepositoryImpl ftxSellCoinRepository;
   FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
@@ -36,6 +29,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   BinanceSellCoinRepositoryImpl binanceSellCoinRepository;
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
+  /// CoinbaseSellCoinRepositoryImpl coinbaseSellCoinRepository;
+  /// FtxSellCoinRepositoryImpl ftxSellCoinRepository;
 
   // BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
 
@@ -49,15 +44,47 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       yield SellPortfolioLoadingState();
       try {
 
+
+        /// move this to the start of the app somehow at some point (exchangeinfo because it doesn't change)
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
+        // List something; // holy shit we need to do so much
+        /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
+        /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
+        /// TODO: add together total values
+        /// 
+        // List<BinanceGetPricesModel> binanceGetPricesModel = await binanceGetPricesRepository.getBinancePricesInfo();
+        // Map binanceGetPricesMap = Map.fromIterable(binanceGetPricesModel, key: (e) => e.symbol, value: (e) => e.price);
         for(BinanceGetAllModel coins in binanceGetAllModel) {
+          /// sell each coin to btc
+          /// btc can't be sold obviously
+          /// need to do the whole divisor check stuff
+          /// We actually need to do OCO orders otherwise existing limit order will block our order
+          /// We will just delete all orders
+          /// We can save list of all existing orders first
           if(coins.coin == coinTicker) {
+            /// Skip I guess, maybe increment some info later
+            /// We could return a final state with total current BTC to save time... maybe
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
+
+            // what do we have
+            // coins.coin which could be ETH
+            // we are trying to get BTC value
+            // just do the calculation you dipshit
+            // we also have binanceGetPricesModel
+            // which returned literally the price of all coins as a pair
+            // 
+
             try{
+              /// Check divisor and as long as final amount is greater than both:
+              /// minimum size
+              /// and minimum BTC lot size
+              /// make the API call
+              /// if not idk print the conditiond
               double divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+              // log(divisor.toString());
               var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
@@ -69,42 +96,20 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('To Sell: ' + tmp.toString());
                 log('\n');
                 var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
-                log(result['code'].toString());
                 if(result['code'] == null) {
-                  totalValue += double.parse(result['cummulativeQuoteQty']);
-                  log("What's wrong now?");
-                  toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
-                  log("Running totalValue is $totalValue");
+                  /// potentially save result into a Model which saves the result
+                  /// ..... this Model could be the snapshot?
+                  /// Okay: Save the result into a Model, where a List parameter holds the results or something, and each iteration of the Model has the Pct% share of portfolio
+                  totalValue += result['cummulativeQuoteQty'];
                 }
               }
+
             } catch (e) {
               log(coins.coin + " does not have a $coinTicker pair on Binance");
             }
           }
-          toFirestore['SoldUSDT'] = totalValue;
-          toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
         }
-
-        // log(toFirestore.toString());
-        // firestoreInstance
-        //   .collection("Users")
-        //   .doc("Wtf")
-        //   .set(toFirestore)
-        //   .then((_){});
-
-
-        log(toFirestore.toString());
-        firestoreInstance
-          .collection("Users")
-          .doc("Wtf")
-          .update({"PortfolioMap.Portfolio3": toFirestore})
-          .then((_){});
-
-        
-
-        totalValue = 0.0;
-        log("pushed to firestore");
         log("error1");
 
         FtxExchangeInfoModel ftxExchangeInfoModel = await ftxExchangeInfoRepository.getFtxExchangeInfo();
@@ -115,9 +120,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
         Map ftxSymbols = Map.fromIterable(ftxExchangeInfoModel.result, key: (e) => e.name, value: (e) => e.sizeIncrement); /// we need more than just a key and value so maybe change this from Map to something else
         log("error4");
-
-
-
 
 /// ### Uncomment below for FTX integration (check bugs) ###
         // for (var coins in ftxGetBalanceModel.result) {
@@ -163,10 +165,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         // log("nothing is happening here?");
 
 /// ### Uncomment above for ftx integration ### ///
-
-
-
-
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
         log("wallah");

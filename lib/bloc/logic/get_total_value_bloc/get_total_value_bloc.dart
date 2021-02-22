@@ -99,7 +99,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
           } else if (coins.coin == 'USD' || coins.coin == 'USDT') {
             usdSpecial += coins.total;
           } else {
-            try{
+            try {
               totalValue += ftxGetPricesMap[coins.coin + '/BTC'] * coins.total;
             } catch (e) {
               log(coins.coin + " does not have a BTC pair");
