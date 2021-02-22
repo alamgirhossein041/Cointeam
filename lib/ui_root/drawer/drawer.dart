@@ -212,7 +212,6 @@ class MyDrawerState extends State<MyDrawer> {
                 } else {
                   return null;
                 }
-                return null;
               }
             )
             
