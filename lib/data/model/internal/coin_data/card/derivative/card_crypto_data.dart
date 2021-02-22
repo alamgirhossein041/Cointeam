@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class CoinMarketCapCoinLatestModel {
@@ -28,6 +30,7 @@ class Data {
       this.quote});
 
   Data.fromJson(Map<String, dynamic> json) {
+    log(json['name'].toString());
     name = json['name'];
     symbol = json['symbol'];
     lastUpdated = json['last_updated'];
@@ -68,13 +71,13 @@ class USD {
       this.lastUpdated});
 
   USD.fromJson(Map<String, dynamic> json) {
-    price = json['price'];
-    volume24h = json['volume_24h'];
-    percentChange1h = json['percent_change_1h'];
-    percentChange24h = json['percent_change_24h'];
-    percentChange7d = json['percent_change_7d'];
-    percentChange30d = json['percent_change_30d'];
-    marketCap = json['market_cap'];
+    price = double.parse((json['price']).toString());
+    volume24h = double.parse((json['volume_24h']).toString());
+    percentChange1h = double.parse((json['percent_change_1h']).toString());
+    percentChange24h = double.parse((json['percent_change_24h']).toString());
+    percentChange7d = double.parse((json['percent_change_7d']).toString());
+    percentChange30d = double.parse((json['percent_change_30d']).toString());
+    marketCap = double.parse((json['market_cap']).toString());
     lastUpdated = json['last_updated'];
     if(percentChange24h > 0) {
       changeColor = Colors.green;

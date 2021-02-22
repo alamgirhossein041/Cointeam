@@ -1,4 +1,5 @@
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
+import 'package:coinsnap/data/model/internal/coin_data/card/derivative/card_crypto_data.dart';
 import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
@@ -11,11 +12,30 @@ import 'package:typicons_flutter/typicons.dart';
 
 import 'dart:developer';
 
-class PortfolioListTile extends StatelessWidget {
-  PortfolioListTile(this.cryptoData, this.index);
-
-  final dynamic cryptoData;
+class PortfolioListTile extends StatefulWidget {
+  PortfolioListTile({Key key, this.coinListMap, this.index}) : super(key: key);
+  final CoinMarketCapCoinLatestModel coinListMap;
   final dynamic index;
+
+  // PortfolioListTile(this.cryptoData, this.index);
+  @override
+  PortfolioListTileState createState() => PortfolioListTileState();
+}
+
+class PortfolioListTileState extends State<PortfolioListTile> {
+  @override
+  void initState() { 
+    super.initState(); 
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +46,7 @@ class PortfolioListTile extends StatelessWidget {
       child: Container(
         child: Row(
           children: <Widget> [
-            Test(cryptoData, index),
+            Test(widget.coinListMap, widget.index),
           ]
         ),
       ),
@@ -43,11 +63,10 @@ class PortfolioListTile extends StatelessWidget {
 // }
 
 class Test extends StatelessWidget {
-  Test(this.cryptoData, this.index);
+  Test(this.coinListMap, this.index);
 
-  final dynamic cryptoData;
+  final CoinMarketCapCoinLatestModel coinListMap;
   final dynamic index;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +80,14 @@ class Test extends StatelessWidget {
           ),
           child: GestureDetector(
           onTap: () {
-            log("cryptoData: " + cryptoData.toString());
+            log("cryptoData: " + coinListMap.toString());
             log("index: " + index.toString());
             // final Test test1 = Test(cryptoData, index);
             // Navigator.pushNamed(context, '/coinview');
             Navigator.pushNamed(
               context,
               '/coinview',
-              arguments: {'cryptoData' : cryptoData, 'index' : index},
+              arguments: {'cryptoData' : coinListMap.data, 'index' : index},
 
               // MaterialPageRoute(
               //   builder: (context) => BlocProvider.value(
@@ -117,19 +136,19 @@ class Test extends StatelessWidget {
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      cryptoIcon(cryptoData[index]),
+                                      cryptoIcon(coinListMap.data[index]),
                                       // SizedBox(height: displayHeight(context) * 0.05),
-                                      cryptoNameSymbol(cryptoData[index]),
+                                      cryptoNameSymbol(coinListMap.data[index]),
                                       Spacer(),
-                                      cryptoChange(cryptoData[index]),
+                                      cryptoChange(coinListMap.data[index]),
                                       // SizedBox(width: displayWidth(context) * 0.1),
-                                      changeIcon(cryptoData[index]),
+                                      changeIcon(coinListMap.data[index]),
                                       // SizedBox(width: displayWidth(context) * 0.2),
                                     ],
                                   ),
                                   Row(
                                     children: <Widget> [
-                                      cryptoAmount(cryptoData[index]),
+                                      cryptoAmount(coinListMap.data[index]),
                                     ]
                                   ),
                                 ]
@@ -154,21 +173,22 @@ class Test extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Icon(
-          data['icon'],
-          color: data['iconColor'],
-          size: 30,
-        ),
+        // child: Icon(
+        //   // CryptoFontIcons.BTC,
+        //   // color: data['iconColor'],
+        //   size: 30,
+        // ),
       ),
     );
   }
 
   Widget cryptoNameSymbol(data) {
+    log(data.toString());
     return Align(
       alignment: Alignment.centerLeft,
       child: RichText(
         text: TextSpan(
-          text: "${data['name']}",
+          text: "${data.name}",
           style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16
           ),
@@ -192,9 +212,9 @@ class Test extends StatelessWidget {
       alignment: Alignment.topRight,
       child: RichText(
         text: TextSpan(
-          text: "${data['change']}",
+          text: "${data.quote.uSD.percentChange24h.toStringAsFixed(2)}%",
           style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.green, fontSize: 14
+            fontWeight: FontWeight.bold, color: data.quote.uSD.changeColor, fontSize: 14
           ),
           // children: <TextSpan>[
           //   TextSpan(
@@ -215,14 +235,14 @@ class Test extends StatelessWidget {
   Widget changeIcon(data) {
     return Align(
       alignment: Alignment.topRight,
-      child: data['change'].contains('-')
+      child: data.quote.uSD.percentChange24h < 0
       ? Icon(
-        Typicons.arrow_sorted_up,
-        color: data['changeColor'],
+        Typicons.arrow_sorted_down,
+        color: data.quote.uSD.changeColor,
         size: 16,
       ) : Icon(
-        Typicons.arrow_sorted_down,
-        color: data['changeColor'],
+        Typicons.arrow_sorted_up,
+        color: data.quote.uSD.changeColor,
         size: 16,
       ),
     );
@@ -232,14 +252,14 @@ class Test extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
+        padding: const EdgeInsets.only(left: 10.0),
         child: Row(
           children: <Widget>[
             RichText(
               textAlign: TextAlign.left,
               text: TextSpan(
-                text: "\n0.00451349",
-                // text: "\n${data['value']}",
+                // text: "\n0.00451349",
+                // text: "\n${data.quote.uSD.price}",
                 style: TextStyle(
                   // fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
@@ -250,12 +270,12 @@ class Test extends StatelessWidget {
                 children: <TextSpan>[
                   TextSpan(
                     // text: "\n0.1349",
-                    text: "\n${data['value']}",
+                    text: "\n\$${data.quote.uSD.price.toStringAsFixed(2)}",
                     style: TextStyle(
                       color: textGrey,
                       // fontStyle: FontStyle.italic,
                       fontStyle: FontStyle.normal,
-                      fontSize: 22,
+                      fontSize: 20,
                       // fontWeight: FontWeight.bold
                     ),
                   ),

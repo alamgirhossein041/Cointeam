@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coinsnap/bloc/internal/coin_data/card/derivative/card_crypto_data_bloc.dart/card_crypto_data_bloc.dart';
+import 'package:coinsnap/bloc/internal/coin_data/card/derivative/card_crypto_data_bloc.dart/card_crypto_data_event.dart';
+import 'package:coinsnap/bloc/internal/coin_data/card/derivative/card_crypto_data_bloc.dart/card_crypto_data_state.dart';
 import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
@@ -7,6 +10,7 @@ import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui_root/drawer/drawer.dart';
+import 'package:coinsnap/ui_root/template/loading.dart';
 import 'package:coinsnap/ui_root/template/portfolio_list_view.dart';
 import 'package:coinsnap/ui_root/template/price_container.dart';
 import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
@@ -31,6 +35,8 @@ class HomeStateReal extends State<HomeViewReal> {
   var firestoreUser = FirebaseFirestore.instance.collection('User');
   var firebaseAuth = FirebaseAuth.instance;
 
+  CardCryptoDataBloc cardCryptoDataBloc;
+
   @override
   void initState() {
     /// TODO: stuff
@@ -40,8 +46,15 @@ class HomeStateReal extends State<HomeViewReal> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    cardCryptoDataBloc = BlocProvider.of<CardCryptoDataBloc>(context);
+    cardCryptoDataBloc.add(FetchCardCryptoDataEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var cryptoData = CryptoData.getData;
+    // var cryptoData = CryptoData.getData;
     GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldState,
@@ -95,29 +108,92 @@ class HomeStateReal extends State<HomeViewReal> {
                     // SizedBox(height: displayHeight(context) * 0.32),
                     Container(
                       height: displayHeight(context) * 0.62,
-                      child: CustomScrollView(
-                        slivers: <Widget> [
-                          SliverToBoxAdapter(
-                            /// Chart
-                            // height: displayHeight(context) * 0.27,
-                            // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so.. RAGE AGAINST THE MACHINE
-                            child: SizedBox(
-                              height: displayHeight(context) * 0.27,
-                              child: ChartOverall(),
-                            ),
-                          ),
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate((context, index) {
-                            // itemCount: cryptoData.length,
-                            // padding: EdgeInsets.fromLTRB(0,4,0,0),
-                            // itemBuilder: (context, index) {
-                                return PortfolioListTile(cryptoData, index);
-                              },
-                              childCount: cryptoData.length,
-                            ),
-                          ),
-                        ],
+
+
+
+                      child: BlocListener<CardCryptoDataBloc, CardCryptoDataState>(
+                        listener: (context, state) {
+                          if (state is CardCryptoDataErrorState) {
+                            log("error in CardCryptoDataErrorState in home_view_real.dart");
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(content: Text(state.errorMessage)),
+                            // );
+                          }
+                        },
+                        child: BlocBuilder<CardCryptoDataBloc, CardCryptoDataState>( /// Both bloc types to be built (refactor existing controllers)
+                          builder: (context, state) {
+                            if (state is CardCryptoDataInitialState) {
+                              log("CardCryptoDataInitialState");
+                              return buildLoadingTemplate();
+                            } else if (state is CardCryptoDataLoadingState) {
+                              log("CardCryptoDataLoadingState");
+                              // return buildLoadingTemplate();
+                              // return buildGetTotalValue(tmpTotalValue, tmpBtcSpecial);
+                              return buildLoadingTemplate();
+                            } else if (state is CardCryptoDataLoadedState) {
+                              log("CardCryptoDataLoadedState");
+                              return CustomScrollView(
+                                slivers: <Widget> [
+                                  SliverToBoxAdapter(
+                                    /// Chart
+                                    // height: displayHeight(context) * 0.27,
+                                    // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so.. RAGE AGAINST THE MACHINE
+                                    child: SizedBox(
+                                      height: displayHeight(context) * 0.27,
+                                      child: ChartOverall(),
+                                    ),
+                                  ),
+                                  SliverList(
+                                    delegate: SliverChildBuilderDelegate((context, index) {
+                                    // itemCount: cryptoData.length,
+                                    // padding: EdgeInsets.fromLTRB(0,4,0,0),
+                                    // itemBuilder: (context, index) {
+                                        return PortfolioListTile(coinListMap: state.coinListMap, index: index);
+                                      },
+                                      childCount: state.coinListMap.data.length,
+                                    ),
+                                  ),
+                                ],
+                              );
+                              // tmpBtcSpecial = state.btcSpecial;
+                              // return Container(
+                              //   child: buildGetTotalValue(state.totalValue, state.btcSpecial)
+                              // );
+                            } else if (state is CardCryptoDataErrorState) {
+                              log("CardCryptoDataErrorState");
+                              return buildErrorTemplate(state.errorMessage);
+                            } else {
+                              return null;
+                            }
+                          }
+                        ),
                       ),
+
+
+
+                      // child: CustomScrollView(
+                      //   slivers: <Widget> [
+                      //     SliverToBoxAdapter(
+                      //       /// Chart
+                      //       // height: displayHeight(context) * 0.27,
+                      //       // child: CustomMeasureTickCount.withSampleData(), // we dont need this but andrew wants to keep it so.. RAGE AGAINST THE MACHINE
+                      //       child: SizedBox(
+                      //         height: displayHeight(context) * 0.27,
+                      //         child: ChartOverall(),
+                      //       ),
+                      //     ),
+                      //     SliverList(
+                      //       delegate: SliverChildBuilderDelegate((context, index) {
+                      //       // itemCount: cryptoData.length,
+                      //       // padding: EdgeInsets.fromLTRB(0,4,0,0),
+                      //       // itemBuilder: (context, index) {
+                      //           return PortfolioListTile();
+                      //         },
+                      //         childCount: cryptoData.length,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ],
                 ),
