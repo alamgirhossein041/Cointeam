@@ -9,7 +9,8 @@ void main(List<String> args) {
   final dio = Dio(); // Provide a dio instance
   dio.options.headers["Demo-Header"] =
       "demo header"; // config your dio headers globally
-  final client = RestClient(dio);
+  final client = ApiClient(dio);
 
   client.getCoinGeckoCoinList().then((it) => logger.i(it));
+  client.getCoinGeckoExchangesList().then((it) => logger.i(it));
 }

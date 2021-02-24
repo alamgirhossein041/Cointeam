@@ -9,10 +9,13 @@ import 'dart:developer';
 
 part 'coingecko_api.g.dart';
 
-@RestApi(baseUrl: "https://api.coingecko.com/api/v3/")
-abstract class RestClient {
-  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+@RestApi(baseUrl: "https://api.coingecko.com/api/v3")
+abstract class ApiClient {
+  factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
   @GET("/coins/list")
   Future<List<CoinGeckoCoinList>> getCoinGeckoCoinList();
+
+  @GET("/exchanges/list")
+  Future<List<CoinGeckoExchangesList>> getCoinGeckoExchangesList();
 }

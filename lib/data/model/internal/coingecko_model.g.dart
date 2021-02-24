@@ -20,3 +20,16 @@ Map<String, dynamic> _$CoinGeckoCoinListToJson(CoinGeckoCoinList instance) =>
       'symbol': instance.symbol,
       'name': instance.name,
     };
+
+CoinGeckoExchangesList _$CoinGeckoExchangesListFromJson(
+    Map<String, dynamic> json) {
+  return CoinGeckoExchangesList(
+    id: json['id'] as String,
+  );
+}
+
+Map<String, dynamic> _$CoinGeckoExchangesListToJson(
+        CoinGeckoExchangesList instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+    };

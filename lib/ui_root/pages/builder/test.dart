@@ -4,7 +4,6 @@ import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_g
 import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_state.dart';
 import 'package:coinsnap/data/model/internal/coin_data/chart/crypto_compare.dart';
 import 'package:coinsnap/data/repository/internal/coin_data/chart/crypto_compare.dart';
-import 'package:coinsnap/data/repository/main_api/coingecko_exchange_rates_api.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui_root/drawer/drawer.dart';
@@ -29,9 +28,6 @@ class TestState extends State<TestView> {
 
   CryptoCompareRepositoryImpl cryptoCompareRepository =
       CryptoCompareRepositoryImpl();
-
-  CoinGeckoExchangeRateRepositoryImpl coinGeckoExchangeRateRepository =
-      CoinGeckoExchangeRateRepositoryImpl();
 
   @override
   void initState() {
@@ -202,11 +198,7 @@ class TestState extends State<TestView> {
                   onPressed: () {
                     cryptoCompareRepository.getHourlyCryptoCompare();
                   }),
-              ElevatedButton(
-                  child: Text("Test"),
-                  onPressed: () {
-                    coinGeckoExchangeRateRepository.getCoinGeckoExchangeRate();
-                  })
+              ElevatedButton(child: Text("Test"), onPressed: () {})
             ],
           ),
         ));

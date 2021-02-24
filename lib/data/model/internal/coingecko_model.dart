@@ -13,3 +13,15 @@ class CoinGeckoCoinList {
       _$CoinGeckoCoinListFromJson(json);
   Map<String, dynamic> toJson() => _$CoinGeckoCoinListToJson(this);
 }
+
+@JsonSerializable()
+class CoinGeckoExchangesList {
+  String id;
+  //String name;
+
+  CoinGeckoExchangesList({this.id});
+
+  factory CoinGeckoExchangesList.fromJson(Map<String, dynamic> json) =>
+      _$CoinGeckoExchangesListFromJson(json);
+  Map<String, dynamic> toJson() => _$CoinGeckoExchangesListToJson(this);
+}
