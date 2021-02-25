@@ -18,11 +18,12 @@ class BinanceGetPricesRepositoryImpl implements IBinanceGetPricesRepository {
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
       // log(response.body.toString());
-      List<BinanceGetPricesModel> binanceGetPricesModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetPricesModel>((json) => BinanceGetPricesModel.fromJson(json)).toList();
+      // List<BinanceGetPricesModel> binanceGetPricesModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetPricesModel>((json) => BinanceGetPricesModel.fromJson(json)).toList();
+      // List<BinanceGetPricesModel> binanceGetPricesModel = json.decode(response.body)((json) => BinanceGetPricesModel.fromJson(json)).toList();
       // Map<String, dynamic> body = Map.from(json.decode(response.body));
       // log("prolly error here");
       // BinanceGetPricesModel binanceGetPricesModel = BinanceGetPricesModel.fromJson(body);
-      return binanceGetPricesModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
+      return "binanceGetPricesModel"; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       throw Exception();
     }

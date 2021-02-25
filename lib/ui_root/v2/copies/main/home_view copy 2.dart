@@ -6,16 +6,13 @@ import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.da
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/data/model/internal/coin_data/card/derivative/card_crypto_data.dart';
 import 'package:coinsnap/data/repository/internal/coin_data/card/coinmarketcap_coin_latest.dart';
-import 'package:coinsnap/data/repository/internal/coin_data/chart/crypto_compare.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui_root/drawer/drawer.dart';
+import 'package:coinsnap/ui_root/template/data/chart/overall/chart_cartesian.dart';
 import 'package:coinsnap/ui_root/template/loading.dart';
-import 'package:coinsnap/ui_root/v2/core_widgets/container_panel.dart';
-import 'package:coinsnap/ui_root/v2/core_widgets/syncfusion_chart_cartesian.dart';
 import 'package:coinsnap/ui_root/v2/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/ui_root/v2/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/ui_root/v2/modal_widgets/api_modal.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +39,8 @@ class HomeViewState extends State<HomeView> {
   var firestoreUser = FirebaseFirestore.instance.collection('User');
   var firebaseAuth = FirebaseAuth.instance;
 
+
+
   final storage = new FlutterSecureStorage();
 
   @override
@@ -51,64 +50,19 @@ class HomeViewState extends State<HomeView> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
     return Scaffold(
-      backgroundColor: appBlack,
       bottomNavigationBar: SizedBox(
-        height: 90,
-        child: Container(
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.only(
-          //     topRight: Radius.circular(15),
-          //     topLeft: Radius.circular(15),
-          //   ),
-    //          boxShadow: [                                                               
-    //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),       
-    // ], 
-          // ),
-        
-        
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-            ),
-            child: BottomAppBar(
-              color: Color(0xFF2E374E),
-              child: Column(
-                children: <Widget> [
-                  SizedBox(height: 25),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget> [
-                        IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {}),
-                        // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                        Container(
-                          height: 35,
-                          width: displayWidth(context) * 0.5,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFA9B1D9),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              ApiModalFirst(); /// ### Doesn't seem to be working, TODO: Fix/change when doing modal ### ///
-                            },
-                          )
-                        ),
-                        IconButton(icon: Icon(Icons.more_vert, color: Color(0xFFA9B1D9)), onPressed: () {}),
-                      ]
-                    ),
-                  ),
-                ],
-              ),
-            ),
+        height: 65,
+        child: BottomAppBar(
+          
+          child: Row(
+            children: <Widget> [
+              IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+              IconButton(icon: Icon(Icons.search), onPressed: () {}),
+              IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+            ]
           ),
         ),
       ),
@@ -207,7 +161,6 @@ class _PriceContainerState extends State<PriceContainer> {
   double _heightOffset;
 
   bool _showContainer = false;
-  bool _panelVisibility = false;
   // Widget _widget = Container();
   
   @override
@@ -313,32 +266,6 @@ class _PriceContainerState extends State<PriceContainer> {
                           ],
                         ),
                         Text("\$49,162.71", style: TextStyle(fontSize: 28, color: Colors.white)),
-
-
-                        /// ### Start Expanded Buttons Here ### ///
-
-                        // Column(
-                        //   children: <Widget> [
-                        //     Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: <Widget> [
-                        //         Text("Price", style: TextStyle(fontSize: 20, color: Colors.white)),
-                        //         Text("\$3,616.62"),
-                        //       ],
-                        //     ),
-                        //     Row(
-
-                        //     ),
-                        //     Row(),
-                        //     SizedBox(),
-                        //   ],
-                        // ),
-
-                        ContainerPanel(panelVisibility: _panelVisibility),
-
-                        /// ### End Expanded Buttons Here ### ///
-                        
-
                         Flexible(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -395,7 +322,6 @@ class _PriceContainerState extends State<PriceContainer> {
                     onPressed: () {
                       setState(() {
                         _showContainer = !_showContainer;
-                        _panelVisibility = !_panelVisibility;
                       });
                     },
                     child: Icon(Icons.swap_horiz, size: 36),
@@ -427,15 +353,11 @@ class _ListContainerState extends State<ListContainer> {
   double _heightHideContainer;
   double _heightShowContainer;
 
-  CryptoCompareRepositoryImpl cryptoCompareRepository = CryptoCompareRepositoryImpl();
-  // var hello;
-
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     cardCryptoDataBloc = BlocProvider.of<CardCryptoDataBloc>(context);
     cardCryptoDataBloc.add(FetchCardCryptoDataEvent());
-    // hello = cryptoCompareRepository.getHourlyCryptoCompare();
   }
 
   @override
@@ -473,25 +395,11 @@ class _ListContainerState extends State<ListContainer> {
                   slivers: <Widget> [
                     SliverToBoxAdapter(
                       /// ### Chart section starts here ### ///
-                      
-                      child: FutureBuilder(
-                        future: cryptoCompareRepository.getHourlyCryptoCompare(),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return CircularProgressIndicator();
-                          } else {
-                            return SizedBox(
-                              height: displayHeight(context) * 0.27,
-                              child: ChartOverall(priceList: snapshot.data),
-                            );
-                          }
-                        },
-                      ),
-
                       // child: SizedBox(
                       //   height: displayHeight(context) * 0.27,
                       //   child: ChartOverall(),
-                    ), /// ### Chart section ends here ### ///
+                      // ), /// ### Chart section ends here ### ///
+                    ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                           return CardListTile(coinListMap: state.coinListMap, index: index);

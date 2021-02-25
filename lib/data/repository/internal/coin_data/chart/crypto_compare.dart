@@ -12,6 +12,7 @@ class CryptoCompareRepositoryImpl implements ICryptoCompareRepository {
 
   @override
   Future getHourlyCryptoCompare() async {
+    
     String requestUrl = 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=24';
 
     var response = await http.get(requestUrl);
@@ -20,7 +21,8 @@ class CryptoCompareRepositoryImpl implements ICryptoCompareRepository {
       CryptoCompareModel cryptoCompareModel = CryptoCompareModel.fromJson(body);
       CryptoCompareHourlyModel cryptoCompareModelChart = CryptoCompareHourlyModel.fromJsonToChart(body);
       log("CryptoCompareModel is: " + cryptoCompareModel.data.toString());
-      log("CryptoCompareModelChart is " + cryptoCompareModelChart.priceClose.priceClose.toString());
+      // log("CryptoCompareModelChart is " + cryptoCompareModelChart.priceClose.priceClose.toString());
+      // log("CryptoCompareModelChart timestamp is " + cryptoCompareModelChart.priceClose.timestamp.toString());
       return cryptoCompareModelChart;
       // PortfolioBuilderModel portfolioBuilderModel = PortfolioBuilderModel.fromJson(body);
       // return portfolioBuilderModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
