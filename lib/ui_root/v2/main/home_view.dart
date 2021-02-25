@@ -119,7 +119,6 @@ class DashboardWithApi extends StatelessWidget {
                 child: Column(
                   children: <Widget> [
                     PriceContainer(context: context,),
-                    ListContainer(),
                   ],
                 ),
               ),
@@ -144,8 +143,11 @@ class PriceContainer extends StatefulWidget {
 
 class _PriceContainerState extends State<PriceContainer> {
 
-  double _height;
-  double _heightContainer;
+  double _heightHideContainer;
+  double _heightShowContainer;
+  double _heightOffset;
+
+  bool _showContainer = false;
   // Widget _widget = Container();
   
   @override
@@ -157,148 +159,176 @@ class _PriceContainerState extends State<PriceContainer> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _height = displayHeight(widget.context) * 0.2;
-    _heightContainer = displayHeight(widget.context) * 0.312;
+    _heightHideContainer = displayHeight(widget.context) * 0.2;
+    _heightShowContainer = displayHeight(widget.context) * 0.4;
+    _heightOffset = displayHeight(widget.context) * 0.12;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container( /// ### This is the container ### ///
-      height: _heightContainer,
-      padding: EdgeInsets.all(30),
-      child: Stack(
-        children: <Widget> [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment(-0.9, -1.3),
-                end: Alignment(1.25, 1.25),
-                colors: [
-                  Color(0xFFC21EDB),
-                  Color(0xFF0575FF),
-                  Color(0xFF0AE6FF),
-                ], stops: [
-                  0.0,
-                  0.63,
-                  1.0
-                ],
-              ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Padding(
-              padding:  EdgeInsets.all(2.75),
-              child: AnimatedContainer(
-                height: _height,
-                duration: Duration(seconds: 2),
+    return Column(
+      children: <Widget> [
+        AnimatedContainer( /// ### This is the container ### ///
+          duration: Duration(seconds: 2),
+          height: _showContainer ? (_heightShowContainer + _heightOffset) : (_heightHideContainer + _heightOffset),
+          padding: EdgeInsets.all(30),
+          child: Stack(
+            children: <Widget> [
+              Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment(-1.25, -1.15),
-                    end: Alignment(0.85, 1.1),
+                    begin: Alignment(-0.9, -1.3),
+                    end: Alignment(1.25, 1.25),
                     colors: [
-                      Color(0xFF240C37),
-                      Color(0xFF061330),
-                      // Colors.white,
+                      Color(0xFFC21EDB),
+                      Color(0xFF0575FF),
+                      Color(0xFF0AE6FF),
+                    ], stops: [
+                      0.0,
+                      0.63,
+                      1.0
                     ],
                   ),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                /// ### This is where the inner container starts ### ///
-                // child: Center(
-                //   child: Text('Enter further widgets here', style: TextStyle(color: Colors.white)),
-                // ),
-                child: Column(
-                  /// ### Start container columns here ### ///
-                  children: <Widget> [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0, displayHeight(context) * 0.025, 0, 0),
-                      child: Center(
-                        child: Container(
-                          height: 31.43,
-                          width: 36.23,
-                          child: Column(
-                            children: <Widget> [
-                              Expanded(
-                                child: Transform.rotate(
-                                  angle: -5 * math.pi / 180,
-                                  child: FittedBox(
-                                    fit: BoxFit.fill,
-                                    child: Icon(CustomIcon.IconTest.wallet_tilt, color: Colors.white, )
-                                  ),
-                                ),
-                              ),
-                            
-                            ],
-                          ),
-                        ),
-                      )
+                child: Padding(
+                  padding:  EdgeInsets.all(2.75),
+                  child: AnimatedContainer(
+                    height: _showContainer ? _heightShowContainer : _heightHideContainer,
+                    duration: Duration(seconds: 2),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(-1.25, -1.15),
+                        end: Alignment(0.85, 1.1),
+                        colors: [
+                          Color(0xFF240C37),
+                          Color(0xFF061330),
+                          // Colors.white,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    Row(
-                      /// TODO: Alignment (padding?)
+                    /// ### This is where the inner container starts ### ///
+                    // child: Center(
+                    //   child: Text('Enter further widgets here', style: TextStyle(color: Colors.white)),
+                    // ),
+                    child: Column(
+                      /// ### Start container columns here ### ///
                       children: <Widget> [
                         Container(
-                          padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 10, 0, 0),
-                          child: Row( /// ### Start Bitcoin total value line here ### ///
-                            children: <Widget> [
-                              Icon(CryptoFontIcons.BTC, color: Colors.white),
-                              Text("0.01980000", style: TextStyle(fontSize: 12, color: Colors.white)),
-                            ],
-                          ), /// ### End Bitcoin total value line here ### ///
-                        )
-                      ],
-                    ),
-                    Text("\$49,162.71", style: TextStyle(fontSize: 28, color: Colors.white)),
-                    Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget> [
-                          // Row(
-                          //   children: <Widget> [ /// ### Start bottom right corner icons ### ///
-                              
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget> [
-                                Icon(Icons.pie_chart, color: Colors.white),
-                                Icon(Icons.stacked_line_chart, color: Colors.green),
-                              ]
-                            )
+                          padding: EdgeInsets.fromLTRB(0, displayHeight(context) * 0.025, 0, 0),
+                          child: Center(
+                            child: Container(
+                              height: 31.43,
+                              width: 36.23,
+                              child: Column(
+                                children: <Widget> [
+                                  Expanded(
+                                    child: Transform.rotate(
+                                      angle: -5 * math.pi / 180,
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Icon(CustomIcon.IconTest.wallet_tilt, color: Colors.white, )
+                                      ),
+                                    ),
+                                  ),
+                                
+                                ],
+                              ),
+                            ),
                           )
-                        ]
-                      )
-                    ),
-                    /// ####### ///
-                  ] /// ### End container columns here ### ///
-                )
-                /// ### This is where the inner container ends ### ///
+                        ),
+                        Row(
+                          /// TODO: Alignment (padding?)
+                          children: <Widget> [
+                            Container(
+                              padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 10, 0, 0),
+                              child: Row( /// ### Start Bitcoin total value line here ### ///
+                                children: <Widget> [
+                                  Icon(CryptoFontIcons.BTC, color: Colors.white),
+                                  Text("0.01980000", style: TextStyle(fontSize: 12, color: Colors.white)),
+                                ],
+                              ), /// ### End Bitcoin total value line here ### ///
+                            )
+                          ],
+                        ),
+                        Text("\$49,162.71", style: TextStyle(fontSize: 28, color: Colors.white)),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget> [
+                              // Row(
+                              //   children: <Widget> [ /// ### Start bottom right corner icons ### ///
+                                  
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget> [
+                                    Icon(Icons.pie_chart, color: Colors.white),
+                                    Icon(Icons.stacked_line_chart, color: Colors.green),
+                                  ]
+                                )
+                              )
+                            ]
+                          )
+                        ),
+                        /// ####### ///
+                      ] /// ### End container columns here ### ///
+                    )
+                    /// ### This is where the inner container ends ### ///
+                  ),
+                ),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            // child: FractionalTranslation(
-            //   translation: Offset(0, .5),
-              child: FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    _height = displayHeight(context) * 0.40;
-                    _heightContainer = displayHeight(context) * 0.512;
-                    // _widget = ContainerSlider();
-                  });
-                },
-                child: Icon(Icons.swap_horiz, size: 36),
-                backgroundColor: Color(0xFF25365b),
-              )
-            ),
-          // ),
-        ],
-      ),
+              // AnimatedContainer(
+              //   duration: Duration(seconds: 2),
+              //   child: Align(
+              //     alignment: Alignment.bottomCenter,
+              //     // child: FractionalTranslation(
+              //     //   translation: Offset(0, .5),
+              //     child: FloatingActionButton(
+              //       onPressed: () {
+              //         setState(() {
+              //           _showContainer = !_showContainer;
+              //           // _height = displayHeight(context) * 0.40;
+              //           // _heightContainer = displayHeight(context) * 0.512;
+              //           // _widget = ContainerSlider();
+              //         });
+              //       },
+              //       child: Icon(Icons.swap_horiz, size: 36),
+              //       backgroundColor: Color(0xFF25365b),
+              //     )
+              //   ),
+              // )
+              AnimatedContainer(
+                height: _showContainer ? (_heightShowContainer + _heightOffset) : (_heightHideContainer + _heightOffset),
+                duration: Duration(seconds: 2),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        _showContainer = !_showContainer;
+                      });
+                    },
+                    child: Icon(Icons.swap_horiz, size: 36),
+                    backgroundColor: Color(0xFF25365b),
+                  )
+                ),
+              ),
+            ]
+          )
+        ),
+      ListContainer(showContainer: _showContainer),
+      ]
     );
   }
 }
 
 class ListContainer extends StatefulWidget {
-  ListContainer({Key key}) : super(key: key);
+  ListContainer({Key key, this.showContainer}) : super(key: key);
+  final bool showContainer;
+
   @override
   _ListContainerState createState() => _ListContainerState();
 }
@@ -306,6 +336,9 @@ class ListContainer extends StatefulWidget {
 class _ListContainerState extends State<ListContainer> {
 
   CardCryptoDataBloc cardCryptoDataBloc;
+
+  double _heightHideContainer;
+  double _heightShowContainer;
 
   @override
   void didChangeDependencies() async {
@@ -316,8 +349,11 @@ class _ListContainerState extends State<ListContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: displayHeight(context) * 0.53,
+    _heightHideContainer = displayHeight(context) * 0.53;
+    _heightShowContainer = displayHeight(context) * 0.3;
+    return AnimatedContainer(
+      duration: Duration(seconds: 2),
+      height: widget.showContainer ? _heightShowContainer : _heightHideContainer,
       child: BlocListener<CardCryptoDataBloc, CardCryptoDataState>(
         listener: (context, state) {
           if (state is CardCryptoDataErrorState) {
@@ -334,23 +370,35 @@ class _ListContainerState extends State<ListContainer> {
               return buildLoadingTemplate();
             } else if (state is CardCryptoDataLoadedState) {
               log("CardCryptoDataLoadedState");
-              return CustomScrollView(
-                slivers: <Widget> [
-                  SliverToBoxAdapter(
-                    /// ### Chart section starts here ### ///
-                    // child: SizedBox(
-                    //   height: displayHeight(context) * 0.27,
-                    //   child: ChartOverall(),
-                    // ), /// ### Chart section ends here ### ///
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                        return CardListTile(coinListMap: state.coinListMap, index: index);
-                      },
-                      childCount: state.coinListMap.data.length,
+              return Container(
+                // height: widget.showContainer ? displayHeight(context) * 0.4 : displayHeight(context) 0.2,
+                // height: widget.showContainer ? (displayHeight(context) * 0.4) : (displayHeight(context) * 0.2),
+
+                /// ### Commenting out customscrollview since the chart is no longer here         ### ///
+                /// ### The issue is I can't seem to constrain? the height and dynamically adjust ### ///
+                /// ### But I can with normal ListView.builder                                    ### ///
+                
+                child: CustomScrollView(
+                  slivers: <Widget> [
+                    SliverToBoxAdapter(
+                      /// ### Chart section starts here ### ///
+                      // child: SizedBox(
+                      //   height: displayHeight(context) * 0.27,
+                      //   child: ChartOverall(),
+                      // ), /// ### Chart section ends here ### ///
                     ),
-                  ),
-                ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                          return CardListTile(coinListMap: state.coinListMap, index: index);
+                        },
+                        childCount: state.coinListMap.data.length,
+                      ),
+                    ),
+                  ],
+                )
+
+                /// ### Commented out customscrollview above ### ///
+
               );
             } else if (state is CardCryptoDataErrorState) {
               log("CardCryptoDataErrorState");
