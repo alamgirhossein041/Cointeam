@@ -6,8 +6,8 @@ part of 'coingecko_api.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-class _ApiClient implements ApiClient {
-  _ApiClient(this._dio, {this.baseUrl}) {
+class _CoinGeckoApiClient implements CoinGeckoApiClient {
+  _CoinGeckoApiClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
     baseUrl ??= 'https://api.coingecko.com/api/v3';
   }
