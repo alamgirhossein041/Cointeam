@@ -21,10 +21,13 @@ import 'package:coinsnap/test/testjson/test_crypto_json.dart';
 import 'package:coinsnap/ui_root/pages/builder/builder.dart';
 import 'package:coinsnap/ui_root/pages/builder/test.dart';
 import 'package:coinsnap/ui_root/pages/coin_view/coin_view.dart';
-import 'package:coinsnap/ui_root/template/home_old/home_view.dart';
 import 'package:coinsnap/ui_root/template/home/home_view_real.dart';
 import 'package:coinsnap/ui_root/pages/portfolio.dart';
 import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
+import 'package:coinsnap/ui_root/v2/authentication/authentication.dart';
+import 'package:coinsnap/ui_root/v2/main/home_view.dart';
+import 'package:coinsnap/ui_root/v2/welcome/first.dart';
+import 'package:coinsnap/ui_root/v2/welcome/second.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'ui_root/authentication.dart';
@@ -66,7 +69,6 @@ class MyApp extends StatelessWidget {
           create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl()),
         ),
         BlocProvider<CardCryptoDataBloc> (
-          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
           create: (context) => CardCryptoDataBloc(cardCryptoDataRepository: CoinMarketCapCoinLatestRepositoryImpl()),
         ),
         // BlocProvider<BlocC>(
@@ -75,12 +77,10 @@ class MyApp extends StatelessWidget {
       ],
 
       child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/home',
+        initialRoute: '/hometest',
         routes: {
-          '/home': (context) => HomeViewReal(),
+          '/home': (context) => First(),
+          '/second': (context) => Second(),
           // '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
           // '/home': (context) => TestView(),
           // '/home': (context) => Authentication(),
@@ -92,7 +92,9 @@ class MyApp extends StatelessWidget {
           // ),
           '/homeviewreal': (context) => HomeViewReal(),
           '/coinview': (context) => CoinView(),
+          '/authentication': (context) => Authentication(),
           // '/portfolio': (context) => PriceContai
+          '/hometest': (context) => HomeView(),
         }
       ),
     );

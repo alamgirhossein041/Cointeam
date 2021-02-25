@@ -9,21 +9,21 @@ import 'template/home_old/home_view.dart';
 
 import 'dart:async';
 
-class Authentication extends StatefulWidget {
-  Authentication({Key key}) : super(key: key);
+class AuthenticationV1 extends StatefulWidget {
+  AuthenticationV1({Key key}) : super(key: key);
 
   @override
-  _AuthenticationState createState() => _AuthenticationState();
+  _AuthenticationV1State createState() => _AuthenticationV1State();
 }
 
-class _AuthenticationState extends State<Authentication> {
+class _AuthenticationV1State extends State<AuthenticationV1> {
   TextEditingController _emailField = TextEditingController();
   TextEditingController _passwordField = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    CheckInternet().checkConnection(context);
+    CheckInternetV1().checkConnection(context);
   }
   
   @override
@@ -129,7 +129,7 @@ class _AuthenticationState extends State<Authentication> {
   // }
 }
 
-class CheckInternet {
+class CheckInternetV1 {
 
   StreamSubscription<DataConnectionStatus> listener;
   var internetStatus = "Unknown";

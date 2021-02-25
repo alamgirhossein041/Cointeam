@@ -56,7 +56,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           if(coins.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
-            try{
+            try {
               double divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
               var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
