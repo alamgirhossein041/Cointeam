@@ -44,13 +44,6 @@ dependencies:
   json_annotation: any
   built_value: ^7.1.0
 
-  # Retrofit for Dart
-  retrofit: any
-  logger: any
-  dio: any
-  json_annotation: any
-  built_value: ^7.1.0
-
 dev_dependencies:
   hive_generator: ^0.5.1
   flutter_test:
