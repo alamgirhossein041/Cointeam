@@ -38,6 +38,11 @@ dependencies:
   provider: ^4.3.3
   flutter_secure_storage: ^3.3.5
   google_fonts: ^1.1.2
+  retrofit: any
+  logger: any
+  dio: any
+  json_annotation: any
+  built_value: ^7.1.0
 
 dev_dependencies:
   hive_generator: ^0.5.1
