@@ -131,6 +131,7 @@ class CryptoCompareHourlyModel {
           log("hello world");
           _priceClose.add(double.parse(v['close'].toString()));
           _timestamp.add((v['time'].toString()));
+          salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));
 
           /// ### We are making the timestamp conversion here for now ### ///
           ///     TODO: Decouple the conversion, make a new method    ### ///

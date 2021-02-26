@@ -5,8 +5,10 @@ import 'package:coinsnap/bloc/internal/coin_data/card/derivative/card_crypto_dat
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/data/model/internal/coin_data/card/derivative/card_crypto_data.dart';
+import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
 import 'package:coinsnap/data/repository/internal/coin_data/card/coinmarketcap_coin_latest.dart';
 import 'package:coinsnap/data/repository/internal/coin_data/chart/crypto_compare.dart';
+import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
 import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:coinsnap/ui_root/drawer/drawer.dart';
@@ -416,10 +418,13 @@ class _PriceContainerState extends State<PriceContainer> {
                         //   ],
                         // ),
 
-                        ContainerPanel(panelVisibility: _panelVisibility),
+                        /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
+                        // BlocProvider<GetTotalValueBloc>(
+                          // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+                          ContainerPanel(panelVisibility: _panelVisibility),
+                        // ),
 
                         /// ### End Expanded Buttons Here ### ///
-                        
 
                         Flexible(
                           child: Column(
@@ -427,7 +432,6 @@ class _PriceContainerState extends State<PriceContainer> {
                             children: <Widget> [
                               // Row(
                               //   children: <Widget> [ /// ### Start bottom right corner icons ### ///
-                                  
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Row(

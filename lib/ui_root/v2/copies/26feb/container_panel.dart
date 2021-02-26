@@ -1,11 +1,12 @@
 import 'package:coinsnap/resource/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:menu_button/menu_button.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class ContainerPanel extends StatefulWidget {
   ContainerPanel({Key key, this.panelVisibility}) : super(key: key);
-  final bool panelVisibility;
+  bool panelVisibility;
 
   @override
   _ContainerPanelState createState() => _ContainerPanelState();
@@ -54,6 +55,7 @@ class _ContainerPanelState extends State<ContainerPanel> {
                       showTicks: false,
                       showLabels: false,
                       enableTooltip: true,
+                      // minorTicksPerInterval: 1,
                       onChanged: (dynamic value) {
                         setState(() {
                           _value = value;
@@ -68,6 +70,21 @@ class _ContainerPanelState extends State<ContainerPanel> {
                 child: Container(
                   height: displayHeight(context) * 0.035,
                   width: displayWidth(context) * 0.09,
+                  // child: TextFormField(
+                  //   /// password
+                  //   // controller: _passwordField,
+                  //   decoration: InputDecoration(
+                  //     /// hintText: "No hints",
+                  //     hintStyle: TextStyle(
+                  //       color: Colors.white,
+                  //     ),
+                  //     labelText: "15.5%",
+                  //     labelStyle: TextStyle(
+                  //       color: Colors.white,
+                  //     )
+                  //   ),
+                  //   obscureText: true,
+                  // ),
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(

@@ -15,6 +15,11 @@ import 'dart:developer';
 import 'package:coinsnap/data/repository/unauth/prices/ftx_get_prices.dart';
 // import 'package:meta/meta.dart';
 
+
+/// @JsonSerializable(nullable: true)
+/// 
+/// https://stackoverflow.com/questions/53962129/how-to-check-for-null-when-mapping-nested-json
+
 class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
   
   GetTotalValueBloc({this.binanceGetAllRepository, this.binanceGetPricesRepository}) : super(GetTotalValueInitialState());
@@ -34,14 +39,30 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
       double usdSpecial = 0.0;
+      /// ### Please evaluate why we need these and document ### ///
+
       yield GetTotalValueLoadingState();
       try {
         try{
 
-        /// ###### Binance ######
+        /// ### Binance ### ///
+        /// 
+          // log("Hello World0");
           List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
+
+          // log("fromIterable = " + responses[1].toString());
+          // log("the next one = " + responses[0].toString());
           binanceGetPricesMap = Map.fromIterable(responses[1], key: (e) => e.symbol, value: (e) => e.price);
+
+          // log("Hello World222");
           binanceGetAllModel = responses[0];
+          // log("Hello World1");
+          for(int i=0;i<binanceGetAllModel.length;i++) {
+            // log(binanceGetAllModel[i].name.toString()); 
+            // log(binanceGetAllModel[i].free.toString());
+            // log(binanceGetAllModel[i].locked.toString());
+          }
+          // log("Hello World2");
           // log(responses.toString());
           // log("@@@@@@@@@@" + binanceGetAllModel.toString());
         } catch (e) {
@@ -57,23 +78,23 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       var btcPrice = binanceGetPricesMap['BTCUSDT'];
       for(BinanceGetAllModel coins in binanceGetAllModel) {
         if(coins.coin == 'BTC') {
-          log("Line 58 BTC " + coins.coin.toString());
+          // log("Line 58 BTC " + coins.coin.toString());
           btcSpecial += coins.locked;
           btcSpecial += coins.free;
           // btcSpecial += coins.withdrawing; // We must not do withdrawing because sometimes the withdraw can be complete yet still count as 'withdrawing' within Binance
           totalValue += btcSpecial;
-          log(totalValue.toString());
-          log((btcSpecial * btcPrice).toString());
+          // log(totalValue.toString());
+          // log((btcSpecial * btcPrice).toString());
           // log("AHJOFIDJSF");
         } else if (coins.coin == 'USDT') {
-          log("Line 67 get_total_value_bloc, Coin currently iterating is: " + coins.coin);
+          // log("Line 67 get_total_value_bloc, Coin currently iterating is: " + coins.coin);
           usdSpecial += coins.locked;
           usdSpecial += coins.free;
           // usdSpecial += coins.withdrawing;
         } else {
 
 
-          log("Line 74 get_total_value_bloc, Coin currently iterating is: ");
+          // log("Line 74 get_total_value_bloc, Coin currently iterating is: ");
 
           // what do we have
           // coins.coin which could be ETH
@@ -89,7 +110,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
             totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.free;
             // totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.withdrawing;
           } catch (e) {
-            log(coins.coin + " does not have a BTC pair");
+            // log(coins.coin + " does not have a BTC pair");
           }
         }
       }

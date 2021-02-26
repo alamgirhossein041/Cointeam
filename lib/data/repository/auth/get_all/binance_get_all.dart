@@ -40,16 +40,16 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
       // log("asdf");
       /// Remove coins from list that are empty
-      // var toRemove = [];
-      // binanceGetAllModel.forEach((v) {
-      //   if(v.free == 0) {
-      //     toRemove.add(v);
-      //   }
-      // });
+      var toRemove = [];
+      binanceGetAllModel.forEach((v) {
+        if(v.name == null) {
+          toRemove.add(v);
+        }
+      });
       // log("`12123`");
-      // binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
+      binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
       // log("Something is wrong");
-      log(binanceGetAllModel.toString());
+      // log(binanceGetAllModel.toString());
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       log("excepted");
