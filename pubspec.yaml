@@ -48,12 +48,6 @@ dev_dependencies:
   hive_generator: ^0.5.1
   flutter_test:
     sdk: flutter
-  
-  # Retrofit for Dart
-  retrofit_generator: any
-  build_runner: any
-  json_serializable: any
-  built_value_generator: ^7.1.0
 
 flutter:
   uses-material-design: true
