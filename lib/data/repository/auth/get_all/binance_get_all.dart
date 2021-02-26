@@ -42,14 +42,14 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       /// Remove coins from list that are empty
       var toRemove = [];
       binanceGetAllModel.forEach((v) {
-        if(v.free == 0) {
+        if(v.name == null) {
           toRemove.add(v);
         }
       });
       // log("`12123`");
       binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
       // log("Something is wrong");
-      log(binanceGetAllModel.toString());
+      // log(binanceGetAllModel.toString());
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       log("excepted");

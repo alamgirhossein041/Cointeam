@@ -30,23 +30,23 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
       this.trading,
       this.networkList});
 
-factory BinanceGetAllModel.fromJson(Map<String, dynamic> json) {
-    return BinanceGetAllModel(
-      coin: json['coin'] as String,
-      depositAllEnable: json['depositAllEnable'] as bool,
-      withdrawAllEnable: json['withdrawAllEnable'] as bool,
-      name: json['name'] as String,
-      free: double.parse(json['free']),
-      locked: double.parse(json['locked']),
-      freeze: double.parse(json['freeze']),
-      withdrawing: double.parse(json['withdrawing']),
-      ipoing: double.parse(json['ipoing']),
-      ipoable: double.parse(json['ipoable']),
-      storage: double.parse(json['storage']),
-      isLegalMoney: json['isLegalMoney'] as bool,
-      trading: json['trading'] as bool,
-      networkList: json['networkList'] as List,
-    );
+BinanceGetAllModel.fromJson(Map<String, dynamic> json) {
+    if(double.parse(json['free']) > 0 || double.parse(json['locked']) > 0) {
+      coin = json['coin'].toString();
+      depositAllEnable = json['depositAllEnable'];
+      withdrawAllEnable = json['withdrawAllEnable'];
+      name = json['name'].toString();
+      free = double.parse(json['free']);
+      locked = double.parse(json['locked']);
+      freeze = double.parse(json['freeze']);
+      withdrawing = double.parse(json['withdrawing']);
+      ipoing = double.parse(json['ipoing']);
+      ipoable = double.parse(json['ipoable']);
+      storage = double.parse(json['storage']);
+      isLegalMoney = json['isLegalMoney'];
+      trading = json['trading'];
+      networkList = json['networkList'].toList();
+    }
   }
 
   Map<String, dynamic> toJson() {
