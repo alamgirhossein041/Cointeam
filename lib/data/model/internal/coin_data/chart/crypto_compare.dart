@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
 class CryptoCompareModel {
 	String response;
 	String message;
@@ -85,6 +87,22 @@ class DataList {
   }
 }
 
+/// ############################################################################ ///
+
+// class PriceClose {
+//   List<SalesData> salesData;
+
+//   PriceClose({this.salesData});
+
+//   factory PriceClose.priceClose(List<double> _priceClose, List<int> _timestamp) {
+//     return PriceClose(
+      
+//       salesData: _priceClose,
+//       timestamp: _timestamp,
+//     );
+//   }
+// }
+
 class PriceClose {
   List<double> priceClose;
 
@@ -99,17 +117,35 @@ class PriceClose {
 
 class CryptoCompareHourlyModel {
 
-  PriceClose priceClose;
-  CryptoCompareHourlyModel({this.priceClose});
+/// ########################################################################### ///
+/// Returns an array of prices - do not inquire further ///
+  // PriceClose priceClose;
+  List<SalesData> salesDataList = [];
+  // CryptoCompareHourlyModel({this.priceClose});
   CryptoCompareHourlyModel.fromJsonToChart(Map<String, dynamic> json) {
     try {
       if (json['Data']['Data'] != null) {
         List<double> _priceClose = [];
+        List<String> _timestamp = [];
         json['Data']['Data'].forEach((v) {
           log("hello world");
           _priceClose.add(double.parse(v['close'].toString()));
+          _timestamp.add((v['time'].toString()));
+          salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));
+
+          /// ### We are making the timestamp conversion here for now ### ///
+          ///     TODO: Decouple the conversion, make a new method    ### ///
+          ///                                                             /// 
+          /// salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));
+          
+          // final localizations = MaterialLocalizations.of(context);
+          // salesDataList.add(SalesData(time: MaterialLocalizations.formatTimeOfDay(TimeOfDay.fromDateTime((v['time'] * 1000)), alwaysUse24HourFormat: false), price: v['close']));
+          // salesDataList.add(SalesData(time: );
+          
         });
-        priceClose = PriceClose.priceClose(_priceClose);
+        /// We really need to think about stuff
+        // priceClose = PriceClose.priceClose(_priceClose, _timestamp);
+        
       }
     } catch (e) {
       log("Error in crypto_compare.fromJsonToChart");
@@ -117,6 +153,27 @@ class CryptoCompareHourlyModel {
       return;
     }
   }
+/// ########################################################################### ///
+
+}
+
+class SalesData {
+  SalesData({this.time, this.price});
+  /// each time interval does separate API calls 30min ticks?
+  String time;
+  double price;
+
+  // factory SalesData.priceClose(int _timestamp, double _priceClose) {
+  //   return SalesData(
+
+  //     /// ### We do our timestamp Axis conversion here ### ///
+  //     ///     Also probably our price conversion here      ///
+  //     ///                                                  ///
+  //     time: null,
+  //     // time: _timestamp.toString(),
+  //     price: null,
+  //   );
+  // }
 }
 
 
