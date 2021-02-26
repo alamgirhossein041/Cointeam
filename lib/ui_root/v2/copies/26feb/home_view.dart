@@ -93,99 +93,10 @@ class HomeViewState extends State<HomeView> {
                         
                           /// /// ApiModalFirst();  /// ///
                           
-                        IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                              // title: Text("Hello"),
-                              // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
+                        // IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {ApiModalFirst();}),
 
-                              child: Container(
-                                height: displayHeight(context) * 0.70,
-                                width: displayWidth(context),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment(-1.08, -1.08),
-                                    end: Alignment(1, 1.06),
-                                    colors: [
-                                      Color(0xFF443E48),
-                                      Color(0xFF1B1F2D),
-                                    ],
-                                  ),
-                                ),
-
-                                child: Column(
-                                  children: <Widget> [
-                                    SizedBox(height: displayHeight(context) * 0.02),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: <Widget> [
-                                        Container(width: 58),
-                                        Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                                        // Container(width: displayWidth(context) * 0.4,
-                                          Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget> [
-                                            Text("+50 ", style: TextStyle(color: Colors.white)),
-                                            Icon(Icons.av_timer, color: Colors.white),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: displayHeight(context) * 0.1),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget> [
-                                        Text("Connect ", style: TextStyle(color: Colors.white)),
-                                        Container(
-                                          height: displayHeight(context) * 0.07,
-                                          width: displayWidth(context) * 0.18,
-                                            child: TextField(
-                                            textAlign: TextAlign.center,
-                                            decoration: InputDecoration(
-                                              labelText: 'Binance',
-                                              labelStyle: TextStyle(color: Colors.white),
-                                              // floatingLabelBehavior: FloatingLabelBehavior.always,
-                                              // filled: true,
-                                              // fillColor: Color(0xFF126FFF),
-                                              enabledBorder: UnderlineInputBorder(      
-                                                borderSide: BorderSide(color: Color(0X3BA6D6)),   
-                                              ),  
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(),
-                                    Row(),
-                                    Row(),
-                                  ],
-                                ),
-                              ),
-                              // content: Builder(
-                              //   builder: (context) {
-                              //     // var width = displayWidth(context) * 0.2;
-
-                              //     return Container(
-                              //       height: displayHeight(context) * 0.65,
-                              //       width: displayWidth(context),
-                              //       // decoration: BoxDecoration(
-                              //       //   color:
-                              //       // ),
-                              //       child: Center(
-                              //         child: Text("Hello"),
-                              //       ),
-                              //     );
-                              //   }
-                              // )
-
-
-                            ),
-                          );
-                        }),
-
-                        IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {setState(() {});}),
-                      ],
+                        IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {}),
+                      ]
                     ),
                   ),
                 ],

@@ -1,3 +1,4 @@
+import 'package:coinsnap/resource/colors_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:coinsnap/data/model/internal/coin_data/chart/crypto_compare.dart';
@@ -20,6 +21,7 @@ class _ChartOverallState extends State<ChartOverall> {
         child: Container(
           child: SfCartesianChart(
             // Initialize category axis
+            backgroundColor: appBlack,
             primaryXAxis: CategoryAxis(),
 
             series: <LineSeries<SalesData, String>>[
@@ -33,7 +35,7 @@ class _ChartOverallState extends State<ChartOverall> {
                 xValueMapper: ( price, _) => price.time,
                 yValueMapper: ( price, _) => price.price,
                 // Enable data label
-                dataLabelSettings: DataLabelSettings(isVisible: true)
+                dataLabelSettings: DataLabelSettings(isVisible: false, color: Colors.white)
               ),
             ],
           ),

@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
 class CryptoCompareModel {
 	String response;
 	String message;
@@ -129,7 +131,15 @@ class CryptoCompareHourlyModel {
           log("hello world");
           _priceClose.add(double.parse(v['close'].toString()));
           _timestamp.add((v['time'].toString()));
-          salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));
+
+          /// ### We are making the timestamp conversion here for now ### ///
+          ///     TODO: Decouple the conversion, make a new method    ### ///
+          ///                                                             /// 
+          /// salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));
+          
+          // final localizations = MaterialLocalizations.of(context);
+          // salesDataList.add(SalesData(time: MaterialLocalizations.formatTimeOfDay(TimeOfDay.fromDateTime((v['time'] * 1000)), alwaysUse24HourFormat: false), price: v['close']));
+          // salesDataList.add(SalesData(time: );
           
         });
         /// We really need to think about stuff
@@ -152,12 +162,17 @@ class SalesData {
   String time;
   double price;
 
-  factory SalesData.priceClose(int _timestamp, double _priceClose) {
-    return SalesData(
-      time: _timestamp.toString(),
-      price: _priceClose,
-    );
-  }
+  // factory SalesData.priceClose(int _timestamp, double _priceClose) {
+  //   return SalesData(
+
+  //     /// ### We do our timestamp Axis conversion here ### ///
+  //     ///     Also probably our price conversion here      ///
+  //     ///                                                  ///
+  //     time: null,
+  //     // time: _timestamp.toString(),
+  //     price: null,
+  //   );
+  // }
 }
 
 
