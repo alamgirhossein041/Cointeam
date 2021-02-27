@@ -42,6 +42,9 @@ class HomeViewState extends State<HomeView> {
 
   final storage = new FlutterSecureStorage();
 
+  /// custom padding in pixels, because Dialog comes attached with a default FAT padding :)
+  double modalEdgePadding = 16.0;
+
   @override
   void initState() {
     /// TODO: stuff
@@ -53,13 +56,14 @@ class HomeViewState extends State<HomeView> {
     super.didChangeDependencies();
   }
 
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
     return Scaffold(
       backgroundColor: appBlack,
       bottomNavigationBar: SizedBox(
-        height: 90,
+        height: kBottomNavigationBarHeight,
         child: Container( /// ### This is the bottomappbar ### ///
           // decoration: BoxDecoration(
           //   borderRadius: BorderRadius.only(
@@ -81,7 +85,7 @@ class HomeViewState extends State<HomeView> {
               color: Color(0xFF2E374E),
               child: Column(
                 children: <Widget> [
-                  SizedBox(height: 25),
+                  SizedBox(height: 5),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,71 +99,14 @@ class HomeViewState extends State<HomeView> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) => Dialog(
+                              /// Manual padding override because Dialog's default padding is FAT
+                              insetPadding: EdgeInsets.all(modalEdgePadding),
                               // title: Text("Hello"),
                               // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
+                              
+                              /// Connect API tutorial modal
+                              child: ModalPopup(),
 
-                              child: Container(
-                                height: displayHeight(context) * 0.70,
-                                width: displayWidth(context),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment(-1.08, -1.08),
-                                    end: Alignment(1, 1.06),
-                                    colors: [
-                                      Color(0xFF443E48),
-                                      Color(0xFF1B1F2D),
-                                    ],
-                                  ),
-                                ),
-
-                                child: Column(
-                                  children: <Widget> [
-                                    SizedBox(height: displayHeight(context) * 0.02),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: <Widget> [
-                                        Container(width: 58),
-                                        Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                                        // Container(width: displayWidth(context) * 0.4,
-                                          Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget> [
-                                            Text("+50 ", style: TextStyle(color: Colors.white)),
-                                            Icon(Icons.av_timer, color: Colors.white),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: displayHeight(context) * 0.1),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget> [
-                                        Text("Connect ", style: TextStyle(color: Colors.white)),
-                                        Container(
-                                          height: displayHeight(context) * 0.07,
-                                          width: displayWidth(context) * 0.18,
-                                            child: TextField(
-                                            textAlign: TextAlign.center,
-                                            decoration: InputDecoration(
-                                              labelText: 'Binance',
-                                              labelStyle: TextStyle(color: Colors.white),
-                                              // floatingLabelBehavior: FloatingLabelBehavior.always,
-                                              // filled: true,
-                                              // fillColor: Color(0xFF126FFF),
-                                              enabledBorder: UnderlineInputBorder(      
-                                                borderSide: BorderSide(color: Color(0X3BA6D6)),   
-                                              ),  
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(),
-                                    Row(),
-                                    Row(),
-                                  ],
-                                ),
-                              ),
                               // content: Builder(
                               //   builder: (context) {
                               //     // var width = displayWidth(context) * 0.2;
@@ -222,7 +169,7 @@ class HomeViewState extends State<HomeView> {
     );
   }
 
-  Future<String> readStorage() async {
+    Future<String> readStorage() async {
     String value = await storage.read(key: "api");
     if (value == null) {
       return "none";
@@ -230,9 +177,78 @@ class HomeViewState extends State<HomeView> {
       return value;
     }
   }
-
-
 }
+
+class ModalPopup extends StatelessWidget {
+  const ModalPopup({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: displayHeight(context) * 0.70,
+      width: displayWidth(context),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(-1.08, -1.08),
+          end: Alignment(1, 1.06),
+          colors: [
+            Color(0xFF443E48),
+            Color(0xFF1B1F2D),
+          ],
+        ),
+      ),
+
+      child: Column(
+        children: <Widget> [
+          SizedBox(height: displayHeight(context) * 0.02),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget> [
+              Container(width: 58),
+              Text("(3 mins)", style: TextStyle(color: Colors.white)),
+              // Container(width: displayWidth(context) * 0.4,
+                Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget> [
+                  Text("+50 ", style: TextStyle(color: Colors.white)),
+                  Icon(Icons.av_timer, color: Colors.white),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: displayHeight(context) * 0.1),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget> [
+              Text("Connect ", style: TextStyle(color: Colors.white)),
+              Container(
+                height: displayHeight(context) * 0.07,
+                width: displayWidth(context) * 0.18,
+                  child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    labelText: 'Binance',
+                    labelStyle: TextStyle(color: Colors.white),
+                    // floatingLabelBehavior: FloatingLabelBehavior.always,
+                    // filled: true,
+                    // fillColor: Color(0xFF126FFF),
+                    enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: Color(0X3BA6D6)),   
+                    ),  
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(),
+          Row(),
+          Row(),
+        ],
+      ),
+    );
+  }
+}
+  
 
 class DashboardWithApi extends StatelessWidget {
   
@@ -551,7 +567,7 @@ class _ListContainerState extends State<ListContainer> {
 
   @override
   Widget build(BuildContext context) {
-    _heightHideContainer = displayHeight(context) * 0.46;
+    _heightHideContainer = displayHeight(context) * 0.50;
     _heightShowContainer = displayHeight(context) * 0.23;
     return AnimatedContainer(
       duration: Duration(seconds: 2),
