@@ -26,6 +26,8 @@ import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intro_views_flutter/Models/page_view_model.dart';
+import 'package:intro_views_flutter/intro_views_flutter.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -43,10 +45,9 @@ class HomeViewState extends State<HomeView> {
   final storage = new FlutterSecureStorage();
 
   /// custom padding in pixels, because Dialog comes attached with a default FAT padding :)
-  double modalEdgePadding = 16.0;
+  double modalEdgePadding = 10;
 
-  /// placeholder URL for API linking tutorial process
-  String placeHolderImgURL = "http://2.bp.blogspot.com/_ThTvH632hGo/S92-5kncTYI/AAAAAAAAByE/7DAWC0aecC0/s640/2-7.jpg";
+ 
 
   @override
   void initState() {
@@ -108,7 +109,8 @@ class HomeViewState extends State<HomeView> {
                               // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
                               
                               /// Connect API tutorial modal
-                              child: ModalPopup(),
+                              // child: ModalPopup(),
+                              child: introViews,
 
                               // content: Builder(
                               //   builder: (context) {
@@ -181,6 +183,40 @@ class HomeViewState extends State<HomeView> {
     }
   }
 }
+/// list of pageviewmodels required by intro_views_flutter
+/// used for API tutorial thingy
+final page = new PageViewModel(
+  pageColor: const Color(0xFF607D8B),
+  // iconImageAssetPath: '',
+  iconColor:  Color(0xFF607D8B),
+  bubbleBackgroundColor:  Color(0xFF607D8B),
+  body: Text(
+    'Easy  cab  booking  at  your  doorstep  with  cashless  payment  system',
+  ),
+  title: Text('Cabs'),
+  // mainImage: Image.asset(
+  //   height: 285.0,
+  //   width: 285.0,
+  //   alignment: Alignment.center,
+  // ),
+  titleTextStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
+  bodyTextStyle: TextStyle(fontFamily: 'MyFont', color: Colors.white),
+);
+
+
+final Widget introViews = IntroViewsFlutter(
+  [page],
+  onTapDoneButton: (){
+    //Void Callback
+  },
+  showSkipButton: true,
+  pageButtonTextStyles: TextStyle(
+      color: Colors.white,
+      fontSize: 18.0,
+      fontFamily: "Regular",
+    ),
+);
+
 
 class ModalPopup extends StatefulWidget {
   ModalPopup({Key key}) : super(key: key);
@@ -189,11 +225,17 @@ class ModalPopup extends StatefulWidget {
   _ModalPopupState createState() => _ModalPopupState();
 }
 
+
+
+
 /// API tutorial modal popup
 class _ModalPopupState extends State<ModalPopup> {
 
   /// Currently selected value of dropdown
   String dropdownValue = 'Binance';
+
+  /// placeholder URL for API linking tutorial process
+  String placeHolderImgURL = "http://2.bp.blogspot.com/_ThTvH632hGo/S92-5kncTYI/AAAAAAAAByE/7DAWC0aecC0/s640/2-7.jpg";
 
   @override
   Widget build(BuildContext context) {
@@ -233,21 +275,24 @@ class _ModalPopupState extends State<ModalPopup> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
-              Text("Connect "),
+              Text("Connect ", style: TextStyle(color: textLight)),
               Container(
                 // height: displayHeight(context) * 0.07,
                 // width: displayWidth(context) * 0.18,
                 child: 
                   /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   DropdownButton<String>(
+                        dropdownColor: uniColor,
                         value: dropdownValue,
-                        icon: Icon(Icons.arrow_downward),
+                        icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
                         iconSize: 24,
                         elevation: 16,
-                        style: TextStyle(color: Colors.deepPurple),
+                        style: TextStyle(color: textLight),
                         underline: Container(
                           height: 2,
-                          color: Colors.cyanAccent,
+                          // TODO: andrew wants line to be shorter
+                          padding: EdgeInsets.only(right: 40),
+                          color: modalAccentColor,
                         ),
                         onChanged: (String newValue) {
                           setState(() {
@@ -278,6 +323,13 @@ class _ModalPopupState extends State<ModalPopup> {
               ),
             ],
           ),
+          // Image.network(placeHolderImgURL),
+          Text('To enable trading, go to Binance Web', style: TextStyle(color: textLight)),
+          Padding(
+            padding: EdgeInsets.all(30),
+            child: Image.network(placeHolderImgURL),
+          ),
+          
           Row(),
           Row(),
           Row(),
@@ -566,7 +618,7 @@ class _PriceContainerState extends State<PriceContainer> {
                       });
                     },
                     child: Icon(Icons.swap_horiz, size: 36),
-                    backgroundColor: Color(0xFF25365b),
+                    backgroundColor: uniColor,
                   )
                 ),
               ),
