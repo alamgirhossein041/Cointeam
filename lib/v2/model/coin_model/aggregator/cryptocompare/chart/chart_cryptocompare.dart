@@ -126,7 +126,6 @@ class CryptoCompareHourlyModel {
         List<double> _priceClose = [];
         List<String> _timestamp = [];
         json['Data']['Data'].forEach((v) {
-          log("hello world");
           _priceClose.add(double.parse(v['close'].toString()));
           _timestamp.add((v['time'].toString()));
           salesDataList.add(SalesData(time: v['time'].toString(), price: v['close']));

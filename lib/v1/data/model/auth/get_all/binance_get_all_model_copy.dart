@@ -1,4 +1,4 @@
-class BinanceGetAllModel {  /// Repository returns a List of this model
+class BinanceGetAllModelv1 {  /// Repository returns a List of this model
   String coin;
   bool depositAllEnable;
   bool withdrawAllEnable;
@@ -14,7 +14,7 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
   bool trading;
   List<Null> networkList;
 
-  BinanceGetAllModel(
+  BinanceGetAllModelv1(
       {this.coin,
       this.depositAllEnable,
       this.withdrawAllEnable,
@@ -30,8 +30,8 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
       this.trading,
       this.networkList});
 
-factory BinanceGetAllModel.fromJson(Map<String, dynamic> json) {
-    return BinanceGetAllModel(
+factory BinanceGetAllModelv1.fromJson(Map<String, dynamic> json) {
+    return BinanceGetAllModelv1(
       coin: json['coin'] as String,
       depositAllEnable: json['depositAllEnable'] as bool,
       withdrawAllEnable: json['withdrawAllEnable'] as bool,

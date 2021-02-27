@@ -19,7 +19,7 @@ class BinanceGetAllLoadingState extends BinanceGetAllState {
 
 class BinanceGetAllLoadedState extends BinanceGetAllState {
 
-  List<BinanceGetAllModel> binanceGetAllModel;
+  List<BinanceGetAllModelv1> binanceGetAllModel;
 
   BinanceGetAllLoadedState({@required this.binanceGetAllModel});
 

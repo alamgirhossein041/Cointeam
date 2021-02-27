@@ -26,8 +26,6 @@ dependencies:
   crypto_font_icons: ^0.1.0+1
   typicons_flutter: ^0.2.1
   path_provider: ^1.5.1
-  hive: ^1.0.0
-  hive_flutter: ^0.2.1
   data_connection_checker: ^0.3.4
   local_auth: ^0.6.3+4
   syncfusion_flutter_charts: ^18.4.42
@@ -38,14 +36,8 @@ dependencies:
   provider: ^4.3.3
   flutter_secure_storage: ^3.3.5
   google_fonts: ^1.1.2
-  retrofit: any
-  logger: any
-  dio: any
-  json_annotation: any
-  built_value: ^7.1.0
 
 dev_dependencies:
-  hive_generator: ^0.5.1
   flutter_test:
     sdk: flutter
 

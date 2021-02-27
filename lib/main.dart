@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
           //   child: HomeViewReal(),
           // ),
-          '/homeviewrealV1': (context) => HomeViewReal(),
+          // '/homeviewrealV1': (context) => HomeViewReal(),
           '/coinviewV1': (context) => CoinView(),
           '/authentication': (context) => Authentication(),
           // '/portfolio': (context) => PriceContai

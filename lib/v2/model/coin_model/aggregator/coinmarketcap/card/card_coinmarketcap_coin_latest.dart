@@ -30,7 +30,7 @@ class Data {
       this.quote});
 
   Data.fromJson(Map<String, dynamic> json) {
-    log(json['name'].toString());
+    // log(json['name'].toString());
     name = json['name'];
     symbol = json['symbol'];
     lastUpdated = json['last_updated'];

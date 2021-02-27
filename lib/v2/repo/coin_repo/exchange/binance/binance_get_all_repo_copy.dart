@@ -1,16 +1,16 @@
 import 'dart:convert';
-import 'package:coinsnap/v1/data/model/auth/get_all/binance_get_all_model.dart';
+import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
 abstract class IBinanceGetAllRepository {
-  Future<List<BinanceGetAllModelv1>> getBinanceGetAll();
+  Future<List<BinanceGetAllModel>> getBinanceGetAll();
 }
 
 class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
   @override
-  Future<List<BinanceGetAllModelv1>> getBinanceGetAll() async {
+  Future<List<BinanceGetAllModel>> getBinanceGetAll() async {
     String _binanceUrl = 'api.binance.com';
 
     /// ##### Temporary API Key load-ins ###### 
@@ -37,7 +37,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     if(response.statusCode == 200) {
       // log(response.body.toString());
       /// Handle API response and parse
-      List<BinanceGetAllModelv1> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModelv1>((json) => BinanceGetAllModelv1.fromJson(json)).toList();
+      List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
       // log("asdf");
       /// Remove coins from list that are empty
       var toRemove = [];

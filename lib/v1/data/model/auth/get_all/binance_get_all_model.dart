@@ -1,4 +1,4 @@
-class BinanceGetAllModel {  /// Repository returns a List of this model
+class BinanceGetAllModelv1 {  /// Repository returns a List of this model
   String coin;
   bool depositAllEnable;
   bool withdrawAllEnable;
@@ -14,7 +14,7 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
   bool trading;
   List<dynamic> networkList;
 
-  BinanceGetAllModel(
+  BinanceGetAllModelv1(
       {this.coin,
       this.depositAllEnable,
       this.withdrawAllEnable,
@@ -30,7 +30,7 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
       this.trading,
       this.networkList});
 
-BinanceGetAllModel.fromJson(Map<String, dynamic> json) {
+BinanceGetAllModelv1.fromJson(Map<String, dynamic> json) {
     if(double.parse(json['free']) > 0 || double.parse(json['locked']) > 0) {
       coin = json['coin'].toString();
       depositAllEnable = json['depositAllEnable'];

@@ -4,6 +4,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_c
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
@@ -292,7 +293,6 @@ class _PriceContainerState extends State<PriceContainer> {
   @override
   void initState() { 
     super.initState();
-    
   }
 
   @override
@@ -301,6 +301,7 @@ class _PriceContainerState extends State<PriceContainer> {
     _heightHideContainer = displayHeight(widget.context) * 0.2;
     _heightShowContainer = displayHeight(widget.context) * 0.4;
     _heightOffset = displayHeight(widget.context) * 0.12;
+    BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
   }
 
   @override
@@ -377,21 +378,50 @@ class _PriceContainerState extends State<PriceContainer> {
                             ),
                           )
                         ),
-                        Row(
+                        BlocListener<GetTotalValueBloc, GetTotalValueState>(
+                          listener: (context, state) {
+                            if (state is GetTotalValueErrorState) {
+                              log("error in GetTotalValueState in home_view.dart");
+                            }
+                          },
+                          child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+                            builder: (context, state) {
+                              if (state is GetTotalValueInitialState) {
+                                log("GetTotalValueInitialState");
+                                return loadingTemplateWidget();
+                              } else if (state is GetTotalValueLoadingState) {
+                                log("GetTotalValueLoadingState");
+                                return loadingTemplateWidget();
+                              } else if (state is GetTotalValueLoadedState) {
+                                log("GetTotalValueLoadedState");
+                                return Column(
+                                  children: <Widget> [
+                                    Row(
                           /// TODO: Alignment (padding?)
-                          children: <Widget> [
-                            Container(
-                              padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 10, 0, 0),
-                              child: Row( /// ### Start Bitcoin total value line here ### ///
-                                children: <Widget> [
-                                  Icon(CryptoFontIcons.BTC, color: Colors.white),
-                                  Text("0.01980000", style: TextStyle(fontSize: 12, color: Colors.white)),
-                                ],
-                              ), /// ### End Bitcoin total value line here ### ///
-                            )
-                          ],
+                                      children: <Widget> [
+                                        Container(
+                                          padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
+                                          child: Row( /// ### Start Bitcoin total value line here ### ///
+                                            children: <Widget> [
+                                              Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
+                                              Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
+                                            ],
+                                          ), /// ### End Bitcoin total value line here ### ///
+                                        )
+                                      ],
+                                    ),
+                                    Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
+                                  ],
+                                );
+                                
+                          
+                              } else {
+                                return Text("Placeholder in home_view.dart -> PriceContainer()");
+                              }
+                            }
+                          ),
                         ),
-                        Text("\$49,162.71", style: TextStyle(fontSize: 28, color: Colors.white)),
+                        
 
 
                         /// ### Start Expanded Buttons Here ### ///
@@ -586,9 +616,6 @@ class _ListContainerState extends State<ListContainer> {
                 /// ### Commented out customscrollview above ### ///
 
               );
-            } else if (state is CardCoinmarketcapCoinLatestErrorState) {
-              log("CardCoinmarketcapCoinLatestErrorState");
-              return errorTemplateWidget(state.errorMessage);
             } else {
               return null;
             }

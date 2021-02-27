@@ -18,9 +18,8 @@ class CryptoCompareRepositoryImpl implements ICryptoCompareRepository {
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      CryptoCompareModel cryptoCompareModel = CryptoCompareModel.fromJson(body);
+      // CryptoCompareModel cryptoCompareModel = CryptoCompareModel.fromJson(body);
       CryptoCompareHourlyModel cryptoCompareModelChart = CryptoCompareHourlyModel.fromJsonToChart(body);
-      log("CryptoCompareModel is: " + cryptoCompareModel.data.toString());
       return cryptoCompareModelChart;
     } else {
       throw Exception();

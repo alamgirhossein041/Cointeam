@@ -50,9 +50,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       try {
 
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
-        List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
+        List<BinanceGetAllModelv1> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
-        for(BinanceGetAllModel coins in binanceGetAllModel) {
+        for(BinanceGetAllModelv1 coins in binanceGetAllModel) {
           if(coins.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {

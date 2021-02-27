@@ -17,7 +17,7 @@ class BinanceGetAllBloc extends Bloc<BinanceGetAllEvent, BinanceGetAllState> {
     if (event is FetchBinanceGetAllEvent) {
       yield BinanceGetAllLoadingState();
       try {
-        List<BinanceGetAllModel> binanceGetAllModel = await repository.getBinanceGetAll();
+        List<BinanceGetAllModelv1> binanceGetAllModel = await repository.getBinanceGetAll();
         /// TODO: probably fix up LIST
         yield BinanceGetAllLoadedState(binanceGetAllModel: binanceGetAllModel);
       } catch (e) {

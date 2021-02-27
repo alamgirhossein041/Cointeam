@@ -1,21 +1,21 @@
-import 'dart:convert';
-import 'package:coinsnap/v1/data/model/internal/coingecko_model.dart';
-import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:coinsnap/v1/data/model/internal/coingecko_model.dart';
+// import 'package:dio/dio.dart';
+// import 'package:json_annotation/json_annotation.dart';
+// import 'package:retrofit/retrofit.dart';
+// import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+// import 'dart:developer';
 
-part 'coingecko_api.g.dart';
+// part 'coingecko_api.g.dart';
 
-@RestApi(baseUrl: "https://api.coingecko.com/api/v3")
-abstract class CoinGeckoApiClient {
-  factory CoinGeckoApiClient(Dio dio, {String baseUrl}) = _CoinGeckoApiClient;
+// @RestApi(baseUrl: "https://api.coingecko.com/api/v3")
+// abstract class CoinGeckoApiClient {
+//   factory CoinGeckoApiClient(Dio dio, {String baseUrl}) = _CoinGeckoApiClient;
 
-  @GET("/coins/list")
-  Future<List<CoinGeckoCoinList>> getCoinGeckoCoinList();
+//   @GET("/coins/list")
+//   Future<List<CoinGeckoCoinList>> getCoinGeckoCoinList();
 
-  @GET("/exchanges/list")
-  Future<List<CoinGeckoExchangesList>> getCoinGeckoExchangesList();
-}
+//   @GET("/exchanges/list")
+//   Future<List<CoinGeckoExchangesList>> getCoinGeckoExchangesList();
+// }
