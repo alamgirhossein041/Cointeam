@@ -56,4 +56,4 @@ flutter:
   fonts:
   - family:  IconCustom
     fonts:
-    - asset: fonts/IconCuston.ttf
+    - asset: fonts/IconCustom.ttf
