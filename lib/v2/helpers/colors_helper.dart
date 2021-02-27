@@ -17,4 +17,6 @@ const appMariner = Color(0xFF2660E3);
 
 const tilePurple = Color(0xFF1A1B37);
 
+/// Text
+final Color textLight = Colors.blueGrey[50]; // light text on dark bg
 const textGrey = Color(0xFFDFDFE2);
