@@ -45,6 +45,9 @@ class HomeViewState extends State<HomeView> {
   /// custom padding in pixels, because Dialog comes attached with a default FAT padding :)
   double modalEdgePadding = 16.0;
 
+  /// placeholder URL for API linking tutorial process
+  String placeHolderImgURL = "http://2.bp.blogspot.com/_ThTvH632hGo/S92-5kncTYI/AAAAAAAAByE/7DAWC0aecC0/s640/2-7.jpg";
+
   @override
   void initState() {
     /// TODO: stuff
@@ -179,8 +182,18 @@ class HomeViewState extends State<HomeView> {
   }
 }
 
-class ModalPopup extends StatelessWidget {
-  const ModalPopup({Key key}) : super(key: key);
+class ModalPopup extends StatefulWidget {
+  ModalPopup({Key key}) : super(key: key);
+
+  @override
+  _ModalPopupState createState() => _ModalPopupState();
+}
+
+/// API tutorial modal popup
+class _ModalPopupState extends State<ModalPopup> {
+
+  /// Currently selected value of dropdown
+  String dropdownValue = 'Binance';
 
   @override
   Widget build(BuildContext context) {
@@ -220,23 +233,48 @@ class ModalPopup extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
-              Text("Connect ", style: TextStyle(color: Colors.white)),
+              Text("Connect "),
               Container(
-                height: displayHeight(context) * 0.07,
-                width: displayWidth(context) * 0.18,
-                  child: TextField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    labelText: 'Binance',
-                    labelStyle: TextStyle(color: Colors.white),
-                    // floatingLabelBehavior: FloatingLabelBehavior.always,
-                    // filled: true,
-                    // fillColor: Color(0xFF126FFF),
-                    enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Color(0X3BA6D6)),   
-                    ),  
-                  ),
-                ),
+                // height: displayHeight(context) * 0.07,
+                // width: displayWidth(context) * 0.18,
+                child: 
+                  /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
+                  DropdownButton<String>(
+                        value: dropdownValue,
+                        icon: Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.cyanAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValue = newValue;
+                          });
+                        },
+                        items: <String>['Binance', 'Two', 'Free', 'Four']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                //   child: TextField(
+                //   textAlign: TextAlign.center,
+                //   decoration: InputDecoration(
+                //     labelText: 'Binance',
+                //     labelStyle: TextStyle(color: Colors.white),
+                //     // floatingLabelBehavior: FloatingLabelBehavior.always,
+                //     // filled: true,
+                //     // fillColor: Color(0xFF126FFF),
+                //     enabledBorder: UnderlineInputBorder(      
+                //       borderSide: BorderSide(color: Color(0X3BA6D6)),   
+                //     ),  
+                //   ),
+                // ),
               ),
             ],
           ),
@@ -248,6 +286,8 @@ class ModalPopup extends StatelessWidget {
     );
   }
 }
+
+
   
 
 class DashboardWithApi extends StatelessWidget {
