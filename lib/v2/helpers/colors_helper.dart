@@ -11,12 +11,21 @@ const appBlack = Color(0xFF000000);
 const appPurple = Color(0xFF440086);
 const appBlue = Color(0xFF17408a);
 
-
 const appMariner = Color(0xFF2660E3);
-
 
 const tilePurple = Color(0xFF1A1B37);
 
-/// Text
-final Color textLight = Colors.blueGrey[50]; // light text on dark bg
+/// Unified FAB colour
+const uniColor = Color(0xFF25365b);
+
+/// API tutorial modal colours  ///
+
+/// light coloured accent on dark bg
+const modalAccentColor = Colors.cyanAccent;
+
+/// Text ///
+
+/// light coloured text on dark bg
+final Color textLight = Colors.blueGrey[50];
+/// grey text colour
 const textGrey = Color(0xFFDFDFE2);
