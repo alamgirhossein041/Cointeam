@@ -94,7 +94,7 @@ class HomeViewState extends State<HomeView> {
                         IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) => Dialog(
+                            builder: (BuildContext context) =>   Dialog(
                               // title: Text("Hello"),
                               // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
 

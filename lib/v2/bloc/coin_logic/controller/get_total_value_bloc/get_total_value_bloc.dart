@@ -52,7 +52,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
           }
         } catch (e) {
           handleError(e);
-          log(e.toString());
+          log("The error in get_total_value_bloc 1 " + e.toString());
         }
         /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
         /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
@@ -69,12 +69,22 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
           usdSpecial += coins.free;
           // totalValue += (usdSpecial / btcPrice);
         } else {
-          try{
-// log("Debugging444");
+          try {
             totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.locked;
             totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.free;
           } catch (e) {
-            log(e.toString());
+            try {
+              if(coins.coin == 'AUD') {
+                totalValue += coins.locked / binanceGetPricesMap['BTC' + coins.coin];
+                totalValue += coins.free / binanceGetPricesMap['BTC' + coins.coin];
+              } else {
+                log(coins.coin.toString() + " does not have a BTC pair");
+              }
+            } catch (f) {
+              log(coins.coin.toString() + " gave a nested catch error");
+              log(f.toString());
+            }
+           
           }
         }
       }
