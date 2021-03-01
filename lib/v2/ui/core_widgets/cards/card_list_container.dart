@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
@@ -21,8 +23,6 @@ class ListContainer extends StatefulWidget {
 
 class _ListContainerState extends State<ListContainer> {
 
-  CardCoinmarketcapCoinLatestBloc cardCoinmarketcapCoinLatestBloc;
-
   double _heightHideContainer;
   double _heightShowContainer;
 
@@ -32,8 +32,6 @@ class _ListContainerState extends State<ListContainer> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    cardCoinmarketcapCoinLatestBloc = BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context);
-    cardCoinmarketcapCoinLatestBloc.add(FetchCardCoinmarketcapCoinLatestEvent());
     // hello = cryptoCompareRepository.getHourlyCryptoCompare();
   }
 
@@ -44,71 +42,85 @@ class _ListContainerState extends State<ListContainer> {
     return AnimatedContainer(
       duration: Duration(seconds: 2),
       height: widget.showContainer ? _heightShowContainer : _heightHideContainer,
-      child: BlocListener<CardCoinmarketcapCoinLatestBloc, CardCoinmarketcapCoinLatestState>(
+      child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
         listener: (context, state) {
-          if (state is CardCoinmarketcapCoinLatestErrorState) {
-            log("error in CardCryptoDataErrorState in home_view_real.dart");
+          if (state is GetTotalValueErrorState) {
+            log("error in GetTotalValueBloc in card_list_container.dart");
           }
         },
-        child: BlocBuilder<CardCoinmarketcapCoinLatestBloc, CardCoinmarketcapCoinLatestState>( /// Both bloc types to be built (refactor existing controllers)
+        child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
           builder: (context, state) {
-            if (state is CardCoinmarketcapCoinLatestInitialState) {
-              log("CardCoinmarketcapCoinLatestInitialState");
-              return loadingTemplateWidget();
-            } else if (state is CardCoinmarketcapCoinLatestLoadingState) {
-              log("CardCoinmarketcapCoinLatestLoadingState");
-              return loadingTemplateWidget();
-            } else if (state is CardCoinmarketcapCoinLatestLoadedState) {
-              log("CardCoinmarketcapCoinLatestLoadedState");
-              return Container(
-                // height: widget.showContainer ? displayHeight(context) * 0.4 : displayHeight(context) 0.2,
-                // height: widget.showContainer ? (displayHeight(context) * 0.4) : (displayHeight(context) * 0.2),
-
-                /// ### Commenting out customscrollview since the chart is no longer here         ### ///
-                /// ### The issue is I can't seem to constrain? the height and dynamically adjust ### ///
-                /// ### But I can with normal ListView.builder                                    ### ///
-                
-                child: CustomScrollView(
-                  slivers: <Widget> [
-                    SliverToBoxAdapter(
-                      /// ### Chart section starts here ### ///
-                      
-                      child: FutureBuilder(
-                        future: cryptoCompareRepository.getHourlyCryptoCompare(),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == null) {
-                            return CircularProgressIndicator();
-                          } else {
-                            return SizedBox(
-                              height: displayHeight(context) * 0.27,
-                              child: ChartOverall(priceList: snapshot.data),
-                            );
-                          }
-                        },
-                      ),
-
-                      // child: SizedBox(
-                      //   height: displayHeight(context) * 0.27,
-                      //   child: ChartOverall(),
-                    ), /// ### Chart section ends here ### ///
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                          return CardListTile(coinListMap: state.coinListMap, index: index);
-                        },
-                        childCount: state.coinListMap.data.length,
-                      ),
+            if (state is GetTotalValueLoadedState) {
+              return CustomScrollView(
+                slivers: <Widget> [
+                  SliverToBoxAdapter(
+                    /// ### Chart section starts here ### ///
+                    
+                    child: FutureBuilder(
+                      future: cryptoCompareRepository.getHourlyCryptoCompare(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.data == null) {
+                          return CircularProgressIndicator();
+                        } else {
+                          return SizedBox(
+                            height: displayHeight(context) * 0.27,
+                            child: ChartOverall(priceList: snapshot.data),
+                          );
+                        }
+                      },
                     ),
-                  ],
-                )
 
-                /// ### Commented out customscrollview above ### ///
+                    // child: SizedBox(
+                    //   height: displayHeight(context) * 0.27,
+                    //   child: ChartOverall(),
+                  ), /// ### Chart section ends here ### ///
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                        return CardListTile(coinListMap: state.coinListReceived, index: index);
+                      },
+                      childCount: state.coinListReceived.length,
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is GetTotalValueLoadedState) {
+              return CustomScrollView(
+                slivers: <Widget> [
+                  SliverToBoxAdapter(
+                    /// ### Chart section starts here ### ///
+                    
+                    child: FutureBuilder(
+                      future: cryptoCompareRepository.getHourlyCryptoCompare(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.data == null) {
+                          return CircularProgressIndicator();
+                        } else {
+                          return SizedBox(
+                            height: displayHeight(context) * 0.27,
+                            child: ChartOverall(priceList: snapshot.data),
+                          );
+                        }
+                      },
+                    ),
 
+                    // child: SizedBox(
+                    //   height: displayHeight(context) * 0.27,
+                    //   child: ChartOverall(),
+                  ), /// ### Chart section ends here ### ///
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                        return CardListTile(coinListMap: state.coinListReceived, index: index);
+                      },
+                      childCount: state.coinListReceived.length,
+                    ),
+                  ),
+                ],
               );
             } else {
-              return null;
+              return loadingTemplateWidget();
             }
           }
-        ),
+        )
       ),
     );
   }

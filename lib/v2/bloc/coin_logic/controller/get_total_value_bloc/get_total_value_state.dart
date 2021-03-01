@@ -16,12 +16,24 @@ class GetTotalValueLoadingState extends GetTotalValueState {
   List<Object> get props => [];
 }
 
+// class GetTotalValueCoinListReceivedState extends GetTotalValueState {
+
+//   var coinListReceived;
+
+//   GetTotalValueCoinListReceivedState({@required this.coinListReceived});
+
+
+//   @override
+//   List<Object> get props => [];
+// }
+
 class GetTotalValueLoadedState extends GetTotalValueState {
 
   final double totalValue;
   final double btcSpecial;
+  var coinListReceived;
 
-  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial});
+  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived});
 
   @override
   /// TODO: implement props

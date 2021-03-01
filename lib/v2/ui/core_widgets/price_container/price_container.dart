@@ -5,6 +5,8 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_prices_repo.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_container.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/container_panel.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
@@ -186,10 +188,11 @@ class _PriceContainerState extends State<PriceContainer> {
                         // ),
 
                         /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
-                        // BlocProvider<GetTotalValueBloc>(
-                          // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-                          ContainerPanel(panelVisibility: _panelVisibility),
-                        // ),
+                        BlocProvider<GetTotalValueBloc>(
+                          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+                          child: ContainerPanel(panelVisibility: _panelVisibility),
+                          // ScalingAnimatedContainer(),
+                        ),
 
                         /// ### End Expanded Buttons Here ### ///
 
