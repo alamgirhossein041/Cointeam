@@ -188,7 +188,8 @@ class _PriceContainerState extends State<PriceContainer> {
                         /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
                         // BlocProvider<GetTotalValueBloc>(
                           // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-                          ContainerPanel(panelVisibility: _panelVisibility),
+                          // ContainerPanel(panelVisibility: _panelVisibility),
+                          ScalingAnimatedContainer(),
                         // ),
 
                         /// ### End Expanded Buttons Here ### ///

@@ -1,5 +1,8 @@
+import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -71,7 +74,7 @@ class _ContainerPanelState extends State<ContainerPanel> {
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      labelText: '15.5%',
+                      labelText: _value.toString(),
                       labelStyle: TextStyle(color: Colors.white),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       // filled: true,
@@ -92,7 +95,9 @@ class _ContainerPanelState extends State<ContainerPanel> {
                 padding: EdgeInsets.only(left: 20),
                 child: Container(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: _value));
+                    },
                     child: Text("Sell All"),
                   ),
                 ),
@@ -115,5 +120,52 @@ class _ContainerPanelState extends State<ContainerPanel> {
         visible: widget.panelVisibility,
       ),
     );
+  }
+}
+
+
+
+
+class ScalingAnimatedContainer extends StatefulWidget {
+  ScalingAnimatedContainer({Key key, this.visibility}) : super(key: key);
+  final bool visibility;
+
+  @override
+  _ScalingAnimatedContainerState createState() => _ScalingAnimatedContainerState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+/// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
+class _ScalingAnimatedContainerState extends State<ScalingAnimatedContainer>
+    with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ScaleTransition(
+      scale: _animation,
+      child: ContainerPanel(panelVisibility: widget.visibility),
+    ));
   }
 }

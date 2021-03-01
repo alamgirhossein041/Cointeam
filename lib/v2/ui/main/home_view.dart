@@ -83,7 +83,12 @@ class HomeViewState extends State<HomeView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget> [
-                        IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {}),
+                        IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
+
+                          /// API Call
+                          /// 
+
+                        }),
                         // IconButton(icon: Icon(Icons.search), onPressed: () {}),
                         
                           /// /// ApiModalFirst();  /// ///
