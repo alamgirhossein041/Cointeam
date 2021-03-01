@@ -1,6 +1,6 @@
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 /// ###                                                                                  ### ///
-/// ###  Version with Binance API linked - list of coins retrieved from Binance Account  ### ///
+/// ###  Version with no Binance API linked - list of coins retrieved from Top 100 CMC   ### ///
 /// ###                                                                                  ### ///
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 

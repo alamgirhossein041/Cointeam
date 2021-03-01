@@ -1,13 +1,14 @@
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 
 class CardListTile extends StatefulWidget {
   CardListTile({Key key, this.coinListMap, this.index}) : super(key: key);
 
-  final CoinMarketCapCoinLatestModel coinListMap;
+  final List<BinanceGetAllModel> coinListMap;
   final dynamic index;
 
   @override
@@ -28,7 +29,7 @@ class _CardListTileState extends State<CardListTile> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap.data, 'index' : widget.index});
+                    Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
                   },
                   child: Container(
                     padding: EdgeInsets.fromLTRB(25,2,25,2),
@@ -68,7 +69,7 @@ class _CardListTileState extends State<CardListTile> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget> [
                                       Text(
-                                        "${widget.coinListMap.data[widget.index].name}",
+                                        "${widget.coinListMap[widget.index].name}",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -91,38 +92,39 @@ class _CardListTileState extends State<CardListTile> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget> [
+                                      Row(
+                                        // mainAxisAlignment: MainAxisAlignment.end,
+                                        children: <Widget> [
+                                          SizedBox(height: 10),
+                                          Column(
+                                            // crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget> [
+                                              Text(
+                                                "\$${widget.coinListMap[widget.index].totalUsdValue.toStringAsFixed(2)}",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              // Text("", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                                            ]
+                                          ),
+                                        ],
+                                      ),
                                       Text(
-                                        "\$${widget.coinListMap.data[widget.index].quote.uSD.price.toStringAsFixed(2)}",
+                                        "${(widget.coinListMap[widget.index].free + widget.coinListMap[widget.index].locked).toStringAsFixed(8)}",
                                         style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
+                                          color: Colors.grey,
+                                          fontSize: 12,
                                         ),
                                       ),
-                                      Text("", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                                      // Text("", style:TextStyle(color: Colors.grey, fontSize: 12)),
                                     ]
-                                  ),),
+                                  ),
+                                ),
                                 ]
-                              ))
-                              // Row(
-                              //   // mainAxisAlignment: MainAxisAlignment.end,
-                              //   children: <Widget> [
-                              //     SizedBox(height: 10),
-                              //     Column(
-                              //       // crossAxisAlignment: CrossAxisAlignment.end,
-                              //       mainAxisAlignment: MainAxisAlignment.center,
-                              //       children: <Widget> [
-                              //         Text(
-                              //           "${widget.coinListMap.data[widget.index].quote.uSD.price.toStringAsFixed(2)}",
-                              //           style: TextStyle(
-                              //             color: Colors.white,
-                              //             fontSize: 14,
-                              //           ),
-                              //         ),
-                              //         Text("", style:TextStyle(color: Colors.grey, fontSize: 12)),
-                              //       ]
-                              //     ),
-                              //   ]
-                              // )
+                              )),
                             ] /// ### Card Tile Internal UI Ends Here ### ///
                           )
                         )
