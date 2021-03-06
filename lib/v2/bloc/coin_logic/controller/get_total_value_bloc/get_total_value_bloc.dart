@@ -81,6 +81,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
             coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
             totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.locked;
             totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.free;
+            log("Price of " + coins.coin + " is \$" + (coins.btcValue * btcPrice).toString());
           } catch (e) {
             try {
               if(coins.coin == 'AUD') {

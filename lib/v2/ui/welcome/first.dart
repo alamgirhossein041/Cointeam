@@ -11,7 +11,7 @@ class First extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
+      future: SharedPreferences.getInstance(), /// Getting a local settings cache stored on device
       builder:
           (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
         switch (snapshot.connectionState) {
@@ -20,8 +20,7 @@ class First extends StatelessWidget {
             return CircularProgressIndicator();
           default:
             if (!snapshot.hasError) {
-              /// ("Return a welcome screen") ??? default comment
-              return snapshot.data.getBool("welcome") != null
+              return snapshot.data.getBool("welcome") != null /// getBool("welcome") should be named better - it is a boolean check which is null if it's the user's first time -> which we will load WelcomeView (onboarding screen), and if not null we will load HomeView
                   ? HomeView()
                   : WelcomeView();
             } else {

@@ -166,7 +166,7 @@ class IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: "images/photo_school.png",
+        pathImage: "graphics/assets/placeholder_modal.jpg",
       ),
     );
     slides.add(
@@ -184,7 +184,7 @@ class IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: "images/photo_museum.png",
+        pathImage: "graphics/assets/placeholder_modal.jpg",
       ),
     );
     slides.add(
@@ -202,7 +202,7 @@ class IntroScreenState extends State<IntroScreen> {
             fontSize: 20.0,
             fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'),
-        pathImage: "images/photo_coffee_shop.png",
+        pathImage: "graphics/assets/placeholder_modal.jpg",
       ),
     );
   }
