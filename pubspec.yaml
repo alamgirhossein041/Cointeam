@@ -38,12 +38,15 @@ dependencies:
   google_fonts: ^1.1.2
   # smooth_page_indicator: ^0.2.0
   intro_slider: ^2.3.4
+  dotted_line: ^2.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
+  assets:
+  - graphics/assets/
   uses-material-design: true
   # assets:
   # - graphics/icons/crypto/bitcoin_white_2.png

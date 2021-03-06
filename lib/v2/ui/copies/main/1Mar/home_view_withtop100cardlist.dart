@@ -181,7 +181,7 @@ class DashboardWithApi extends StatelessWidget {
           children: <Widget> [
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
-            topMenuRow(context),
+            TopMenuRow(),
             RefreshIndicator(
               onRefresh: () async {
                 BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());

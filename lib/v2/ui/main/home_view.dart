@@ -15,6 +15,7 @@ import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -53,6 +54,7 @@ class HomeViewState extends State<HomeView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    /// make API call here
   }
 
 
@@ -109,7 +111,8 @@ class HomeViewState extends State<HomeView> {
                               // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
                               
                               /// Connect API tutorial modal
-                              child: ModalPopup(),
+                              // child: ModalPopup(),
+                              child: IntroScreen(),
                             ),
                           );
                         }),
@@ -131,7 +134,7 @@ class HomeViewState extends State<HomeView> {
           color: appBlack,
         ),
         child: FutureBuilder(
-          future: readStorage(),
+          future: readStorage(), /// Reads whether or not there is an API key stored in localStorage, then loads two different pages based on result
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -139,11 +142,10 @@ class HomeViewState extends State<HomeView> {
                 return CircularProgressIndicator();
               default:
               if (!snapshot.hasError) {
-                /// ("Return a welcome screen") ??? default comment
                 return snapshot.data != null
                     ? DashboardWithApi()
                     // : DashboardWithoutApi();
-                    : Text("Wallah");
+                    : Text("Wallah"); /// TODO: Replace with DashboardNoApi()
               } else {
                 return errorTemplateWidget(snapshot.error);
               }
@@ -181,7 +183,7 @@ class DashboardWithApi extends StatelessWidget {
           children: <Widget> [
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
-            topMenuRow(context),
+            TopMenuRow(),
             RefreshIndicator(
               onRefresh: () async {
                 BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
