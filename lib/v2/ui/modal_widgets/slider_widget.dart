@@ -153,14 +153,17 @@ class IntroScreenState extends State<IntroScreen> {
 
     slides.add(
       new Slide(
-        title: "SCHOOL",
+        title: "ENABLE TRADING FEATURES",
         styleTitle: TextStyle(
             color: Color(0xff3da4ab),
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'RobotoMono'),
         description:
-            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            '''Enabling trading features requires linking your Secret API key to the app.
+            It will take about 3 minutes, and you will earn/get/score 50 STREET by successfully enabling this feature.
+            This will allow our app to automatically show your portfolio and panic sell, trade, share with your friends.'''
+            ,
         styleDescription: TextStyle(
             color: Color(0xfffe9c8f),
             fontSize: 20.0,
@@ -170,8 +173,9 @@ class IntroScreenState extends State<IntroScreen> {
       ),
     );
     slides.add(
+       
       new Slide(
-        title: "MUSEUM",
+        title: "CONNECT BINANCE",
         styleTitle: TextStyle(
             color: Color(0xff3da4ab),
             fontSize: 30.0,
@@ -179,6 +183,14 @@ class IntroScreenState extends State<IntroScreen> {
             fontFamily: 'RobotoMono'),
         description:
             "Ye indulgence unreserved connection alteration appearance",
+        centerWidget:
+          /// our custom widget
+            // ModalPopup(),
+          Row(children: [
+              Text('To enable trading, go to Binance Web', style: TextStyle(color: Colors.black)),
+            ],
+          ),
+            
         styleDescription: TextStyle(
             color: Color(0xfffe9c8f),
             fontSize: 20.0,
