@@ -39,6 +39,7 @@ dependencies:
   # smooth_page_indicator: ^0.2.0
   intro_slider: ^2.3.4
   dotted_line: ^2.0.2
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

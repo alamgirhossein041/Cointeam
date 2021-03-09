@@ -192,7 +192,7 @@ class DashboardWithNoApiWorking extends StatelessWidget {
           children: <Widget> [
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
-            TopMenuRow(),
+            TopMenuRow(precontext: context),
             RefreshIndicator(
               onRefresh: () async {
                 // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
@@ -203,10 +203,12 @@ class DashboardWithNoApiWorking extends StatelessWidget {
                 child: Column(
                   children: <Widget> [
                     NoApiPriceContainer(),
+                    // SizedBox(height: displayHeight(context) * 0.01),
+                    NoApiCategoryList(),
+                    NoApiAddCoinWidget(),
                   ],
                 ),
               ),
-              
             ),
           // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
             
@@ -225,7 +227,7 @@ class NoApiPriceContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: displayHeight(context) * (0.2 + 0.16),
+      // height: displayHeight(context) * (0.2 + 0.16),
       width: displayWidth(context),
       child: Container(
         padding: EdgeInsets.all(30),
@@ -453,4 +455,212 @@ class NoApiPriceContainer extends StatelessWidget {
   }
 }
 
+class NoApiCategoryList extends StatelessWidget {
+  NoApiCategoryList({Key key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: displayWidth(context),
+      height: displayHeight(context) * 0.25,
+      child: ListView(
+      /// Need to make this a bloc that gets a pre-defined list of coins
+      /// Categories are predefined
+        children: <Widget> [
+          PlaceholderTile(),
+          PlaceholderTile(),
+          PlaceholderTile(),
+        ],
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
+
+
+class PlaceholderTile extends StatelessWidget {
+  const PlaceholderTile({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: InkWell(
+        child: Container(
+          child: Row(
+            children: <Widget> [
+              Container(
+                decoration: BoxDecoration(
+                  color: appBlack, /// ### TODO: Change to Hana's UI Colour ### ///
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
+                  },
+                  child: Container(
+                    // padding: EdgeInsets.fromLTRB(0,0,0,0),
+                    height: displayHeight(context) * 0.240,
+                    width: displayWidth(context) * 0.385,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Container(
+                        // padding: EdgetInsets.fromLTRB()
+                        decoration: BoxDecoration(
+                          color: Color(0xFF191B31),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(30,0,0,0),
+                          child: Row(
+                            children: <Widget> [ /// ### Card Tile Internal UI Starts Here ### ///
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Icon(
+                                  CryptoFontIcons.BTC,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget> [
+                                  SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget> [
+                                      Text(
+                                        "Top 100",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                                    ]
+                                  )
+                                ]
+                              ),
+                            ] /// ### Card Tile Internal UI Ends Here ### ///
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ]
+          )
+        )
+      )
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  // ],
+    );
+  }
+}
+
+class NoApiAddCoinWidget extends StatelessWidget {
+  const NoApiAddCoinWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget> [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
+              child: Text("Add Coins", style: TextStyle(color: Colors.white)))),
+          GestureDetector(
+                  onTap: () {
+                    
+                  },
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(25,2,25,2),
+                    height: displayHeight(context) * 0.11,
+                    width: displayWidth(context),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: Container(
+                        // padding: EdgetInsets.fromLTRB()
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(-1.2, 0),
+                            end: Alignment(1, 0),
+                            colors: [Color(0xFF282136), Color(0xFF0F1D2D)],
+                            // colors: [darkRedColor, lightRedColor]
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Icon(Icons.add, color: Color(0xFF777984)),
+                        )
+                      )
+                    )
+                  )
+                )
+        ]
+      )
+    );
+  }
+}

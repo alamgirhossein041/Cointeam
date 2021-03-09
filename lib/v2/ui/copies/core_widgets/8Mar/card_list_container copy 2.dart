@@ -53,7 +53,9 @@ class _ListContainerState extends State<ListContainer> {
       //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
       //     builder: (context, state) {
       //       if (state is GetTotalValueLoadedState) {
-
+      child: CustomScrollView(
+        slivers: <Widget> [
+          SliverToBoxAdapter(
             /// ### Chart section starts here ### ///
             
             // child: FutureBuilder(
@@ -70,73 +72,61 @@ class _ListContainerState extends State<ListContainer> {
             //   },
             // ),
             
-            // child: BlocListener<BinanceGetChartBloc, BinanceGetChartState>(
-            //   listener: (context, state) {
-            //     if (state is BinanceGetChartErrorState) {
-            //       log("error in GetTotalValueBloc in card_list_container.dart");
-            //     }
-            //   },
-            //   child: BlocBuilder<BinanceGetChartBloc, BinanceGetChartState>( /// Both bloc types to be built (refactor existing controllers)
-            //     builder: (context, state) {
-            //       if (state is BinanceGetChartInitialState) {
-            //         log("BinanceGetChartInitialState");
-            //         return Container();
-            //       } else if (state is BinanceGetChartLoadingState) {
-            //         log("BinanceGetChartLoadingState");
-            //         return Container();
-            //       } else if (state is BinanceGetChartLoadedState) {
-            //         return SizedBox(
-            //           height: displayHeight(context) * 0.27,
-            //           child: ChartOverall(),
-            //         );
-            //       } else {
-            //         // return CircularProgressIndicator();
-            //         return Container();
-            //       }
-            //     }
-            //   ),
-            // ),
-          // ), /// ### Chart section ends here ### ///
-      child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
-        listener: (context, state) {
-          if (state is GetTotalValueErrorState) {
-            log("error in GetTotalValueBloc in card_list_container.dart");
-          }
-        },
-        child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
-          builder: (context, state) {
-            if (state is GetTotalValueLoadedState) {
-              return CustomScrollView(
-                slivers: <Widget> [
-                  SliverToBoxAdapter(
-                    // child: SizedBox(
-                    //   height: displayHeight(context) * 0.27,
-                    //   child: ChartOverall(),
-                    child: ChartOverall(),
-                  ), /// TODO: Stop wasting time
-                  
-                  SliverList(
+            child: BlocListener<BinanceGetChartBloc, BinanceGetChartState>(
+              listener: (context, state) {
+                if (state is BinanceGetChartErrorState) {
+                  log("error in GetTotalValueBloc in card_list_container.dart");
+                }
+              },
+              child: BlocBuilder<BinanceGetChartBloc, BinanceGetChartState>( /// Both bloc types to be built (refactor existing controllers)
+                builder: (context, state) {
+                  if (state is BinanceGetChartInitialState) {
+                    log("BinanceGetChartInitialState");
+                    return Container();
+                  } else if (state is BinanceGetChartLoadingState) {
+                    log("BinanceGetChartLoadingState");
+                    return Container();
+                  } else if (state is BinanceGetChartLoadedState) {
+                    return SizedBox(
+                      height: displayHeight(context) * 0.27,
+                      child: ChartOverall(),
+                    );
+                  } else {
+                    // return CircularProgressIndicator();
+                    return Container();
+                  }
+                }
+              ),
+            ),
+          ), /// ### Chart section ends here ### ///
+          BlocListener<GetTotalValueBloc, GetTotalValueState>(
+            listener: (context, state) {
+              if (state is GetTotalValueErrorState) {
+                log("error in GetTotalValueBloc in card_list_container.dart");
+              }
+            },
+            child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+              builder: (context, state) {
+                if (state is GetTotalValueLoadedState) {
+                  return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                         return CardListTile(coinListMap: state.coinListReceived, index: index);
                       },
                       childCount: state.coinListReceived.length,
                     ),
-                  )
-                ]
-              );
-            } else {
-              return Container();
-              // return SliverToBoxAdapter(
-              //   child: CircularProgressIndicator(), /// or just repeat sliverlist with circularprogressindics
-              // );
-            }
-          }
-        )
+                  );
+                } else {
+                  // return SliverToBoxAdapter(
+                  //   child: CircularProgressIndicator(), /// or just repeat sliverlist with circularprogressindics
+                  // );
+                }
+                return SliverToBoxAdapter(child: Container());
+              }
+            )
+          ),
+        ]
       )
     );
-    //     ]
-    //   )
-    // );
                       //   ],
                       // );
             // } else if (state is GetTotalValueLoadedState) {

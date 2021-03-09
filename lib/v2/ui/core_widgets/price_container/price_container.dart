@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
@@ -44,7 +46,7 @@ class _PriceContainerState extends State<PriceContainer> {
     super.didChangeDependencies();
     _heightHideContainer = displayHeight(widget.context) * 0.2;
     _heightShowContainer = displayHeight(widget.context) * 0.4;
-    _heightOffset = displayHeight(widget.context) * 0.12;
+    _heightOffset = displayHeight(widget.context) * 0.065 ;
     BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
   }
 
@@ -55,7 +57,7 @@ class _PriceContainerState extends State<PriceContainer> {
         AnimatedContainer( /// ### This is the container ### ///
           duration: Duration(seconds: 2),
           height: _showContainer ? (_heightShowContainer + _heightOffset) : (_heightHideContainer + _heightOffset),
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.fromLTRB(30,30,30,0),
           child: Stack(
             children: <Widget> [
               Container(
@@ -122,49 +124,102 @@ class _PriceContainerState extends State<PriceContainer> {
                             ),
                           )
                         ),
-                        BlocListener<GetTotalValueBloc, GetTotalValueState>(
+                        BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
                           listener: (context, state) {
                             if (state is GetTotalValueErrorState) {
                               log("error in GetTotalValueState in home_view.dart");
+                            } else if (state is GetTotalValueResponseState) {
+                              log("Is it working?");
+                              BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
                             }
                           },
-                          child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
-                            builder: (context, state) {
-                              if (state is GetTotalValueInitialState) {
-                                log("GetTotalValueInitialState");
-                                return loadingTemplateWidget();
-                              } else if (state is GetTotalValueLoadingState) {
-                                log("GetTotalValueLoadingState");
-                                return loadingTemplateWidget();
-                              } else if (state is GetTotalValueLoadedState) {
-                                log("GetTotalValueLoadedState");
-                                return Column(
-                                  children: <Widget> [
-                                    Row(
-                          /// TODO: Alignment (padding?)
-                                      children: <Widget> [
-                                        Container(
-                                          padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
-                                          child: Row( /// ### Start Bitcoin total value line here ### ///
-                                            children: <Widget> [
-                                              Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
-                                              Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
-                                            ],
-                                          ), /// ### End Bitcoin total value line here ### ///
-                                        )
-                                      ],
-                                    ),
-                                    Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
-                                  ],
-                                );
+                          builder: (context, state) {
+                            if (state is GetTotalValueInitialState) {
+                              log("GetTotalValueInitialState");
+                              return loadingTemplateWidget();
+                            } else if (state is GetTotalValueLoadingState) {
+                              log("GetTotalValueLoadingStatedoodoo");
+                              return loadingTemplateWidget();
+                            } else if (state is GetTotalValueResponseState) {
+                              log("GetTotalValueResponseReceivedState");
+                              return loadingTemplateWidget();
+                            } else if (state is GetTotalValueLoadedState) {
+                              log("GetTotalValueLoadedState");
+                              return Column(
+                                children: <Widget> [
+                                  Row(
+                        /// TODO: Alignment (padding?)
+                                    children: <Widget> [
+                                      Container(
+                                        padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
+                                        child: Row( /// ### Start Bitcoin total value line here ### ///
+                                          children: <Widget> [
+                                            Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
+                                            Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
+                                          ],
+                                        ), /// ### End Bitcoin total value line here ### ///
+                                      )
+                                    ],
+                                  ),
+                                  Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
+                                ],
+                              );
+                              
+                        
+                            } else {
+                              return Text("Placeholder in home_view.dart -> PriceContainer()");
+                            }
+                          }
+                        ),
+                        // BlocListener<GetTotalValueBloc, GetTotalValueState>(
+                        //   listener: (context, state) {
+                        //     if (state is GetTotalValueErrorState) {
+                        //       log("error in GetTotalValueState in home_view.dart");
+                        //     } else if (state is GetTotalValueResponseState) {
+                        //       log("Is it working?");
+                        //     }
+                        //   },
+                        //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+                        //     builder: (context, state) {
+                        //       if (state is GetTotalValueInitialState) {
+                        //         log("GetTotalValueInitialState");
+                        //         return loadingTemplateWidget();
+                        //       } else if (state is GetTotalValueLoadingState) {
+                        //         log("GetTotalValueLoadingStatedoodoo");
+                        //         return loadingTemplateWidget();
+                        //       } else if (state is GetTotalValueResponseState) {
+                        //         log("GetTotalValueResponseReceivedState");
+                        //         BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent());
+                        //         return loadingTemplateWidget();
+                        //       } else if (state is GetTotalValueLoadedState) {
+                        //         log("GetTotalValueLoadedState");
+                        //         return Column(
+                        //           children: <Widget> [
+                        //             Row(
+                        //   /// TODO: Alignment (padding?)
+                        //               children: <Widget> [
+                        //                 Container(
+                        //                   padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
+                        //                   child: Row( /// ### Start Bitcoin total value line here ### ///
+                        //                     children: <Widget> [
+                        //                       Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
+                        //                       Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
+                        //                     ],
+                        //                   ), /// ### End Bitcoin total value line here ### ///
+                        //                 )
+                        //               ],
+                        //             ),
+                        //             Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
+                        //           ],
+                        //         );
                                 
                           
-                              } else {
-                                return Text("Placeholder in home_view.dart -> PriceContainer()");
-                              }
-                            }
-                          ),
-                        ),
+                        //       } else {
+                        //         return Text("Placeholder in home_view.dart -> PriceContainer()");
+                        //       }
+                        //     }
+                        //   ),
+                        // ),
                         
 
 
@@ -187,12 +242,13 @@ class _PriceContainerState extends State<PriceContainer> {
                         //   ],
                         // ),
 
-                        /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
-                        BlocProvider<GetTotalValueBloc>(
-                          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-                          child: ContainerPanel(panelVisibility: _panelVisibility),
-                          // ScalingAnimatedContainer(),
-                        ),
+                        // /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
+                        // BlocProvider<GetTotalValueBloc>(
+                        //   create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+                        //   child: ContainerPanel(panelVisibility: _panelVisibility),
+                        //   // ScalingAnimatedContainer(),
+                        // ),
+                        ContainerPanel(panelVisibility: _panelVisibility),
 
                         /// ### End Expanded Buttons Here ### ///
 
@@ -261,6 +317,23 @@ class _PriceContainerState extends State<PriceContainer> {
               ),
             ]
           )
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget> [
+            IconButton(
+              icon: Icon(Icons.hourglass_empty, color: Colors.white),
+              onPressed: () {}
+            ),
+            IconButton(
+              icon: Icon(Icons.hourglass_full, color: Colors.white),
+              onPressed: () {}
+            ),
+            IconButton(
+              icon: Icon(Icons.alarm, color: Colors.white),
+              onPressed: () {}
+            ),
+          ],
         ),
       ListContainer(showContainer: _showContainer),
       ]

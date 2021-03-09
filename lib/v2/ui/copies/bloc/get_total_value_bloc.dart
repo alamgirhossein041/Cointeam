@@ -23,8 +23,6 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
 
   BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
 
-  List<BinanceGetAllModel> binanceGetAllModelList;
-
   @override
   Stream<GetTotalValueState> mapEventToState(GetTotalValueEvent event) async* {
     Map binanceGetPricesMap;
@@ -34,19 +32,24 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
       double usdSpecial = 0.0;
+      List responses = [];
 
       /// ### Please evaluate why we need the above values and document ### ///
 
       yield GetTotalValueLoadingState();
-      try {
         try{
 
 
         /// ### Binance ### ///
-          List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
-          log("Hello World");
+          responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
+          
+        } catch (e) {
+          handleError(e);
+          log("The error is in the first try catch get_total_value_bloc");
+        }
+        
+        try {
           binanceGetPricesMap = Map.fromIterable(responses[1], key: (e) => e.symbol, value: (e) => e.price);
-          yield GetTotalValueResponseState(binanceGetAllModelList: responses[0], binanceGetPricesMap: binanceGetPricesMap);
           binanceGetAllModel = responses[0];
           // for(int i=0;i<binanceGetAllModel.length;i++) {
 
@@ -97,7 +100,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
                 totalValue += coins.locked / binanceGetPricesMap['BTC' + coins.coin];
                 totalValue += coins.free / binanceGetPricesMap['BTC' + coins.coin];
               } else {
-                // log(coins.coin.toString() + " does not have a BTC pair");
+                log(coins.coin.toString() + " does not have a BTC pair");
                 coins.totalUsdValue = 0;
               }
             } catch (f) {
@@ -108,6 +111,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
           }
         }
       }
+      try{
         btcSpecial = btcPrice;
         log(totalValue.toString());
         log(btcSpecial.toString());
