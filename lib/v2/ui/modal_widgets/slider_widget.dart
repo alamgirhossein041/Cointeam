@@ -1,3 +1,5 @@
+import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -8,25 +10,18 @@ class CarouselDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("GFG Slider"),
+        title: Text("Connect API"),
       ),
       body: ListView(
         children: [
           CarouselSlider(
             items: [
-              //1st Image of Slider
+              //1st page - Explainer
               Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: AssetImage('graphics/assets/placeholder_modal.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                child: ModalPopup(),
               ),
 
-              //2nd Image of Slider
+              //2nd Connect exchange
               Container(
                 margin: EdgeInsets.all(6.0),
                 decoration: BoxDecoration(
@@ -77,14 +72,15 @@ class CarouselDemo extends StatelessWidget {
 
             //Slider Container properties
             options: CarouselOptions(
-              height: 180.0,
+              height: displayHeight(context) * 0.85,
               enlargeCenterPage: true,
-              autoPlay: true,
+              initialPage: 0,
+              // autoPlay: true,
               aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
+              // autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: false,
+              // autoPlayAnimationDuration: Duration(milliseconds: 800),
+              viewportFraction: 1,
             ),
           ),
         ],
