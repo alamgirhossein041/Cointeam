@@ -120,7 +120,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                               
                               /// Connect API tutorial modal
                               // child: ModalPopup(),
-                              child: IntroScreen(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),

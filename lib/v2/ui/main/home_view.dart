@@ -112,7 +112,7 @@ class HomeViewState extends State<HomeView> {
                               
                               /// Connect API tutorial modal
                               // child: ModalPopup(),
-                              child: IntroScreen(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),
