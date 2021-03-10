@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 
 
 class ChartOverall extends StatefulWidget {
@@ -93,11 +94,22 @@ class _ChartOverallState extends State<ChartOverall> {
                     onAxisLabelRender: (args) {
                       log((args.text).toString());
                       if (args.axisName == 'primaryXAxis') {
-                        args.text = 
-                          DateFormat.j().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                        if(state.timeSelection == globals.Status.weekly) {
+                          args.text = 
+                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
                           // DateTime.fromMillisecondsSinceEpoch((double.parse(args.text) * 1000).toInt()).hour.toString() +
                           // ':' +
                           // DateTime.fromMillisecondsSinceEpoch((double.parse(args.text) * 1000).toInt()).minute.toStringAsFixed();
+                        } else if (state.timeSelection == globals.Status.monthly) {
+                          args.text = 
+                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                        } else if (state.timeSelection == globals.Status.yearly) {
+                          args.text = 
+                            DateFormat.MMM().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                        } else {
+                          args.text = 
+                            DateFormat.j().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                        }
                       }
                     },
                     // Initialize category axis

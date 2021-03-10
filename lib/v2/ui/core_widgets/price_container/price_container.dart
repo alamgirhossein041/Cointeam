@@ -318,23 +318,25 @@ class _PriceContainerState extends State<PriceContainer> {
             ]
           )
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget> [
-            IconButton(
-              icon: Icon(Icons.hourglass_empty, color: Colors.white),
-              onPressed: () {}
-            ),
-            IconButton(
-              icon: Icon(Icons.hourglass_full, color: Colors.white),
-              onPressed: () {}
-            ),
-            IconButton(
-              icon: Icon(Icons.alarm, color: Colors.white),
-              onPressed: () {}
-            ),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget> [
+        //     IconButton(
+        //       icon: Icon(Icons.hourglass_empty, color: Colors.white),
+        //       onPressed: () {
+        //         // BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
+        //       }
+        //     ),
+        //     IconButton(
+        //       icon: Icon(Icons.hourglass_full, color: Colors.white),
+        //       onPressed: () {}
+        //     ),
+        //     IconButton(
+        //       icon: Icon(Icons.alarm, color: Colors.white),
+        //       onPressed: () {}
+        //     ),
+        //   ],
+        // ),
       ListContainer(showContainer: _showContainer),
       ]
     );

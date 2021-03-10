@@ -4,11 +4,14 @@
 /// ###                                                                                  ### ///
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
@@ -17,8 +20,10 @@ import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
+import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
 
@@ -191,21 +196,17 @@ class DashboardWithApi extends StatelessWidget {
             TopMenuRow(precontext: context),
             RefreshIndicator(
               onRefresh: () async {
-                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
-                BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
               },
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: <Widget> [
-                    PriceContainer(context: context,),
+                    PriceContainer(context: context),
                   ],
                 ),
               ),
-              
-            ),
-          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-            
+            ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
           ],
         ),
       ),
@@ -214,6 +215,100 @@ class DashboardWithApi extends StatelessWidget {
 }
 
 
+class DashboardWithCategory extends StatelessWidget {
+  const DashboardWithCategory({Key key, this.categoryName}) : super(key: key);
+  final Categories categoryName;
 
+  @override
+  Widget build(BuildContext context) {
+    if(categoryName == globals.Categories.top100) {
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: displayHeight(context) * 0.05),
+              /// ### Top Row starts here ### ///
+              TopMenuRow(precontext: context),
+              RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.top100CategoryData)); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: <Widget> [
+                      PriceContainer(context: context),
+                    ],
+                  ),
+                ),
+              ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+            ],
+          ),
+        ),
+      );
+    } else if(categoryName == globals.Categories.defi) {
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: displayHeight(context) * 0.05),
+              /// ### Top Row starts here ### ///
+              TopMenuRow(precontext: context),
+              RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: <Widget> [
+                      PriceContainer(context: context),
+                    ],
+                  ),
+                ),
+              ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+            ],
+          ),
+        ),
+      );
+    } else if(categoryName == globals.Categories.cexdex) {
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: displayHeight(context) * 0.05),
+              /// ### Top Row starts here ### ///
+              TopMenuRow(precontext: context),
+              RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: <Widget> [
+                      PriceContainer(context: context),
+                    ],
+                  ),
+                ),
+              ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+}
 
 

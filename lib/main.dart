@@ -1,6 +1,6 @@
 import 'package:coinsnap/v1/ui_root/pages/builder/test.dart';
 import 'package:coinsnap/v1/ui_root/pages/coin_view/coin_view.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
@@ -20,6 +20,7 @@ import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
+import 'package:coinsnap/working_files/practice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/dashboardnoapitest',
         // initialRoute: '/authentication',
         initialRoute: '/authentication',
+        // initialRoute: '/home',
         routes: {
           '/first': (context) => First(),
           '/second': (context) => Second(),

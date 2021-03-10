@@ -119,7 +119,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         // binanceGetAllModel.sort();
 
         binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
-        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue);
+        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
       } catch (e) {
         log("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());

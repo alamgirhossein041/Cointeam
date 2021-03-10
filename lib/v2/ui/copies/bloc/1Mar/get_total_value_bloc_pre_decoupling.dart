@@ -94,7 +94,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         log(totalValue.toString());
         log(btcSpecial.toString());
         totalValue += usdSpecial / await btcPrice;
-        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue);
+        // yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue);
       } catch (e) {
         log("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());

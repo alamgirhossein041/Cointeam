@@ -19,8 +19,9 @@ class BinanceGetChartLoadingState extends BinanceGetChartState {
 
 class BinanceGetChartLoadedState extends BinanceGetChartState {
   final List binanceGetChartDataList;
+  var timeSelection;
 
-  BinanceGetChartLoadedState({@required this.binanceGetChartDataList});
+  BinanceGetChartLoadedState({@required this.binanceGetChartDataList, this.timeSelection});
   // final binanceGetChart;
   // BinanceGetChartLoadedState({@required this.coinPrice});
   // BinanceGetChartLoadedState({this.binanceGetChart});

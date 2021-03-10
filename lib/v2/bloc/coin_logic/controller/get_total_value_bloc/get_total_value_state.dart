@@ -42,11 +42,12 @@ class GetTotalValueResponseState extends GetTotalValueState {
 
 class GetTotalValueLoadedState extends GetTotalValueState {
 
+  final Map binanceGetPricesMap;
   final double totalValue;
   final double btcSpecial;
   final coinListReceived;
 
-  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived});
+  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived, @required this.binanceGetPricesMap});
 
   @override
   /// TODO: implement props

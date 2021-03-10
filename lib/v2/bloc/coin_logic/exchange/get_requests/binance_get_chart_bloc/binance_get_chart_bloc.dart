@@ -17,6 +17,8 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
   Stream<BinanceGetChartState> mapEventToState(BinanceGetChartEvent event) async* {
     if (event is FetchBinanceGetChartEvent) {
       var listOfUserCoins = event.binanceGetAllModelList;
+      var timeSelection = event.timeSelection;
+      log(timeSelection.toString());
       // var mapOfPrices = event.binanceGetPricesMap;
       // Map mapOfPrices = {};
       /// TODO: DELETE mapOfPrices
@@ -24,8 +26,8 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
       
       yield BinanceGetChartLoadingState();
       try {
-        BinanceGetChartModel binanceGetChartModel = await binanceGetChartRepository.getBinanceChart('BTC');
-        log(binanceGetChartModel.toString());
+        // BinanceGetChartModel binanceGetChartModel = await binanceGetChartRepository.getBinanceChart('BTC');
+        // log(binanceGetChartModel.toString());
 // List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
 
         /// responses is a list of BinanceGetChartModel 1-1 for the listOfUserCoins
@@ -36,11 +38,16 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         //   // mapOfPrices[b.coin] = binanceGetChartRepository.getBinanceChart(b.coin),
         // }
         // log("HELLO");
+        
         Map<String, double> userCoinMap = {};
+        
         var futures = <Future>[];
+          // log("Sup");
+          // log(listOfUserCoins.toString());
         for (var f in listOfUserCoins) {
-          futures.add(binanceGetChartRepository.getBinanceChart(f.coin));
-          log("Hello " + f.coin);
+          // log("Sup");
+          futures.add(binanceGetChartRepository.getBinanceChart(f.coin, timeSelection));
+          // log("Hello " + f.coin);
           var tmp = f.free + f.locked;
           userCoinMap[f.coin] = tmp;
           /// WE may be able to replace this shitty map implementation by simply passing in the quantity into the binanceGetChartRepository.getBinanceChart method
@@ -69,24 +76,24 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         // }
         
         for (var g in resolvedFutures) {
-          log("What's up " + g.kLineList.toString());
+          // log("What's up " + g.kLineList.toString());
           var tmp = g.coinTicker;
-          log("Quantity of " + g.coinTicker + " is : " + userCoinMap[tmp].toString());
+          // log("Quantity of " + g.coinTicker + " is : " + userCoinMap[tmp].toString());
           for (var h in g.kLineList) {
-            log("Dissected " + h.openTimestamp.toString());
-            log("Second " + h.open);
+            // log("Dissected " + h.openTimestamp.toString());
+            // log("Second " + h.open);
             sumMap[h.openTimestamp] == null ? sumMap[h.openTimestamp] = double.parse(h.open) * userCoinMap[tmp] :
               sumMap[h.openTimestamp] += double.parse(h.open) * userCoinMap[tmp];
             // sumMap[h.openTimestamp] = sumMap[h.openTimestamp] + double.parse(h.open);
-            log("Or");
-            log("Current sum @ " + h.openTimestamp.toString() + " is " + sumMap[h.openTimestamp].toString());
+            // log("Or");
+            // log("Current sum @ " + h.openTimestamp.toString() + " is " + sumMap[h.openTimestamp].toString());
           }
           // priceTimeDataList.add(SalesData(time: g.kLineList[i])
         }
         for(var p in sumMap.keys) {
-          log("values: + " + i.toString());
+          // log("values: + " + i.toString());
           i++;
-          log(p.toString() + " is the time key\n" + sumMap[p].toString() + " is the time value");
+          // log(p.toString() + " is the time key\n" + sumMap[p].toString() + " is the time value");
           priceTimeDataList.add(SalesData(time: p.toString(), price: sumMap[p]));
         }
 
@@ -134,7 +141,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         /// do logic
         /// if else blah blah
         
-        yield BinanceGetChartLoadedState(binanceGetChartDataList: priceTimeDataList); /// TODO : insert parameters later
+        yield BinanceGetChartLoadedState(binanceGetChartDataList: priceTimeDataList, timeSelection: timeSelection); /// TODO : insert parameters later
         // log("???/");
       } catch (e) {
         log("Something went wrong in get_price_info_bloc.dart");

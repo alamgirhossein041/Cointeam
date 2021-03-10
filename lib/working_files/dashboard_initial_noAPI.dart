@@ -4,14 +4,15 @@
 /// ###                                                                                  ### ///
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
@@ -26,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:math' as math;
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
 
@@ -439,8 +441,9 @@ class NoApiPriceContainer extends StatelessWidget {
                           ),
                         ),
                         onTap: () => {
-                          // Navigator.pushNamed(context, '/hometest'),
-                          dbPortfolioPostTest.dbPortfolioPostTest(),
+                          /// TODO: COINTEAM-81
+                          Navigator.pushNamed(context, '/hometest'),
+                          // dbPortfolioPostTest.dbPortfolioPostTest(),
                         },
                       ),
                       elevation: 2,
@@ -467,9 +470,9 @@ class NoApiCategoryList extends StatelessWidget {
       /// Need to make this a bloc that gets a pre-defined list of coins
       /// Categories are predefined
         children: <Widget> [
-          PlaceholderTile(),
-          PlaceholderTile(),
-          PlaceholderTile(),
+          PlaceholderTile(categoryName: globals.Categories.defi),
+          PlaceholderTile(categoryName: globals.Categories.top100),
+          PlaceholderTile(categoryName: globals.Categories.cexdex),
         ],
         scrollDirection: Axis.horizontal,
       ),
@@ -479,16 +482,18 @@ class NoApiCategoryList extends StatelessWidget {
 
 
 class PlaceholderTile extends StatelessWidget {
-  const PlaceholderTile({Key key}) : super(key: key);
+  const PlaceholderTile({Key key, this.categoryName}) : super(key: key);
+  final Categories categoryName;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: InkWell(
-        child: Container(
-          child: Row(
-            children: <Widget> [
-              Container(
+        /// ### Clickable Card ### ///
+        // child: Container(
+          // child: Row(
+          //   children: <Widget> [
+              child: Container(
                 decoration: BoxDecoration(
                   color: appBlack, /// ### TODO: Change to Hana's UI Colour ### ///
                 ),
@@ -537,9 +542,9 @@ class PlaceholderTile extends StatelessWidget {
                                         ),
                                       ),
                                       // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
-                                    ]
-                                  )
-                                ]
+                                    ],
+                                  ),
+                                ],
                               ),
                             ] /// ### Card Tile Internal UI Ends Here ### ///
                           )
@@ -548,9 +553,9 @@ class PlaceholderTile extends StatelessWidget {
                     )
                   )
                 )
-              )
-            ]
-          )
+            //   )
+            // ]
+          // )
         )
       )
   //   Card(
@@ -627,38 +632,42 @@ class NoApiAddCoinWidget extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
-              child: Text("Add Coins", style: TextStyle(color: Colors.white)))),
+              child: Text("Add Coins", style: TextStyle(color: Colors.white)
+              )
+            )
+          ),
           GestureDetector(
-                  onTap: () {
-                    
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(25,2,25,2),
-                    height: displayHeight(context) * 0.11,
-                    width: displayWidth(context),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: Container(
-                        // padding: EdgetInsets.fromLTRB()
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(-1.2, 0),
-                            end: Alignment(1, 0),
-                            colors: [Color(0xFF282136), Color(0xFF0F1D2D)],
-                            // colors: [darkRedColor, lightRedColor]
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Icon(Icons.add, color: Color(0xFF777984)),
-                        )
-                      )
-                    )
+            onTap: () {
+              /// TODO: COINTEAM-81
+              Navigator.pushNamed(context, '/hometest');
+            },
+            child: Container(
+              padding: EdgeInsets.fromLTRB(25,2,25,2),
+              height: displayHeight(context) * 0.11,
+              width: displayWidth(context),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                ),
+                child: Container(
+                  // padding: EdgetInsets.fromLTRB()
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment(-1.2, 0),
+                      end: Alignment(1, 0),
+                      colors: [Color(0xFF282136), Color(0xFF0F1D2D)],
+                      // colors: [darkRedColor, lightRedColor]
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.add, color: Color(0xFF777984)),
                   )
                 )
+              )
+            )
+          )
         ]
       )
     );

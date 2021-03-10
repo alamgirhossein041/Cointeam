@@ -39,18 +39,18 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
 
       yield GetTotalValueLoadingState();
       try {
-        try{
+        try {
 
 
         /// ### Binance ### ///
           List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
-          log("Hello World");
+          // log("Hello World");
           binanceGetPricesMap = Map.fromIterable(responses[1], key: (e) => e.symbol, value: (e) => e.price);
           yield GetTotalValueResponseState(binanceGetAllModelList: responses[0], binanceGetPricesMap: binanceGetPricesMap);
           binanceGetAllModel = responses[0];
           // for(int i=0;i<binanceGetAllModel.length;i++) {
 
-            /// log(binanceGetAllModel[i].name.toString()); 
+            /// log(binanceGetAllModel[i].name.toString());
             /// log(binanceGetAllModel[i].free.toString());
             /// log(binanceGetAllModel[i].locked.toString());
 
@@ -115,7 +115,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         // binanceGetAllModel.sort();
 
         binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
-        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue);
+        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
       } catch (e) {
         log("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());
