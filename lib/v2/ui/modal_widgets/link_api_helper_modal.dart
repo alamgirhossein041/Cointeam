@@ -2,15 +2,15 @@ import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
-class ModalPopup extends StatefulWidget {
-  ModalPopup({Key key}) : super(key: key);
+class LinkAPIHelperModal extends StatefulWidget {
+  LinkAPIHelperModal({Key key}) : super(key: key);
 
   @override
-  _ModalPopupState createState() => _ModalPopupState();
+  _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
 }
 
 /// API tutorial modal popup
-class _ModalPopupState extends State<ModalPopup> {
+class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
   /// Currently selected value of dropdown
   String dropdownValue = 'Binance';
@@ -37,12 +37,9 @@ class _ModalPopupState extends State<ModalPopup> {
       ),
 
       
-
       child: Column(
-        
         children: <Widget> [
 
-          
           // the (3 mins) and +50 reward line
           Flexible(
             flex: 1,
@@ -73,36 +70,34 @@ class _ModalPopupState extends State<ModalPopup> {
               children: <Widget> [
                 Text("Connect ", style: TextStyle(color: textLight)),
                 Container(
-                  // height: displayHeight(context) * 0.07,
-                  // width: displayWidth(context) * 0.18,
                   child: 
                     /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                     DropdownButton<String>(
-                          dropdownColor: uniColor,
-                          value: dropdownValue,
-                          icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: TextStyle(color: textLight),
-                          underline: Container(
-                            height: 2,
-                            // TODO: andrew wants line to be shorter
-                            padding: EdgeInsets.only(right: 40),
-                            color: modalAccentColor,
-                          ),
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
-                          },
-                          items: <String>['Binance', 'Two', 'Free', 'Four']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                      dropdownColor: uniColor,
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: textLight),
+                      underline: Container(
+                        height: 2,
+                        // TODO: andrew wants line to be shorter
+                        padding: EdgeInsets.only(right: 40),
+                        color: modalAccentColor,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items: <String>['Binance', 'Two', 'Free', 'Four']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                 ),
               ],
             ),
@@ -136,11 +131,6 @@ class _ModalPopupState extends State<ModalPopup> {
               child: Text("dots go here ", style: TextStyle(color: textLight)),
             ),
           ),
-
-          // SizedBox(height: displayHeight(context) * 0.02),
-          // SizedBox(height: displayHeight(context) * 0.1),
-          // Image.network(placeHolderImgURL),
-        
         ],
       ),
     );

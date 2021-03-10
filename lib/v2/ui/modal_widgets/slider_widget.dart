@@ -18,6 +18,7 @@ class CarouselDemo extends StatelessWidget {
             items: [
               //1st page - Explainer
               Container(
+                margin: EdgeInsets.all(5.0),
                 child: ModalPopup(),
               ),
 
@@ -72,15 +73,11 @@ class CarouselDemo extends StatelessWidget {
 
             //Slider Container properties
             options: CarouselOptions(
-              height: displayHeight(context) * 0.85,
-              enlargeCenterPage: true,
-              initialPage: 0,
-              // autoPlay: true,
+              height: displayHeight(context) * 0.87,
               aspectRatio: 16 / 9,
-              // autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: false,
-              // autoPlayAnimationDuration: Duration(milliseconds: 800),
               viewportFraction: 1,
+              initialPage: 0,
+              enableInfiniteScroll: false,
             ),
           ),
         ],
