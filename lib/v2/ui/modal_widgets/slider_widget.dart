@@ -19,55 +19,31 @@ class CarouselDemo extends StatelessWidget {
               //1st page - Explainer
               Container(
                 margin: EdgeInsets.all(5.0),
-                child: LinkAPIHelperModal(),
+                child: LinkAPIHelperModal(page: 1),
               ),
 
               //2nd Connect exchange
               Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: AssetImage('graphics/assets/placeholder_modal.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                margin: EdgeInsets.all(5.0),
+                child: LinkAPIHelperModal(page: 2),
               ),
 
               //3rd Image of Slider
               Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: AssetImage('graphics/assets/placeholder_modal.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                margin: EdgeInsets.all(5.0),
+                child: LinkAPIHelperModal(page: 3),
               ),
 
               //4th Image of Slider
               Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: AssetImage('graphics/assets/placeholder_modal.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                margin: EdgeInsets.all(5.0),
+                child: LinkAPIHelperModal(page: 4),
               ),
 
               //5th Image of Slider
               Container(
-                margin: EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                    image: AssetImage('graphics/assets/placeholder_modal.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                margin: EdgeInsets.all(5.0),
+                child: LinkAPIHelperModal(page: 5),
               ),
             ],
 
