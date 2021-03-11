@@ -4,6 +4,9 @@ import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
 class TopMenuRow extends StatelessWidget {
+  TopMenuRow({Key key, this.precontext}) : super(key: key);
+  final BuildContext precontext;
+
   // GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
     return Row(
@@ -11,7 +14,7 @@ class TopMenuRow extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.menu, color: Colors.white),
           onPressed: () {
-            Scaffold.of(context).openDrawer();
+            Scaffold.of(precontext).openDrawer();
             log("Hello");
             // scaffoldState.currentState.openDrawer();
           },

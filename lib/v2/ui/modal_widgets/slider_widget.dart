@@ -1,5 +1,5 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/link_api_helper_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -19,7 +19,7 @@ class CarouselDemo extends StatelessWidget {
               //1st page - Explainer
               Container(
                 margin: EdgeInsets.all(5.0),
-                child: ModalPopup(),
+                child: LinkAPIHelperModal(),
               ),
 
               //2nd Connect exchange

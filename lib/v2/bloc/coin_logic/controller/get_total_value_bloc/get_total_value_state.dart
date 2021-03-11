@@ -1,3 +1,5 @@
+import 'package:coinsnap/v1/data/repository/auth/get_all/binance_get_all.dart';
+import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -16,6 +18,17 @@ class GetTotalValueLoadingState extends GetTotalValueState {
   List<Object> get props => [];
 }
 
+class GetTotalValueResponseState extends GetTotalValueState {
+
+  final List<BinanceGetAllModel> binanceGetAllModelList;
+  final Map binanceGetPricesMap;
+
+  GetTotalValueResponseState({@required this.binanceGetAllModelList, @required this.binanceGetPricesMap});
+
+  @override
+  List<Object> get props => [];
+}
+
 // class GetTotalValueCoinListReceivedState extends GetTotalValueState {
 
 //   var coinListReceived;
@@ -29,11 +42,12 @@ class GetTotalValueLoadingState extends GetTotalValueState {
 
 class GetTotalValueLoadedState extends GetTotalValueState {
 
+  final Map binanceGetPricesMap;
   final double totalValue;
   final double btcSpecial;
-  var coinListReceived;
+  final coinListReceived;
 
-  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived});
+  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived, @required this.binanceGetPricesMap});
 
   @override
   /// TODO: implement props
