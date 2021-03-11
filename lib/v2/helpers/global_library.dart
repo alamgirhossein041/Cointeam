@@ -8,6 +8,7 @@ enum Status {
 }
 
 enum Categories {
+  binanceAccount,
   top100,
   defi,
   cexdex

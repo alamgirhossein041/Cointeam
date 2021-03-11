@@ -17,6 +17,7 @@ import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
@@ -497,9 +498,21 @@ class PlaceholderTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: appBlack, /// ### TODO: Change to Hana's UI Colour ### ///
                 ),
-                child: GestureDetector(
+                child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
                   onTap: () {
+                    log("CategoryName is " + categoryName.toString());
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/dashboardwithcategory',);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                          DashboardWithCategory(categoryName: categoryName)
+                      ),
+                    );
+
+                    ///  arguments: {'categoryName': categoryName});
                   },
                   child: Container(
                     // padding: EdgeInsets.fromLTRB(0,0,0,0),

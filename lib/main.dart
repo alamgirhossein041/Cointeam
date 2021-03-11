@@ -114,6 +114,7 @@ class MyApp extends StatelessWidget {
           '/editcointest': (context) => EditCoin(),
           '/addcointest': (context) => AddCoin(),
           '/dashboardnoapitest': (context) => DashboardNoApiView(),
+          '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),
     );

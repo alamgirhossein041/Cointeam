@@ -1,3 +1,4 @@
+import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

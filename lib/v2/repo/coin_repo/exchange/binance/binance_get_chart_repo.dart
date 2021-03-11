@@ -49,7 +49,7 @@ class BinanceGetChartRepositoryImpl implements IBinanceGetChartRepository {
 
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
-      log(response.body.toString() + "\n\n");
+      // log(response.body.toString() + "\n\n");
       // log("???!#@#/");
       // log(json.decode(response.body).toString());
       // log(response.body.toString());

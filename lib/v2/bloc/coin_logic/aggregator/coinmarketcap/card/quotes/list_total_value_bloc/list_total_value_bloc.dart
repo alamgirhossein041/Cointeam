@@ -28,7 +28,7 @@ class ListTotalValueBloc extends Bloc<ListTotalValueEvent, ListTotalValueState> 
       try {
         var data = await listTotalValueRepository.getCoinMarketCapCoinList(event.coinList);
         // yield ListTotalValueLoadedState(coinListMap: data);
-        yield ListTotalValueLoadedState(data);
+        yield ListTotalValueLoadedState(coinList: data);
         // List<FirestoreGetUserDataModel> FirestoreGetUserDataModel = []; /// await repository.getData
         /// TODO: probably fix up LIST
         // yield FirestoreGetUserDataLoadedState(FirestoreGetUserDataModel: FirestoreGetUserDataModel);

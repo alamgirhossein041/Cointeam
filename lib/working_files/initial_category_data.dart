@@ -105,7 +105,7 @@ class InitialCategoryData {
     'ESD',
     'MTA',
   ];
-  static final cexDec = [
+  static final cexDexCategoryData = [
     'BNB',
     'LEO',
     'FTT',

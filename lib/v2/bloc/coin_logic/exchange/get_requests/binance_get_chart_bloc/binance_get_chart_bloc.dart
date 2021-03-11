@@ -18,7 +18,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
     if (event is FetchBinanceGetChartEvent) {
       var listOfUserCoins = event.binanceGetAllModelList;
       var timeSelection = event.timeSelection;
-      log(timeSelection.toString());
+      // log(timeSelection.toString());
       // var mapOfPrices = event.binanceGetPricesMap;
       // Map mapOfPrices = {};
       /// TODO: DELETE mapOfPrices

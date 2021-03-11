@@ -202,7 +202,7 @@ class DashboardWithApi extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: <Widget> [
-                    PriceContainer(context: context),
+                    PriceContainer(context: context)
                   ],
                 ),
               ),
@@ -215,9 +215,194 @@ class DashboardWithApi extends StatelessWidget {
 }
 
 
-class DashboardWithCategory extends StatelessWidget {
-  const DashboardWithCategory({Key key, this.categoryName}) : super(key: key);
+class DashboardWithCategory extends StatefulWidget {
+  DashboardWithCategory({Key key, this.categoryName}) : super(key: key);
   final Categories categoryName;
+
+  @override
+  _DashboardWithCategoryState createState() => _DashboardWithCategoryState();
+}
+
+class _DashboardWithCategoryState extends State<DashboardWithCategory> {
+
+  double modalEdgePadding = 10;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: appBlack,
+      bottomNavigationBar: SizedBox(
+      height: kBottomNavigationBarHeight,
+      child: Container( /// ### This is the bottomappbar ### ///
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.only(
+        //     topRight: Radius.circular(15),
+        //     topLeft: Radius.circular(15),
+        //   ),
+  //          boxShadow: [                                                               
+  //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),       
+  // ], 
+        // ),
+      
+      
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30),
+            topLeft: Radius.circular(30),
+          ),
+          child: BottomAppBar(
+            color: Color(0xFF2E374E),
+            child: Column(
+              children: <Widget> [
+                SizedBox(height: 5),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget> [
+                      IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
+
+                        /// API Call
+                        /// 
+
+                      }),
+                      // IconButton(icon: Icon(Icons.search), onPressed: () {}),
+                      
+                        /// /// ApiModalFirst();  /// ///
+                        
+                      IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                            /// Manual padding override because Dialog's default padding is FAT
+                            insetPadding: EdgeInsets.all(modalEdgePadding),
+                            // title: Text("Hello"),
+                            // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
+                            
+                            /// Connect API tutorial modal
+                            // child: ModalPopup(),
+                            child: IntroScreen(),
+                          ),
+                        );
+                      }),
+
+                      IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {setState(() {});}),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+    drawer: DrawerMenu(),
+    body: Container(
+      decoration: BoxDecoration(
+        color: appBlack,
+      ),
+      child: DashboardWithCategoryOptions(categoryName: widget.categoryName),
+    ),
+    );
+  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   if(categoryName == globals.Categories.top100) {
+  //     return Scaffold(
+  //       body: Container(
+  //         decoration: BoxDecoration(
+  //           color: appBlack,
+  //         ),
+  //         child: Column(
+  //           children: <Widget> [
+  //             SizedBox(height: displayHeight(context) * 0.05),
+  //             /// ### Top Row starts here ### ///
+  //             TopMenuRow(precontext: context),
+  //             RefreshIndicator(
+  //               onRefresh: () async {
+  //                 BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.top100CategoryData)); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+  //               },
+  //               child: SingleChildScrollView(
+  //                 physics: AlwaysScrollableScrollPhysics(),
+  //                 child: Column(
+  //                   children: <Widget> [
+  //                     PriceContainerWithCategory(context: context, category: Categories.top100),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } else if(categoryName == globals.Categories.defi) {
+  //     return Scaffold(
+  //       body: Container(
+  //         decoration: BoxDecoration(
+  //           color: appBlack,
+  //         ),
+  //         child: Column(
+  //           children: <Widget> [
+  //             SizedBox(height: displayHeight(context) * 0.05),
+  //             /// ### Top Row starts here ### ///
+  //             TopMenuRow(precontext: context),
+  //             RefreshIndicator(
+  //               onRefresh: () async {
+  //                 BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
+  //                 // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+  //               },
+  //               child: SingleChildScrollView(
+  //                 physics: AlwaysScrollableScrollPhysics(),
+  //                 child: Column(
+  //                   children: <Widget> [
+  //                     PriceContainerWithCategory(context: context, category: Categories.defi),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } else if(categoryName == globals.Categories.cexdex) {
+  //     return Scaffold(
+  //       body: Container(
+  //         decoration: BoxDecoration(
+  //           color: appBlack,
+  //         ),
+  //         child: Column(
+  //           children: <Widget> [
+  //             SizedBox(height: displayHeight(context) * 0.05),
+  //             /// ### Top Row starts here ### ///
+  //             TopMenuRow(precontext: context),
+  //             RefreshIndicator(
+  //               onRefresh: () async {
+  //                 BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
+  //                 // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+  //               },
+  //               child: SingleChildScrollView(
+  //                 physics: AlwaysScrollableScrollPhysics(),
+  //                 child: Column(
+  //                   children: <Widget> [
+  //                     PriceContainerWithCategory(context: context, category: Categories.cexdex),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     log(categoryName.toString());
+  //     Navigator.pushNamed(context, '/authentication');
+  //   }
+  // }
+}
+
+class DashboardWithCategoryOptions extends StatelessWidget {
+  const DashboardWithCategoryOptions({Key key, this.categoryName}) : super(key: key);
+  final Categories categoryName;
+
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +425,7 @@ class DashboardWithCategory extends StatelessWidget {
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: <Widget> [
-                      PriceContainer(context: context),
+                      PriceContainerWithCategory(context: context, category: Categories.top100),
                     ],
                   ),
                 ),
@@ -262,13 +447,14 @@ class DashboardWithCategory extends StatelessWidget {
               TopMenuRow(precontext: context),
               RefreshIndicator(
                 onRefresh: () async {
-                  BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                  BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
+                  // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
                 },
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: <Widget> [
-                      PriceContainer(context: context),
+                      PriceContainerWithCategory(context: context, category: Categories.defi),
                     ],
                   ),
                 ),
@@ -290,13 +476,14 @@ class DashboardWithCategory extends StatelessWidget {
               TopMenuRow(precontext: context),
               RefreshIndicator(
                 onRefresh: () async {
-                  BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                  BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
+                  // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
                 },
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: <Widget> [
-                      PriceContainer(context: context),
+                      PriceContainerWithCategory(context: context, category: Categories.cexdex),
                     ],
                   ),
                 ),
@@ -306,9 +493,8 @@ class DashboardWithCategory extends StatelessWidget {
         ),
       );
     } else {
-      return Container();
+      log(categoryName.toString());
+      Navigator.pushNamed(context, '/authentication');
     }
   }
 }
-
-
