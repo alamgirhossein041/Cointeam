@@ -20,6 +20,7 @@ import 'package:coinsnap/v2/ui/authentication/authentication.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_edit.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_page/coin_page.dart';
+import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
@@ -98,9 +99,10 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/hometest',
         // initialRoute: '/dashboardnoapitest',
         // initialRoute: '/authentication',
-        initialRoute: '/coinpage',
+        initialRoute: '/dashboard',
         // initialRoute: '/home',
         routes: {
+          '/dashboard': (context) => Dashboard(),
           '/coinpage': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),

@@ -14,7 +14,7 @@ class TopMenuRow extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.menu, color: Colors.white),
           onPressed: () {
-            Scaffold.of(precontext).openDrawer();
+            Scaffold.of(context).openDrawer();
             // scaffoldState.currentState.openDrawer();
           },
         ),
@@ -41,8 +41,9 @@ class TopMenuRow extends StatelessWidget {
 }
 
 class TopMenuRowForCoin extends StatelessWidget {
-  TopMenuRowForCoin({Key key, this.precontext}) : super(key: key);
+  TopMenuRowForCoin({Key key, this.precontext, this.coinName}) : super(key: key);
   final BuildContext precontext;
+  final String coinName;
 
   // GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class TopMenuRowForCoin extends StatelessWidget {
           flex: 1,
           child: Align(
             alignment: Alignment.center,
-            child: Text("Bitcoin", style: TextStyle(fontFamily: 'Poppins', fontSize: 22, color: Colors.white)),
+            child: Text(coinName, style: TextStyle(fontFamily: 'Poppins', fontSize: 20, color: Colors.white)),
           ),
         ),
         Expanded(

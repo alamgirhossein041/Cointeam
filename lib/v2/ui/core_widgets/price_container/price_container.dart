@@ -66,7 +66,7 @@ class _PriceContainerState extends State<PriceContainer> {
         AnimatedContainer( /// ### This is the container ### ///
           duration: Duration(seconds: 2),
           height: _showContainer ? (_heightShowContainer + _heightOffset) : (_heightHideContainer + _heightOffset),
-          padding: EdgeInsets.fromLTRB(30,30,30,0),
+          padding: EdgeInsets.fromLTRB(30,0,30,0),
           child: Stack(
             children: <Widget> [
               Container(
@@ -345,7 +345,7 @@ class _PriceContainerState extends State<PriceContainer> {
         //     ),
         //   ],
         // ),
-      ListContainer(showContainer: _showContainer),
+        ListContainer(showContainer: _showContainer),
       ]
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
@@ -14,9 +16,69 @@ class CoinPage extends StatefulWidget {
 
 class _CoinPageState extends State<CoinPage> {
   final double modalEdgePadding = 10;
+  double usdValue = 0.0;
+  String usdValueString = '';
+  double btcValue = 0.0;
+  String coinName = '';
+  String coinTicker = '';
+  double balance = 0.0;
+  String balanceString = '';
+  double totalValue = 0.0;
+  String totalValueString = '';
+  double portfolioValue = 1.0;
+  String portfolioShareString = '-';
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    
+    /// ### Dev Testing Values ### ///
+    
+    if (arguments == null) {
+      log("Arguments is null");
+    } else {
+      log("Arguments is: " + arguments['cryptoData'].toString());
+      log(arguments['cryptoData'][arguments['index']].toString());
+      log(arguments['cryptoData'][arguments['index']].coin);
+      log(arguments['cryptoData'][arguments['index']].name);
+      log(arguments['cryptoData'][arguments['index']].free.toString());
+      log(arguments['cryptoData'][arguments['index']].locked.toString());
+      log(arguments['cryptoData'][arguments['index']].btcValue.toString());
+      usdValue = arguments['cryptoData'][arguments['index']].usdValue ;
+      balance = arguments['cryptoData'][arguments['index']].free + arguments['cryptoData'][arguments['index']].locked;
+      totalValue = balance * usdValue;
+      coinName = arguments['cryptoData'][arguments['index']].name;
+      portfolioValue = arguments['portfolioValue'];
+      log(totalValue.toString());
+    }
+
+    /// ### Neatly formatting total price of coin:
+    /// Eg. Dogecoin is $0.054998 = 6 decimal places is neat
+    /// Eg. Bitcoin is $57,582.51 = 2 decimal places is neat
+    /// QED // Conditional - If coin is greater or less than 1:
+    
+    if(usdValue > 1) {
+      usdValueString = usdValue.toStringAsFixed(2);
+    } else {
+      usdValueString = usdValue.toStringAsFixed(6);
+    }
+    if(balance > 1000) {
+      balanceString = balance.toStringAsFixed(4);
+    } else {
+      balanceString = balance.toStringAsFixed(8);
+    }
+    if(totalValue > 1) {
+      totalValueString = totalValue.toStringAsFixed(2);
+    } else {
+      totalValueString = ' < 1';
+    }
+
+    if(totalValue != null && portfolioValue != null) {
+      log(totalValue.toString());
+      log(portfolioValue.toString());
+      portfolioShareString = ((totalValue / portfolioValue) * 100).toStringAsFixed(1);
+    }
+
     final mediaQueryData = MediaQuery.of(context);
     if (mediaQueryData.orientation == Orientation.landscape) {
       return Text("Hello World");
@@ -95,7 +157,7 @@ class _CoinPageState extends State<CoinPage> {
                 /// ### Top Row starts here ### ///
               Builder(
                 builder: (BuildContext innerContext) {
-                  return TopMenuRowForCoin(precontext: innerContext);
+                  return TopMenuRowForCoin(precontext: innerContext, coinName: coinName);
                 }
               ),
               // TopMenuRow(precontext: context),
@@ -116,7 +178,7 @@ class _CoinPageState extends State<CoinPage> {
                             flex: 3,
                             child: Align(
                               alignment: Alignment.bottomLeft,
-                              child: Text("\$48,262.15", style: TextStyle(color: Colors.white, fontSize: 24))
+                              child: Text("\$" + usdValueString, style: TextStyle(color: Colors.white, fontSize: 24))
                             ),
                           ),
                           Expanded(
@@ -125,7 +187,7 @@ class _CoinPageState extends State<CoinPage> {
                               padding: EdgeInsets.only(top: 4),
                               child: Align(
                                 alignment: Alignment.topLeft,
-                                child: Text("+ \$250.53 (2.57%)", style: TextStyle(color: Colors.greenAccent[400], fontSize:12))
+                                child: Text("+ \$xxx.xx (y.yy%)", style: TextStyle(color: Colors.greenAccent[400], fontSize:12))
                             ),),
                           )
                         ]
@@ -217,140 +279,131 @@ class _CoinPageState extends State<CoinPage> {
                 //   alignment: Alignment.center,
                 //   child: Text("Hello World", style: TextStyle(color: Colors.white))
                 // )
-                child: CoinPageBottomPanel()
-              )
-            ]
+                child: Container(
+                  constraints: BoxConstraints.expand(),
+                
+                  decoration: BoxDecoration(color: Color(0xFF1A1B20)),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10), /// modal padding constant
+                    child: Column(
+                      children: <Widget> [
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text("Investment", style: TextStyle(color: Colors.blueGrey, fontSize: 18)),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text("\$" + totalValueString, style: TextStyle(color: Colors.white, fontSize: 24)),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Row(
+                              children: <Widget> [
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget> [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 30),
+                                        child: Text("Holdings", style: TextStyle(color: Colors.blueGrey)),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(30,5,0,0),
+                                        child: Text(balanceString, style: TextStyle(color: Colors.white, fontSize: 18)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget> [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 30),
+                                        child: Text("Total Purchase Cost", style: TextStyle(color: Colors.blueGrey)),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(30,5,0,0),
+                                        child: Text("-", style: TextStyle(color: Colors.white, fontSize: 18)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]
+                            ),
+                          )
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Row(
+                              children: <Widget> [
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget> [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 30),
+                                        child: Text("Portfolio Share", style: TextStyle(color: Colors.blueGrey)),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(30,5,0,0),
+                                        child: Text(portfolioShareString + "%", style: TextStyle(color: Colors.blue[400], fontSize: 18)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget> [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 30),
+                                        child: Text("Total Profit/Loss", style: TextStyle(color: Colors.blueGrey)),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(30,5,0,0),
+                                        // child: Text("+\$92,241.16", style: TextStyle(color: Colors.blue[200], fontSize: 18)),
+                                        // child: Text("-\$92,241.16", style: TextStyle(color: Colors.deepOrange[100], fontSize: 18)),
+                                        child: Text("-", style: TextStyle(color: Colors.greenAccent[400], fontSize: 18)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]
+                            ),
+                          )
+                        ),
+                      Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Column(
+                              children: <Widget> [
+                                Text("Have a suggestion?", style: TextStyle(color: Colors.white))
+                              ]
+                            )
+                          ),
+                        ),
+                      ]
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );
     }
-  }
-}
-
-class CoinPageBottomPanel extends StatelessWidget {
-  const CoinPageBottomPanel({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints.expand(),
-    
-      decoration: BoxDecoration(color: Color(0xFF1A1B20)),
-      child: Container(
-        padding: EdgeInsets.only(top: 10), /// modal padding constant
-        child: Column(
-          children: <Widget> [
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text("Investment", style: TextStyle(color: Colors.blueGrey, fontSize: 18)),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Text("\$244,512.76", style: TextStyle(color: Colors.white, fontSize: 24)),
-            ),
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: <Widget> [
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Text("Holdings", style: TextStyle(color: Colors.blueGrey)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(30,5,0,0),
-                            child: Text("5.637130451", style: TextStyle(color: Colors.white, fontSize: 18)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Text("Total Purchase Cost", style: TextStyle(color: Colors.blueGrey)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(30,5,0,0),
-                            child: Text("\$152,182.23", style: TextStyle(color: Colors.white, fontSize: 18)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-                ),
-              )
-            ),
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: <Widget> [
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Text("Portfolio Share", style: TextStyle(color: Colors.blueGrey)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(30,5,0,0),
-                            child: Text("28.3%", style: TextStyle(color: Colors.blue[400], fontSize: 18)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Text("Total Profit/Loss", style: TextStyle(color: Colors.blueGrey)),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(30,5,0,0),
-                            // child: Text("+\$92,241.16", style: TextStyle(color: Colors.blue[200], fontSize: 18)),
-                            // child: Text("-\$92,241.16", style: TextStyle(color: Colors.deepOrange[100], fontSize: 18)),
-                            child: Text("+\$92,241.16", style: TextStyle(color: Colors.greenAccent[400], fontSize: 18)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-                ),
-              )
-            ),
-           Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Column(
-                  children: <Widget> [
-                    Text("Have a suggestion?", style: TextStyle(color: Colors.white))
-                  ]
-                )
-              ),
-            ),
-          ]
-        ),
-      ),
-    );
   }
 }

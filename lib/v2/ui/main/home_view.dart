@@ -197,6 +197,7 @@ class DashboardWithApi extends StatelessWidget {
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
             TopMenuRow(precontext: context),
+            /// ### Pulldown to Refresh ### ///
             RefreshIndicator(
               onRefresh: () async {
                 BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
@@ -407,6 +408,9 @@ class _DashboardWithCategoryState extends State<DashboardWithCategory> {
   //     Navigator.pushNamed(context, '/authentication');
   //   }
   // }
+  void _callBackSetState() {
+    setState(() {});
+  }
 }
 
 class DashboardWithCategoryOptions extends StatelessWidget {

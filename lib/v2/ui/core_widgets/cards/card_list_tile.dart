@@ -7,10 +7,11 @@ import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 
 class CardListTile extends StatefulWidget {
-  CardListTile({Key key, this.coinListMap, this.index}) : super(key: key);
+  CardListTile({Key key, this.coinListMap, this.index, this.portfolioValue}) : super(key: key);
 
   final List<BinanceGetAllModel> coinListMap;
   final dynamic index;
+  final double portfolioValue;
 
   @override
   _CardListTileState createState() => _CardListTileState();
@@ -30,7 +31,7 @@ class _CardListTileState extends State<CardListTile> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
+                    Navigator.pushNamed(context, '/coinpage', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
                   },
                   child: Container(
                     padding: EdgeInsets.fromLTRB(25,2,25,2),

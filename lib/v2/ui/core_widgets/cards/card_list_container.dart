@@ -153,7 +153,7 @@ class _ListContainerState extends State<ListContainer> {
                   
                   SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                        return CardListTile(coinListMap: state.coinListReceived, index: index);
+                        return CardListTile(coinListMap: state.coinListReceived, index: index, portfolioValue: (state.totalValue * state.btcSpecial));
                       },
                       childCount: state.coinListReceived.length,
                     ),
