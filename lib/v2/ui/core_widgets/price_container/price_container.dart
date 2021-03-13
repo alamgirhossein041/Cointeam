@@ -1,5 +1,10 @@
 import 'dart:developer';
 
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
@@ -13,11 +18,13 @@ import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_prices_r
 import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_container.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/container_panel.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 
 class PriceContainer extends StatefulWidget {
   PriceContainer({Key key, this.context}) : super(key: key);
@@ -120,7 +127,6 @@ class _PriceContainerState extends State<PriceContainer> {
                                       ),
                                     ),
                                   ),
-                                
                                 ],
                               ),
                             ),
@@ -348,9 +354,10 @@ class _PriceContainerState extends State<PriceContainer> {
 
 
 class PriceContainerWithCategory extends StatefulWidget {
-  PriceContainerWithCategory({Key key, this.context, this.category}) : super(key: key);
+  PriceContainerWithCategory({Key key, this.context, this.category, this.coinList}) : super(key: key);
   final BuildContext context;
   final Categories category;
+  final coinList;
 
   @override
   _PriceContainerStateWithCategory createState() => _PriceContainerStateWithCategory();
@@ -377,7 +384,15 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
     _heightHideContainer = displayHeight(widget.context) * 0.2;
     _heightShowContainer = displayHeight(widget.context) * 0.4;
     _heightOffset = displayHeight(widget.context) * 0.065 ;
-    BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+    // log(widget.coinList.toString());
+    if(widget.category == globals.Categories.top100) {
+      // log(widget.coinList.toString());
+      BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: widget.coinList));
+    } else if(widget.category == globals.Categories.defi) {
+      BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
+    } else if(widget.category == globals.Categories.cexdex) {
+      BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
+    }
     log("Here you go + " + widget.category.toString());
   }
 
@@ -445,54 +460,53 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
                                       angle: -5 * math.pi / 180,
                                       child: FittedBox(
                                         fit: BoxFit.fill,
-                                        child: Icon(CustomIcon.IconCustom.wallet_tilt, color: Colors.white, )
+                                        child: Icon(CustomIcon.IconCustom.wallet_tilt, color: Colors.white)
                                       ),
                                     ),
                                   ),
-                                
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ),
-                        BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
+                        BlocConsumer<ListTotalValueBloc, ListTotalValueState>(
                           listener: (context, state) {
-                            if (state is GetTotalValueErrorState) {
-                              log("error in GetTotalValueState in home_view.dart");
-                            } else if (state is GetTotalValueResponseState) {
+                            if (state is ListTotalValueErrorState) {
+                              log("error in ListTotalValueState in price_container(withcategory).dart");
+                            } else if (state is ListTotalValueResponseState) {
                               log("Is it working?");
-                              BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
+                              // BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
                             }
                           },
                           builder: (context, state) {
-                            if (state is GetTotalValueInitialState) {
-                              log("GetTotalValueInitialState");
+                            if (state is ListTotalValueInitialState) {
+                              log("ListTotalValueInitialState");
                               return loadingTemplateWidget();
-                            } else if (state is GetTotalValueLoadingState) {
-                              log("GetTotalValueLoadingStatedoodoo");
+                            } else if (state is ListTotalValueLoadingState) {
+                              log("ListTotalValueLoadingStatedoodoo");
                               return loadingTemplateWidget();
-                            } else if (state is GetTotalValueResponseState) {
-                              log("GetTotalValueResponseReceivedState");
+                            } else if (state is ListTotalValueResponseState) {
+                              log("ListTotalValueResponseReceivedState");
                               return loadingTemplateWidget();
-                            } else if (state is GetTotalValueLoadedState) {
-                              log("GetTotalValueLoadedState");
+                            } else if (state is ListTotalValueLoadedState) {
+                              log("ListTotalValueLoadedState");
                               return Column(
                                 children: <Widget> [
                                   Row(
-                        /// TODO: Alignment (padding?)
+                            /// TODO: Alignment (padding?)
                                     children: <Widget> [
                                       Container(
                                         padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
                                         child: Row( /// ### Start Bitcoin total value line here ### ///
                                           children: <Widget> [
                                             Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
-                                            Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
+                                            // Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
                                           ],
                                         ), /// ### End Bitcoin total value line here ### ///
                                       )
                                     ],
                                   ),
-                                  Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
+                                  // Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
                                 ],
                               );
                               
@@ -503,9 +517,7 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
                           }
                         ),
                         ContainerPanel(panelVisibility: _panelVisibility),
-
                         /// ### End Expanded Buttons Here ### ///
-
                         Flexible(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -519,15 +531,15 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
                                   children: <Widget> [
                                     Icon(Icons.pie_chart, color: Colors.white),
                                     Icon(Icons.stacked_line_chart, color: Colors.green),
-                                  ]
-                                )
-                              )
-                            ]
-                          )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         /// ####### ///
-                      ] /// ### End container columns here ### ///
-                    )
+                      ], /// ### End container columns here ### ///
+                    ),
                     /// ### This is where the inner container ends ### ///
                   ),
                 ),
@@ -546,14 +558,14 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
                     },
                     child: Icon(Icons.swap_horiz, size: 36),
                     backgroundColor: uniColor,
-                  )
+                  ),
                 ),
               ),
-            ]
-          )
+            ],
+          ),
         ),
-      ListContainer(showContainer: _showContainer),
-      ]
+        ListContainerWithContainer(showContainer: _showContainer, ),
+      ],
     );
   }
 }

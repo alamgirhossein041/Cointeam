@@ -195,7 +195,7 @@ class DashboardWithNoApiWorking extends StatelessWidget {
           children: <Widget> [
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
-            TopMenuRow(precontext: context),
+            TopMenuRow(),
             RefreshIndicator(
               onRefresh: () async {
                 // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
@@ -233,7 +233,8 @@ class NoApiPriceContainer extends StatelessWidget {
       // height: displayHeight(context) * (0.2 + 0.16),
       width: displayWidth(context),
       child: Container(
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.fromLTRB(0,30,0,30),
+        // margin: EdgeInsets.fromLTRB(,, right, bottom)
           child: Stack(
             children: <Widget> [
               Container(
@@ -251,10 +252,10 @@ class NoApiPriceContainer extends StatelessWidget {
                       1.0
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(5),
+                  // borderRadius: BorderRadius.circular(0),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.all(2.75),
+                  padding:  EdgeInsets.fromLTRB(0,2.75,0,2.75),
                   child: Container(
                     height: displayHeight(context) * 0.2,
                     width: displayWidth(context),
@@ -268,7 +269,7 @@ class NoApiPriceContainer extends StatelessWidget {
                           // Colors.white,
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(5),
+                      // borderRadius: BorderRadius.circular(5),
                     ),
                     /// ### This is where the inner container starts ### ///
                     // child: Center(
@@ -471,9 +472,9 @@ class NoApiCategoryList extends StatelessWidget {
       /// Need to make this a bloc that gets a pre-defined list of coins
       /// Categories are predefined
         children: <Widget> [
-          PlaceholderTile(categoryName: globals.Categories.defi),
-          PlaceholderTile(categoryName: globals.Categories.top100),
-          PlaceholderTile(categoryName: globals.Categories.cexdex),
+          TileDefi(categoryName: globals.Categories.defi),
+          TileTop100(categoryName: globals.Categories.top100),
+          TileDex(categoryName: globals.Categories.cexdex),
         ],
         scrollDirection: Axis.horizontal,
       ),
@@ -482,8 +483,208 @@ class NoApiCategoryList extends StatelessWidget {
 }
 
 
-class PlaceholderTile extends StatelessWidget {
-  const PlaceholderTile({Key key, this.categoryName}) : super(key: key);
+class TileDefi extends StatelessWidget {
+  const TileDefi({Key key, this.categoryName}) : super(key: key);
+  final Categories categoryName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: InkWell(
+        /// ### Clickable Card ### ///
+        // child: Container(
+          // child: Row(
+          //   children: <Widget> [
+              child: Container(
+                decoration: BoxDecoration(
+                  color: appBlack, /// ### TODO: Change to Hana's UI Colour ### ///
+                ),
+                child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
+                  onTap: () {
+                    log("CategoryName is " + categoryName.toString());
+                    // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/dashboardwithcategory',);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                          DashboardWithCategory(categoryName: categoryName)
+                      ),
+                    );
+
+                    ///  arguments: {'categoryName': categoryName});
+                  },
+                  child: Container(
+                    // padding: EdgeInsets.fromLTRB(0,0,0,0),
+                    height: displayHeight(context) * 0.240,
+                    width: displayWidth(context) * 0.385,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Container(
+                        height: displayHeight(context) * 0.240,
+                        width: displayWidth(context) * 0.385,
+                        // padding: EdgetInsets.fromLTRB()
+                        decoration: BoxDecoration(
+                          color: Color(0xFF191B31),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+
+                        /// ### Card content starts here ### ///
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10,0,0,0), /// TODO: padding constant
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Icon(CryptoFontIcons.XRP, color: Colors.blue)
+                                    ),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("DeFi", style: TextStyle(color: Colors.white))
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // child: Text("Top 100", style: TextStyle(color: Colors.white)),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget> [
+                                  Text("Market Cap:", style: TextStyle(color: Colors.white)),
+                                  Text("\$182B (+8%)", style: TextStyle(color: Colors.blue)),
+                                  // Text("(+8%)", style: TextStyle(color: Colors.blue)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        // child: Padding(
+                        //   padding: EdgeInsets.fromLTRB(30,0,0,0),
+                        //   child: Row(
+                        //     children: <Widget> [ /// ### Card Tile Internal UI Starts Here ### ///
+                        //       Align(
+                        //         alignment: Alignment.centerLeft,
+                        //         child: Icon(
+                        //           CryptoFontIcons.BTC,
+                        //           color: Colors.orange,
+                        //         ),
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.start,
+                        //         children: <Widget> [
+                        //           SizedBox(width: 10),
+                        //           Column(
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             children: <Widget> [
+                        //               Text(
+                        //                 "Top 100",
+                        //                 style: TextStyle(
+                        //                   color: Colors.white,
+                        //                   fontSize: 14,
+                        //                 ),
+                        //               ),
+                        //               // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ] /// ### Card Tile Internal UI Ends Here ### ///
+                        //   )
+                        // )
+
+
+
+                      )
+                    )
+                  // )
+                )
+            //   )
+            // ]
+          // )
+        )
+      )
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  //   Card(
+  //     child: Column(
+  //       children: <Widget> [
+  //         Row(
+  //           children: <Widget> [
+  //             Icon(CryptoFontIcons.BTC),
+  //             Text("Top 100", style: TextStyle(color: Colors.white)),
+  //           ]
+  //         ),
+  //         Row(
+  //           children: <Widget> [
+  //             Text("128.76", style: TextStyle(fontSize: 22, color: Colors.white)),
+  //             Text("BTC", style: TextStyle(fontSize: 18, color: Colors.white)),
+  //           ]
+  //         )
+  //       ],
+  //     ),
+  //   ),
+
+  // ],
+      ),
+    );
+  }
+}
+
+class TileTop100 extends StatelessWidget {
+  const TileTop100({Key key, this.categoryName}) : super(key: key);
   final Categories categoryName;
 
   @override
@@ -528,40 +729,86 @@ class PlaceholderTile extends StatelessWidget {
                           color: Color(0xFF191B31),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(30,0,0,0),
-                          child: Row(
-                            children: <Widget> [ /// ### Card Tile Internal UI Starts Here ### ///
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Icon(
-                                  CryptoFontIcons.BTC,
-                                  color: Colors.orange,
+
+                        /// ### Card content starts here ### ///
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10,0,0,0), /// TODO: padding constant
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Icon(CryptoFontIcons.BTC, color: Colors.orange)
+                                    ),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Top 100", style: TextStyle(color: Colors.white))
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              // child: Text("Top 100", style: TextStyle(color: Colors.white)),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
                                 children: <Widget> [
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget> [
-                                      Text(
-                                        "Top 100",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
-                                    ],
-                                  ),
+                                  Text("Market Cap:", style: TextStyle(color: Colors.white)),
+                                  Text("\$1.43T (+6.3%)", style: TextStyle(color: Colors.blue)),
+                                  // Text("(+8%)", style: TextStyle(color: Colors.blue)),
                                 ],
                               ),
-                            ] /// ### Card Tile Internal UI Ends Here ### ///
-                          )
-                        )
+                            ),
+                          ],
+                        ),
+
+                        // child: Padding(
+                        //   padding: EdgeInsets.fromLTRB(30,0,0,0),
+                        //   child: Row(
+                        //     children: <Widget> [ /// ### Card Tile Internal UI Starts Here ### ///
+                        //       Align(
+                        //         alignment: Alignment.centerLeft,
+                        //         child: Icon(
+                        //           CryptoFontIcons.BTC,
+                        //           color: Colors.orange,
+                        //         ),
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.start,
+                        //         children: <Widget> [
+                        //           SizedBox(width: 10),
+                        //           Column(
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             children: <Widget> [
+                        //               Text(
+                        //                 "Top 100",
+                        //                 style: TextStyle(
+                        //                   color: Colors.white,
+                        //                   fontSize: 14,
+                        //                 ),
+                        //               ),
+                        //               // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ] /// ### Card Tile Internal UI Ends Here ### ///
+                        //   )
+                        // )
+
+
+
                       )
                     )
                   )
@@ -633,6 +880,99 @@ class PlaceholderTile extends StatelessWidget {
   }
 }
 
+class TileDex extends StatelessWidget {
+  const TileDex({Key key, this.categoryName}) : super(key: key);
+  final Categories categoryName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: InkWell(
+        /// ### Clickable Card ### ///
+        // child: Container(
+          // child: Row(
+          //   children: <Widget> [
+        child: Container(
+          decoration: BoxDecoration(
+            color: appBlack, /// ### TODO: Change to Hana's UI Colour ### ///
+          ),
+          child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
+            onTap: () {
+              log("CategoryName is " + categoryName.toString());
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                    DashboardWithCategory(categoryName: categoryName)
+                ),
+              );
+
+              ///  arguments: {'categoryName': categoryName});
+            },
+            child: Container(
+              height: displayHeight(context) * 0.240,
+              width: displayWidth(context) * 0.385,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF191B31),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+
+                  /// ### Card content starts here ### ///
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10,0,0,0), /// TODO: padding constant
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Icon(CryptoFontIcons.ETH, color: Colors.blueGrey)
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("Dex", style: TextStyle(color: Colors.white))
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // child: Text("Top 100", style: TextStyle(color: Colors.white)),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: <Widget> [
+                            Text("Market Cap:", style: TextStyle(color: Colors.white)),
+                            Text("\$42B (-1.8%)", style: TextStyle(color: Colors.red)),
+                            // Text("(+8%)", style: TextStyle(color: Colors.blue)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+}
+
+
 class NoApiAddCoinWidget extends StatelessWidget {
   const NoApiAddCoinWidget({Key key}) : super(key: key);
 
@@ -644,8 +984,8 @@ class NoApiAddCoinWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 0, 10),
-              child: Text("Add Coins", style: TextStyle(color: Colors.white)
+              padding: EdgeInsets.fromLTRB(30, 25, 0, 10),
+              child: Text("Add Portfolio", style: TextStyle(color: Colors.white)
               )
             )
           ),

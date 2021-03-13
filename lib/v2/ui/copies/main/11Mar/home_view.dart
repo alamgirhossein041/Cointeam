@@ -8,10 +8,6 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_event.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_state.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_event.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
@@ -130,6 +126,7 @@ class HomeViewState extends State<HomeView> {
                               ),
                             );
                           }),
+
                           IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {setState(() {});}),
                         ],
                       ),
@@ -196,11 +193,10 @@ class DashboardWithApi extends StatelessWidget {
           children: <Widget> [
             SizedBox(height: displayHeight(context) * 0.05),
             /// ### Top Row starts here ### ///
-            TopMenuRow(precontext: context),
+            TopMenuRow(),
             RefreshIndicator(
               onRefresh: () async {
                 BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
-              
               },
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -230,12 +226,6 @@ class DashboardWithCategory extends StatefulWidget {
 class _DashboardWithCategoryState extends State<DashboardWithCategory> {
 
   double modalEdgePadding = 10;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    BlocProvider.of<Top100TotalValueBloc>(context).add(FetchTop100TotalValueEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -416,90 +406,40 @@ class DashboardWithCategoryOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var coinList = [];
     if(categoryName == globals.Categories.top100) {
-      return BlocConsumer<Top100TotalValueBloc, Top100TotalValueState>(
-        listener: (context, state) {
-          if (state is Top100TotalValueErrorState) {
-            log("error in Top100TotalValueState in home_view DashboardWithCategoryOptions widget");
-          } else if (state is Top100TotalValueLoadedState) {
-            log("Top100TotalValueLoadedState");
-            BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: state.coinList));
-            coinList = state.coinList;
-          }
-        },
-        builder: (context, state) {
-          if (state is Top100TotalValueInitialState) {
-            log("Top100TotalValueInitialState");
-            return loadingTemplateWidget();
-          } else if (state is Top100TotalValueLoadingState) {
-            log("Top100TotalValueLoadingState");
-            return loadingTemplateWidget();
-          } else {
-            // return BlocConsumer<ListTotalValueBloc, ListTotalValueState>(
-            //   listener: (context, state) {
-            //     if (state is ListTotalValueErrorState) {
-            //       log("error in ListTotalValueState in price_container(withcategory).dart");
-            //     } else if (state is ListTotalValueResponseState) {
-            //       log("Is it working?");
-            //       // BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
-            //     }
-            //   },
-            //   builder: (context, state) {
-            //     if (state is ListTotalValueInitialState) {
-            //       log("ListTotalValueInitialState");
-            //       return loadingTemplateWidget();
-            //     } else if (state is ListTotalValueLoadingState) {
-            //       log("ListTotalValueLoadingStatedoodoo");
-            //       return loadingTemplateWidget();
-            //     } else if (state is ListTotalValueResponseState) {
-            //       log("ListTotalValueResponseReceivedState");
-            //       return loadingTemplateWidget();
-            //     } else {
-            //       log("ListTotalValueLoadedState");
-                  return Scaffold(
-                    body: Container(
-                      decoration: BoxDecoration(
-                        color: appBlack,
-                      ),
-                      child: Column(
-                        children: <Widget> [
-                          SizedBox(height: displayHeight(context) * 0.05),
-                          /// ### Top Row starts here ### ///
-                          TopMenuRow(precontext: context),
-                          RefreshIndicator(
-                            onRefresh: () async {
-                              // BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: state.coinList)); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
-                            },
-                            child: SingleChildScrollView(
-                              physics: AlwaysScrollableScrollPhysics(),
-                              child: Column(
-                                children: <Widget> [
-                                  PriceContainerWithCategory(context: context, category: Categories.top100, coinList: coinList),
-                                ],
-                              ),
-                            ),
-                          ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              }
-            );
-          
-          //       } else {
-          //         return Container();
-          //       }
-          //     }
-          //   );
-          // } else {
-          //   return Container();
-          // }
-      //   }
-      // );
-
-      
+      return Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: displayHeight(context) * 0.05),
+              /// ### Top Row starts here ### ///
+              TopMenuRow(),
+              RefreshIndicator(
+                onRefresh: () async {
+                  if(categoryName == globals.Categories.top100) {
+                    BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.top100CategoryData)); // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+                  } else if(categoryName == globals.Categories.defi) {
+                    BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
+                  } else if(categoryName == globals.Categories.cexdex) {
+                    BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
+                  }
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: <Widget> [
+                      PriceContainerWithCategory(context: context, category: categoryName),
+                    ],
+                  ),
+                ),
+              ), // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+            ],
+          ),
+        ),
+      );
     } else if(categoryName == globals.Categories.defi) {
       return Scaffold(
         body: Container(
@@ -510,7 +450,7 @@ class DashboardWithCategoryOptions extends StatelessWidget {
             children: <Widget> [
               SizedBox(height: displayHeight(context) * 0.05),
               /// ### Top Row starts here ### ///
-              TopMenuRow(precontext: context),
+              TopMenuRow(),
               RefreshIndicator(
                 onRefresh: () async {
                   BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
@@ -539,7 +479,7 @@ class DashboardWithCategoryOptions extends StatelessWidget {
             children: <Widget> [
               SizedBox(height: displayHeight(context) * 0.05),
               /// ### Top Row starts here ### ///
-              TopMenuRow(precontext: context),
+              TopMenuRow(),
               RefreshIndicator(
                 onRefresh: () async {
                   BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
@@ -560,8 +500,7 @@ class DashboardWithCategoryOptions extends StatelessWidget {
       );
     } else {
       log(categoryName.toString());
-      return Align(alignment: Alignment.center, child: Text("Ssssss"));
-      // Navigator.pushNamed(context, '/authentication');
+      Navigator.pushNamed(context, '/authentication');
     }
   }
 }

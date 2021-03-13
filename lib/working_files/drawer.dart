@@ -103,6 +103,16 @@ class DrawerMenu extends StatelessWidget {
                 Navigator.pushNamed(context, '/hometest');
               },
             ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                'Add Coin',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/coinpage');
+              },
+            ),
           ],
         ),
       ),

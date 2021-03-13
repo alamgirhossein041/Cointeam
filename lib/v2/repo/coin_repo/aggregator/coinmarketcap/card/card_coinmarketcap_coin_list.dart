@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+// import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:developer';
@@ -12,14 +13,19 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
 
   @override
   Future getCoinMarketCapCoinList(List coinList) async {
-    String requestUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?skip_invalid=true&symbol=';
+    String requestUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?skip_invalid=true&symbol=';
     String api = "ff43a58e-a138-4738-9dac-ce1d1343a0d5";
     String signatureBuilder = '';
 
-    coinList.forEach((v) =>
-      signatureBuilder += v);
+    for (int i=0; i < coinList.length; i++) {
+      signatureBuilder += coinList[i];
+      if(i+1 < coinList.length) {
+        signatureBuilder += ',';
+      }
+    }
     
     requestUrl += signatureBuilder;
+    log(requestUrl);
 
     var response = await http.get(requestUrl, headers: {
       'X-CMC_PRO_API_KEY': api
@@ -27,11 +33,14 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
 
     // var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
+      log("YAY");
+      log(response.body.toString());
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      CoinMarketCapCoinLatestModel coinMarketCapCoinLatestModel = CoinMarketCapCoinLatestModel.fromJson(body);
-      return coinMarketCapCoinLatestModel;
+      log("BOO");
+      CardCoinmarketcapListModel cardCoinmarketcapListModel = CardCoinmarketcapListModel.fromJson(body);
+      return cardCoinmarketcapListModel;
     } else {
-      log(response.toString());
+      log(response.body.toString());
       log(response.statusCode.toString());
       throw Exception();
     }

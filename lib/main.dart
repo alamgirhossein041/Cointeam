@@ -1,11 +1,14 @@
 import 'package:coinsnap/v1/ui_root/pages/builder/test.dart';
 import 'package:coinsnap/v1/ui_root/pages/coin_view/coin_view.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/global/global_coinmarketcap_stats_repo.dart';
 // import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
@@ -16,6 +19,7 @@ import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_re
 import 'package:coinsnap/v2/ui/authentication/authentication.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_edit.dart';
+import 'package:coinsnap/v2/ui/core_widgets/coins/coin_page/coin_page.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
@@ -79,6 +83,12 @@ class MyApp extends StatelessWidget {
         // BlocProvider<BlocC>(
         //   create: (BuildContext context) => BlocC(),
         // ),
+        BlocProvider<ListTotalValueBloc> (
+          create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
+        ),
+        BlocProvider<Top100TotalValueBloc> (
+          create: (context) => Top100TotalValueBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
+        ),
       ],
 
       child: MaterialApp(
@@ -88,9 +98,10 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/hometest',
         // initialRoute: '/dashboardnoapitest',
         // initialRoute: '/authentication',
-        initialRoute: '/authentication',
+        initialRoute: '/coinpage',
         // initialRoute: '/home',
         routes: {
+          '/coinpage': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
           // '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
