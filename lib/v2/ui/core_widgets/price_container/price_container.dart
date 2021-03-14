@@ -187,7 +187,7 @@ class _PriceContainerState extends State<PriceContainer> {
                         //       log("Is it working?");
                         //     }
                         //   },
-                        //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+                        //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState> -- GetTotalValueEvent( /// Both bloc types to be built (refactor existing controllers)
                         //     builder: (context, state) {
                         //       if (state is GetTotalValueInitialState) {
                         //         log("GetTotalValueInitialState");

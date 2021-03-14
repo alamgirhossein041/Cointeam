@@ -1,13 +1,28 @@
 import 'dart:developer';
 
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_state.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_event.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/ui/copies/bloc/get_total_value_bloc.dart';
+import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
+import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart';
 import 'dart:math' as math;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key key}) : super(key: key);
@@ -17,11 +32,22 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
+
+  List coinList;
+
+  @override
+  void didChangeDependencies() { /// ### Calls everything inside on screen load ### ///
+    super.didChangeDependencies();
+    // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
+    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+  }
+
   double modalEdgePadding = 10;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appBlack,
+      backgroundColor: Color(0xFF0B0D19),
       bottomNavigationBar: BottomNavBar(callBack: _callBackSetState),
       drawer: DrawerMenu(),
       body: Container(
@@ -29,22 +55,52 @@ class DashboardState extends State<Dashboard> {
           children: <Widget> [
             // Text("Hello World", style: TextStyle(color: Colors.white))
             Expanded(
-              flex: 1,
+              flex: 3,
               child: TopMenuRow(),
             ),
             Expanded(
-              flex: 2,
-              child: HeaderBox(),
+              flex: 16,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
+                },
+                child: HeaderBox(),
+              ),
             ),
-            Expanded(
-              flex: 4,
-              child: Container(),
-            )
           ]
         )
       ),
     );
+
+
+    /// ### If Bloc hasn't returned yet, display splash screen(?) ### ///
+    
+    
+    // return BlocConsumer<GetCoinListBloc, GetCoinListState>(
+    //   listener: (context, state) {
+    //     if (state is GetCoinListErrorState) {
+    //       log("error in GetCoinListState in home_view.dart");
+    //       Navigator.of(context).pushNamed('/errorscreen');
+    //     } else if (state is GetCoinListCoinListState) {
+    //       coinList = state.coinList;
+    //       /// Navigator.of(context).pushNamed('AHHHHHH'); ### Set up splash screen bloc? Or not
+    //     }
+    //     /// } else if (state is GetPortfolioDispatchChartState) {
+    //       /// TODO: dispatch chart bloc
+    //   },
+    //   builder: (context, state) {
+    //     if (state is GetCoinListLoadedState) {   /// ### Comes with state.coinListData -- type CardCoinmarketcapListModel
+    //       log("GetCoinListLoadedState");
+    //       return 
+    //     } else {
+    //       log("GetCoinListLoadingState");
+    //       return CircularProgressIndicator();
+    //     }
+    //   }
+    // );
   }
+
+  /// ### Callback function for child widget to setState (and refresh) on this widget ### ///
   void _callBackSetState() {
     setState(() {
       log("Hello World");
@@ -112,36 +168,109 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 }
 
-class HeaderBox extends StatelessWidget {
+class HeaderBox extends StatefulWidget {
   const HeaderBox({Key key}) : super(key: key);
+  
+  @override
+  HeaderBoxState createState() => HeaderBoxState();
+}
+
+class HeaderBoxState extends State<HeaderBox> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListBlocEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(seconds: 2),
       curve: Curves.fastLinearToSlowEaseIn,
-      child: Stack(
+      child: Column(
         children: <Widget> [
-          Container(
-            decoration: headerBoxDecoration,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0,2.75,0,2.75),
-              child: AnimatedContainer(
-                duration: Duration(seconds: 2),
-                curve: Curves.fastLinearToSlowEaseIn,
-                decoration: headerBoxInnerDecoration,
-                child: Column(
-                  children: <Widget> [
-                    Expanded(
-                      flex: 1,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: HeaderBoxWalletIcon(),
-                      ),
-                    )
-                  ]
-                )
+          Expanded(
+            flex: 3,
+            child: Container(
+              decoration: headerBoxDecoration,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0,2.75,0,2.75),
+                child: AnimatedContainer(
+                  duration: Duration(seconds: 2),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  decoration: headerBoxInnerDecoration,
+                  child: BlocConsumer<GetCoinListBloc, GetCoinListState>(
+                    listener: (context, state) {
+                      if (state is GetCoinListErrorState) {
+                        log("GetCoinListErrorState");
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is GetCoinListLoadedState) {
+                        log("GetCoinListLoadedState");
+                        BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
+                        return Column(
+                          children: <Widget> [
+                            Expanded(
+                              flex: 1,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: HeaderBoxWalletIcon(),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                                listener: (context, state) {
+                                  if (state is GetCoinListTotalValueErrorState) {
+                                    log("GetCoinListTotalValueErrorState");
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is GetCoinListTotalValueLoadedState) {
+                                    return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white));
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
+                              
+                              // Text("\$26,646.23", style: TextStyle(fontSize: 22, color: Colors.white)),
+                            )
+                          ]
+                        );
+                      } else {
+                        log("GetCoinList(notloaded)State");
+                        return loadingTemplateWidget();
+                      }
+                    }
+                  ),
+                ),
               ),
+            ),
+          ),
+          Expanded(
+            flex: 9,
+            child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+              builder: (context, state) {
+                if (state is GetCoinListTotalValueLoadedState) {
+                  return CustomScrollView(
+                    slivers: <Widget> [
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          return NewCardListTile(state.coinListData, state.coinListData, state.totalValue);
+                            // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
+                          },
+                          childCount: state.coinListData.length,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              }
             ),
           ),
         ],
