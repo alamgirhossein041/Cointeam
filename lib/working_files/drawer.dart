@@ -76,31 +76,41 @@ class DrawerMenu extends StatelessWidget {
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               /// title: Text('Portfolio 1 - Live'),
               title: Text(
-                'Top 100',
+                'Welcome',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/homeviewreal');
+                Navigator.pushNamed(context, '/first');
               },
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'Wallet',
+                'Dashboard - No API',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/builder');
+                Navigator.pushNamed(context, '/dashboardnoapitest');
               },
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'News',
+                'Home - With API',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/testview');
+                Navigator.pushNamed(context, '/hometest');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                'Add Coin',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/coinpage');
               },
             ),
           ],
