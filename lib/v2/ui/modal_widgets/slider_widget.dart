@@ -16,10 +16,22 @@ class CarouselDemo extends StatelessWidget {
     return Scaffold(
       body:SafeArea(
         child: Container(
-        // color: Colors.black,
-        decoration: bgColor,
+        
+        // background gradient
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment(-1.08, -1.08),
+            end: Alignment(1, 1.06),
+            colors: [
+              Color(0xFF443E48),
+              Color(0xFF1B1F2D),
+            ],
+          ),
+          // without this it has a thin grey border for some reason D:<
+          border: Border.all(width: 0)
+        ),
+        
         child: Stack(
-          
           children: [
             Column(
               children: [
@@ -38,7 +50,7 @@ class CarouselDemo extends StatelessWidget {
 
                         //Slider Container properties
                         options: CarouselOptions(
-                          height: displayHeight(context) * 0.94,
+                          height: displayHeight(context) * 0.8,
                           aspectRatio: 16 / 9,
                           viewportFraction: 1,
                           initialPage: 0,
@@ -63,20 +75,6 @@ class CarouselDemo extends StatelessWidget {
   }
 }
 
-// Helper variables
-
-// background colour
-var bgColor = BoxDecoration(
-  gradient: LinearGradient(
-    begin: Alignment(-1.08, -1.08),
-    end: Alignment(1, 1.06),
-    colors: [
-      Color(0xFF443E48),
-      Color(0xFF1B1F2D),
-    ],
-  ),
-);
-
 // Helper Widgets
 
 class PageIndicator extends StatelessWidget {
@@ -90,7 +88,14 @@ class PageIndicator extends StatelessWidget {
       child: AnimatedSmoothIndicator(
         activeIndex: page,
         count: 7,
-      effect: WormEffect(),
+      effect: WormEffect(
+        paintStyle: PaintingStyle.stroke,
+        dotWidth: 6,
+        dotHeight: 6,
+        spacing: 15,
+        dotColor: Colors.deepPurpleAccent,
+        activeDotColor: Colors.deepPurple[100]
+      ),
       ),
     );
   }

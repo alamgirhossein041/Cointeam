@@ -209,7 +209,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalTopBar(3),
+              child: ModalTopBar(2),
             ),
 
             Flexible(
@@ -226,14 +226,6 @@ some long text about why api linking is cool some long text about why api linkin
       // Initially password is obscure
       bool _obscureText = true;
 
-
-      // Toggles the password show status
-      void _toggle() {
-        setState(() {
-          _obscureText = !_obscureText;
-        });
-      }
-
       return Container (
          
         padding: modalPadding,
@@ -243,7 +235,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalTopBar(3),
+              child: ModalTopBar(2),
             ),
 
             Flexible(
@@ -274,11 +266,8 @@ some long text about why api linking is cool some long text about why api linkin
                           labelText: 'Secret API key',
                           helperText: "(We only need the Secret API Key)",
                           helperStyle: TextStyle(color: Colors.white),
+                          // toggle visibility on/off
                           suffixIcon: IconButton(
-                            // icon: Icon(
-                            //   Icons.remove_red_eye,
-                            //   color: _obscureText? Colors.blue : Colors.grey,
-                            // ),
                             icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
                             onPressed: () {
                               setState(() => _obscureText = !_obscureText);
@@ -289,11 +278,9 @@ some long text about why api linking is cool some long text about why api linkin
                         style: TextStyle(color: textLight)
                       );
                     },
-
                   ),
                 ) 
-  
-                ],
+              ],
             ),
           ]
         ),
@@ -305,13 +292,6 @@ some long text about why api linking is cool some long text about why api linkin
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(0),
-            ),
-
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
