@@ -149,7 +149,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               insetPadding: EdgeInsets.all(10),
                               /// Connect API tutorial modal
                               // child: ModalPopup(),
-                              child: IntroScreen(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),
@@ -255,18 +255,7 @@ class HeaderBoxState extends State<HeaderBox> {
             child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
               builder: (context, state) {
                 if (state is GetCoinListTotalValueLoadedState) {
-                  return CustomScrollView(
-                    slivers: <Widget> [
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return NewCardListTile(state.coinListData, state.coinListData, state.totalValue);
-                            // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
-                          },
-                          childCount: state.coinListData.length,
-                        ),
-                      ),
-                    ],
-                  );
+                  return Text('helloworldsfadfdsf');
                 } else {
                   return Container();
                 }

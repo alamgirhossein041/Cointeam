@@ -135,7 +135,7 @@ class _CoinPageState extends State<CoinPage> {
                                 
                                 /// Connect API tutorial modal
                                 // child: ModalPopup(),
-                                child: IntroScreen(),
+                                child: CarouselDemo(),
                               ),
                             );
                           }),
