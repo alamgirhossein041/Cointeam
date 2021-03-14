@@ -101,7 +101,6 @@ class HomeViewState extends State<HomeView> {
                           IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
 
                             /// API Call
-                            /// 
 
                           }),
                           // IconButton(icon: Icon(Icons.search), onPressed: () {}),
@@ -274,8 +273,6 @@ class _DashboardWithCategoryState extends State<DashboardWithCategory> {
                           builder: (BuildContext context) => Dialog(
                             /// Manual padding override because Dialog's default padding is FAT
                             insetPadding: EdgeInsets.all(modalEdgePadding),
-                            // title: Text("Hello"),
-                            // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
                             
                             /// Connect API tutorial modal
                             child: CarouselDemo(),

@@ -4,14 +4,15 @@ import 'package:coinsnap/v2/ui/modal_widgets/link_api_helper_modal.dart';
 import 'package:flutter/material.dart';
 
 class CarouselDemo extends StatelessWidget {
-  CarouselController buttonCarouselController = CarouselController();
+  final CarouselController buttonCarouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Connect API"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("Connect API"),
+      // ),
+      backgroundColor: Colors.black,
       body: ListView(
         children: [
           CarouselSlider(
@@ -49,7 +50,7 @@ class CarouselDemo extends StatelessWidget {
 
             //Slider Container properties
             options: CarouselOptions(
-              height: displayHeight(context) * 0.87,
+              height: displayHeight(context) * 0.94,
               aspectRatio: 16 / 9,
               viewportFraction: 1,
               initialPage: 0,

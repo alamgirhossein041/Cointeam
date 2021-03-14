@@ -13,14 +13,33 @@ class LinkAPIHelperModal extends StatefulWidget {
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
 }
 
+// the (3 mins) and +50 reward line
+class ModalTopBar extends StatelessWidget {
+  ModalTopBar(this.time);
+
+  final int time;
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text("($time mins)", style: TextStyle(color: Colors.white)),
+        //   Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget> [
+        //     Text("+50 ", style: TextStyle(color: Colors.white)),
+        //     Icon(Icons.av_timer, color: Colors.white),
+        //   ],
+        // ),
+      ],
+    );
+  }
+}
+
 /// API tutorial modal popup
 class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
   /// Currently selected value of dropdown
   String dropdownValue = 'Binance';
-
-  /// placeholder URL for API linking tutorial process
-  String placeHolderImgURL = "http://2.bp.blogspot.com/_ThTvH632hGo/S92-5kncTYI/AAAAAAAAByE/7DAWC0aecC0/s640/2-7.jpg";
 
   String userExchValue = '';
 
@@ -34,8 +53,15 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
     AssetImage('graphics/assets/placeholder_modal.jpg'),
   ];
 
-  // used to specify index of imageList to display the corresponding image
+  // used to specify index of imageList to display the corresponding image:
+  // Binance or FTX screenshots
   int imageIndex = 0;
+
+  // padding for all modal pages
+  var modalPadding = EdgeInsets.all(20.0);
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,31 +69,18 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
     /* page 1 - API linking explainer */
     if (page == 1) {
+
       return Container(
         decoration: bgColor,
+        padding: modalPadding,
         
         child: Column(
           children: <Widget> [
-
-            // the (3 mins) and +50 reward line
+            // contains the (3 mins) and +50 reward line
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget> [
-                  Container(width: 58),
-                  Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                  // Container(width: displayWidth(context) * 0.4,
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Text("+50 ", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.av_timer, color: Colors.white),
-                    ],
-                  ),
-                ],
-              ),
+              child: ModalTopBar(3),
             ),
 
             // the "connect binance" line
@@ -88,12 +101,11 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
               fit: FlexFit.tight,
 
               child: Text('''
-              some long text about why api linking is cool
-              some long text about why api linking is cool
-              some long text about why api linking is cool
-              some long text about why api linking is cool
-              some long text about why api linking is cool
-              some long text about why api linking is cool
+some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
+
+some long text about why api linking is cool
+
+some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
               ''', style: TextStyle(color: textLight)),
             ),
 
@@ -115,29 +127,15 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
       return Container(
         
         decoration: bgColor,
+        padding: modalPadding,
         
         child: Column(
           children: <Widget> [
-
-            // the (3 mins) and +50 reward line
+            // contains the (3 mins) and +50 reward line
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget> [
-                  Container(width: 58),
-                  Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                  // Container(width: displayWidth(context) * 0.4,
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Text("+50 ", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.av_timer, color: Colors.white),
-                    ],
-                  ),
-                ],
-              ),
+              child: ModalTopBar(3),
             ),
 
             // the "connect binance" line
@@ -215,17 +213,34 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
       );
     } else if (page == 3) {
       /* page 3 - Select api management guide image */
-
-      
-
+      return Container (
+        decoration: bgColor,
+        padding: modalPadding,
+        child: Column(
+          children: <Widget> [
+          ]
+        )
+      );
     } else if (page == 4) {
       /* page 4 */
-      
+            return Container (
+        decoration: bgColor,
+        padding: modalPadding,
+
+      );
     } else if (page == 5) {
       /* page 5 */
-       
-    } else {
+             return Container (
+        decoration: bgColor,
+        padding: modalPadding,
 
+      );
+    } else {
+      return Container (
+        decoration: bgColor,
+        padding: modalPadding,
+
+      );
     }
   } 
 }
