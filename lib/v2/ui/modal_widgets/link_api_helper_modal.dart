@@ -13,35 +13,12 @@ class LinkAPIHelperModal extends StatefulWidget {
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
 }
 
-// the (3 mins) and +50 reward line
-class ModalTopBar extends StatelessWidget {
-  ModalTopBar(this.time);
-
-  final int time;
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget> [
-        Text("($time mins)", style: TextStyle(color: Colors.white)),
-        //   Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: <Widget> [
-        //     Text("+50 ", style: TextStyle(color: Colors.white)),
-        //     Icon(Icons.av_timer, color: Colors.white),
-        //   ],
-        // ),
-      ],
-    );
-  }
-}
 
 /// API tutorial modal popup
 class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
   /// Currently selected value of dropdown
   String dropdownValue = 'Binance';
-
-  String userExchValue = '';
 
   // list of exchanges user can pick from
   List<String> exchanges = ['Binance', 'FTX'];
@@ -59,9 +36,6 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +61,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  Text("Enable trading feature button thingy here ", style: TextStyle(color: textLight)),
-                ],
-              ),
+              child: ModalGuideText("Enable trading features button thingy"),
             ),
 
             // instructions text line
@@ -123,7 +92,7 @@ some long text about why api linking is cool some long text about why api linkin
         ),
       );
     } else if (page == 2) {
-      /* page 2 - Connect Exchange page*/
+      /* page 2 - Connect Exchange page */
       return Container(
         
         decoration: bgColor,
@@ -184,7 +153,6 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-
               child: Text("1. To enable trading, go to Binance Web ", style: TextStyle(color: textLight)),
             ),
 
@@ -192,7 +160,6 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 4,
               fit: FlexFit.tight,
-
               child: Image(
                 image: imageList[imageIndex],
               ),
@@ -202,7 +169,6 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-
               child: Align(
                 alignment: Alignment.center,
                 child: Text("dots go here ", style: TextStyle(color: textLight)),
@@ -218,22 +184,46 @@ some long text about why api linking is cool some long text about why api linkin
         padding: modalPadding,
         child: Column(
           children: <Widget> [
+            // contains the (3 mins) and +50 reward line
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalTopBar(3),
+            ),
           ]
         )
       );
     } else if (page == 4) {
       /* page 4 */
-            return Container (
+      return Container (
         decoration: bgColor,
         padding: modalPadding,
-
+        child: Column(
+          children: <Widget> [
+            // contains the (3 mins) and +50 reward line
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalTopBar(3),
+            ),
+          ]
+        ),
       );
     } else if (page == 5) {
       /* page 5 */
-             return Container (
+      return Container (
         decoration: bgColor,
         padding: modalPadding,
-
+        child: Column(
+          children: <Widget> [
+            // contains the (3 mins) and +50 reward line
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalTopBar(3),
+            ),
+          ]
+        ),
       );
     } else {
       return Container (
@@ -410,6 +400,8 @@ class ConnectBinanceGuide extends StatelessWidget {
   }
 }
 
+// Helper variables
+
 // background colour
 var bgColor = BoxDecoration(
   gradient: LinearGradient(
@@ -421,3 +413,40 @@ var bgColor = BoxDecoration(
     ],
   ),
 );
+
+
+// Helper classes
+
+/// the (3 mins) and +50 reward line
+/// 
+/// {@time estimated time to complete API linking}
+class ModalTopBar extends StatelessWidget {
+  ModalTopBar(this.time);
+
+  final int time;
+
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text("($time mins)", style: TextStyle(color: Colors.white)),
+      ],
+    );
+  }
+}
+
+class ModalGuideText extends StatelessWidget {
+  ModalGuideText(this.text);
+
+  String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text("$text", style: TextStyle(color: textLight)),
+      ],
+    );
+  }
+}
