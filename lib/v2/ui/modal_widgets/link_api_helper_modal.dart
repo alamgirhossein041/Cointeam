@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
-import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
@@ -12,7 +9,6 @@ class LinkAPIHelperModal extends StatefulWidget {
   @override
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
 }
-
 
 /// API tutorial modal popup
 class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
@@ -37,7 +33,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
 
-  @override
+   @override
   Widget build(BuildContext context) {
     int page = widget.page;
 
@@ -45,12 +41,12 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
     if (page == 1) {
 
       return Container(
-        decoration: bgColor,
+         //.*
         padding: modalPadding,
         
         child: Column(
           children: <Widget> [
-            // contains the (3 mins) and +50 reward line
+            
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -77,17 +73,6 @@ some long text about why api linking is cool
 some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
               ''', style: TextStyle(color: textLight)),
             ),
-
-            // pagination dots line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("dots go here ", style: TextStyle(color: textLight)),
-              ),
-            ),
           ],
         ),
       );
@@ -95,12 +80,12 @@ some long text about why api linking is cool some long text about why api linkin
       /* page 2 - Connect Exchange page */
       return Container(
         
-        decoration: bgColor,
+         
         padding: modalPadding,
         
         child: Column(
           children: <Widget> [
-            // contains the (3 mins) and +50 reward line
+            
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -164,70 +149,181 @@ some long text about why api linking is cool some long text about why api linkin
                 image: imageList[imageIndex],
               ),
             ),
-
-            // pagination dots line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("dots go here ", style: TextStyle(color: textLight)),
-              ),
-            ),
           ],
         ),
       );
     } else if (page == 3) {
       /* page 3 - Select api management guide image */
       return Container (
-        decoration: bgColor,
+         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            // contains the (3 mins) and +50 reward line
+            
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
               child: ModalTopBar(3),
             ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalGuideText("2. Select 'API management'"),
+            ),
+
           ]
         )
       );
     } else if (page == 4) {
       /* page 4 */
       return Container (
-        decoration: bgColor,
+         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            // contains the (3 mins) and +50 reward line
+            
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
               child: ModalTopBar(3),
             ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalGuideText("3. Give API key a name and create"),
+            ),
+
           ]
         ),
       );
     } else if (page == 5) {
       /* page 5 */
       return Container (
-        decoration: bgColor,
+         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            // contains the (3 mins) and +50 reward line
+            
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
               child: ModalTopBar(3),
             ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalGuideText("4. Expand to show Secret Key"),
+            ),
+
+          ]
+        ),
+      );
+    } else if (page == 6) {
+      /* page 6 */
+      // Initially password is obscure
+      bool _obscureText = true;
+
+
+      // Toggles the password show status
+      void _toggle() {
+        setState(() {
+          _obscureText = !_obscureText;
+        });
+      }
+
+      return Container (
+         
+        padding: modalPadding,
+        child: Column(
+          children: <Widget> [
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalTopBar(3),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalGuideText("5. Paste Secret API Key"),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  flex: 1,
+                  fit:FlexFit.tight,
+                  child: StatefulBuilder(
+                    builder: (context, setState) {
+                      return TextField(
+                        obscureText: _obscureText,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
+                          ),
+                          labelStyle: TextStyle(color: Colors.white),
+                          labelText: 'Secret API key',
+                          helperText: "(We only need the Secret API Key)",
+                          helperStyle: TextStyle(color: Colors.white),
+                          suffixIcon: IconButton(
+                            // icon: Icon(
+                            //   Icons.remove_red_eye,
+                            //   color: _obscureText? Colors.blue : Colors.grey,
+                            // ),
+                            icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
+                            onPressed: () {
+                              setState(() => _obscureText = !_obscureText);
+                            },
+                            color: Colors.grey,
+                          )
+                        ),
+                        style: TextStyle(color: textLight)
+                      );
+                    },
+
+                  ),
+                ) 
+  
+                ],
+            ),
+          ]
+        ),
+      );
+      } else if (page == 7) {
+      /* page 7 */
+      return Container (
+         
+        padding: modalPadding,
+        child: Column(
+          children: <Widget> [
+            
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalTopBar(0),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalGuideText("Binance Linked"),
+            ),
+
           ]
         ),
       );
     } else {
       return Container (
-        decoration: bgColor,
+         
         padding: modalPadding,
 
       );
@@ -246,7 +342,7 @@ class ConnectBinanceGuide extends StatelessWidget {
     if (exch == 'Binance') {
       return Container(
             
-        decoration: bgColor,
+         
 
         // layout
         child: Column(
@@ -320,7 +416,7 @@ class ConnectBinanceGuide extends StatelessWidget {
       return Container(
 
         // background gradient
-        decoration: bgColor,
+         
 
         // layout
         child: Column(
@@ -393,27 +489,12 @@ class ConnectBinanceGuide extends StatelessWidget {
     } else {
       return Container (
         // background gradient
-        decoration: bgColor,
+         //.*
         child: Text("we did something wrong and now you're here. press button to go back :)", style: TextStyle(color: textLight)),
       );
     }
   }
 }
-
-// Helper variables
-
-// background colour
-var bgColor = BoxDecoration(
-  gradient: LinearGradient(
-    begin: Alignment(-1.08, -1.08),
-    end: Alignment(1, 1.06),
-    colors: [
-      Color(0xFF443E48),
-      Color(0xFF1B1F2D),
-    ],
-  ),
-);
-
 
 // Helper classes
 
@@ -435,10 +516,14 @@ class ModalTopBar extends StatelessWidget {
   }
 }
 
+
+/// Text to guide the user through the process
+/// 
+/// {@text guide text to display}
 class ModalGuideText extends StatelessWidget {
   ModalGuideText(this.text);
 
-  String text;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
