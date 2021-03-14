@@ -7,8 +7,7 @@ class CardCoinmarketcapListModel {
   CardCoinmarketcapListModel({this.status, this.data});
 
   CardCoinmarketcapListModel.fromJson(Map<String, dynamic> json) {
-    status =
-        json['status'] != null ? new Status.fromJson(json['status']) : null;
+    status = json['status'] != null ? new Status.fromJson(json['status']) : null;
     if (json['data'] != null) {
       data = List<Data>();
       json['data'].forEach((k,v) {
@@ -31,14 +30,20 @@ class Status {
 
 class Data {
   String name;
+  String symbol;
   Quote quote;
   int cmcRank;
+  
+
   /// TODO: Add Icon here?
+  /// 
+  /// coinListData.data[0].name/symbol/quote/cmcRank -- .data[0].quote.uSD.price/volume24/percentChange1h/marketCap
 
   Data({this.name, this.quote});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    symbol = json['symbol'];
     quote = json['quote'] != null ? Quote.fromJson(json['quote']) : null;
     cmcRank = json['cmc_rank'];
   }

@@ -52,8 +52,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
 
             /// log(binanceGetAllModel[i].name.toString());
             /// log(binanceGetAllModel[i].free.toString());
-            /// log(binanceGetAllModel[i].locked.toString());
-
+            /// log(binanceGetAllModel[i].locked.toString());]
             
           // }
         } catch (e) {
@@ -123,3 +122,18 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
     }
   }
 }
+
+
+
+// class PortfolioCoinListModel {
+//   List<BinanceCoinModel>
+//   /// -- WE don't even need this
+//   List<NormalCoinModel>
+//   List<FtxCoinModel>
+// }
+
+/// 1. Get list of binance coins
+/// 2. Get list of normal coins (local storage)
+/// 3. Get Coinmarketcap price data for all those coins
+/// 4. fromJson -> PortfolioCoinListModel
+/// 5. Yield Model

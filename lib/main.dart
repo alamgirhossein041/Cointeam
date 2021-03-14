@@ -1,5 +1,7 @@
 import 'package:coinsnap/v1/ui_root/pages/builder/test.dart';
 import 'package:coinsnap/v1/ui_root/pages/coin_view/coin_view.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_bloc.dart';
@@ -25,6 +27,7 @@ import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
+import 'package:coinsnap/working_files/error_screen.dart';
 import 'package:coinsnap/working_files/practice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,6 +93,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<Top100TotalValueBloc> (
           create: (context) => Top100TotalValueBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
         ),
+        BlocProvider<GetCoinListBloc> (
+          create: (context) => GetCoinListBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl()),
+        ),
+        BlocProvider<GetCoinListTotalValueBloc> (
+          create: (context) => GetCoinListTotalValueBloc(coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl()),
+        ),
       ],
 
       child: MaterialApp(
@@ -102,6 +111,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/dashboard',
         // initialRoute: '/home',
         routes: {
+          '/errorscreen': (context) => ErrorScreen(),
           '/dashboard': (context) => Dashboard(),
           '/coinpage': (context) => CoinPage(),
           '/first': (context) => First(),
