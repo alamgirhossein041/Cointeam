@@ -1,4 +1,5 @@
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -17,11 +18,23 @@ class ListTotalValueLoadingState extends ListTotalValueState {
   List<Object> get props => [];
 }
 
+class ListTotalValueResponseState extends ListTotalValueState {
+
+  // final List<BinanceGetAllModel> binanceGetAllModelList;
+  // final Map binanceGetPricesMap;
+
+  // ListTotalValueResponseState({@required this.binanceGetAllModelList, @required this.binanceGetPricesMap});
+
+  @override
+  List<Object> get props => [];
+}
+
 class ListTotalValueLoadedState extends ListTotalValueState {
 
-  final CoinMarketCapCoinLatestModel coinList;
+  final List coinList;
+  final CardCoinmarketcapListModel cardCoinmarketcapListModel;
 
-  ListTotalValueLoadedState({this.coinList});
+  ListTotalValueLoadedState({this.coinList, this.cardCoinmarketcapListModel});
 
   @override
   /// TODO: implement props

@@ -3,11 +3,14 @@ import 'dart:developer';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_state.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
@@ -150,7 +153,7 @@ class _ListContainerState extends State<ListContainer> {
                   
                   SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                        return CardListTile(coinListMap: state.coinListReceived, index: index);
+                        return CardListTile(coinListMap: state.coinListReceived, index: index, portfolioValue: (state.totalValue * state.btcSpecial));
                       },
                       childCount: state.coinListReceived.length,
                     ),
@@ -214,5 +217,101 @@ class _ListContainerState extends State<ListContainer> {
     //     )
     //   ),
     // );
+  }
+}
+
+
+
+class ListContainerWithContainer extends StatefulWidget {
+  ListContainerWithContainer({Key key, this.showContainer, this.category}) : super(key: key);
+  final bool showContainer;
+  final Categories category;
+
+  @override
+  _ListContainerStateWithContainer createState() => _ListContainerStateWithContainer();
+}
+
+class _ListContainerStateWithContainer extends State<ListContainerWithContainer> {
+
+  double _heightHideContainer;
+  double _heightShowContainer;
+
+  CryptoCompareRepositoryImpl cryptoCompareRepository = CryptoCompareRepositoryImpl();
+  // var hello;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _heightHideContainer = displayHeight(context) * 0.56;
+    _heightShowContainer = displayHeight(context) * 0.36;
+    return AnimatedContainer(
+      duration: Duration(seconds: 2),
+      height: widget.showContainer ? _heightShowContainer : _heightHideContainer,
+      child: BlocListener<ListTotalValueBloc, ListTotalValueState>(
+        listener: (context, state) {
+          if (state is ListTotalValueErrorState) {
+            log("error in ListTotalValueBloc in card_list_container.dart");
+          }
+        },
+        child: BlocBuilder<ListTotalValueBloc, ListTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
+          builder: (context, state) {
+            if (state is ListTotalValueLoadedState) {
+              return CustomScrollView(
+                slivers: <Widget> [
+                  // SliverToBoxAdapter(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     children: <Widget> [
+                  //       IconButton(
+                  //         icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                  //         onPressed: () {
+                  //           BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinListReceived, binanceGetPricesMap: state.binanceGetPricesMap, timeSelection: globals.Status.daily));
+                  //         }
+                  //       ),
+                  //       IconButton(
+                  //         icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                  //         onPressed: () {
+                  //           BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinListReceived, binanceGetPricesMap: state.binanceGetPricesMap, timeSelection: globals.Status.weekly));
+                  //         }
+                  //       ),
+                  //       IconButton(
+                  //         icon: Icon(Icons.hourglass_full, color: Colors.white),
+                  //         onPressed: () {
+                  //           BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinListReceived, binanceGetPricesMap: state.binanceGetPricesMap, timeSelection: globals.Status.monthly));
+                  //         }
+                  //       ),
+                  //       IconButton(
+                  //         icon: Icon(Icons.alarm, color: Colors.white),
+                  //         onPressed: () {
+                  //           BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinListReceived, binanceGetPricesMap: state.binanceGetPricesMap, timeSelection: globals.Status.yearly));
+                  //         }
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SliverToBoxAdapter(
+                  //   child: ChartOverall(),
+                  // ), /// TODO: Stop wasting time
+                  
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                        return CardListTileWithCategory(coinList: state.coinList, index: index, cardCoinmarketcapListModel: state.cardCoinmarketcapListModel,);
+                      },
+                      childCount: state.coinList.length,
+                    ),
+                  )
+                ]
+              );
+            } else {
+              return Container();
+            }
+          }
+        )
+      )
+    );
   }
 }

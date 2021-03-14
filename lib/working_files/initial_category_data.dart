@@ -1,12 +1,5 @@
 class InitialCategoryData {
-  static final top100CategoryData = [
-    {
-      'name': 'Top100',
-      'coins': [
-        'API',
-      ],
-    },
-  ];
+  static final top100CategoryData = ['Top100'];
   static final defiCategoryData = [
     'UNI',
     'LINK',
