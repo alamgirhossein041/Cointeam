@@ -20,7 +20,6 @@ import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
@@ -123,7 +122,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                               
                               /// Connect API tutorial modal
                               // child: ModalPopup(),
-                              child: IntroScreen(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),

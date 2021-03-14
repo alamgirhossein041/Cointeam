@@ -17,7 +17,6 @@ import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
@@ -122,7 +121,7 @@ class HomeViewState extends State<HomeView> {
                                 
                                 /// Connect API tutorial modal
                                 // child: ModalPopup(),
-                                child: IntroScreen(),
+                                child: CarouselDemo(),
                               ),
                             );
                           }),
@@ -279,8 +278,7 @@ class _DashboardWithCategoryState extends State<DashboardWithCategory> {
                             // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
                             
                             /// Connect API tutorial modal
-                            // child: ModalPopup(),
-                            child: IntroScreen(),
+                            child: CarouselDemo(),
                           ),
                         );
                       }),
