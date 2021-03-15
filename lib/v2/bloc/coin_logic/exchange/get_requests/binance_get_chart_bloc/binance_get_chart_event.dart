@@ -1,4 +1,3 @@
-import 'package:coinsnap/v1/data/repository/auth/get_all/binance_get_all.dart';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;

@@ -314,9 +314,6 @@ class HeaderBoxState extends State<HeaderBox> {
               ),
             ),
           ),
-<<<<<<< HEAD
-          
-=======
           Expanded(
             flex: 9,
             child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
@@ -329,7 +326,6 @@ class HeaderBoxState extends State<HeaderBox> {
               }
             ),
           ),
->>>>>>> f7f333c137ab9d719175f3ac4c6ba8d8417d1b58
         ],
       ),
     );

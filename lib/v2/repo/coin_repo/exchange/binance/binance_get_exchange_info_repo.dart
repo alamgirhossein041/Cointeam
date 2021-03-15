@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:coinsnap/v1/data/model/unauth/exchange/binance_exchange_info_model.dart';
+import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_exchange_info_model.dart';
 import 'package:http/http.dart' as http;
 
 // import 'dart:developer';

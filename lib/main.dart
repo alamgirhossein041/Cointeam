@@ -1,5 +1,3 @@
-import 'package:coinsnap/v1/ui_root/pages/builder/test.dart';
-import 'package:coinsnap/v1/ui_root/pages/coin_view/coin_view.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
@@ -12,7 +10,6 @@ import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_ch
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/global/global_coinmarketcap_stats_repo.dart';
-// import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_chart_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_exchange_info_repo.dart';
@@ -26,28 +23,15 @@ import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
-import 'package:coinsnap/working_files/practice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
-// import 'package:path_provider/path_provider.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  /// ### Do we need to write to local storage? If so, see commented code below ### ///
-  // final appDocumentDir = await getApplicationDocumentsDirectory();
-  // final dir = Directory(appDocumentDir.path + "/dir");
-  // await dir.create().then((value) {
-  //   File file = File('${value.path}/example.txt');
-  //   file.writeAsString('123)');
-  // });
-  /// ### Do we need to write to local storage? If so, see commented code above ### ///
-  
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -59,7 +43,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<GetTotalValueBloc>(
-        //   // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetPricesRepository: FtxGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
           create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
         BlocProvider<GetPriceInfoBloc>(
@@ -68,13 +51,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<SellPortfolioBloc>(
           create: (context) => SellPortfolioBloc(binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
-        //  BlocProvider<BuyPortfolioBloc>(
-        //   create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
-        // ),
-        // BlocProvider<FirestoreGetUserDataBloc> (
-        //   // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-        //   create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl()),
-        // ),
         BlocProvider<CardCoinmarketcapCoinLatestBloc> (
           create: (context) => CardCoinmarketcapCoinLatestBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
         ),
@@ -84,9 +60,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<BinanceGetChartBloc> (
           create: (context) => BinanceGetChartBloc(binanceGetChartRepository: BinanceGetChartRepositoryImpl()),
         ),
-        // BlocProvider<BlocC>(
-        //   create: (BuildContext context) => BlocC(),
-        // ),
         BlocProvider<ListTotalValueBloc> (
           create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
         ),
@@ -101,37 +74,14 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        // theme: ThemeData(
-        //   brightness: Brightness.dark
-        // ),
-        // initialRoute: '/hometest',
-        // initialRoute: '/dashboardnoapitest',
-        // initialRoute: '/authentication',
         initialRoute: '/dashboard',
-        // initialRoute: '/home',
         routes: {
           '/errorscreen': (context) => ErrorScreen(),
           '/dashboard': (context) => Dashboard(),
           '/coinpage': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
-          // '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
-          // '/home': (context) => TestView(),
-          // '/home': (context) => Authentication(),
-
-          /// ### Insert Build-A-Portfolio screen below ### ///
-          // '/builder': (context) => PortfolioBuilderView(), /// TODO: Have {id} subroutes? If possible
-          /// ### Insert Build-A-Portfolio screen above ### ///
-
-          '/testviewV1': (context) => TestView(),
-          // '/homeviewreal': (context) => BlocProvider<GetPriceInfoBloc>(
-          //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-          //   child: HomeViewReal(),
-          // ),
-          // '/homeviewrealV1': (context) => HomeViewReal(),
-          '/coinviewV1': (context) => CoinView(),
           '/authentication': (context) => Authentication(),
-          // '/portfolio': (context) => PriceContai
           '/hometest': (context) => HomeView(),
           '/editcointest': (context) => EditCoin(),
           '/addcointest': (context) => AddCoin(),
