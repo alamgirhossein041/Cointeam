@@ -41,7 +41,6 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
     if (page == 1) {
 
       return Container(
-         //.*
         padding: modalPadding,
         
         child: Column(
@@ -79,8 +78,7 @@ some long text about why api linking is cool some long text about why api linkin
     } else if (page == 2) {
       /* page 2 - Connect Exchange page */
       return Container(
-        
-         
+
         padding: modalPadding,
         
         child: Column(
@@ -100,10 +98,11 @@ some long text about why api linking is cool some long text about why api linkin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
                   Text("Connect ", style: TextStyle(color: textLight)),
+
+                  /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   Container(
-                    child: 
-                      /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
-                      DropdownButton<String>(
+                    child: StatefulBuilder(builder: (context, setState) {
+                     return DropdownButton<String>(
                         dropdownColor: uniColor,
                         value: dropdownValue,
                         icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
@@ -128,7 +127,8 @@ some long text about why api linking is cool some long text about why api linkin
                             child: Text(value),
                           );
                         }).toList(),
-                      ),
+                      );
+                    })
                   ),
                 ],
               ),
