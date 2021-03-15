@@ -14,7 +14,7 @@ import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_popup.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -109,7 +109,7 @@ class HomeViewState extends State<HomeView> {
                               // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
                               
                               /// Connect API tutorial modal
-                              child: ModalPopup(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),

@@ -213,7 +213,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                               insetPadding: EdgeInsets.all(10),
                               /// Connect API tutorial modal
                               // child: ModalPopup(),
-                              child: IntroScreen(),
+                              child: CarouselDemo(),
                             ),
                           );
                         }),
@@ -314,7 +314,22 @@ class HeaderBoxState extends State<HeaderBox> {
               ),
             ),
           ),
+<<<<<<< HEAD
           
+=======
+          Expanded(
+            flex: 9,
+            child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+              builder: (context, state) {
+                if (state is GetCoinListTotalValueLoadedState) {
+                  return Text('helloworldsfadfdsf');
+                } else {
+                  return Container();
+                }
+              }
+            ),
+          ),
+>>>>>>> f7f333c137ab9d719175f3ac4c6ba8d8417d1b58
         ],
       ),
     );
