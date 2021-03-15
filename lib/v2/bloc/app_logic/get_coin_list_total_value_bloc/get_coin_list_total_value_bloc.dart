@@ -42,7 +42,7 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
           // log("TotalValue in round $i [" + coin.symbol + "] is = " + totalValue.toString());
           
         }
-
+        coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         
         yield GetCoinListTotalValueLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap); /// TODO : insert parameters later
       } catch (e) {

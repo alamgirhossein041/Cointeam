@@ -53,12 +53,6 @@ class DrawerMenu extends StatelessWidget {
                   ),
                 ),
               ),
-                  // button color
-                  // child: InkWell(
-                  //   splashColor: Colors.red, // inkwell color
-                  //   child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
-                  //   onTap: () {},
-                  // ),
             ),
             ListTile(
               // contentPadding: EdgeInsets.fromLTRB(20,20,0,0),
@@ -106,12 +100,12 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'Add Coin',
+                'New Portfolio Screen',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/coinpage');
-              },
+                Navigator.pushNamed(context, '/dashboard');
+              },  
             ),
           ],
         ),

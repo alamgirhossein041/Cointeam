@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
@@ -21,12 +22,20 @@ class _CoinPageState extends State<CoinPage> {
   double btcValue = 0.0;
   String coinName = '';
   String coinTicker = '';
-  double balance = 0.0;
-  String balanceString = '';
-  double totalValue = 0.0;
-  String totalValueString = '';
+  // double balance = 0.0;
+  String coinBalanceString = '';
+  // double totalValue = 0.0;
+  // String totalValueString = '';
   double portfolioValue = 1.0;
   String portfolioShareString = '-';
+
+  
+
+  int index = 0;
+  var coinBalance;
+  var coinListData;
+  double totalValue = 0.0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +46,26 @@ class _CoinPageState extends State<CoinPage> {
     if (arguments == null) {
       log("Arguments is null");
     } else {
-      log("Arguments is: " + arguments['cryptoData'].toString());
-      log(arguments['cryptoData'][arguments['index']].toString());
-      log(arguments['cryptoData'][arguments['index']].coin);
-      log(arguments['cryptoData'][arguments['index']].name);
-      log(arguments['cryptoData'][arguments['index']].free.toString());
-      log(arguments['cryptoData'][arguments['index']].locked.toString());
-      log(arguments['cryptoData'][arguments['index']].btcValue.toString());
-      usdValue = arguments['cryptoData'][arguments['index']].usdValue ;
-      balance = arguments['cryptoData'][arguments['index']].free + arguments['cryptoData'][arguments['index']].locked;
-      totalValue = balance * usdValue;
-      coinName = arguments['cryptoData'][arguments['index']].name;
-      portfolioValue = arguments['portfolioValue'];
+    //   log("Arguments is: " + arguments['cryptoData'].toString());
+    //   log(arguments['cryptoData'][arguments['index']].toString());
+    //   log(arguments['cryptoData'][arguments['index']].coin);
+    //   log(arguments['cryptoData'][arguments['index']].name);
+    //   log(arguments['cryptoData'][arguments['index']].free.toString());
+    //   log(arguments['cryptoData'][arguments['index']].locked.toString());
+    //   log(arguments['cryptoData'][arguments['index']].btcValue.toString());
+      index = arguments['index'];
+      coinBalance = arguments['coinBalancesMap'];
+      coinListData = arguments['coinListData'];
+      totalValue = arguments['totalValue'];
+      // usdValue = arguments['cryptoData'][arguments['index']].usdValue ;
+      // balance = arguments['cryptoData'][arguments['index']].free + arguments['cryptoData'][arguments['index']].locked;
+      // totalValue = balance * usdValue;
+      // coinName = arguments['cryptoData'][arguments['index']].name;
+      // portfolioValue = arguments['portfolioValue'];
       log(totalValue.toString());
     }
+
+    usdValue = coinBalance * coinListData.quote.uSD.price;
 
     /// ### Neatly formatting total price of coin:
     /// Eg. Dogecoin is $0.054998 = 6 decimal places is neat
@@ -59,25 +74,26 @@ class _CoinPageState extends State<CoinPage> {
     
     if(usdValue > 1) {
       usdValueString = usdValue.toStringAsFixed(2);
+      // usdValueString = usdValue.toStringAsFixed(2);
     } else {
       usdValueString = usdValue.toStringAsFixed(6);
     }
-    if(balance > 1000) {
-      balanceString = balance.toStringAsFixed(4);
+    if(coinBalance > 1000) {
+      coinBalanceString = coinBalance.toStringAsFixed(4);
     } else {
-      balanceString = balance.toStringAsFixed(8);
+      coinBalanceString = coinBalance.toStringAsFixed(8);
     }
-    if(totalValue > 1) {
-      totalValueString = totalValue.toStringAsFixed(2);
+    if(usdValue > 1) {
+      usdValueString = usdValue.toStringAsFixed(2);
     } else {
-      totalValueString = ' < 1';
+      usdValueString = ' < 1';
     }
 
-    if(totalValue != null && portfolioValue != null) {
-      log(totalValue.toString());
-      log(portfolioValue.toString());
-      portfolioShareString = ((totalValue / portfolioValue) * 100).toStringAsFixed(1);
-    }
+    // if(totalValue != null && portfolioValue != null) {
+    //   log(totalValue.toString());
+    //   log(portfolioValue.toString());
+    //   portfolioShareString = ((totalValue / portfolioValue) * 100).toStringAsFixed(1);
+    // }
 
     final mediaQueryData = MediaQuery.of(context);
     if (mediaQueryData.orientation == Orientation.landscape) {
@@ -88,66 +104,7 @@ class _CoinPageState extends State<CoinPage> {
         backgroundColor: Color(0xFF0E0F18),
         bottomNavigationBar: SizedBox(
           height: kBottomNavigationBarHeight,
-          child: Container( /// ### This is the bottomappbar ### ///
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.only(
-            //     topRight: Radius.circular(15),
-            //     topLeft: Radius.circular(15),
-            //   ),
-      //          boxShadow: [                                                               
-      //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),       
-      // ], 
-            // ),
-          
-          
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
-              ),
-              child: BottomAppBar(
-                color: Color(0xFF2E374E),
-                child: Column(
-                  children: <Widget> [
-                    SizedBox(height: 5),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-
-                            /// API Call
-                            /// 
-
-                          }),
-                          // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                          
-                            /// /// ApiModalFirst();  /// ///
-                            
-                          IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) => Dialog(
-                                /// Manual padding override because Dialog's default padding is FAT
-                                insetPadding: EdgeInsets.all(modalEdgePadding),
-                                // title: Text("Hello"),
-                                // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
-                                
-                                /// Connect API tutorial modal
-                                // child: ModalPopup(),
-                                child: IntroScreen(),
-                              ),
-                            );
-                          }),
-                          IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {setState(() {});}),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          child: BottomNavBar(),
         ),
         drawer: DrawerMenu(),
         body: Container(
@@ -157,7 +114,7 @@ class _CoinPageState extends State<CoinPage> {
                 /// ### Top Row starts here ### ///
               Builder(
                 builder: (BuildContext innerContext) {
-                  return TopMenuRowForCoin(precontext: innerContext, coinName: coinName);
+                  return TopMenuRow();
                 }
               ),
               // TopMenuRow(precontext: context),
@@ -296,7 +253,7 @@ class _CoinPageState extends State<CoinPage> {
                         ),
                         Expanded(
                           flex: 2,
-                          child: Text("\$" + totalValueString, style: TextStyle(color: Colors.white, fontSize: 24)),
+                          child: Text("\$" + usdValueString, style: TextStyle(color: Colors.white, fontSize: 24)),
                         ),
                         Expanded(
                           flex: 4,
@@ -315,7 +272,7 @@ class _CoinPageState extends State<CoinPage> {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.fromLTRB(30,5,0,0),
-                                        child: Text(balanceString, style: TextStyle(color: Colors.white, fontSize: 18)),
+                                        child: Text(coinBalanceString, style: TextStyle(color: Colors.white, fontSize: 18)),
                                       ),
                                     ],
                                   ),

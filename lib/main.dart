@@ -100,7 +100,6 @@ class MyApp extends StatelessWidget {
           create: (context) => GetCoinListTotalValueBloc(coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl()),
         ),
       ],
-
       child: MaterialApp(
         // theme: ThemeData(
         //   brightness: Brightness.dark

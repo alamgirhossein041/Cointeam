@@ -9,10 +9,13 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_co
 import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_event.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/ui/copies/bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
+import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
@@ -40,6 +43,7 @@ class DashboardState extends State<Dashboard> {
     super.didChangeDependencies();
     // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
     BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+    // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
   }
 
   double modalEdgePadding = 10;
@@ -55,17 +59,77 @@ class DashboardState extends State<Dashboard> {
           children: <Widget> [
             // Text("Hello World", style: TextStyle(color: Colors.white))
             Expanded(
-              flex: 3,
-              child: TopMenuRow(),
+              flex: 2,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TopMenuRow(),
+                ),
+              ),
             ),
             Expanded(
-              flex: 16,
+              flex: 13,
               child: RefreshIndicator(
                 onRefresh: () async {
                   // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
                 },
-                child: HeaderBox(),
-              ),
+                child: Container(
+                  child: Column(
+                  children: <Widget> [
+                    Expanded(
+                      flex: 5,
+                      child: HeaderBox(),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget> [
+                          IconButton(
+                            icon: Icon(Icons.add, color: Colors.white),
+                            onPressed: () => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AddCoin()),
+                              )
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.stacked_line_chart, color: Colors.white),
+                            onPressed: () => {},
+                          ),
+                        ]
+                      ),
+                    ),
+                    Expanded(
+                      flex: 15,
+                      child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                        builder: (context, state) {
+                          if (state is GetCoinListTotalValueLoadedState) {
+                            return CustomScrollView(
+                              slivers: <Widget> [
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate((context, index) {
+                                    // return NewCardListTile(coinListData: state.coinListData, state.coinListData, state.totalValue);
+                                    return NewCardListTile(coinListData: state.coinListData, coinBalancesMap: state.coinBalancesMap, totalValue: state.totalValue, index: index);
+                                      // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
+                                    },
+                                    childCount: state.coinListData.data.length,
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }
+                      ),
+                    ),
+                  ]
+                )
+                // HeaderBox(),
+              ),)
             ),
           ]
         )
@@ -113,10 +177,10 @@ class BottomNavBar extends StatefulWidget {
   final Function callBack;
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  BottomNavBarState createState() => BottomNavBarState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -191,7 +255,7 @@ class HeaderBoxState extends State<HeaderBox> {
       child: Column(
         children: <Widget> [
           Expanded(
-            flex: 3,
+            flex: 6,
             child: Container(
               decoration: headerBoxDecoration,
               child: Padding(
@@ -250,29 +314,7 @@ class HeaderBoxState extends State<HeaderBox> {
               ),
             ),
           ),
-          Expanded(
-            flex: 9,
-            child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
-              builder: (context, state) {
-                if (state is GetCoinListTotalValueLoadedState) {
-                  return CustomScrollView(
-                    slivers: <Widget> [
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          return NewCardListTile(state.coinListData, state.coinListData, state.totalValue);
-                            // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
-                          },
-                          childCount: state.coinListData.length,
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Container();
-                }
-              }
-            ),
-          ),
+          
         ],
       ),
     );
