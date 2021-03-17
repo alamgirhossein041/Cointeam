@@ -101,34 +101,32 @@ some long text about why api linking is cool some long text about why api linkin
 
                   /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   Container(
-                    child: StatefulBuilder(builder: (context, setState) {
-                     return DropdownButton<String>(
-                        dropdownColor: uniColor,
-                        value: dropdownValue,
-                        icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: textLight),
-                        underline: Container(
-                          height: 2,
-                          // TODO: andrew wants line to be shorter
-                          padding: EdgeInsets.only(right: 40),
-                          color: modalAccentColor,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                            imageIndex = exchanges.indexOf(newValue);
-                          });
-                        },
-                        items: exchanges.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      );
-                    })
+                    child: DropdownButton<String>(
+                      dropdownColor: uniColor,
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: textLight),
+                      underline: Container(
+                        height: 2,
+                        // TODO: andrew wants line to be shorter
+                        padding: EdgeInsets.only(right: 40),
+                        color: modalAccentColor,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          imageIndex = exchanges.indexOf(newValue);
+                        });
+                      },
+                      items: exchanges.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ],
               ),
@@ -169,9 +167,22 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
               child: ModalGuideText("2. Select 'API management'"),
             ),
 
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         )
       );
@@ -194,7 +205,13 @@ some long text about why api linking is cool some long text about why api linkin
               fit: FlexFit.tight,
               child: ModalGuideText("3. Give API key a name and create"),
             ),
-
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         ),
       );
@@ -218,12 +235,19 @@ some long text about why api linking is cool some long text about why api linkin
               child: ModalGuideText("4. Expand to show Secret Key"),
             ),
 
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         ),
       );
     } else if (page == 6) {
       /* page 6 */
-      // Initially password is obscure
+      // Initially password is obscured
       bool _obscureText = true;
 
       return Container (
@@ -310,6 +334,8 @@ some long text about why api linking is cool some long text about why api linkin
     }
   } 
 }
+
+
 
 class ConnectBinanceGuide extends StatelessWidget {
   const ConnectBinanceGuide({Key key, this.exch}) : super(key: key);
@@ -508,6 +534,20 @@ class ModalGuideText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text("$text", style: TextStyle(color: textLight)),
+      ],
+    );
+  }
+}
+
+class ModalHeading {
+  ModalHeading(this.text);
+  String text;
+  
+  Widget build(BuildContext context) {
+    return Row (
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
         Text("$text", style: TextStyle(color: textLight)),
