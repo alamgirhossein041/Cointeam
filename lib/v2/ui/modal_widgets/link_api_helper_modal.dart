@@ -2,9 +2,11 @@ import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
-  LinkAPIHelperModal({Key key, this.page}) : super(key: key);
+  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback}) : super(key: key);
 
   final int page;
+  final int exch;
+  final Function callback;
 
   @override
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
@@ -80,7 +82,6 @@ some long text about why api linking is cool some long text about why api linkin
       return Container(
 
         padding: modalPadding,
-        
         child: Column(
           children: <Widget> [
             
@@ -103,7 +104,7 @@ some long text about why api linking is cool some long text about why api linkin
                   Container(
                     child: DropdownButton<String>(
                       dropdownColor: uniColor,
-                      value: dropdownValue,
+                      value: buildDropdownValue(widget.exch),
                       icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
                       iconSize: 24,
                       elevation: 16,
@@ -119,6 +120,7 @@ some long text about why api linking is cool some long text about why api linkin
                           dropdownValue = newValue;
                           imageIndex = exchanges.indexOf(newValue);
                         });
+                        widget.callback(imageIndex);
                       },
                       items: exchanges.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
@@ -144,7 +146,7 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 4,
               fit: FlexFit.tight,
               child: Image(
-                image: imageList[imageIndex],
+                image: imageList[widget.exch],
               ),
             ),
           ],
@@ -332,7 +334,22 @@ some long text about why api linking is cool some long text about why api linkin
 
       );
     }
-  } 
+  }
+
+  String buildDropdownValue(int selected) {
+    switch (selected) {
+    case 0:
+      // Binance
+      return 'Binance';
+    case 1:
+      // FTX
+      return 'FTX';
+    default:
+      // default is Binance lel
+      return 'Binance';
+    break;
+    }
+  }
 }
 
 
@@ -542,7 +559,7 @@ class ModalGuideText extends StatelessWidget {
   }
 }
 
-class ModalHeading {
+class ModalHeading extends StatelessWidget {
   ModalHeading(this.text);
   String text;
   

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/link_api_helper_modal.dart';
@@ -11,6 +13,8 @@ class CarouselDemo extends StatefulWidget {
 
 class _CarouselDemoState extends State<CarouselDemo> {
   final CarouselController buttonCarouselController = CarouselController();
+
+  int exch = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
                         items: pageList.map((p) {
                           return Container(
                             margin: EdgeInsets.all(5.0),
-                            child: LinkAPIHelperModal(page: p),
+                            child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState),
                           );
                         }).toList(),
 
@@ -65,9 +69,9 @@ class _CarouselDemoState extends State<CarouselDemo> {
                     ]),
                   ),
                   Container(
-                      height: 100,
-                      // Smooth page indicator
-                      child: PageIndicator(_curr)),
+                    height: 100,
+                    // Smooth page indicator
+                    child: PageIndicator(_curr)),
                 ],
               );
             }),
@@ -75,6 +79,11 @@ class _CarouselDemoState extends State<CarouselDemo> {
         ),
       ),
     );
+  }
+  void _callbackSetState(int selected) {
+    setState(() {
+      exch = selected;
+    });
   }
 }
 
