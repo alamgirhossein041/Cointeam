@@ -50,14 +50,14 @@ class _CarouselDemoState extends State<CarouselDemo> {
                         // iterate through the list of page numbers to generate each page
                         items: pageList.map((p) {
                           return Container(
-                            margin: EdgeInsets.all(5.0),
+                            margin: EdgeInsets.all(4.0),
                             child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState),
                           );
                         }).toList(),
 
                         //Slider Container properties
                         options: CarouselOptions(
-                            height: displayHeight(context) * 0.8,
+                            height: displayHeight(context) - 90,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
                             initialPage: 0,
@@ -69,7 +69,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
                     ]),
                   ),
                   Container(
-                    height: 100,
+                    height: 90,
                     // Smooth page indicator
                     child: PageIndicator(_curr)),
                 ],

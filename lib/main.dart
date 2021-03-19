@@ -102,9 +102,29 @@ class MyApp extends StatelessWidget {
       ],
 
       child: MaterialApp(
-        // theme: ThemeData(
-        //   brightness: Brightness.dark
-        // ),
+        theme: ThemeData(
+          // Default brightness
+          // brightness: Brightness.dark
+
+          // Default colours
+          accentColor: Colors.deepPurpleAccent,
+        
+          // Default font family
+          fontFamily: 'Roboto',
+
+          // Default textTheme
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white),
+            headline2: TextStyle(),
+            headline3: TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: Colors.white),
+            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25, height: 1.8),
+          ),
+
+          // Default button theme
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(primary: Colors.deepPurple[200])
+          ),
+        ),
         // initialRoute: '/hometest',
         // initialRoute: '/dashboardnoapitest',
         // initialRoute: '/authentication',

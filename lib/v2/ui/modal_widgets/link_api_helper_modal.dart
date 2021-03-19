@@ -1,4 +1,5 @@
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
@@ -37,6 +38,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
    @override
   Widget build(BuildContext context) {
+
     int page = widget.page;
 
     /* page 1 - API linking explainer */
@@ -138,7 +140,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: Text("1. To enable trading, go to Binance Web ", style: TextStyle(color: textLight)),
+              child: ModalGuideText("1. To enable trading, go to Binance Web"),
             ),
 
             // instructions image line
@@ -204,7 +206,13 @@ some long text about why api linking is cool some long text about why api linkin
 
             Flexible(
               flex: 1,
-              fit: FlexFit.tight,
+              // fit: FlexFit.loose,
+              child: ModalHeading("Connect Binance"),
+            ),
+
+            Flexible(
+              flex: 1,
+              // fit: FlexFit.tight,
               child: ModalGuideText("3. Give API key a name and create"),
             ),
             Flexible(
@@ -229,6 +237,12 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 1,
               fit: FlexFit.tight,
               child: ModalTopBar(2),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
             ),
 
             Flexible(
@@ -261,7 +275,13 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalTopBar(2),
+              child: ModalTopBar(1),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
             ),
 
             Flexible(
@@ -269,44 +289,42 @@ some long text about why api linking is cool some long text about why api linkin
               fit: FlexFit.tight,
               child: ModalGuideText("5. Paste Secret API Key"),
             ),
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  fit:FlexFit.tight,
-                  child: StatefulBuilder(
-                    builder: (context, setState) {
-                      return TextField(
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
-                          ),
-                          labelStyle: TextStyle(color: Colors.white),
-                          labelText: 'Secret API key',
-                          helperText: "(We only need the Secret API Key)",
-                          helperStyle: TextStyle(color: Colors.white),
-                          // toggle visibility on/off
-                          suffixIcon: IconButton(
-                            icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
-                            onPressed: () {
-                              setState(() => _obscureText = !_obscureText);
-                            },
-                            color: Colors.grey,
-                          )
+            Flexible(
+              flex: 4,
+              fit:FlexFit.tight,
+              child: Center(
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return TextField(
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.white),
                         ),
-                        style: TextStyle(color: textLight)
-                      );
-                    },
-                  ),
-                ) 
-              ],
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
+                        ),
+                        labelStyle: TextStyle(color: Colors.white),
+                        labelText: 'Secret API key',
+                        helperText: "(We only need the Secret API Key)",
+                        helperStyle: TextStyle(color: Colors.white),
+                        // toggle visibility on/off
+                        suffixIcon: IconButton(
+                          icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() => _obscureText = !_obscureText);
+                          },
+                          color: Colors.grey,
+                        )
+                      ),
+                      style: TextStyle(color: textLight)
+                    );
+                  },
+                ),
+              ),
             ),
           ]
         ),
@@ -316,15 +334,21 @@ some long text about why api linking is cool some long text about why api linkin
       return Container (
          
         padding: modalPadding,
-        child: Column(
-          children: <Widget> [
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalGuideText("Binance Linked"),
+        child: ModalSuccess(
+          icon: Icon(Icons.done, color: Colors.greenAccent),
+          title: "Binance Linked",
+          body: Center(
+            child: Text(
+              "Congratulations!\nAll features of this app has been unlocked.",
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-
-          ]
+          ),
+          actionButton: Center(
+            child: TextButton(
+              onPressed: () {},
+              child: Text("Return to Dashboard"),
+            ),
+          )
         ),
       );
     } else {
@@ -352,7 +376,7 @@ some long text about why api linking is cool some long text about why api linkin
   }
 }
 
-
+/*
 
 class ConnectBinanceGuide extends StatelessWidget {
   const ConnectBinanceGuide({Key key, this.exch}) : super(key: key);
@@ -518,6 +542,7 @@ class ConnectBinanceGuide extends StatelessWidget {
     }
   }
 }
+*/
 
 // Helper classes
 
@@ -553,7 +578,13 @@ class ModalGuideText extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-        Text("$text", style: TextStyle(color: textLight)),
+        Center(
+          child: Text(
+            text,
+            style: TextStyle(color: textLight), 
+            textAlign: TextAlign.center
+          )
+        )
       ],
     );
   }
