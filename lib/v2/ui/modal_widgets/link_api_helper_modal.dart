@@ -1,10 +1,13 @@
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
-  LinkAPIHelperModal({Key key, this.page}) : super(key: key);
+  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback}) : super(key: key);
 
   final int page;
+  final int exch;
+  final Function callback;
 
   @override
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
@@ -35,13 +38,13 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
    @override
   Widget build(BuildContext context) {
+
     int page = widget.page;
 
     /* page 1 - API linking explainer */
     if (page == 1) {
 
       return Container(
-         //.*
         padding: modalPadding,
         
         child: Column(
@@ -79,10 +82,8 @@ some long text about why api linking is cool some long text about why api linkin
     } else if (page == 2) {
       /* page 2 - Connect Exchange page */
       return Container(
-        
-         
+
         padding: modalPadding,
-        
         child: Column(
           children: <Widget> [
             
@@ -100,35 +101,36 @@ some long text about why api linking is cool some long text about why api linkin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
                   Text("Connect ", style: TextStyle(color: textLight)),
+
+                  /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   Container(
-                    child: 
-                      /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
-                      DropdownButton<String>(
-                        dropdownColor: uniColor,
-                        value: dropdownValue,
-                        icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: textLight),
-                        underline: Container(
-                          height: 2,
-                          // TODO: andrew wants line to be shorter
-                          padding: EdgeInsets.only(right: 40),
-                          color: modalAccentColor,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                            imageIndex = exchanges.indexOf(newValue);
-                          });
-                        },
-                        items: exchanges.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                    child: DropdownButton<String>(
+                      dropdownColor: uniColor,
+                      value: buildDropdownValue(widget.exch),
+                      icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: textLight),
+                      underline: Container(
+                        height: 2,
+                        // TODO: andrew wants line to be shorter
+                        padding: EdgeInsets.only(right: 40),
+                        color: modalAccentColor,
                       ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          imageIndex = exchanges.indexOf(newValue);
+                        });
+                        widget.callback(imageIndex);
+                      },
+                      items: exchanges.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ],
               ),
@@ -138,7 +140,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: Text("1. To enable trading, go to Binance Web ", style: TextStyle(color: textLight)),
+              child: ModalGuideText("1. To enable trading, go to Binance Web"),
             ),
 
             // instructions image line
@@ -146,7 +148,7 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 4,
               fit: FlexFit.tight,
               child: Image(
-                image: imageList[imageIndex],
+                image: imageList[widget.exch],
               ),
             ),
           ],
@@ -169,9 +171,22 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
               child: ModalGuideText("2. Select 'API management'"),
             ),
 
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         )
       );
@@ -191,10 +206,22 @@ some long text about why api linking is cool some long text about why api linkin
 
             Flexible(
               flex: 1,
-              fit: FlexFit.tight,
-              child: ModalGuideText("3. Give API key a name and create"),
+              // fit: FlexFit.loose,
+              child: ModalHeading("Connect Binance"),
             ),
 
+            Flexible(
+              flex: 1,
+              // fit: FlexFit.tight,
+              child: ModalGuideText("3. Give API key a name and create"),
+            ),
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         ),
       );
@@ -215,15 +242,28 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
               child: ModalGuideText("4. Expand to show Secret Key"),
             ),
 
+            Flexible(
+              flex: 4,
+              fit: FlexFit.tight,
+              child: Image(
+                image: imageList[imageIndex],
+              ),
+            ),
           ]
         ),
       );
     } else if (page == 6) {
       /* page 6 */
-      // Initially password is obscure
+      // Initially password is obscured
       bool _obscureText = true;
 
       return Container (
@@ -235,7 +275,13 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalTopBar(2),
+              child: ModalTopBar(1),
+            ),
+
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: ModalHeading("Connect Binance"),
             ),
 
             Flexible(
@@ -243,44 +289,42 @@ some long text about why api linking is cool some long text about why api linkin
               fit: FlexFit.tight,
               child: ModalGuideText("5. Paste Secret API Key"),
             ),
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  fit:FlexFit.tight,
-                  child: StatefulBuilder(
-                    builder: (context, setState) {
-                      return TextField(
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
-                          ),
-                          labelStyle: TextStyle(color: Colors.white),
-                          labelText: 'Secret API key',
-                          helperText: "(We only need the Secret API Key)",
-                          helperStyle: TextStyle(color: Colors.white),
-                          // toggle visibility on/off
-                          suffixIcon: IconButton(
-                            icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
-                            onPressed: () {
-                              setState(() => _obscureText = !_obscureText);
-                            },
-                            color: Colors.grey,
-                          )
+            Flexible(
+              flex: 4,
+              fit:FlexFit.tight,
+              child: Center(
+                child: StatefulBuilder(
+                  builder: (context, setState) {
+                    return TextField(
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.white),
                         ),
-                        style: TextStyle(color: textLight)
-                      );
-                    },
-                  ),
-                ) 
-              ],
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
+                        ),
+                        labelStyle: TextStyle(color: Colors.white),
+                        labelText: 'Secret API key',
+                        helperText: "(We only need the Secret API Key)",
+                        helperStyle: TextStyle(color: Colors.white),
+                        // toggle visibility on/off
+                        suffixIcon: IconButton(
+                          icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() => _obscureText = !_obscureText);
+                          },
+                          color: Colors.grey,
+                        )
+                      ),
+                      style: TextStyle(color: textLight)
+                    );
+                  },
+                ),
+              ),
             ),
           ]
         ),
@@ -290,15 +334,21 @@ some long text about why api linking is cool some long text about why api linkin
       return Container (
          
         padding: modalPadding,
-        child: Column(
-          children: <Widget> [
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalGuideText("Binance Linked"),
+        child: ModalSuccess(
+          icon: Icon(Icons.done, color: Colors.greenAccent),
+          title: "Binance Linked",
+          body: Center(
+            child: Text(
+              "Congratulations!\nAll features of this app has been unlocked.",
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-
-          ]
+          ),
+          actionButton: Center(
+            child: TextButton(
+              onPressed: () {},
+              child: Text("Return to Dashboard"),
+            ),
+          )
         ),
       );
     } else {
@@ -308,8 +358,25 @@ some long text about why api linking is cool some long text about why api linkin
 
       );
     }
-  } 
+  }
+
+  String buildDropdownValue(int selected) {
+    switch (selected) {
+    case 0:
+      // Binance
+      return 'Binance';
+    case 1:
+      // FTX
+      return 'FTX';
+    default:
+      // default is Binance lel
+      return 'Binance';
+    break;
+    }
+  }
 }
+
+/*
 
 class ConnectBinanceGuide extends StatelessWidget {
   const ConnectBinanceGuide({Key key, this.exch}) : super(key: key);
@@ -475,6 +542,7 @@ class ConnectBinanceGuide extends StatelessWidget {
     }
   }
 }
+*/
 
 // Helper classes
 
@@ -508,6 +576,26 @@ class ModalGuideText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Center(
+          child: Text(
+            text,
+            style: TextStyle(color: textLight), 
+            textAlign: TextAlign.center
+          )
+        )
+      ],
+    );
+  }
+}
+
+class ModalHeading extends StatelessWidget {
+  ModalHeading(this.text);
+  String text;
+  
+  Widget build(BuildContext context) {
+    return Row (
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
         Text("$text", style: TextStyle(color: textLight)),
