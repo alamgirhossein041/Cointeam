@@ -50,22 +50,17 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
         child: Column(
           children: <Widget> [
             
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(3),
-            ),
+            ModalTopBar(3),
 
-            // the "connect binance" line
             Flexible(
-              flex: 1,
+              flex: 2,
               fit: FlexFit.tight,
-              child: ModalGuideText("Enable trading features button thingy"),
+              child: ModalHeading("Enable Trading"),
             ),
 
             // instructions text line
             Flexible(
-              flex: 1,
+              flex: 3,
               fit: FlexFit.tight,
 
               child: Text('''
@@ -74,7 +69,7 @@ some long text about why api linking is cool some long text about why api linkin
 some long text about why api linking is cool
 
 some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
-              ''', style: TextStyle(color: textLight)),
+              ''', style: Theme.of(context).textTheme.bodyText1),
             ),
           ],
         ),
@@ -87,11 +82,8 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
             
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(3),
-            ),
+            ModalTopBar(3),
+
 
             // the "connect binance" line
             Flexible(
@@ -100,22 +92,22 @@ some long text about why api linking is cool some long text about why api linkin
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  Text("Connect ", style: TextStyle(color: textLight)),
-
+                  Text("Connect ", style: Theme.of(context).textTheme.bodyText1),
+               
                   /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   Container(
                     child: DropdownButton<String>(
                       dropdownColor: uniColor,
                       value: buildDropdownValue(widget.exch),
-                      icon: Icon(Icons.arrow_drop_down, color: modalAccentColor),
+                      icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).accentColor),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: textLight),
+                      style: Theme.of(context).textTheme.bodyText1,
                       underline: Container(
                         height: 2,
                         // TODO: andrew wants line to be shorter
                         padding: EdgeInsets.only(right: 40),
-                        color: modalAccentColor,
+                        color: Theme.of(context).accentColor,
                       ),
                       onChanged: (String newValue) {
                         setState(() {
@@ -162,11 +154,8 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
             
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(3),
-            ),
+            ModalTopBar(3),
+
 
             Flexible(
               flex: 1,
@@ -198,15 +187,11 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
             
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(3),
-            ),
+            ModalTopBar(3),
 
             Flexible(
               flex: 1,
-              // fit: FlexFit.loose,
+              fit: FlexFit.tight,
               child: ModalHeading("Connect Binance"),
             ),
 
@@ -233,11 +218,8 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
             
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(2),
-            ),
+            ModalTopBar(3),
+
 
             Flexible(
               flex: 1,
@@ -272,11 +254,7 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
 
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ModalTopBar(1),
-            ),
+            ModalTopBar(2),
 
             Flexible(
               flex: 1,
@@ -320,7 +298,7 @@ some long text about why api linking is cool some long text about why api linkin
                           color: Colors.grey,
                         )
                       ),
-                      style: TextStyle(color: textLight)
+                      style: Theme.of(context).textTheme.bodyText1
                     );
                   },
                 ),
@@ -555,11 +533,16 @@ class ModalTopBar extends StatelessWidget {
   final int time;
 
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget> [
-        Text("($time mins)", style: TextStyle(color: Colors.white)),
-      ],
+    return Container(
+      padding: EdgeInsets.all(30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget> [
+          Text("($time mins)", 
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -581,7 +564,7 @@ class ModalGuideText extends StatelessWidget {
         Center(
           child: Text(
             text,
-            style: TextStyle(color: textLight), 
+            style: Theme.of(context).textTheme.bodyText1, 
             textAlign: TextAlign.center
           )
         )
@@ -592,13 +575,15 @@ class ModalGuideText extends StatelessWidget {
 
 class ModalHeading extends StatelessWidget {
   ModalHeading(this.text);
-  String text;
+  final String text;
   
   Widget build(BuildContext context) {
     return Row (
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-        Text("$text", style: TextStyle(color: textLight)),
+        Text("$text", 
+          style: Theme.of(context).textTheme.headline2
+        ),
       ],
     );
   }
