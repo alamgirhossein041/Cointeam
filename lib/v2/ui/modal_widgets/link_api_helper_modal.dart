@@ -312,7 +312,7 @@ some long text about why api linking is cool some long text about why api linkin
           actionButton: Center(
             child: TextButton(
               onPressed: () => {Navigator.pop(context)},
-              child: Text("OK"),
+              child: Text("Return to Dashboard"),
             ),
           )
         ),

@@ -111,7 +111,6 @@ class MyApp extends StatelessWidget {
           // Default colours
           // accentColor: Color(0xff8270FF),
           accentColor: Colors.deepPurpleAccent,
-
         
           // Default font family
           fontFamily: 'Roboto',
