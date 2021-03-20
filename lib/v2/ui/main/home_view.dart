@@ -15,6 +15,7 @@ import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
+import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:flutter/material.dart';
@@ -70,71 +71,7 @@ class HomeViewState extends State<HomeView> {
     } else {
       return Scaffold(
         backgroundColor: appBlack,
-        bottomNavigationBar: SizedBox(
-          height: kBottomNavigationBarHeight,
-          child: Container( /// ### This is the bottomappbar ### ///
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.only(
-            //     topRight: Radius.circular(15),
-            //     topLeft: Radius.circular(15),
-            //   ),
-      //          boxShadow: [                                                               
-      //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),       
-      // ], 
-            // ),
-          
-          
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30),
-                topLeft: Radius.circular(30),
-              ),
-              child: BottomAppBar(
-                color: Color(0xFF2E374E),
-                child: Column(
-                  children: <Widget> [
-                    SizedBox(height: 5),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-
-                            /// API Call
-
-                          }),
-                          // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                          
-                        IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                              /// Manual padding override because Dialog's default padding is FAT
-                              insetPadding: EdgeInsets.all(modalEdgePadding),
-                              // title: Text("Hello"),
-                              // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
-                              
-                              /// Connect API tutorial modal
-                              // child: ModalPopup(),
-                              child: CarouselDemo(),
-                            ),
-                          );
-                        }),
-                        IconButton(
-                          icon: Icon(
-                            Icons.refresh, 
-                            color: Color(0xFFA9B1D9)), 
-                            onPressed: () {setState(() {});}
-                          ),
-                      ],
-                    ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+        bottomNavigationBar: BottomNavBar(callBack: null),
         drawer: DrawerMenu(),
         body: Container(
           decoration: BoxDecoration(

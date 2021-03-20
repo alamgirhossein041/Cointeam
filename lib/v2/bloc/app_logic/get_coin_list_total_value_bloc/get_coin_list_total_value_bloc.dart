@@ -22,6 +22,7 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
     if (event is FetchGetCoinListTotalValueEvent) {
       List coinList = event.coinList;
       Map coinBalancesMap = event.coinBalancesMap;
+      // log(coinBalancesMap.toString());
       double totalValue = 0.0;
       yield GetCoinListTotalValueLoadingState();
       try {
@@ -42,10 +43,11 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
           // log("TotalValue in round $i [" + coin.symbol + "] is = " + totalValue.toString());
           
         }
-
+        coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         
         yield GetCoinListTotalValueLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap); /// TODO : insert parameters later
       } catch (e) {
+        // log(e.toString());
         log("Something went wrong in get_price_info_bloc.dart");
         yield GetCoinListTotalValueErrorState(errorMessage : e.toString());
       }

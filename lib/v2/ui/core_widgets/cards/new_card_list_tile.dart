@@ -1,18 +1,23 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 
 class NewCardListTile extends StatelessWidget {
-  const NewCardListTile({Key key, this.coinListData, this.coinBalancesMap, this.totalValue}) : super(key: key);
+  const NewCardListTile({Key key, this.coinListData, this.coinBalancesMap, this.totalValue, this.index}) : super(key: key);
 
   final coinListData;
   final coinBalancesMap;
   final double totalValue;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, '/coinpage', arguments: {'coinListData': coinListData.data[index], 'index' :index, 'coinBalancesMap': coinBalancesMap[coinListData.data[index].symbol], 'totalValue': totalValue});
+        },
         child: Container(
           height: displayHeight(context) * 0.11,
           decoration: BoxDecoration(
@@ -26,27 +31,112 @@ class NewCardListTile extends StatelessWidget {
                 child: Column(
                   children: <Widget> [
                     Expanded(
-                      flex: 5,
-                      child: Icon(CryptoFontIcons.BTC, color: Colors.orange),
+                      flex: 4,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Icon(CryptoFontIcons.BTC, color: Colors.orange),
+                      ),
                     ),
                     Expanded(
                       flex: 2,
-                      // child: Text(),
+                      // child: Text(coinListData.data[index].symbol),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                          child: Text((((coinBalancesMap[coinListData.data[index].symbol] * coinListData.data[index].quote.uSD.price) / totalValue) * 100).toStringAsFixed(1) + "%",
+                          style: TextStyle(color: Color(0x73EEEEEE))),
+                      /// we need to calculate coinListData.data[index].
+                      /// coinListData.data[index].symbol
+                      ),
                     ),
                   ]
                 )
               ),
               Expanded(
-                flex: 4,
-                child: Container(),
+                flex: 5,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    children: <Widget> [
+                      Expanded(
+                        flex: 3,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(coinListData.data[index].name,
+                              style: TextStyle(color: Colors.white),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(coinListData.data[index].quote.uSD.percentChange24h.toStringAsFixed(2) + "%",
+                              style: TextStyle(color: coinListData.data[index].quote.uSD.colorChange)),
+                          ),
+                        ),
+                      )
+                    ]
+                  ),
+                )
               ),
               Expanded(
                 flex: 4,
-                child: Container(),
+                child: Column(
+                  children: <Widget> [
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(numberFormatter(coinListData.data[index].quote.uSD.marketCap),
+                            style: TextStyle(color: Color(0x73EEEEEE))),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Container(),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 flex: 4,
-                child: Container(),
+                child: Column(
+                  children: <Widget> [
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0,0,15,5),
+                          child: Text("\$" + (coinBalancesMap[coinListData.data[index].symbol] * coinListData.data[index].quote.uSD.price).toStringAsFixed(2),
+                          style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(0,10,15,0),
+                          // child: Text((coinBalancesMap[coinListData.data[index].symbol]).toStringAsFixed(8),
+                          child: Text(balanceFormatter(coinBalancesMap[coinListData.data[index].symbol]),
+                          style: TextStyle(color: Color(0x73EEEEEE), fontSize: 12)),
+                        ),
+                      ),
+                    )
+                  ]
+                ),
               ),
               Expanded(
                 flex: 1,

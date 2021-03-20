@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:localstorage/localstorage.dart';
 
 class DrawerMenu extends StatelessWidget {
   DrawerMenu({Key key}) : super(key: key);
@@ -16,16 +22,6 @@ class DrawerMenu extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // DrawerHeader(
-            //   child: Text('Settings\n\n\n\n\n\nEarn Doge - Does nothing yet'),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       begin: Alignment.topLeft,
-            //       end: Alignment.bottomRight,
-            //       colors: [Colors.blueAccent, appBlue],
-            //     ),
-            //   ),
-            // ),
             SizedBox(height: displayHeight(context) * 0.1),
             Align(
               alignment: Alignment.center,
@@ -53,12 +49,6 @@ class DrawerMenu extends StatelessWidget {
                   ),
                 ),
               ),
-                  // button color
-                  // child: InkWell(
-                  //   splashColor: Colors.red, // inkwell color
-                  //   child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
-                  //   onTap: () {},
-                  // ),
             ),
             ListTile(
               // contentPadding: EdgeInsets.fromLTRB(20,20,0,0),
@@ -80,7 +70,7 @@ class DrawerMenu extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/first');
+                Navigator.pushReplacementNamed(context, '/first');
               },
             ),
             ListTile(
@@ -90,27 +80,90 @@ class DrawerMenu extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/dashboardnoapitest');
+                Navigator.pushReplacementNamed(context, '/dashboardnoapitest');
+              },
+            ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     'Home - With API',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pushNamed(context, '/hometest');
+            //   },
+            // ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                'New Portfolio Screen',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/dashboard');
+              },  
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Delete 1st Time Login API *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final storage = FlutterSecureStorage();
+                storage.delete(key: "api");
               },
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'Home - With API',
+                '* Delete Trading API *',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/hometest');
+                final storage = FlutterSecureStorage();
+                storage.delete(key: "trading");
+                
               },
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'Add Coin',
+                '* Clear Local Storage *',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/coinpage');
+                final storage = LocalStorage("coinstreetapp");
+                storage.clear();
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Log Local Storage *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final storage = LocalStorage("coinstreetapp");
+                log(storage.getItem("prime").toString());
+                // json.decode(storage.getItem("prime")).forEach((k,v) {
+                //   log(k.toString());
+                //   log(v.toString());
+                // });
+                // log(storage.getItem("prime").symbol.toString());
+                /// 19th oh mfer the key value store can't just be called as 
+              },
+            ),
+            SizedBox(height: 30),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Reset Application & State *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                // Navigator.pushNamed(context, '/hometest');
+                Phoenix.rebirth(context);
               },
             ),
           ],

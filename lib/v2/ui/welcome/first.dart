@@ -53,14 +53,14 @@ class WelcomeViewState extends State<WelcomeView> with TickerProviderStateMixin 
     super.initState();
     animationControllerWelcome = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
-      reverseDuration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
+      reverseDuration: Duration(seconds: 1),
     );
     animationWelcome = Tween(begin: 0.0, end: 1.0).animate(animationControllerWelcome);
 
     animationControllerQuestion = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
     );
     animationQuestion = Tween(begin: 0.0, end: 1.0).animate(animationControllerQuestion);
 
@@ -84,13 +84,13 @@ class WelcomeViewState extends State<WelcomeView> with TickerProviderStateMixin 
     Future.delayed(Duration(milliseconds: 500), () {
       // Do something
       animationControllerWelcome.forward();
-      Future.delayed(Duration(milliseconds: 4000), () {
+      Future.delayed(Duration(milliseconds: 1000), () {
       // Do something
         animationControllerWelcome.reverse();
-        Future.delayed(Duration(milliseconds: 1800), () {
+        Future.delayed(Duration(milliseconds: 1500), () {
       // Do something
           animationControllerQuestion.forward();
-          Future.delayed(Duration(milliseconds: 2000), () {
+          Future.delayed(Duration(milliseconds: 1000), () {
             animationControllerButtons.forward();
           });
         });

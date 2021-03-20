@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class CardCoinmarketcapListModel {
   Status status;
   List<Data> data;
@@ -33,13 +35,12 @@ class Data {
   String symbol;
   Quote quote;
   int cmcRank;
-  
 
   /// TODO: Add Icon here?
   /// 
   /// coinListData.data[0].name/symbol/quote/cmcRank -- .data[0].quote.uSD.price/volume24/percentChange1h/marketCap
 
-  Data({this.name, this.quote});
+  Data({this.name, this.quote, this.symbol, this.cmcRank});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -78,6 +79,7 @@ class USD {
   double percentChange90d;
   double marketCap;
   String lastUpdated;
+  Color colorChange;
 
   USD(
       {this.price,
@@ -89,7 +91,8 @@ class USD {
       this.percentChange60d,
       this.percentChange90d,
       this.marketCap,
-      this.lastUpdated});
+      this.lastUpdated,
+      this.colorChange});
 
   USD.fromJson(Map<String, dynamic> json) {
     price = json['price'].toDouble();
@@ -102,6 +105,13 @@ class USD {
     percentChange90d = json['percent_change_90d'].toDouble();
     marketCap = json['market_cap'].toDouble();
     lastUpdated = json['last_updated'];
+    if(percentChange24h > 0) {
+      colorChange = Colors.green;
+    } else if(percentChange24h < 0) {
+      colorChange = Colors.red;
+    } else {
+      colorChange = Colors.black;
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -33,10 +33,10 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
 
     // var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
-      log("YAY");
-      log(response.body.toString());
+      // log("YAY");
+      // log(response.body.toString());
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      log("BOO");
+      // log("BOO");
       CardCoinmarketcapListModel cardCoinmarketcapListModel = CardCoinmarketcapListModel.fromJson(body);
       return cardCoinmarketcapListModel;
     } else {

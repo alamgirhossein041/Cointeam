@@ -22,6 +22,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     /// ##### Start API Request ######
     /// Build our signature and HMAC hash for Binance
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    log(timestamp);
     String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000';
     var sapiHmac = utf8.encode(sapi);
     var signatureBuilderHmac = utf8.encode(signatureBuilder);
@@ -53,6 +54,8 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       log("excepted");
+      log(response.statusCode.toString());
+      log(response.body.toString());
       throw Exception();
     }
   }
