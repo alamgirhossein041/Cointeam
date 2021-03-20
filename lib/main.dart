@@ -109,8 +109,8 @@ class MyApp extends StatelessWidget {
           // brightness: Brightness.dark
 
           // Default colours
-          accentColor: Color(0xff8270FF),
-          // accentColor: Colors.deepPurpleAccent[100],
+          // accentColor: Color(0xff8270FF),
+          accentColor: Colors.deepPurpleAccent,
 
         
           // Default font family

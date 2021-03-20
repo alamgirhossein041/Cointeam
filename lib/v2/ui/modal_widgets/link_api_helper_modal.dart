@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +41,13 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
 
     int page = widget.page;
 
+    String explainerText = '''some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
+
+some long text about why api linking is cool
+
+some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
+              ''';
+
     // page 1 - API linking explainer
     if (page == 1) {
       return Container(
@@ -60,13 +65,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
             Flexible(
               flex: 3,
               fit: FlexFit.tight,
-              child: Text('''
-some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
-
-some long text about why api linking is cool
-
-some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
-              ''', style: Theme.of(context).textTheme.bodyText2),
+              child: Text(explainerText, style: Theme.of(context).textTheme.bodyText2),
             ),
           ],
         ),
@@ -88,7 +87,8 @@ some long text about why api linking is cool some long text about why api linkin
                 children: <Widget> [
                   Text("Connect ", style: Theme.of(context).textTheme.bodyText2),
                
-                  /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
+                  /// Dropdown selection for API linking tutorial, 
+                  /// //select from Binance, FTX etc
                   Container(
                     child: DropdownButton<String>(
                       dropdownColor: uniColor,
@@ -164,7 +164,7 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 4,
               fit: FlexFit.tight,
               child: Image(
-                image: imageList[imageIndex],
+                image: imageList[widget.exch],
               ),
             ),
           ]
@@ -195,7 +195,7 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 4,
               fit: FlexFit.tight,
               child: Image(
-                image: imageList[imageIndex],
+                image: imageList[widget.exch],
               ),
             ),
           ]
@@ -225,7 +225,7 @@ some long text about why api linking is cool some long text about why api linkin
               flex: 4,
               fit: FlexFit.tight,
               child: Image(
-                image: imageList[imageIndex],
+                image: imageList[widget.exch],
               ),
             ),
           ]
@@ -233,6 +233,7 @@ some long text about why api linking is cool some long text about why api linkin
       );
     } else if (page == 6) {
       // page 6
+      // TODO: this page should be refactored but i'm too scared to touch it :)
       bool _obscureText = true; // password is obscured by default
 
       return Container (
@@ -253,39 +254,41 @@ some long text about why api linking is cool some long text about why api linkin
               child: ModalGuideText(page, widget.exch),
             ),
             Flexible(
-              flex: 4,
-              fit:FlexFit.tight,
-              child: Center(
-                child: StatefulBuilder(
-                  builder: (context, setState) {
-                    return TextField(
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.white),
+              flex: 3,
+              // fit:FlexFit.tight,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: StatefulBuilder(
+                    builder: (context, setState) {
+                      return TextField(
+                        obscureText: _obscureText,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Theme.of(context).accentColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 3, color: Theme.of(context).accentColor),
+                          ),
+                          labelStyle: TextStyle(color: Colors.white),
+                          labelText: 'Secret API key',
+                          helperText: "(We only need the Secret API Key)",
+                          helperStyle: TextStyle(color: Colors.white),
+                          // toggle visibility on/off
+                          suffixIcon: IconButton(
+                            icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
+                            onPressed: () {
+                              setState(() => _obscureText = !_obscureText);
+                            },
+                            color: Colors.grey,
+                          )
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
-                        ),
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Secret API key',
-                        helperText: "(We only need the Secret API Key)",
-                        helperStyle: TextStyle(color: Colors.white),
-                        // toggle visibility on/off
-                        suffixIcon: IconButton(
-                          icon: _obscureText? Icon(Icons.remove_red_eye) : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() => _obscureText = !_obscureText);
-                          },
-                          color: Colors.grey,
-                        )
-                      ),
-                      style: Theme.of(context).textTheme.bodyText1
-                    );
-                  },
+                        style: Theme.of(context).textTheme.bodyText1
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -297,7 +300,7 @@ some long text about why api linking is cool some long text about why api linkin
       return Container (
         padding: modalPadding,
         child: ModalSuccess(
-          icon: Icon(Icons.done, color: Colors.greenAccent),
+          icon: Icon(Icons.done, color: Colors.greenAccent, size: 55),
           title: exchanges[widget.exch] + " Linked",
           body: Center(
             child: Text(
@@ -308,8 +311,8 @@ some long text about why api linking is cool some long text about why api linkin
           ),
           actionButton: Center(
             child: TextButton(
-              onPressed: () {},
-              child: Text("Return to Dashboard"),
+              onPressed: () => {Navigator.pop(context)},
+              child: Text("OK"),
             ),
           )
         ),
@@ -321,6 +324,10 @@ some long text about why api linking is cool some long text about why api linkin
     }
   }
 
+  // Helper function
+
+  /// Used with the callback function to keep track of 
+  /// the [selected] value on the dropdown.
   String buildDropdownValue(int selected) {
     switch (selected) {
     case 0:
@@ -428,6 +435,8 @@ class ModalHeading extends StatelessWidget {
     );
   }
 }
+
+// Helper functions
 
 /// Builds modal guide text based on [page] and [exch].
 ///

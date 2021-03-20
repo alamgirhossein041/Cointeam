@@ -25,6 +25,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
     int _curr = 0;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           // background gradient
