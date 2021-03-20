@@ -109,7 +109,9 @@ class MyApp extends StatelessWidget {
           // brightness: Brightness.dark
 
           // Default colours
-          accentColor: Colors.deepPurpleAccent[100],
+          accentColor: Color(0xff8270FF),
+          // accentColor: Colors.deepPurpleAccent[100],
+
         
           // Default font family
           fontFamily: 'Roboto',
@@ -120,6 +122,8 @@ class MyApp extends StatelessWidget {
             headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: Colors.white),
             headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
             bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25),
+
           ),
 
           // Default button theme

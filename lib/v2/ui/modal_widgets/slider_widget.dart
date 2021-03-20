@@ -42,9 +42,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
 
           child: 
             StatefulBuilder(builder: (context, setState) {
-          
               return Stack(children: [
-                // StatefulBuilder(builder: (context, setState) {
                 Column(
                   children: [
                     Expanded(
@@ -60,26 +58,24 @@ class _CarouselDemoState extends State<CarouselDemo> {
 
                           //Slider Container properties
                           options: CarouselOptions(
-                              height: displayHeight(context) - 90,
-                              aspectRatio: 16 / 9,
-                              viewportFraction: 1,
-                              initialPage: 0,
-                              enableInfiniteScroll: false,
-                              onPageChanged: (index, reason) {
-                                setState(() => _curr = index);
-                              }),
+                            height: displayHeight(context) - 90,
+                            aspectRatio: 16 / 9,
+                            viewportFraction: 1,
+                            initialPage: 0,
+                            enableInfiniteScroll: false,
+                            onPageChanged: (index, reason) {
+                              setState(() => _curr = index);
+                            }),
                         ),
                       ]),
                     ),
-                    
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter, 
-                    padding: EdgeInsets.only(bottom: 40, top: 40),
-                    // height: 90,
-                    // Smooth page indicator
-                    child: PageIndicator(_curr)),
+                  ],
+                ),
+                Container(
+                  // page indicators at the bottom
+                  alignment: Alignment.bottomCenter, 
+                  padding: EdgeInsets.only(bottom: 40, top: 40),
+                  child: PageIndicator(_curr)),
                 ]
               );
             }
@@ -109,12 +105,13 @@ class PageIndicator extends StatelessWidget {
         activeIndex: page,
         count: 7,
         effect: WormEffect(
-            paintStyle: PaintingStyle.stroke,
+            paintStyle: PaintingStyle.fill,
             dotWidth: 6,
             dotHeight: 6,
-            spacing: 15,
-            dotColor: Colors.deepPurple,
-            activeDotColor: Colors.deepPurpleAccent),
+            spacing: 12,
+            dotColor: Colors.grey[800],
+            activeDotColor: Theme.of(context).accentColor
+          ),
       ),
     );
   }

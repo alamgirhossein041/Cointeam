@@ -36,22 +36,18 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
 
-   @override
+  @override
   Widget build(BuildContext context) {
 
     int page = widget.page;
 
-    /* page 1 - API linking explainer */
+    // page 1 - API linking explainer
     if (page == 1) {
-
       return Container(
         padding: modalPadding,
-        
         child: Column(
           children: <Widget> [
-            
-            ModalTopBar(3),
-
+            ModalTopBar(3), // estimated time indicator
             Flexible(
               flex: 2,
               fit: FlexFit.tight,
@@ -62,28 +58,24 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
             Flexible(
               flex: 3,
               fit: FlexFit.tight,
-
               child: Text('''
 some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
 
 some long text about why api linking is cool
 
 some long text about why api linking is cool some long text about why api linking is cool some long text about why api linking is cool
-              ''', style: Theme.of(context).textTheme.bodyText1),
+              ''', style: Theme.of(context).textTheme.bodyText2),
             ),
           ],
         ),
       );
     } else if (page == 2) {
-      /* page 2 - Connect Exchange page */
+      // page 2 - Connect Exchange page
       return Container(
-
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            
-            ModalTopBar(3),
-
+            ModalTopBar(3), // estimated time indicator
 
             // the "connect binance" line
             Flexible(
@@ -92,17 +84,17 @@ some long text about why api linking is cool some long text about why api linkin
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  Text("Connect ", style: Theme.of(context).textTheme.bodyText1),
+                  Text("Connect ", style: Theme.of(context).textTheme.bodyText2),
                
                   /// Dropdown selection for API linking tutorial, select from Binance, FTX etc
                   Container(
                     child: DropdownButton<String>(
                       dropdownColor: uniColor,
                       value: buildDropdownValue(widget.exch),
-                      icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).accentColor),
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.white),
                       iconSize: 24,
                       elevation: 16,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText2,
                       underline: Container(
                         height: 2,
                         // TODO: andrew wants line to be shorter
@@ -149,18 +141,15 @@ some long text about why api linking is cool some long text about why api linkin
     } else if (page == 3) {
       /* page 3 - Select api management guide image */
       return Container (
-         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            
-            ModalTopBar(3),
-
+            ModalTopBar(3), // estimated time indicator
 
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalHeading("Connect Binance"),
+              child: ModalHeading("Connect "+ exchanges[widget.exch]),
             ),
 
             Flexible(
@@ -187,12 +176,12 @@ some long text about why api linking is cool some long text about why api linkin
         child: Column(
           children: <Widget> [
             
-            ModalTopBar(3),
+            ModalTopBar(3), // estimated time indicator
 
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalHeading("Connect Binance"),
+              child: ModalHeading("Connect "+ exchanges[widget.exch]),
             ),
 
             Flexible(
@@ -211,20 +200,17 @@ some long text about why api linking is cool some long text about why api linkin
         ),
       );
     } else if (page == 5) {
-      /* page 5 */
+      // page 5 
       return Container (
-         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            
-            ModalTopBar(3),
-
+            ModalTopBar(2), // estimated time indicator
 
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalHeading("Connect Binance"),
+              child: ModalHeading("Connect "+ exchanges[widget.exch]),
             ),
 
             Flexible(
@@ -244,22 +230,19 @@ some long text about why api linking is cool some long text about why api linkin
         ),
       );
     } else if (page == 6) {
-      /* page 6 */
-      // Initially password is obscured
-      bool _obscureText = true;
+      // page 6
+      bool _obscureText = true; // password is obscured by default
 
       return Container (
-         
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-
-            ModalTopBar(2),
+            ModalTopBar(1), // estimated time indicator
 
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalHeading("Connect Binance"),
+              child: ModalHeading("Connect "+ exchanges[widget.exch]),
             ),
 
             Flexible(
@@ -308,17 +291,16 @@ some long text about why api linking is cool some long text about why api linkin
         ),
       );
       } else if (page == 7) {
-      /* page 7 */
+      // page 7
       return Container (
-         
         padding: modalPadding,
         child: ModalSuccess(
           icon: Icon(Icons.done, color: Colors.greenAccent),
-          title: "Binance Linked",
+          title: exchanges[imageIndex] + " Linked",
           body: Center(
             child: Text(
               "Congratulations!\nAll features of this app has been unlocked.",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
           actionButton: Center(
@@ -331,9 +313,7 @@ some long text about why api linking is cool some long text about why api linkin
       );
     } else {
       return Container (
-         
         padding: modalPadding,
-
       );
     }
   }
@@ -533,12 +513,16 @@ class ModalTopBar extends StatelessWidget {
   final int time;
 
   Widget build(BuildContext context) {
+    String label;
+
+    label = time > 1 ? 'mins' : 'min';
+
     return Container(
       padding: EdgeInsets.all(30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget> [
-          Text("($time mins)", 
+          Text("($time $label)", 
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
@@ -564,7 +548,7 @@ class ModalGuideText extends StatelessWidget {
         Center(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodyText1, 
+            style: Theme.of(context).textTheme.bodyText2,
             textAlign: TextAlign.center
           )
         )
@@ -581,7 +565,7 @@ class ModalHeading extends StatelessWidget {
     return Row (
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-        Text("$text", 
+        Text(text, 
           style: Theme.of(context).textTheme.headline2
         ),
       ],
