@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
               child: ModalHeading("Enable Trading"),
             ),
 
-            // instructions text line
+            // API linking explainer
             Flexible(
               flex: 3,
               fit: FlexFit.tight,
@@ -77,7 +79,7 @@ some long text about why api linking is cool some long text about why api linkin
           children: <Widget> [
             ModalTopBar(3), // estimated time indicator
 
-            // the "connect binance" line
+            // modal title
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -124,7 +126,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalGuideText("1. To enable trading, go to Binance Web"),
+              child: ModalGuideText(page, widget.exch),
             ),
 
             // instructions image line
@@ -139,7 +141,7 @@ some long text about why api linking is cool some long text about why api linkin
         ),
       );
     } else if (page == 3) {
-      /* page 3 - Select api management guide image */
+      // page 3 - Select api management guide image
       return Container (
         padding: modalPadding,
         child: Column(
@@ -155,7 +157,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalGuideText("2. Select 'API management'"),
+              child: ModalGuideText(page, widget.exch),
             ),
 
             Flexible(
@@ -169,7 +171,7 @@ some long text about why api linking is cool some long text about why api linkin
         )
       );
     } else if (page == 4) {
-      /* page 4 */
+      // page 4
       return Container (
          
         padding: modalPadding,
@@ -186,9 +188,9 @@ some long text about why api linking is cool some long text about why api linkin
 
             Flexible(
               flex: 1,
-              // fit: FlexFit.tight,
-              child: ModalGuideText("3. Give API key a name and create"),
+              child: ModalGuideText(page, widget.exch),
             ),
+
             Flexible(
               flex: 4,
               fit: FlexFit.tight,
@@ -216,7 +218,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalGuideText("4. Expand to show Secret Key"),
+              child: ModalGuideText(page, widget.exch),
             ),
 
             Flexible(
@@ -248,7 +250,7 @@ some long text about why api linking is cool some long text about why api linkin
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: ModalGuideText("5. Paste Secret API Key"),
+              child: ModalGuideText(page, widget.exch),
             ),
             Flexible(
               flex: 4,
@@ -296,11 +298,12 @@ some long text about why api linking is cool some long text about why api linkin
         padding: modalPadding,
         child: ModalSuccess(
           icon: Icon(Icons.done, color: Colors.greenAccent),
-          title: exchanges[imageIndex] + " Linked",
+          title: exchanges[widget.exch] + " Linked",
           body: Center(
             child: Text(
-              "Congratulations!\nAll features of this app has been unlocked.",
+              "Congratulations!\n\nAll features of this app has been unlocked.",
               style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.center,
             ),
           ),
           actionButton: Center(
@@ -334,179 +337,13 @@ some long text about why api linking is cool some long text about why api linkin
   }
 }
 
-/*
-
-class ConnectBinanceGuide extends StatelessWidget {
-  const ConnectBinanceGuide({Key key, this.exch}) : super(key: key);
-
-  final String exch;
-
-  @override
-  Widget build(BuildContext context) {
-
-    if (exch == 'Binance') {
-      return Container(
-            
-         
-
-        // layout
-        child: Column(
-          children: <Widget> [
-
-            // the (3 mins) and +50 reward line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget> [
-                  Container(width: 58),
-                  Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                  // Container(width: displayWidth(context) * 0.4,
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Text("+50 ", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.av_timer, color: Colors.white),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // the "connect binance" line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  Text("Connect Binance", style: TextStyle(color: textLight)),
-                ],
-              ),
-            ),
-
-            // instructions text line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-
-              child: Text("2. Select API Management", style: TextStyle(color: textLight)),
-            ),
-
-            // instructions image line
-            Flexible(
-              flex: 4,
-              fit: FlexFit.tight,
-
-              child: Image(
-                image: AssetImage(('graphics/assets/placeholder_modal.jpg'))
-              ),
-            ),
-
-            // pagination dots line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("dots go here ", style: TextStyle(color: textLight)),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (exch == 'FTX') {
-      return Container(
-
-        // background gradient
-         
-
-        // layout
-        child: Column(
-          children: <Widget> [
-
-            // the (3 mins) and +50 reward line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget> [
-                  Container(width: 58),
-                  Text("(3 mins)", style: TextStyle(color: Colors.white)),
-                  // Container(width: displayWidth(context) * 0.4,
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Text("+50 ", style: TextStyle(color: Colors.white)),
-                      Icon(Icons.av_timer, color: Colors.white),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // the "connect binance" line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  Text("Connect  ", style: TextStyle(color: textLight)),
-                ],
-              ),
-            ),
-
-            // instructions text line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-
-              child: Text("1. To enable trading, go to Binance Web ", style: TextStyle(color: textLight)),
-            ),
-
-            // instructions image line
-            Flexible(
-              flex: 4,
-              fit: FlexFit.tight,
-
-              child: Image(
-                image: AssetImage(('graphics/assets/placeholder_modal.jpg'))
-              ),
-            ),
-
-            // pagination dots line
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("dots go here ", style: TextStyle(color: textLight)),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container (
-        // background gradient
-         //.*
-        child: Text("we did something wrong and now you're here. press button to go back :)", style: TextStyle(color: textLight)),
-      );
-    }
-  }
-}
-*/
-
 // Helper classes
 
-/// the (3 mins) and +50 reward line
+/// Top modal bar
 /// 
-/// {@time estimated time to complete API linking}
+/// Returns a widget containing the text indicating
+/// ([time] mins/min).
+/// e.g. (3 mins)
 class ModalTopBar extends StatelessWidget {
   ModalTopBar(this.time);
 
@@ -515,6 +352,7 @@ class ModalTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     String label;
 
+    // plurals :D
     label = time > 1 ? 'mins' : 'min';
 
     return Container(
@@ -534,14 +372,29 @@ class ModalTopBar extends StatelessWidget {
 
 /// Text to guide the user through the process
 /// 
-/// {@text guide text to display}
+/// Builds a text based on [page] number. 
+/// [exch] specifies the index of the list of exchanges, where:
+/// 0 = Binance,
+/// 1 = FTX.
 class ModalGuideText extends StatelessWidget {
-  ModalGuideText(this.text);
+  ModalGuideText(this.page, this.exch);
 
-  final String text;
+  // modal page number
+  final int page;
+
+  // index of exchange in list of exchanges
+  // 0 - binance
+  // 1 - FTX
+  final int exch;
 
   @override
   Widget build(BuildContext context) {
+
+    // build text first
+    String text = '';
+    text = buildModalGuideText(page, exch);
+
+    // return ui with built text
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
@@ -557,6 +410,9 @@ class ModalGuideText extends StatelessWidget {
   }
 }
 
+/// Modal title
+///
+/// Returns a Row with [text] as a headline.
 class ModalHeading extends StatelessWidget {
   ModalHeading(this.text);
   final String text;
@@ -571,4 +427,93 @@ class ModalHeading extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Builds modal guide text based on [page] and [exch].
+///
+/// [exch] specifies the index of the list of exchanges, where: 
+///  0 = Binance
+///  1 = FTX.
+buildModalGuideText(int page, int exch) {
+  String text = '';
+
+  switch (page) {
+    // page 1 has introduction text, so no case for that
+    // page 2
+    case 2:
+      switch (exch) {
+        case 0:
+          text = '1. To enable trading, go to Binance Web';
+          break;
+        case 1:
+          text = '1. To enable trading, go to FTX Web';
+          break;
+      default:
+        text = "Error: Exchange not found ):";
+      }
+      break;
+
+    // page 3
+    case 3:
+      switch (exch) {
+        case 0:
+          text = "2. Select 'API management'";
+          break;
+        case 1:
+          text = "[FTX] 2. Select 'API management'";
+          break;
+        default:
+        text = 'Missing text.. how did you find this?';
+      }
+      break;
+
+    // page 4
+    case 4:
+      switch (exch) {
+        case 0:
+          text = "3. Give API key a name and create";
+          break;
+        case 1:
+          text = "[FTX] 3. Give API key a name and create";
+          break;
+        default:
+        text = 'page 4 text not found';
+        break;
+      }
+      break;
+
+    // page 5
+    case 5:
+      switch (exch) {
+        case 0:
+          text = "4. Expand to show Secret Key";
+          break;
+        case 1:
+          text = "[FTX] 4. Expand to show Secret Key";
+          break;
+        default:
+        text = 'page 5 text not found';
+        break;
+      }
+      break;
+
+    // page 6
+    case 6:
+      switch (exch) {
+        case 0:
+          text = "5. Paste Secret API Key";
+          break;
+        case 1:
+          text = "[FTX] 5. Paste Secret API Key";
+          break;
+        default:
+        text = 'page 6 text not found';
+        break;
+      }
+      break;
+    default:
+    text = 'Text not found.. how?';
+    break;
+  }
+  return text;
 }
