@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
+
 class CryptoCompareModel {
 	String response;
 	String message;
@@ -155,10 +157,10 @@ class CryptoCompareHourlyModel {
 
 }
 
-class SalesData {
-  SalesData({this.time, this.price});
-  /// each time interval does separate API calls 30min ticks?
-  String time;
-  double price;
+// class SalesData {
+//   SalesData({this.time, this.price});
+//   /// each time interval does separate API calls 30min ticks?
+//   String time;
+//   double price;
 
-}
+// }
