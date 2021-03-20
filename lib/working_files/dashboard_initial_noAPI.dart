@@ -1,29 +1,39 @@
+import 'dart:async';
+
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_state.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
+import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_event.dart';
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 /// ###                                                                                  ### ///
 /// ###  Version with NO API linked - list of coins retrieved from Coinmarketcap Top 100 ### ///
 /// ###                                                                                  ### ///
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
-
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
+/// 
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_state.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
-import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
-import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
+import 'package:coinsnap/v2/ui/welcome/first.dart';
+import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
+import 'package:coinsnap/working_files/hidden_panel.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:math' as math;
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
@@ -34,9 +44,10 @@ import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
 
 class DashboardNoApiView extends StatefulWidget {
-  DashboardNoApiView({Key key}) : super(key: key);
+  // DashboardNoApiView({Key key}) : super(key: key);
 
   @override
   DashboardNoApiViewState createState() => DashboardNoApiViewState();
@@ -48,8 +59,6 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   // var firestoreUser = FirebaseFirestore.instance.collection('User');
   // var firebaseAuth = FirebaseAuth.instance;
 
-  final storage = new FlutterSecureStorage();
-
   /// custom padding in pixels, because Dialog comes attached with a default FAT padding :)
   double modalEdgePadding = 10;
 
@@ -59,11 +68,13 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void initState() {
     /// TODO: stuff
     super.initState();
+    log("dashboard_initial_noAPI.dart - DashboardNoApiView() InitState");
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    log("dashboard_initial_noAPI.dart - DashboardNoApiView() DPD");
     BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
   }
 
@@ -73,78 +84,19 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
     // GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
     return Scaffold(
       backgroundColor: appBlack,
-      bottomNavigationBar: SizedBox(
-        height: kBottomNavigationBarHeight,
-        child: Container( /// ### This is the bottomappbar ### ///
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.only(
-          //     topRight: Radius.circular(15),
-          //     topLeft: Radius.circular(15),
-          //   ),
-    //          boxShadow: [                                                               
-    //   BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),       
-    // ], 
-          // ),
-        
-        
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              topLeft: Radius.circular(30),
-            ),
-            child: BottomAppBar(
-              color: Color(0xFF2E374E),
-              child: Column(
-                children: <Widget> [
-                  SizedBox(height: 5),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget> [
-                        IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-
-                          /// API Call
-                          /// 
-
-                        }),
-                        // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                        
-                          /// /// ApiModalFirst();  /// ///
-                          
-                        IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                              /// Manual padding override because Dialog's default padding is FAT
-                              insetPadding: EdgeInsets.all(modalEdgePadding),
-                              // title: Text("Hello"),
-                              // insetPadding: EdgeInsets.fromLTRB(0,1000,0,1000),
-                              
-                              /// Connect API tutorial modal
-                              // child: ModalPopup(),
-                              child: CarouselDemo(),
-                            ),
-                          );
-                        }),
-
-                        IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {setState(() {});}),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      bottomNavigationBar: 
+        // height: kBottomNavigationBarHeight,
+        BottomNavBar(callBack: _callBackSetState),
+ 
       // key: scaffoldState,
       drawer: DrawerMenu(),
       body: Container(
+        // height: displayHeight(context),
         decoration: BoxDecoration(
           color: appBlack,
         ),
         child: FutureBuilder(
-          future: readStorage(),
+          future: readStorage("api"),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -152,11 +104,15 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 return CircularProgressIndicator();
               default:
               if (!snapshot.hasError) {
-                /// ("Return a welcome screen") ??? default comment
-                // return snapshot.data != null
-                //     ? DashboardWithApi()
-                //     : Text("Wallah");
+                if (snapshot.data != "none") {
+                  log(snapshot.data.toString());
                   return DashboardWithNoApiWorking();
+                } else {
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Navigator.pushReplacementNamed(context, '/first');
+                  });
+                  return Container();
+                }
               } else {
                 return errorTemplateWidget(snapshot.error);
               }
@@ -167,13 +123,12 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
     );
   }
 
-    Future<String> readStorage() async {
-    String value = await storage.read(key: "api");
-    if (value == null) {
-      return "none";
-    } else { /// TODO; Check for api key validity using cryptography
-      return value;
-    }
+  
+  void _callBackSetState() {
+    setState(() {
+      log("Hello World");
+      // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+    });
   }
 }
 
@@ -181,309 +136,431 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
 /// used for API tutorial thingy
 
 
-class DashboardWithNoApiWorking extends StatelessWidget {
+class DashboardWithNoApiWorking extends StatefulWidget {
   
   @override
+  DashboardWithNoApiWorkingState createState() => DashboardWithNoApiWorkingState();
+}
+
+class DashboardWithNoApiWorkingState extends State<DashboardWithNoApiWorking> {
+
+  @override
+  void initState() { 
+    super.initState();
+    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+    BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
+    log("dashboard_initial_noAPI.dart - DashboardNoApiWorking() InitState");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // log("CoingeckoList250Bloc in dashboard_initial_noAPI.dart");
+    log("dashboard_initial_noAPI.dart - DashboardWithNoApiWorking() DPD");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: appBlack,
-        ),
-        child: Column(
-          children: <Widget> [
-            SizedBox(height: displayHeight(context) * 0.05),
-            /// ### Top Row starts here ### ///
-            TopMenuRow(),
-            RefreshIndicator(
-              onRefresh: () async {
-                // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
-                BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
-              },
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: <Widget> [
-                    NoApiPriceContainer(),
-                    // SizedBox(height: displayHeight(context) * 0.01),
-                    NoApiCategoryList(),
-                    NoApiAddCoinWidget(),
-                  ],
-                ),
+    return Container(
+      child: Column(
+        children: <Widget> [
+          SizedBox(height: displayHeight(context) * 0.05),
+          /// ### Top Row starts here ### ///
+          TopMenuRow(),
+          RefreshIndicator(
+            onRefresh: () async {
+              // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+              BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+              BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+            },
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: <Widget> [
+                  NoApiPriceContainer(),
+                  // SizedBox(height: displayHeight(context) * 0.01),
+                ],
               ),
             ),
-          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-            
-          ],
-        ),
+          ),
+        // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
+          
+        ],
       ),
     );
   }
 }
 
-class NoApiPriceContainer extends StatelessWidget {
-  NoApiPriceContainer({Key key}) : super(key: key);
+class NoApiPriceContainer extends StatefulWidget {
+  // NoApiPriceContainer({Key key}) : super(key: key);
 
+  @override
+  NoApiPriceContainerState createState() => NoApiPriceContainerState();
+}
+
+class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTickerProviderStateMixin {
   final DBPortfolioPostTest dbPortfolioPostTest = DBPortfolioPostTest();
 
+  double _heightHideContainer;
+  double _heightShowContainer;
+  double _heightOffset;
+  bool _showContainer = false;
+  bool _panelVisibility = false;
+  bool _innerPanelVisibility = false;
+
+  double _size = 100;
+  bool _large = false;
+
+  void _updateSize() {
+    setState(() {
+      _size = _large ? 250.0 : 100.0;
+      _large = !_large;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: displayHeight(context) * (0.2 + 0.16),
-      width: displayWidth(context),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(0,30,0,30),
+    _heightHideContainer = displayHeight(context) * 0.2;
+    _heightShowContainer = displayHeight(context) * 0.4;
+    _heightOffset = 35;
+
+    // return Container(
+    //   // height: displayHeight(context) * (0.2 + 0.16),
+    //   // height: displayHeight(context),
+    //   width: displayWidth(context),
+      // child: Expanded(
+        // child: Container(
+        
+        // padding: EdgeInsets.fromLTRB(0,30,0,0),
         // margin: EdgeInsets.fromLTRB(,, right, bottom)
-          child: Stack(
+          return Column(
             children: <Widget> [
               Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment(-0.9, -1.3),
-                    end: Alignment(1.25, 1.25),
-                    colors: [
-                      Color(0xFFC21EDB),
-                      Color(0xFF0575FF),
-                      Color(0xFF0AE6FF),
-                    ], stops: [
-                      0.0,
-                      0.63,
-                      1.0
-                    ],
-                  ),
-                  // borderRadius: BorderRadius.circular(0),
-                ),
-                child: Padding(
-                  padding:  EdgeInsets.fromLTRB(0,2.75,0,2.75),
-                  child: Container(
-                    height: displayHeight(context) * 0.2,
-                    width: displayWidth(context),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(-1.25, -1.15),
-                        end: Alignment(0.85, 1.1),
-                        colors: [
-                          Color(0xFF240C37),
-                          Color(0xFF061330),
-                          // Colors.white,
-                        ],
-                      ),
-                      // borderRadius: BorderRadius.circular(5),
-                    ),
-                    /// ### This is where the inner container starts ### ///
-                    // child: Center(
-                    //   child: Text('Enter further widgets here', style: TextStyle(color: Colors.white)),
-                    // ),
-                    child: Column(
-                      /// ### Start container columns here ### ///
-                      children: <Widget> [
-                        Flexible(child:
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, displayHeight(context) * 0.025, 0, 0),
-                          child: Column(
-                            children: <Widget> [
-                              Text("Total Market Cap", style: TextStyle(fontSize: 22, color: Colors.white)),
-                              
-                              /// ### Bloc data ### ///
-                               
-                              BlocListener<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>(
-                                listener: (context, state) {
-                                  if (state is GlobalCoinmarketcapStatsErrorState) {
-                                    log("error in GlobalCoinmarketcapStatsState in home_view.dart");
-                                  }
-                                },
-                                child: BlocBuilder<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>( /// Both bloc types to be built (refactor existing controllers)
-                                  builder: (context, state) {
-                                    if (state is GlobalCoinmarketcapStatsInitialState) {
-                                      log("GlobalCoinmarketcapStatsInitialState");
-                                      return loadingTemplateWidget();
-                                    } else if (state is GlobalCoinmarketcapStatsLoadingState) {
-                                      log("GlobalCoinmarketcapStatsLoadingState");
-                                      return loadingTemplateWidget();
-                                    } else if (state is GlobalCoinmarketcapStatsLoadedState) {
-                                      log("GlobalCoinmarketcapStatsLoadedState");
-                                      return Padding(
-                                        padding: EdgeInsets.only(top: 15),
-                                        child: Column(
-                                          children: <Widget> [
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text("\$" + state.globalStats.data.quote.uSD.totalMarketCap.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white)),
-                                            ),
-                                            SizedBox(height: 15),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget> [
-                                                  Container(
-                                                    child: Row(
-                                                      children: <Widget> [
-                                                        Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
-                                                        Text(state.globalStats.data.btcDominance.toStringAsFixed(1) + "%", style: TextStyle(color: Colors.blueGrey[100])),
-                                                      ]
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 25),
-                                                  Container(
-                                                    child: Row(
-                                                      children: <Widget> [
-                                                        Icon(CryptoFontIcons.ETH, color: Colors.white, size: 14),
-                                                        Text(state.globalStats.data.ethDominance.toStringAsFixed(1) + "%", style: TextStyle(color: Colors.blueGrey[100])),
-                                                      ]
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ),
-                                          ]
-                                        )
-                                      );
-                                      // return Column(
-                                //         children: <Widget> [
-                                //           Row(
-                                // /// TODO: Alignment (padding?)
-                                //             children: <Widget> [
-                                //               Container(
-                                //                 padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
-                                //                 child:/// ### Start Bitcoin total value line here ### ///
-                                //                     // Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
-                                //                     Align(
-                                //                       alignment: Alignment.center,
-                                //                       child: Text("\$" + state.globalStats.data.quote.uSD.totalMarketCap.toStringAsFixed(2), style: TextStyle(fontSize: 18, color: Colors.white)),
-                                                   
-                                //                 ), /// ### End Bitcoin total value line here ### ///
-                                //               )
-                                //             ],
-                                          // ),
-                                          // Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
-                                      //   ],
-                                      // );
-                                      
-                                
-                                    } else {
-                                      return Text("Placeholder in dashboard_initial_noAPI.dart");
-                                    }
-                                  }
-                                ),
-                              ),
-
-                              /// ### Bloc Data ends ### ///
-                          
-                          
-                          
-                            ],
-                          ),
+                height: _heightHideContainer + _heightOffset,
+                child: Stack(
+                  children: <Widget> [
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(-0.9, -1.3),
+                          end: Alignment(1.25, 1.25),
+                          colors: [
+                            Color(0xFFC21EDB),
+                            Color(0xFF0575FF),
+                            Color(0xFF0AE6FF),
+                          ], stops: [
+                            0.0,
+                            0.63,
+                            1.0
+                          ],
                         ),
-
-                          
-                          // child: Center(
-                          //   child: Container(
-                          //     height: 31.43,
-                          //     width: 36.23,
-                          //     child: Column(
-                          //       children: <Widget> [
-                          //         Expanded(
-                          //           // child: Transform.rotate(
-                          //           //   angle: -5 * math.pi / 180,
-                          //           //   child: FittedBox(
-                          //           //     fit: BoxFit.fill,
-                          //           //     child: Icon(CustomIcon.IconCustom.wallet_tilt, color: Colors.white, )
-                          //           //   ),
-                          //           // ),
-                          //         ),
-                                
-                          //       ],
-                          //     ),
-                          //   ),
-                          // )
-                        )
-                      ]
-                    )
-                  )
-                )
-              ),
-              Container(
-                height: displayHeight(context) * 0.24,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: displayHeight(context) * 0.066,
-                    width: displayWidth(context) * 0.45,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                        // borderRadius: BorderRadius.circular(0),
                       ),
-                      child: InkWell(
+                      child: Padding(
+                        padding:  EdgeInsets.fromLTRB(0,2.75,0,2.75),
                         child: Container(
+                          // height: displayHeight(context) * 0.2,
+                          height: (_heightHideContainer),
+                          width: displayWidth(context),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
                             gradient: LinearGradient(
-                              begin: Alignment(-1, -0.6),
-                              end: Alignment(1, 0.75),
-                              colors: [Color(0xFFFFE514), Color(0xFFFFCA1E)]
+                              begin: Alignment(-1.25, -1.15),
+                              end: Alignment(0.85, 1.1),
+                              colors: [
+                                Color(0xFF240C37),
+                                Color(0xFF061330),
+                                // Colors.white,
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFFFCA1E),
-                                spreadRadius: 4,
-                                blurRadius: 10,
-                              ),
-                              BoxShadow(
-                                color: Color(0xFFFFCA1E),
-                                spreadRadius: -4,
-                                blurRadius: 5,
+                            // borderRadius: BorderRadius.circular(5),
+                          ),
+                          /// ### This is where the inner container starts ### ///
+                          // child: Center(
+                          //   child: Text('Enter further widgets here', style: TextStyle(color: Colors.white)),
+                          // ),
+                          child: Column(
+                            /// ### Start container columns here ### ///
+                            children: <Widget> [
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, displayHeight(context) * 0.025, 0, 0),
+                                child: Column(
+                                  children: <Widget> [
+                                    Text("Total Market Cap", style: TextStyle(fontSize: 22, color: Colors.white)),
+                                    
+                                    /// ### Bloc data ### ///
+                                    
+                                    BlocListener<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>(
+                                      listener: (context, state) {
+                                        if (state is GlobalCoinmarketcapStatsErrorState) {
+                                          log("error in GlobalCoinmarketcapStatsState in home_view.dart");
+                                        }
+                                      },
+                                      child: BlocBuilder<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>( /// Both bloc types to be built (refactor existing controllers)
+                                        builder: (context, state) {
+                                          if (state is GlobalCoinmarketcapStatsInitialState) {
+                                            log("GlobalCoinmarketcapStatsInitialState");
+                                            return loadingTemplateWidget();
+                                          } else if (state is GlobalCoinmarketcapStatsLoadingState) {
+                                            log("GlobalCoinmarketcapStatsLoadingState");
+                                            return loadingTemplateWidget();
+                                          } else if (state is GlobalCoinmarketcapStatsLoadedState) {
+                                            log("GlobalCoinmarketcapStatsLoadedState");
+                                            return Padding(
+                                              padding: EdgeInsets.only(top: 15),
+                                              child: Column(
+                                                children: <Widget> [
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(numberFormatter(state.globalStats.data.quote.uSD.totalMarketCap), style: TextStyle(fontSize: 22, color: Colors.white)),
+                                                  ),
+                                                  SizedBox(height: 15),
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget> [
+                                                        Container(
+                                                          child: Row(
+                                                            children: <Widget> [
+                                                              Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
+                                                              Text(state.globalStats.data.btcDominance.toStringAsFixed(1) + "%", style: TextStyle(color: Colors.blueGrey[100])),
+                                                            ]
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 25),
+                                                        Container(
+                                                          child: Row(
+                                                            children: <Widget> [
+                                                              Icon(CryptoFontIcons.ETH, color: Colors.white, size: 14),
+                                                              Text(state.globalStats.data.ethDominance.toStringAsFixed(1) + "%", style: TextStyle(color: Colors.blueGrey[100])),
+                                                            ]
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ),
+                                                ]
+                                              )
+                                            );
+                                            // return Column(
+                                      //         children: <Widget> [
+                                      //           Row(
+                                      // /// TODO: Alignment (padding?)
+                                      //             children: <Widget> [
+                                      //               Container(
+                                      //                 padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
+                                      //                 child:/// ### Start Bitcoin total value line here ### ///
+                                      //                     // Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
+                                      //                     Align(
+                                      //                       alignment: Alignment.center,
+                                      //                       child: Text("\$" + state.globalStats.data.quote.uSD.totalMarketCap.toStringAsFixed(2), style: TextStyle(fontSize: 18, color: Colors.white)),
+                                                        
+                                      //                 ), /// ### End Bitcoin total value line here ### ///
+                                      //               )
+                                      //             ],
+                                                // ),
+                                                // Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
+                                            //   ],
+                                            // );
+                                            
+                                      
+                                          } else {
+                                            return Text("Placeholder in dashboard_initial_noAPI.dart");
+                                          }
+                                        }
+                                      ),
+                                    ),
+
+                                    /// ### Bloc Data ends ### ///
+                                
+                                    /// ### Hidden Panel begins here ### ///
+                                    
+                                    HiddenPanel(visibility: _panelVisibility),
+
+                                  ],
+                                ),
+
+                                
+                                // child: Center(
+                                //   child: Container(
+                                //     height: 31.43,
+                                //     width: 36.23,
+                                //     child: Column(
+                                //       children: <Widget> [
+                                //         Expanded(
+                                //           // child: Transform.rotate(
+                                //           //   angle: -5 * math.pi / 180,
+                                //           //   child: FittedBox(
+                                //           //     fit: BoxFit.fill,
+                                //           //     child: Icon(CustomIcon.IconCustom.wallet_tilt, color: Colors.white, )
+                                //           //   ),
+                                //           // ),
+                                //         ),
+                                      
+                                //       ],
+                                //     ),
+                                //   ),
+                                // )
                               )
                             ]
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("ENABLE TRADING", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        onTap: () => {
-                          /// TODO: COINTEAM-81
-                          Navigator.pushNamed(context, '/hometest'),
-                          // dbPortfolioPostTest.dbPortfolioPostTest(),
+                          )
+                        )
+                      )
+                    ),
+                    Container(
+                      height: _heightHideContainer + _heightOffset,
+                      child: FutureBuilder( /// ### Panic Action Button ### ///
+                        future: readStorage("trading"), /// ### Dev-Check-1
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return CircularProgressIndicator();
+                            default:
+                            if (!snapshot.hasError) {
+                              // log(snapshot.data.toString());
+                              /// ("Return a welcome screen") ??? default comment
+                                // return DashboardWithNoApiWorking();
+                              if (snapshot.data == "none") {
+                                return EnableTradingButton();
+                              } else {
+                                return PanicActionButton(callBack: _callBackVisibilitySetState);
+                              }
+                            } else {
+                              return errorTemplateWidget(snapshot.error);
+                            }
+                          }
                         },
                       ),
-                      elevation: 2,
                     ),
-                  ),
+                    // EnableTradingButton(),
+                    /// or
+                    /// PanicActionButton(),
+                    
+                  
+                  ]
                 ),
               ),
-            ]
-          )
-      )
-    );
+              NoApiCategoryList(showContainer: _showContainer),
+            ],
+          );
+        // ),
+      
+    
+  }
+
+    void _callBackVisibilitySetState() async {
+    setState(() {
+      _showContainer = !_showContainer;
+      _panelVisibility = !_panelVisibility;
+    });
   }
 }
 
-class NoApiCategoryList extends StatelessWidget {
-  NoApiCategoryList({Key key}) : super(key: key);
+class NoApiCategoryList extends StatefulWidget {
+  NoApiCategoryList({this.showContainer});
+
+  final bool showContainer;
+
+  @override
+  NoApiCategoryListState createState() => NoApiCategoryListState();
+}
+
+class NoApiCategoryListState extends State<NoApiCategoryList> {
+  double _heightHideContainer;
+  double _heightShowContainer;
+  // double _heightOffset;
+
+  // final storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
+    // _heightHideContainer = displayHeight(context) * 0.51;
+    // _heightShowContainer = displayHeight(context) * 0.385;
+    // _heightOffset = displayHeight(context) * 0.065;
+
     return Container(
       width: displayWidth(context),
-      height: displayHeight(context) * 0.25,
-      child: ListView(
-      /// Need to make this a bloc that gets a pre-defined list of coins
-      /// Categories are predefined
-        children: <Widget> [
-          TileDefi(categoryName: globals.Categories.defi),
-          TileTop100(categoryName: globals.Categories.top100),
-          TileDex(categoryName: globals.Categories.cexdex),
-        ],
-        scrollDirection: Axis.horizontal,
-      ),
+      // height: widget.showContainer ? displayHeight(context) * 0.36: displayHeight(context) * 0.4,
+      height: displayHeight(context) * 0.57,
+      // child: Expanded(
+        child: Column(
+          children: <Widget> [
+            Container(
+              // height: widget.showContainer ? displayHeight(context) * 0.36 : displayHeight(context) * 0.4,
+              // child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(top: displayHeight(context) * 0.02),
+                child: Column(
+                  children: <Widget> [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10,10,0,5),
+                        child: Text("Curated Lists", style: TextStyle(color: Colors.white, fontSize: 16)),
+                      )
+                    ),
+                    Container(
+                      height: displayHeight(context) * 0.225,
+                      child: ListView(
+            /// Need to make this a bloc that gets a pre-defined list of coins
+            /// Categories are predefined
+                        children: <Widget> [
+                          TileDefi(categoryName: globals.Categories.defi),
+                          TileTop100(categoryName: globals.Categories.top100),
+                          TileDex(categoryName: globals.Categories.cexdex),
+                        ],
+                        scrollDirection: Axis.horizontal,
+                      ),
+                    ),
+                    Container(
+                      // height: displayHeight(context) * 0.245,
+                          // TileAddPortfolio(),
+                      child: FutureBuilder(
+                        future: readStorage("trading"),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return Container();
+                            default:
+                            if (!snapshot.hasError) {
+                              if (snapshot.data != "none") {
+                                log(snapshot.data.toString());
+                                // return DashboardWithNoApiWorking();
+                                
+                                return BinanceTileBlurb(); /// 19th
+                              } else {
+                                // SchedulerBinding.instance.addPostFrameCallback((_) {
+                                  // Navigator.pushNamed(context, '/first');
+                                return AddPortfolioBlurb();
+                                // return Text("Dev Error - Not enough caffeine", style: TextStyle(color: Colors.white, fontSize: 24));
+                              }
+                            } else {
+                              return errorTemplateWidget(snapshot.error);
+                            }
+                          }
+                        }
+                      )
+                    )
+                    ,
+
+                    // NoApiAddCoinWidget(),
+                  ]
+                ),
+              // ),
+              ),
+            ),
+          ]
+        ),
+      
     );
   }
 }
 
 
 class TileDefi extends StatelessWidget {
-  const TileDefi({Key key, this.categoryName}) : super(key: key);
+  const TileDefi({this.categoryName});
   final Categories categoryName;
 
   @override
@@ -514,10 +591,13 @@ class TileDefi extends StatelessWidget {
 
                     ///  arguments: {'categoryName': categoryName});
                   },
-                  child: Container(
+                  child: Column(
+                    children: <Widget> [
+                  Expanded(
+                    flex: 1,
                     // padding: EdgeInsets.fromLTRB(0,0,0,0),
-                    height: displayHeight(context) * 0.240,
-                    width: displayWidth(context) * 0.385,
+                    // height: displayHeight(context) * 0.240,
+                    // width: displayWidth(context) * 0.385,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -612,6 +692,8 @@ class TileDefi extends StatelessWidget {
 
                       )
                     )
+                  ),
+                    ]
                   // )
                 )
             //   )
@@ -683,7 +765,7 @@ class TileDefi extends StatelessWidget {
 }
 
 class TileTop100 extends StatelessWidget {
-  const TileTop100({Key key, this.categoryName}) : super(key: key);
+  const TileTop100({this.categoryName});
   final Categories categoryName;
 
   @override
@@ -714,15 +796,20 @@ class TileTop100 extends StatelessWidget {
 
                     ///  arguments: {'categoryName': categoryName});
                   },
-                  child: Container(
+                  child: Column(
+                    children: <Widget> [
+                      Expanded(
+                    flex: 1,
                     // padding: EdgeInsets.fromLTRB(0,0,0,0),
-                    height: displayHeight(context) * 0.240,
-                    width: displayWidth(context) * 0.385,
+                    // height: displayHeight(context) * 0.240,
+                    // width: displayWidth(context) * 0.385,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Container(
+                        height: displayHeight(context) * 0.240,
+                        width: displayWidth(context) * 0.385,
                         // padding: EdgetInsets.fromLTRB()
                         decoration: BoxDecoration(
                           color: Color(0xFF191B31),
@@ -810,6 +897,8 @@ class TileTop100 extends StatelessWidget {
 
                       )
                     )
+                  ),
+                    ]
                   )
                 )
             //   )
@@ -880,7 +969,7 @@ class TileTop100 extends StatelessWidget {
 }
 
 class TileDex extends StatelessWidget {
-  const TileDex({Key key, this.categoryName}) : super(key: key);
+  const TileDex({this.categoryName});
   final Categories categoryName;
 
   @override
@@ -907,14 +996,19 @@ class TileDex extends StatelessWidget {
 
               ///  arguments: {'categoryName': categoryName});
             },
-            child: Container(
-              height: displayHeight(context) * 0.240,
-              width: displayWidth(context) * 0.385,
-              child: Card(
+            child: 
+              
+              // padding: EdgeInsets.fromLTRB(0,0,0,0),
+              // height: displayHeight(context) * 0.240,
+              // width: displayWidth(context) * 0.385,
+              Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
                 child: Container(
+                  height: displayHeight(context) * 0.240,
+                  width: displayWidth(context) * 0.385,
+                  // padding: EdgetInsets.fromLTRB()
                   decoration: BoxDecoration(
                     color: Color(0xFF191B31),
                     borderRadius: BorderRadius.circular(20),
@@ -954,16 +1048,54 @@ class TileDex extends StatelessWidget {
                         child: Column(
                           children: <Widget> [
                             Text("Market Cap:", style: TextStyle(color: Colors.white)),
-                            Text("\$42B (-1.8%)", style: TextStyle(color: Colors.red)),
+                            Text("\$42B (-16%)", style: TextStyle(color: Colors.blue)),
                             // Text("(+8%)", style: TextStyle(color: Colors.blue)),
                           ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              )
-            )
+
+                  // child: Padding(
+                  //   padding: EdgeInsets.fromLTRB(30,0,0,0),
+                  //   child: Row(
+                  //     children: <Widget> [ /// ### Card Tile Internal UI Starts Here ### ///
+                  //       Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: Icon(
+                  //           CryptoFontIcons.BTC,
+                  //           color: Colors.orange,
+                  //         ),
+                  //       ),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         children: <Widget> [
+                  //           SizedBox(width: 10),
+                  //           Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: <Widget> [
+                  //               Text(
+                  //                 "Top 100",
+                  //                 style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 14,
+                  //                 ),
+                  //               ),
+                  //               // Text("CryptoExchange Name", style:TextStyle(color: Colors.grey, fontSize: 12)),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ] /// ### Card Tile Internal UI Ends Here ### ///
+                  //   )
+                  // )
+
+
+
+                )
+              // )
+            ),
           )
         )
       )
@@ -982,19 +1114,16 @@ class NoApiAddCoinWidget extends StatelessWidget {
         children: <Widget> [
           Align(
             alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(30, 25, 0, 10),
               child: Text("Add Portfolio", style: TextStyle(color: Colors.white)
-              )
             )
           ),
           GestureDetector(
             onTap: () {
               /// TODO: COINTEAM-81
-              Navigator.pushNamed(context, '/hometest');
+              Navigator.pushReplacementNamed(context, '/hometest');
             },
             child: Container(
-              padding: EdgeInsets.fromLTRB(25,2,25,2),
+              padding: EdgeInsets.fromLTRB(25,2,25,0),
               height: displayHeight(context) * 0.11,
               width: displayWidth(context),
               child: Card(
@@ -1022,6 +1151,417 @@ class NoApiAddCoinWidget extends StatelessWidget {
           )
         ]
       )
+    );
+  }
+}
+
+class EnableTradingButton extends StatelessWidget {
+  const EnableTradingButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: displayHeight(context) * 0.24,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: displayHeight(context) * 0.066,
+          width: displayWidth(context) * 0.45,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+            ),
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: LinearGradient(
+                    begin: Alignment(-1, -0.6),
+                    end: Alignment(1, 0.75),
+                    colors: [Color(0xFFFFE514), Color(0xFFFFCA1E)]
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFFFCA1E),
+                      spreadRadius: 4,
+                      blurRadius: 10,
+                    ),
+                    BoxShadow(
+                      color: Color(0xFFFFCA1E),
+                      spreadRadius: -4,
+                      blurRadius: 5,
+                    )
+                  ]
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text("ENABLE TRADING", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                ),
+              ),
+              onTap: () => {
+                /// Dev-5: UNCOMMENT BELOW
+                // showDialog(
+                //   context: context,
+                //   builder: (BuildContext context) => Dialog(
+                //     /// Manual padding override because Dialog's default padding is FAT
+                //     insetPadding: EdgeInsets.all(10),
+                //     /// Connect API tutorial modal
+                //     child: CarouselDemo(),
+                //   ),
+                // ),
+                /// Dev-5: Uncomment up to here
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                    /// Manual padding override because Dialog's default padding is FAT
+                    insetPadding: EdgeInsets.all(10),
+                    /// Connect API tutorial modal
+                    child: CarouselDemo(),
+                  ),
+                ),
+                writeStorage("trading", "binance"),
+                // dbPortfolioPostTest.dbPortfolioPostTest(),
+                /// ### Adds "trading" to local_secure_storage for the check in Dev-Check-1
+                /// ### Press middle bottom_nav_bar button to remove
+              },
+            ),
+            elevation: 2,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PanicActionButton extends StatelessWidget {
+  const PanicActionButton({this.callBack});
+
+  final Function callBack;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          // height: displayHeight(context) * 0.065,
+          height: 54.86,
+          width: displayWidth(context) * 0.45,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+            ),
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: LinearGradient(
+                    begin: Alignment(-1, -0.6),
+                    end: Alignment(1, 0.75),
+                    colors: [Color(0xFFFFE514), Color(0xFFFFCA1E)]
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFFFCA1E),
+                      spreadRadius: 4,
+                      blurRadius: 10,
+                    ),
+                    BoxShadow(
+                      color: Color(0xFFFFCA1E),
+                      spreadRadius: -4,
+                      blurRadius: 5,
+                    )
+                  ]
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Text("TRADE NOW", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ),
+              onTap: () => {
+                /// TODO: COINTEAM-81
+                callBack(),
+                
+                // dbPortfolioPostTest.dbPortfolioPostTest(),
+              },
+            ),
+            elevation: 2,
+          ),
+        ), 
+    );
+  }
+}
+
+
+Future<String> readStorage(String _key) async {
+
+  final storage = new FlutterSecureStorage();
+
+  String value = await storage.read(key: _key);
+  if (value == null) {
+    return "none";
+  } else { /// TODO; Check for api key validity using cryptography
+    return value;
+  }
+}
+
+void writeStorage(String _key, String _value) async {
+
+  final storage = new FlutterSecureStorage();
+
+  await storage.write(key: _key, value: _value);
+}
+
+class BinanceTileBlurb extends StatelessWidget {
+  // const BinanceTileBlurb({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<GetCoinListBloc, GetCoinListState>(
+      listener: (context, state) {
+        if (state is GetCoinListErrorState) {
+          return errorTemplateWidget("Dashboard Error in GetCoinList Data");
+        }
+      },
+      builder: (context, state) {
+        if (state is GetCoinListLoadedState) {
+          BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
+          return Container(
+            // height: displayHeight(context) * 0.245,
+            child: Column(
+              children: <Widget> [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10,10,0,0),
+                    child: Text("My Portfolios", style: TextStyle(color: Colors.white, fontSize: 16)),
+                  ),
+                ),
+                Container(
+                  height: displayHeight(context) * 0.225,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget> [
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: appBlack,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, '/dashboard');
+                            },
+                            child: Column(
+                              children: <Widget> [
+                                Expanded(
+                                  flex: 1,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Container(
+                                      height: displayHeight(context) * 0.240,
+                                      width: displayWidth(context) * 0.385,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF191B31),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+
+                                      /// ### Card content starts here ### ///
+                                      child: Column(
+                                        children: <Widget> [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(10,0,0,0),
+                                              child: Row(
+                                                children: <Widget> [
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Icon(CryptoFontIcons.DASH, color: Colors.orange),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 7,
+                                                    child: Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text("My Binance", style: TextStyle(color: Colors.white))
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              children: <Widget> [
+                                                Text("Total Value:", style: TextStyle(color: Colors.white)),
+                                                BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                                                  listener: (context, state) {
+                                                    if (state is GetCoinListTotalValueErrorState) {
+                                                      log("Error in GetCoinListTotalValue at Binance blurb on market dashboard");
+                                                      return Text("An error has occured", style: TextStyle(color: Colors.white));
+                                                    }
+                                                  },
+                                                  builder: (context, state) {
+                                                    if (state is GetCoinListTotalValueLoadedState) {
+                                                      return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.blue));
+                                                    } else {
+                                                      return CircularProgressIndicator();
+                                                    }
+                                                  }
+                                                )
+                                              ]
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    )
+                                  )
+                                )
+                              ]
+                            )
+                          )
+                        )
+                      ),
+                      /// ### KAN-44 : Uncomment below
+                      // InkWell(
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: appBlack,
+                      //     ),
+                      //     child: GestureDetector(
+                      //       onTap: () {
+                      //         log("User has clicked on Add Portfolio Blurb (in BinanceTileBlurb())");
+                      //       },
+                      //       child: Column(
+                      //         children: <Widget> [
+                      //           Expanded(
+                      //             flex: 1,
+                      //             child: Card(
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.all(Radius.circular(20)),
+                      //               ),
+                      //               child: Container(
+                      //                 height: displayHeight(context) * 0.240,
+                      //                 width: displayWidth(context) * 0.385,
+                      //                 decoration: BoxDecoration(
+                      //                   color: Color(0xFF191B31),
+                      //                   borderRadius: BorderRadius.circular(20),
+                      //                 ),
+
+                      //                 /// ### Card content starts here ### ///
+                      //                 child: Column(
+                      //                   children: <Widget> [
+                      //                     Expanded(
+                      //                       flex: 1,
+                      //                       child: Align(
+                      //                         alignment: Alignment.center,
+                      //                         child: Text("Add Portfolio", style: TextStyle(color: Colors.white)),
+                      //                       ),
+                      //                     ),
+                      //                     Expanded(
+                      //                       flex: 1,
+                      //                       child: Align(
+                      //                         alignment: Alignment.topCenter,
+                      //                         child: Icon(Icons.add, color: Colors.white)
+                      //                       ),
+                      //                     ),
+                      //                   ]
+                      //                 ),
+                      //               )
+                      //             )
+                      //           )
+                      //         ]
+                      //       )
+                      //     )
+                      //   )
+                      // ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Container();
+        }
+      }
+    );
+  }
+}
+
+
+class AddPortfolioBlurb extends StatelessWidget {
+  // AddPortfolioBlurb({Key key}) : super(key: key);
+
+  final LocalStorage localStorage = LocalStorage("coinstreetapp");
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: InkWell(
+        child: Container(
+          height: displayHeight(context) * 0.225,
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              log("User has clicked on Add Portfolio Blurb");
+              // localStorage.setItem("prime", [].toJSONEncodable()); 
+              /// ### We can just set a blank item for now... Right?
+              // localStorage.setItem("isPrime", true);
+              // localStorage.setItem("prime", []);
+              /// 19th
+              Navigator.pushReplacementNamed(context, '/dashboard');
+            },
+            child: Column(
+              children: <Widget> [
+                Expanded(
+                  flex: 1,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Container(
+                      height: displayHeight(context) * 0.240,
+                      width: displayWidth(context) * 0.385,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF191B31),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+
+                      /// ### Card content starts here ### ///
+                      child: Column(
+                        children: <Widget> [
+                          Expanded(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("Add Portfolio", style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Icon(Icons.add, color: Colors.white)
+                            ),
+                          ),
+                        ]
+                      ),
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ),
     );
   }
 }

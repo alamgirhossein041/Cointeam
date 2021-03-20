@@ -1,5 +1,6 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Second extends StatefulWidget {
@@ -17,24 +18,26 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
   AnimationController animationControllerButtons;
   Animation<double> animationButtons;
 
+  final storage = FlutterSecureStorage();
+
   @override 
   void initState() {
     super.initState();
     animationControllerOneMoreThing = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 1),
     );
     animationOneMoreThing = Tween(begin: 0.0, end: 1.0).animate(animationControllerOneMoreThing);
 
     animationControllerRewards = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
     );
     animationRewards = Tween(begin: 0.0, end: 1.0).animate(animationControllerRewards);
 
     animationControllerButtons = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 1),
     );
     animationButtons = Tween(begin: 0.0, end: 1.0).animate(animationControllerButtons);
   }
@@ -51,9 +54,9 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Future.delayed(Duration(milliseconds: 500), () {
       animationControllerOneMoreThing.forward();
-      Future.delayed(Duration(milliseconds: 2500), () {
+      Future.delayed(Duration(milliseconds: 1500), () {
         animationControllerRewards.forward();
-        Future.delayed(Duration(milliseconds: 2000), () {
+        Future.delayed(Duration(milliseconds: 1000), () {
             animationControllerButtons.forward();
           });
       });
@@ -96,6 +99,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
               opacity: animationButtons,
               child: ElevatedButton(
                 onPressed: () {
+                  storage.write(key: "api", value: "ok");
                   Navigator.pushNamed(context, '/authentication');
                 },
                 child: Text("Cool! Take me to the app"),

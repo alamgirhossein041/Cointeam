@@ -564,7 +564,7 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
             ],
           ),
         ),
-        ListContainerWithContainer(showContainer: _showContainer, ),
+        ListContainerWithContainer(showContainer: _showContainer),
       ],
     );
   }

@@ -15,6 +15,7 @@ class TopMenuRow extends StatelessWidget {
           icon: Icon(Icons.menu, color: Colors.white),
           onPressed: () {
             Scaffold.of(context).openDrawer();
+            log("Hello World");
             // scaffoldState.currentState.openDrawer();
           },
         ),
@@ -28,7 +29,7 @@ class TopMenuRow extends StatelessWidget {
             children: <Widget> [
               IconButton(
                 onPressed: () {
-                  // scaffoldState.currentState.openDrawer();
+                  Navigator.pushNamed(context, '/settings');
                 },
                 icon: Icon(Icons.settings, color: Colors.white),
               )

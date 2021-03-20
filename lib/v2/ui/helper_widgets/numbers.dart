@@ -7,7 +7,7 @@ String numberFormatter(num) {
     return "\$${(num / 1000).toStringAsFixed(0)} K";
   } else if (num > 999999 && num < 999999999) {
     return "\$${(num / 1000000).toStringAsFixed(2)} M";
-  } else if (num > 999999999) {
+  } else if (num > 999999999 && num < 999999999999) {
     return "\$${(num / 1000000000).toStringAsFixed(2)} B";
   } else if (num > 999999999999) {
     return "\$${(num / 1000000000000).toStringAsFixed(2)} T";
