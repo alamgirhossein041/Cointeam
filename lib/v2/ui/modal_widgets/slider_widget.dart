@@ -25,6 +25,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
     int _curr = 0;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           // background gradient
@@ -40,23 +41,24 @@ class _CarouselDemoState extends State<CarouselDemo> {
               // without this it has a thin grey border for some reason D:<
               border: Border.all(width: 0)),
 
-          child: Stack(children: [
+          child: 
             StatefulBuilder(builder: (context, setState) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView(children: [
-                      CarouselSlider(
-                        // iterate through the list of page numbers to generate each page
-                        items: pageList.map((p) {
-                          return Container(
-                            margin: EdgeInsets.all(4.0),
-                            child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState),
-                          );
-                        }).toList(),
+              return Stack(children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: ListView(children: [
+                        CarouselSlider(
+                          // iterate through the list of page numbers to generate each page
+                          items: pageList.map((p) {
+                            return Container(
+                              margin: EdgeInsets.all(4.0),
+                              child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState),
+                            );
+                          }).toList(),
 
-                        //Slider Container properties
-                        options: CarouselOptions(
+                          //Slider Container properties
+                          options: CarouselOptions(
                             height: displayHeight(context) - 90,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
@@ -65,17 +67,20 @@ class _CarouselDemoState extends State<CarouselDemo> {
                             onPageChanged: (index, reason) {
                               setState(() => _curr = index);
                             }),
-                      ),
-                    ]),
-                  ),
-                  Container(
-                    height: 90,
-                    // Smooth page indicator
-                    child: PageIndicator(_curr)),
-                ],
+                        ),
+                      ]),
+                    ),
+                  ],
+                ),
+                Container(
+                  // page indicators at the bottom
+                  alignment: Alignment.bottomCenter, 
+                  padding: EdgeInsets.only(bottom: 40, top: 40),
+                  child: PageIndicator(_curr)),
+                ]
               );
-            }),
-          ]),
+            }
+          ),
         ),
       ),
     );
@@ -101,12 +106,13 @@ class PageIndicator extends StatelessWidget {
         activeIndex: page,
         count: 7,
         effect: WormEffect(
-            paintStyle: PaintingStyle.stroke,
+            paintStyle: PaintingStyle.fill,
             dotWidth: 6,
             dotHeight: 6,
-            spacing: 15,
-            dotColor: Colors.deepPurple,
-            activeDotColor: Colors.deepPurpleAccent),
+            spacing: 12,
+            dotColor: Colors.grey[800],
+            activeDotColor: Theme.of(context).accentColor
+          ),
       ),
     );
   }
