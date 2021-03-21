@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:developer';
 
 abstract class IBinanceGetAllRepository {
@@ -21,7 +22,8 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
 
     /// ##### Start API Request ######
     /// Build our signature and HMAC hash for Binance
-    String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    // String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    String timestamp = (DateTime.now().millisecondsSinceEpoch).toString();
     log(timestamp);
     String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000';
     var sapiHmac = utf8.encode(sapi);
@@ -56,7 +58,32 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       log("excepted");
       log(response.statusCode.toString());
       log(response.body.toString());
-      throw Exception();
+      timestamp = ((DateTime.now().millisecondsSinceEpoch) + globals.binanceTimestampModifier).toString();
+      
+      String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000';
+      var signatureBuilderHmac2 = utf8.encode(signatureBuilder2);
+      var digest2 = hmac256.convert(signatureBuilderHmac2);
+      String requestUrl2 = 'https://' + _binanceUrl + '/sapi/v1/capital/config/getall?timestamp=$timestamp&recvWindow=8000&signature=$digest2';
+
+      var response2 = await http.get(requestUrl2, headers: {'X-MBX-APIKEY': api});
+      if(response2.statusCode == 200) {
+        List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
+        // log("asdf");
+        /// Remove coins from list that are empty
+        var toRemove = [];
+        binanceGetAllModel.forEach((v) {
+          if(v.name == null) {
+            toRemove.add(v);
+          }
+        });
+        binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
+        return binanceGetAllModel;
+      } else {
+        log("excepted twice, throwing");
+        log(response.statusCode.toString());
+        log(response.body.toString());
+        throw Exception();
+      }
     }
   }
 }

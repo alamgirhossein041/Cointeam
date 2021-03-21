@@ -154,6 +154,16 @@ class DrawerMenu extends StatelessWidget {
                 /// 19th oh mfer the key value store can't just be called as 
               },
             ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Sell Portfolio Screen *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/sellportfolio');
+              },
+            ),
             SizedBox(height: 30),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),

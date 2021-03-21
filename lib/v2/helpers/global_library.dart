@@ -13,3 +13,5 @@ enum Categories {
   defi,
   cexdex
 }
+
+int binanceTimestampModifier;

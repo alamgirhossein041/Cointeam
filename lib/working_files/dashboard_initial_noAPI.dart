@@ -20,6 +20,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/glob
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/repo/app_repo/binance_time_sync/binance_time_sync.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
@@ -104,6 +105,14 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 return CircularProgressIndicator();
               default:
               if (!snapshot.hasError) {
+
+                /// 20th - Get Server Time
+                /// Direct Repo Call? No need for bloc
+                
+                BinanceTimeSyncRepositoryImpl helloWorld = BinanceTimeSyncRepositoryImpl();
+
+                helloWorld.getBinanceTimeSyncLatest();
+                
                 if (snapshot.data != "none") {
                   log(snapshot.data.toString());
                   return DashboardWithNoApiWorking();
@@ -375,7 +384,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                                 
                                     /// ### Hidden Panel begins here ### ///
                                     
-                                    HiddenPanel(visibility: _panelVisibility),
+                                    // HiddenPanel(),
 
                                   ],
                                 ),
@@ -424,7 +433,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                               if (snapshot.data == "none") {
                                 return EnableTradingButton();
                               } else {
-                                return PanicActionButton(callBack: _callBackVisibilitySetState);
+                                return PanicActionButton();
                               }
                             } else {
                               return errorTemplateWidget(snapshot.error);
@@ -448,13 +457,12 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
       
     
   }
-
-    void _callBackVisibilitySetState() async {
-    setState(() {
-      _showContainer = !_showContainer;
-      _panelVisibility = !_panelVisibility;
-    });
-  }
+    // void _callBackVisibilitySetState() async {
+    // setState(() {
+    //   _showContainer = !_showContainer;
+    //   _panelVisibility = !_panelVisibility;
+    // });
+  // }
 }
 
 class NoApiCategoryList extends StatefulWidget {
@@ -1234,9 +1242,9 @@ class EnableTradingButton extends StatelessWidget {
 }
 
 class PanicActionButton extends StatelessWidget {
-  const PanicActionButton({this.callBack});
+  // const PanicActionButton({});
 
-  final Function callBack;
+  // final Function callBack;
 
   @override
   Widget build(BuildContext context) {
@@ -1282,9 +1290,9 @@ class PanicActionButton extends StatelessWidget {
               ),
               onTap: () => {
                 /// TODO: COINTEAM-81
-                callBack(),
-                
+                // callBack(),
                 // dbPortfolioPostTest.dbPortfolioPostTest(),
+                Navigator.pushNamed(context, '/sellportfolio')
               },
             ),
             elevation: 2,
