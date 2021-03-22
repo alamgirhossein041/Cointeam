@@ -20,12 +20,9 @@ const uniColor = Color(0xFF25365b);
 
 /// API tutorial modal colours  ///
 
-/// light coloured accent on dark bg
-const modalAccentColor = Colors.cyanAccent;
-
 /// Text ///
 
 /// light coloured text on dark bg
-final Color textLight = Colors.blueGrey[50];
+// final Color textLight = Colors.blueGrey[50];
 /// grey text colour
-const textGrey = Color(0xFFDFDFE2);
+// const textGrey = Color(0xFFDFDFE2);
