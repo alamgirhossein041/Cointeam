@@ -694,9 +694,6 @@ class PopupListItemWidget extends StatelessWidget {
   }
 }
 
-
-
-
 class MyTextField extends StatelessWidget {
   const MyTextField(this.controller, this.focusNode);
 
@@ -714,15 +711,15 @@ class MyTextField extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.deepPurpleAccent,
+              color: Colors.white,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            borderSide: BorderSide(color: Colors.white, width: 2),
           ),
-          suffixIcon: Icon(Icons.search),
+          suffixIcon: Icon(Icons.search, color: Colors.white),
           border: InputBorder.none,
-          hintText: "Search here...", hintStyle: TextStyle(color: Colors.orange, fontSize: 14),
+          hintText: "Search here...", hintStyle: TextStyle(color: Colors.white, fontSize: 14),
           contentPadding: const EdgeInsets.only(
             left: 16,
             right: 20,
