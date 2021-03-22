@@ -26,6 +26,12 @@ class GetCoinListCoinListState extends GetCoinListState {
   List<Object> get props => null;
 }
 
+class GetCoinListTotalState extends GetCoinListState {
+
+  @override
+  List<Object> get props => [];
+}
+
 class GetCoinListLoadedState extends GetCoinListState {
 
   GetCoinListLoadedState({this.coinList, this.coinBalancesMap});

@@ -24,7 +24,7 @@ class BinanceGetAllBloc extends Bloc<BinanceGetAllEvent, BinanceGetAllState> {
         
         yield BinanceGetAllLoadedState(binanceGetAll: binanceGetAllModel); /// TODO : insert parameters later
       } catch (e) {
-        log("Something went wrong in get_price_info_bloc.dart");
+        log("Something went wrong in binance_get_all_bloc.dart");
         yield BinanceGetAllErrorState(errorMessage : e.toString());
       }
     }

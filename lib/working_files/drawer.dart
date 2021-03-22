@@ -3,6 +3,10 @@ import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/repo/coin_repo/aggregator/coingecko/add_coin_list_250/coingecko_list_250.dart';
+import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
+import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_chart_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -66,11 +70,52 @@ class DrawerMenu extends StatelessWidget {
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               /// title: Text('Portfolio 1 - Live'),
               title: Text(
-                'Welcome',
+                'Test Crypto Compare',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/first');
+                CryptoCompareRepositoryImpl hello = CryptoCompareRepositoryImpl();
+                hello.getHourlyCryptoCompare();
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test Binance',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                BinanceGetChartRepositoryImpl helloBinance = BinanceGetChartRepositoryImpl();
+                helloBinance.getBinanceChart('btc', '');
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test CoinGecko',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                CoingeckoList250RepositoryImpl helloGecko = CoingeckoList250RepositoryImpl();
+                helloGecko.getCoinMarketCapCoinLatest();
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test CoinMarketCap',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                CardCoinmarketcapCoinLatestRepositoryImpl helloCmc = CardCoinmarketcapCoinLatestRepositoryImpl();
+                helloCmc.getCoinMarketCapCoinLatest();
+                // Navigator.pushReplacementNamed(context, '/first');
               },
             ),
             ListTile(

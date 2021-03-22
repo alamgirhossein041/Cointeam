@@ -6,8 +6,13 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_stat
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
+import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
@@ -17,6 +22,7 @@ import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:math' as math;
 
 
@@ -90,27 +96,27 @@ class DashboardState extends State<Dashboard> {
                       height: (displayHeight(context) * 0.2) + 35,
                       child: HeaderBox(),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          IconButton(
-                            icon: Icon(Icons.add, color: Colors.white),
-                            onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AddCoin()),
-                              )
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.stacked_line_chart, color: Colors.white),
-                            onPressed: () => {},
-                          ),
-                        ]
-                      ),
-                    ),
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: <Widget> [
+                    //       IconButton(
+                    //         icon: Icon(Icons.add, color: Colors.white),
+                    //         onPressed: () => {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(builder: (context) => AddCoin()),
+                    //           )
+                    //         },
+                    //       ),
+                    //       IconButton(
+                    //         icon: Icon(Icons.stacked_line_chart, color: Colors.white),
+                    //         onPressed: () => {},
+                    //       ),
+                    //     ]
+                    //   ),
+                    // ),
                     Expanded(
                       flex: 15,
                       child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
@@ -118,6 +124,70 @@ class DashboardState extends State<Dashboard> {
                           if (state is GetCoinListTotalValueLoadedState) {
                             return CustomScrollView(
                               slivers: <Widget> [
+                                SliverToBoxAdapter(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget> [
+                                      Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                        icon: Icon(Icons.add, color: Colors.white),
+                                        onPressed: () => {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => AddCoin()),
+                                          )
+                                        },
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 4,
+                                        fit: FlexFit.tight,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                          children: <Widget> [
+                                            IconButton(
+                                              icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.daily));
+                                              }
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.weekly));
+                                              }
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.hourglass_full, color: Colors.white),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.monthly));
+                                              }
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.alarm, color: Colors.white),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.yearly));
+                                              }
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                        icon: Icon(Icons.stacked_line_chart, color: Colors.white),
+                                        onPressed: () => {},
+                                      ),
+                                      ),
+                                    ]
+                                  ),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: ChartOverall(),
+                                ),
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {
                                     // return NewCardListTile(coinListData: state.coinListData, state.coinListData, state.totalValue);
@@ -234,6 +304,11 @@ class HeaderBoxState extends State<HeaderBox> {
 
                               log("GetCoinListLoadedState");
                               log("########Double checking dev logs##########");
+
+                              /// 21st
+                              
+                                // BlocProvider.of<CoingeckoGetChartBloc>(context).add(FetchCoingeckoGetChartEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
+                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: ''));
                                 BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
                                 
                               } else {

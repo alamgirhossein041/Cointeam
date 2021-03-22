@@ -40,14 +40,16 @@ class BinanceGetChartRepositoryImpl implements IBinanceGetChartRepository {
     timestamp = 1615291200000.toString();
     
     // log(timestamp);
-    String signatureBuilder = "?symbol=" + coinTicker + "USDT" + "&interval=" + interval + "&startTime=" + timestamp + "&limit=" + limit;
+    String signatureBuilder = "?symbol=" + coinTicker + "USDT" + "&interval=" + interval + "&limit=" + limit;
     log(signatureBuilder);
     // String signatureBuilder = "?symbol=" + coinTicker + "USDT" + "&interval=" + interval + "&limit=" + limit;
     log("Hello World");
 
     String requestUrl = 'https://www.binance.com/api/v3/klines' + signatureBuilder;
-
+    var stopWatch = Stopwatch()..start();
     var response = await http.get(requestUrl);
+    stopWatch.stop();
+    log("Binance: " + stopWatch.elapsedMilliseconds.toString());
     if(response.statusCode == 200) {
       // log(response.body.toString() + "\n\n");
       // log("???!#@#/");

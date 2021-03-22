@@ -22,6 +22,7 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
     if (event is FetchGetCoinListTotalValueEvent) {
       List coinList = event.coinList;
       Map coinBalancesMap = event.coinBalancesMap;
+      
       // log(coinBalancesMap.toString());
       double totalValue = 0.0;
       yield GetCoinListTotalValueLoadingState();
@@ -34,21 +35,18 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
         // log("Coin Price is: " + coinPrice.toString());
         /// do logic
         /// if else blah blah
-        
         CardCoinmarketcapListModel coinListData = await coinmarketcapListQuoteRepository.getCoinMarketCapCoinList(coinList);
         for(var coin in coinListData.data) {
-          
           totalValue += coinBalancesMap[coin.symbol] * coin.quote.uSD.price;
-
           // log("TotalValue in round $i [" + coin.symbol + "] is = " + totalValue.toString());
           
         }
         coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         
-        yield GetCoinListTotalValueLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap); /// TODO : insert parameters later
+        yield GetCoinListTotalValueLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap, coinList: coinList); /// TODO : insert parameters later
       } catch (e) {
-        // log(e.toString());
-        log("Something went wrong in get_price_info_bloc.dart");
+        log(e.toString());
+        log("Something went wrong in get_coin_list_total_value_bloc.dart");
         yield GetCoinListTotalValueErrorState(errorMessage : e.toString());
       }
     }

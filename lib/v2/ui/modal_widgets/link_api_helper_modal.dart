@@ -3,11 +3,12 @@ import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
-  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback}) : super(key: key);
+  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback, this.indexCallback}) : super(key: key);
 
   final int page;
   final int exch;
   final Function callback;
+  final Function indexCallback;
 
   @override
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
@@ -32,6 +33,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // used to specify index of imageList to display the corresponding image:
   // Binance or FTX screenshots
   int imageIndex = 0;
+  int sapiCharCount = 0;
 
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
@@ -234,6 +236,7 @@ some long text about why api linking is cool some long text about why api linkin
     } else if (page == 6) {
       // page 6
       // TODO: this page should be refactored but i'm too scared to touch it :)
+      TextEditingController _secretApiTextController;
       bool _obscureText = true; // password is obscured by default
 
       return Container (
@@ -261,7 +264,9 @@ some long text about why api linking is cool some long text about why api linkin
                   child: StatefulBuilder(
                     builder: (context, setState) {
                       return TextField(
+                        controller: _secretApiTextController,
                         obscureText: _obscureText,
+                        onChanged: _onChanged,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: Colors.white),
@@ -340,6 +345,13 @@ some long text about why api linking is cool some long text about why api linkin
       // default is Binance lel
       return 'Binance';
     break;
+    }
+  }
+
+  _onChanged(String value) {
+    sapiCharCount = value.length;
+    if (sapiCharCount == 64) {
+      widget.indexCallback(6);
     }
   }
 }

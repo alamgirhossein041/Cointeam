@@ -109,19 +109,19 @@ class Data {
     activeMarketPairs = json['active_market_pairs'];
     activeExchanges = json['active_exchanges'];
     totalExchanges = json['total_exchanges'];
-    ethDominance = json['eth_dominance'];
-    btcDominance = json['btc_dominance'];
-    defiVolume24h = json['defi_volume_24h'];
-    defiVolume24hReported = json['defi_volume_24h_reported'];
-    defiMarketCap = json['defi_market_cap'];
-    defi24hPercentageChange = json['defi_24h_percentage_change'];
-    stablecoinVolume24h = json['stablecoin_volume_24h'];
-    stablecoinVolume24hReported = json['stablecoin_volume_24h_reported'];
-    stablecoinMarketCap = json['stablecoin_market_cap'];
-    stablecoin24hPercentageChange = json['stablecoin_24h_percentage_change'];
-    derivativesVolume24h = json['derivatives_volume_24h'];
-    derivativesVolume24hReported = json['derivatives_volume_24h_reported'];
-    derivatives24hPercentageChange = json['derivatives_24h_percentage_change'];
+    ethDominance = json['eth_dominance'].toDouble();
+    btcDominance = json['btc_dominance'].toDouble();
+    defiVolume24h = json['defi_volume_24h'].toDouble();
+    defiVolume24hReported = json['defi_volume_24h_reported'].toDouble();
+    defiMarketCap = json['defi_market_cap'].toDouble();
+    defi24hPercentageChange = json['defi_24h_percentage_change'].toDouble();
+    stablecoinVolume24h = json['stablecoin_volume_24h'].toDouble();
+    stablecoinVolume24hReported = json['stablecoin_volume_24h_reported'].toDouble();
+    stablecoinMarketCap = json['stablecoin_market_cap'].toDouble();
+    stablecoin24hPercentageChange = json['stablecoin_24h_percentage_change'].toDouble();
+    derivativesVolume24h = json['derivatives_volume_24h'].toDouble();
+    derivativesVolume24hReported = json['derivatives_volume_24h_reported'].toDouble();
+    derivatives24hPercentageChange = json['derivatives_24h_percentage_change'].toDouble();
     quote = json['quote'] != null ? new Quote.fromJson(json['quote']) : null;
     lastUpdated = json['last_updated'];
   }
@@ -193,12 +193,12 @@ class USD {
       this.lastUpdated});
 
   USD.fromJson(Map<String, dynamic> json) {
-    totalMarketCap = json['total_market_cap'];
-    totalVolume24h = json['total_volume_24h'];
-    totalVolume24hReported = json['total_volume_24h_reported'];
-    altcoinVolume24h = json['altcoin_volume_24h'];
-    altcoinVolume24hReported = json['altcoin_volume_24h_reported'];
-    altcoinMarketCap = json['altcoin_market_cap'];
+    totalMarketCap = json['total_market_cap'].toDouble();
+    totalVolume24h = json['total_volume_24h'].toDouble();
+    totalVolume24hReported = json['total_volume_24h_reported'].toDouble();
+    altcoinVolume24h = json['altcoin_volume_24h'].toDouble();
+    altcoinVolume24hReported = json['altcoin_volume_24h_reported'].toDouble();
+    altcoinMarketCap = json['altcoin_market_cap'].toDouble();
     lastUpdated = json['last_updated'];
   }
 
