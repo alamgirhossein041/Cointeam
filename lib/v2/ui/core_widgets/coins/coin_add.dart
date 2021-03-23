@@ -201,28 +201,18 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
 
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.05,0,displayWidth(context) * 0.05,0),
+      padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFF8C00),
-              Color(0xFF874800),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
+        decoration: boxDeco(),
         child: Padding(
-          padding:  EdgeInsets.all(2.75),
+          padding: EdgeInsets.only(top:2.75, bottom: 2.75),
           child: Container(
             decoration: BoxDecoration(
               color: Color(0xFF1A1B20),
-              borderRadius: BorderRadius.circular(5),
             ),
             child: Column(
               children: <Widget> [
@@ -288,7 +278,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Current Price", style: TextStyle(color: Colors.blueGrey)),
+                            Text("Current Price", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w300)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -308,7 +298,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Quantity: ", style: TextStyle(color: Colors.blueGrey)),
+                            Text("Quantity: ", style: TextStyle(color: Colors.grey)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -358,7 +348,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                 //     alignment: Alignment.center,
                 //     child: Column(
                 //       children: <Widget> [
-                //         Text("Current Price:", style: TextStyle(color: Colors.blueGrey)),
+                //         Text("Current Price:", style: TextStyle(color: Colors.grey)),
                 //         Builder(
                 //           builder: (context) {
                 //             if(isSelected == false) {
@@ -387,7 +377,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Market Cap", style: TextStyle(color: Colors.blueGrey)),
+                            Text("Market Cap", style: TextStyle(color: Colors.grey)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -407,7 +397,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("All Time High", style: TextStyle(color: Colors.blueGrey)),
+                            Text("All Time High", style: TextStyle(color: Colors.grey)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -436,7 +426,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("24h Price Change", style: TextStyle(color: Colors.blueGrey)),
+                            Text("24h Price Change", style: TextStyle(color: Colors.grey)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -457,7 +447,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Current Supply", style: TextStyle(color: Colors.blueGrey)),
+                            Text("Current Supply", style: TextStyle(color: Colors.grey)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
@@ -465,7 +455,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
-                                  // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.blueGrey));
+                                  // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
                                   return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
                                 }
                               }
@@ -629,6 +619,20 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
       isSelected = false;
     });
   }
+
+  boxDeco() {
+    return BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFFFF8C00),
+          Color(0xFF874800),
+        ],
+      ),
+    );
+  }
+
 }
 
 class SelectedItemWidget extends StatelessWidget {
@@ -684,7 +688,7 @@ class PopupListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.blueGrey),
+      decoration: BoxDecoration(color: Theme.of(context).popupMenuTheme.color),
       padding: const EdgeInsets.all(12),
       child: Text(
         item,
@@ -703,19 +707,17 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: TextField(
         controller: controller,
         focusNode: focusNode,
         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white,
-            ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: 2)
           ),
           suffixIcon: Icon(Icons.search, color: Colors.white),
           border: InputBorder.none,
