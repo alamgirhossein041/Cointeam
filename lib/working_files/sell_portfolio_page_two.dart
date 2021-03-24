@@ -296,12 +296,11 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                     alignment: Alignment.center,
                                     child: Column(
                                       children: <Widget> [
-                                        Text("Selling " + (percentageValue*100).toStringAsFixed(1) + "% of portfolio into USDT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                        Text("Selling \$" + coinTotalValue.toStringAsFixed(2) + " into USDT (estimated)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                         SizedBox(height: 30),
                                         Text("Binance Trade Rules:", style: TextStyle(color: Colors.white)),
                                         SizedBox(height: 10),
                                         Text("Values under \$10 cannot be sold.", style: TextStyle(color: Colors.white)),
-
                                       ]
                                     )
                                   )

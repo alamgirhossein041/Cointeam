@@ -3,6 +3,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_state.dart';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_exchange_info_model.dart';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_exchange_info_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_repo.dart';
@@ -14,12 +15,13 @@ import 'dart:developer';
 class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   
   // SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
-  SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
+  SellPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
 
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
+  double divisor = 1.0;
   // Map<String, dynamic> toFirestore = {};
 
   // final firestoreInstance = FirebaseFirestore.instance;
@@ -29,6 +31,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   // FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
   // FtxExchangeInfoRepositoryImpl ftxExchangeInfoRepository;
   BinanceSellCoinRepositoryImpl binanceSellCoinRepository;
+  BinanceBuyCoinRepositoryImpl binanceBuyCoinRepository;
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
 
@@ -44,6 +47,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
       yield SellPortfolioLoadingState();
       try {
+        log("Our coinTicker is : " + coinTicker);
 
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
@@ -54,7 +58,12 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
             try {
-              double divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+              var result;
+              if(coins.coin == 'USDT') {
+                divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
+              } else {
+                divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+              }
               var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
@@ -66,7 +75,13 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('To Sell: ' + tmp.toString());
                 log("\n\nSelling to ticker: " + coinTicker);
                 log('\n\n');
-                var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
+                if(coins.coin == 'USDT') {
+                  log("########");
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + coins.coin, tmp);
+                } else {
+
+                  result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
+                }
                 log(result['code'].toString());
                 if(result['code'] == null) {
                   totalValue += double.parse(result['cummulativeQuoteQty']);
