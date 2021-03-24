@@ -75,8 +75,8 @@ class _ChartOverallState extends State<ChartOverall> {
       LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Colors.black.withOpacity(0.0), Colors.deepPurpleAccent.withOpacity(0.2)],
-        stops: [0.65, 1.0],
+        colors: [Colors.black.withOpacity(0.0), Colors.deepPurpleAccent.withOpacity(0.3)],
+        stops: [0.2, 1.0],
       );
 
     return BlocConsumer<BinanceGetChartBloc, BinanceGetChartState>(
@@ -130,14 +130,22 @@ class _ChartOverallState extends State<ChartOverall> {
                     // Initialize category axis
                     backgroundColor: appBlack,
 
+                    borderWidth: 0,
+                    plotAreaBorderWidth: 0,
+
                     primaryXAxis: CategoryAxis(
+                      axisLine: AxisLine(color: Colors.white24, width: 1),
+                      labelStyle: TextStyle(color: Colors.white70),
                       majorGridLines: MajorGridLines(width: 0),
                       // isVisible: false,
                     ),
                     primaryYAxis: NumericAxis(
+                      axisLine: AxisLine(color: Colors.white24, width: 1),
+                      labelStyle: TextStyle(color: Colors.white70),
                       majorGridLines: MajorGridLines(width: 0),
                       // isVisible: false,
                     ),
+
                     
 
                     // series: <LineSeries<SalesData, String>>[
@@ -147,6 +155,10 @@ class _ChartOverallState extends State<ChartOverall> {
                       AreaSeries<SalesData, String> (
                         borderWidth: 1,
                         borderGradient: gradientColors,
+                        // uncomment line below to get purple gradient in chart body
+                        // gradient: chartGradient,
+                        color: Colors.black,
+
                         // dataSource:  widget.priceList.salesDataList,
                         dataSource: state.binanceGetChartDataList,
                           // widget.priceList.salesDataList.forEach((v) {
@@ -157,7 +169,6 @@ class _ChartOverallState extends State<ChartOverall> {
                         // xValueMapper: ( price, _) => (DateFormat.jm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(price.time)*1000))).toString(),
                         // xValueMapper: ( price, _) => DateTime.fromMillisecondsSinceEpoch(int.parse(price.time)*1000).toString(),
                         yValueMapper: ( price, _) => price.price,
-                        gradient: chartGradient,
                         // Enable data label
                         dataLabelSettings: DataLabelSettings(isVisible: false, color: Colors.white)
                       ),
