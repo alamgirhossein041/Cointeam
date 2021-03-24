@@ -15,13 +15,12 @@ class SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFF0E0F18),
-        ),
-        height: displayHeight(context),
-        width: displayWidth(context),
-
+      body: Container(
+      decoration: BoxDecoration(
+        color: Color(0xFF0E0F18),
+      ),
+      height: displayHeight(context),
+      width: displayWidth(context),
       child: Padding(
         padding: EdgeInsets.only(top: 40),
           child: Container(

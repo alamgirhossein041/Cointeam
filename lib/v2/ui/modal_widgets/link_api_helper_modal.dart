@@ -1,13 +1,15 @@
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/repo/app_repo/binance_api_check/binance_api_check.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
-  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback}) : super(key: key);
+  LinkAPIHelperModal({Key key, this.page, this.exch, this.callback, this.indexCallback}) : super(key: key);
 
   final int page;
   final int exch;
   final Function callback;
+  final Function indexCallback;
 
   @override
   _LinkAPIHelperModalState createState() => _LinkAPIHelperModalState();
@@ -32,6 +34,8 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // used to specify index of imageList to display the corresponding image:
   // Binance or FTX screenshots
   int imageIndex = 0;
+  int sapiCharCount = 0;
+  bool _visibility = false;
 
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
@@ -234,6 +238,7 @@ some long text about why api linking is cool some long text about why api linkin
     } else if (page == 6) {
       // page 6
       // TODO: this page should be refactored but i'm too scared to touch it :)
+      TextEditingController _secretApiTextController;
       bool _obscureText = true; // password is obscured by default
 
       return Container (
@@ -261,7 +266,9 @@ some long text about why api linking is cool some long text about why api linkin
                   child: StatefulBuilder(
                     builder: (context, setState) {
                       return TextField(
+                        controller: _secretApiTextController,
                         obscureText: _obscureText,
+                        onChanged: _onChanged,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: Colors.white),
@@ -274,7 +281,7 @@ some long text about why api linking is cool some long text about why api linkin
                           ),
                           labelStyle: TextStyle(color: Colors.white),
                           labelText: 'Secret API key',
-                          helperText: "(We only need the Secret API Key)",
+                          helperText: "",
                           helperStyle: TextStyle(color: Colors.white),
                           // toggle visibility on/off
                           suffixIcon: IconButton(
@@ -290,6 +297,14 @@ some long text about why api linking is cool some long text about why api linkin
                     },
                   ),
                 ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: Visibility(
+                visible: _visibility,
+                child: Text("\nContacting Binance...\n\nChecking Validity..."),
               ),
             ),
           ]
@@ -340,6 +355,22 @@ some long text about why api linking is cool some long text about why api linkin
       // default is Binance lel
       return 'Binance';
     break;
+    }
+  }
+
+  _onChanged(String value) async {
+    sapiCharCount = value.length;
+    if (sapiCharCount == 64) {
+      // widget.indexCallback(6);
+      setState(() => {
+      _visibility = !_visibility});
+
+      bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
+      if (response == true) {
+        widget.indexCallback(6);
+      } else {
+        _visibility = !_visibility;
+      }
     }
   }
 }

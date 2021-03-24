@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
+
 import 'dart:developer';
 
 abstract class IBinanceSellCoinRepository {
@@ -22,6 +24,7 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
     /// Build our signature and HMAC hash for Binance
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
+    log(signatureBuilder);
     var sapiHmac = utf8.encode(sapi);
     var signatureBuilderHmac = utf8.encode(signatureBuilder);
     var hmac256 = new Hmac(sha256, sapiHmac);
@@ -32,9 +35,31 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
     var response = await http.post(requestUrl, headers: {'X-MBX-APIKEY': api});
 
     /// ###### End API Request ######
-  
-    Map<String, dynamic> body = Map.from(json.decode(response.body));
-    log("Response of Binance sell is: " + body.toString());
-    return body;
+    
+    if(response.statusCode == 200) {
+      Map<String, dynamic> body = Map.from(json.decode(response.body));
+      log("Response of Binance sell is: " + body.toString());
+      return body;
+    } else {
+      log("Excepted");
+      log("Response Code = " + response.statusCode.toString());
+      log("Response data = " + response.body.toString());
+      timestamp = ((DateTime.now().millisecondsSinceEpoch) + globals.binanceTimestampModifier).toString();
+      String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
+      var signatureBuilderHmac2 = utf8.encode(signatureBuilder2);
+      var digest2 = hmac256.convert(signatureBuilderHmac2);
+      String requestUrl2 = 'https://' + _binanceUrl + '/api/v3/order?' + signatureBuilder2 + '&signature=$digest2';
+      var response2 = await http.post(requestUrl2, headers: {'X-MBX-APIKEY': api});
+      if(response2.statusCode == 200) {
+        Map<String, dynamic> body = Map.from(json.decode(response.body));
+        log("Response of Binance sell is: " + body.toString());
+        return body;
+      } else {
+        log("Excepted twice, throwing");
+        log("Response Code = " + response.statusCode.toString());
+        log("Response data = " + response.body.toString());
+        throw Exception();
+      }
+    }
   }
 }

@@ -17,9 +17,12 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/repo/app_repo/binance_time_sync/binance_time_sync.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
@@ -75,7 +78,6 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     log("dashboard_initial_noAPI.dart - DashboardNoApiView() DPD");
-    BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
   }
 
 
@@ -104,6 +106,14 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 return CircularProgressIndicator();
               default:
               if (!snapshot.hasError) {
+
+                /// 20th - Get Server Time
+                /// Direct Repo Call? No need for bloc
+                
+                BinanceTimeSyncRepositoryImpl helloWorld = BinanceTimeSyncRepositoryImpl();
+
+                helloWorld.getBinanceTimeSyncLatest();
+                
                 if (snapshot.data != "none") {
                   log(snapshot.data.toString());
                   return DashboardWithNoApiWorking();
@@ -147,8 +157,6 @@ class DashboardWithNoApiWorkingState extends State<DashboardWithNoApiWorking> {
   @override
   void initState() { 
     super.initState();
-    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-    BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
     log("dashboard_initial_noAPI.dart - DashboardNoApiWorking() InitState");
   }
 
@@ -375,7 +383,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                                 
                                     /// ### Hidden Panel begins here ### ///
                                     
-                                    HiddenPanel(visibility: _panelVisibility),
+                                    // HiddenPanel(),
 
                                   ],
                                 ),
@@ -424,7 +432,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                               if (snapshot.data == "none") {
                                 return EnableTradingButton();
                               } else {
-                                return PanicActionButton(callBack: _callBackVisibilitySetState);
+                                return PanicActionButton();
                               }
                             } else {
                               return errorTemplateWidget(snapshot.error);
@@ -448,13 +456,12 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
       
     
   }
-
-    void _callBackVisibilitySetState() async {
-    setState(() {
-      _showContainer = !_showContainer;
-      _panelVisibility = !_panelVisibility;
-    });
-  }
+    // void _callBackVisibilitySetState() async {
+    // setState(() {
+    //   _showContainer = !_showContainer;
+    //   _panelVisibility = !_panelVisibility;
+    // });
+  // }
 }
 
 class NoApiCategoryList extends StatefulWidget {
@@ -1234,9 +1241,9 @@ class EnableTradingButton extends StatelessWidget {
 }
 
 class PanicActionButton extends StatelessWidget {
-  const PanicActionButton({this.callBack});
+  // const PanicActionButton({});
 
-  final Function callBack;
+  // final Function callBack;
 
   @override
   Widget build(BuildContext context) {
@@ -1275,16 +1282,17 @@ class PanicActionButton extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Text("TRADE NOW", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                    padding: EdgeInsets.only(top: 0),
+                    child: Text("BUY / SELL", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
               onTap: () => {
                 /// TODO: COINTEAM-81
-                callBack(),
-                
+                // callBack(),
                 // dbPortfolioPostTest.dbPortfolioPostTest(),
+                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
+                Navigator.pushNamed(context, '/sellportfolio')
               },
             ),
             elevation: 2,

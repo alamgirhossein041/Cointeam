@@ -28,7 +28,11 @@ import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
+import 'package:coinsnap/working_files/initial_page.dart';
 import 'package:coinsnap/working_files/market_dashboard.dart';
+import 'package:coinsnap/working_files/sell_portfolio.dart';
+import 'package:coinsnap/working_files/sell_portfolio_page_three.dart';
+import 'package:coinsnap/working_files/sell_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,7 +72,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<GetTotalValueBloc>(
-          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+          create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
         BlocProvider<GetPriceInfoBloc>(
           create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
@@ -102,7 +106,6 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        initialRoute: '/dashboardnoapitest',
         // initialRoute: '/settings',
         theme: ThemeData(
           // Default brightness
@@ -122,7 +125,6 @@ class MyApp extends StatelessWidget {
             headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
             bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25, height: 1.8),
             bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25),
-
           ),
 
           // Default button theme
@@ -135,7 +137,15 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/authentication',
         // initialRoute: '/dashboard',
         // initialRoute: '/home',
+        // initialRoute: '/dashboardnoapitest',
+        initialRoute: '/initialpage',
+        // initialRoute: '/sellportfolio',
+        // initialRoute: '/sellportfoliopage3',
         routes: {
+          '/initialpage': (context) => InitialPage(),
+          '/sellportfolio3': (context) => SellPortfolioPage3(),
+          '/sellportfolio2': (context) => SellPortfolioPage2(),
+          '/sellportfolio': (context) => SellPortfolioScreen(),
           '/settings': (context) => Settings(),
           '/dashboardnoapitest': (context) => DashboardNoApiView(),
           // '/marketdashboard': (context) => MarketDashboard(),

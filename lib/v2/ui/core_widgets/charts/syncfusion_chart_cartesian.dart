@@ -13,9 +13,9 @@ import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 
 
 class ChartOverall extends StatefulWidget {
-  ChartOverall({Key key, this.priceList}) : super(key: key);
+  ChartOverall({Key key}) : super(key: key);
 
-  final CryptoCompareHourlyModel priceList;
+  // final CryptoCompareHourlyModel priceList;
 
   @override
   _ChartOverallState createState() => _ChartOverallState();
@@ -69,7 +69,7 @@ class _ChartOverallState extends State<ChartOverall> {
     return BlocConsumer<BinanceGetChartBloc, BinanceGetChartState>(
       listener: (context, state) {
         if (state is BinanceGetChartErrorState) {
-          log("error in GetTotalValueBloc in card_list_container.dart");
+          log("error in syncfusioncharts");
         }
       },
       builder: (context, state) {
@@ -92,23 +92,25 @@ class _ChartOverallState extends State<ChartOverall> {
                     /// Hack to render x axis (hourly labels) cleanly without messing up data points
                     /// https://www.syncfusion.com/forums/160066/display-minsecmillisec-on-y-axis /// Switch y and x
                     onAxisLabelRender: (args) {
-                      log((args.text).toString());
+                      // log("What is args? - " + args.toString());
+                      // log("Label render syncfusion " + (args.text).toString());
+                      // log("timeSelection is: " + state.timeSelection.toString());
                       if (args.axisName == 'primaryXAxis') {
                         if(state.timeSelection == globals.Status.weekly) {
                           args.text = 
-                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)).toInt()));
                           // DateTime.fromMillisecondsSinceEpoch((double.parse(args.text) * 1000).toInt()).hour.toString() +
                           // ':' +
                           // DateTime.fromMillisecondsSinceEpoch((double.parse(args.text) * 1000).toInt()).minute.toStringAsFixed();
                         } else if (state.timeSelection == globals.Status.monthly) {
                           args.text = 
-                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                            DateFormat.MMMd().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)).toInt()));
                         } else if (state.timeSelection == globals.Status.yearly) {
                           args.text = 
-                            DateFormat.MMM().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                            DateFormat.MMM().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)).toInt()));
                         } else {
                           args.text = 
-                            DateFormat.j().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
+                            DateFormat.j().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)).toInt()));
                         }
                       }
                     },

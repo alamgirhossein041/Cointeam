@@ -15,9 +15,16 @@ class CardCoinmarketcapCoinLatestRepositoryImpl implements ICardCoinmarketcapCoi
     String requestUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
     String api = "ff43a58e-a138-4738-9dac-ce1d1343a0d5";
 
+    
+
+    var stopWatch = Stopwatch()..start();
     var response = await http.get(requestUrl, headers: {
       'X-CMC_PRO_API_KEY': api
     });
+    stopWatch.stop();
+    log("Coinmarketcap: " + stopWatch.elapsedMilliseconds.toString());
+
+    
 
     // var response = await http.get(requestUrl);
     if(response.statusCode == 200) {

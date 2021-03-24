@@ -16,13 +16,20 @@ class GetCoinListTotalValueLoadingState extends GetCoinListTotalValueState {
   List<Object> get props => [];
 }
 
+// class GetCoinListTotalValueResponseState extends GetCoinListTotalValueState {
+
+//   @override
+//   List<Object> get props => [];
+// }
+
 class GetCoinListTotalValueLoadedState extends GetCoinListTotalValueState {
 
   final double totalValue;
   final Map coinBalancesMap;
   final coinListData;
+  final List coinList;
 
-  GetCoinListTotalValueLoadedState({this.totalValue, this.coinBalancesMap, this.coinListData});
+  GetCoinListTotalValueLoadedState({this.totalValue, this.coinBalancesMap, this.coinListData, this.coinList});
 
   /// List<GetTotalValueModel> GetTotalValueModel; /// there is no model /// instead we just add existing models
   
