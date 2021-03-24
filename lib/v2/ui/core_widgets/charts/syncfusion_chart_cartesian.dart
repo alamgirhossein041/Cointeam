@@ -32,7 +32,7 @@ class _ChartOverallState extends State<ChartOverall> {
       shouldAlwaysShow: true,
       tooltipSettings: InteractiveTooltip(
         enable: true,
-        color: Colors.red,
+        color: Colors.black54,
       ),
       tooltipDisplayMode: TrackballDisplayMode.nearestPoint,
     );
@@ -54,17 +54,30 @@ class _ChartOverallState extends State<ChartOverall> {
   Widget build(BuildContext context) {
 
     final List<Color> color = <Color>[];
-        color.add(Colors.blue[50]);
-        color.add(Colors.blue[200]);
-        color.add(Colors.blue);
+    color.add(Colors.deepPurpleAccent[400]);
+    color.add(Colors.deepPurpleAccent);
+    color.add(Colors.indigoAccent);
 
-        final List<double> stops = <double>[];
-        stops.add(0.0);
-        stops.add(0.5);
-        stops.add(1.0);
 
-        final LinearGradient gradientColors =
-            LinearGradient(colors: color, stops: stops);
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.4);
+    stops.add(1.0);
+
+    final LinearGradient gradientColors =
+      LinearGradient(
+      colors: color, 
+      stops: stops
+    );
+
+    // chart body gradient
+    final LinearGradient chartGradient = 
+      LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Colors.black.withOpacity(0.0), Colors.deepPurpleAccent.withOpacity(0.3)],
+        stops: [0.2, 1.0],
+      );
 
     return BlocConsumer<BinanceGetChartBloc, BinanceGetChartState>(
       listener: (context, state) {
@@ -117,22 +130,35 @@ class _ChartOverallState extends State<ChartOverall> {
                     // Initialize category axis
                     backgroundColor: appBlack,
 
+                    borderWidth: 0,
+                    plotAreaBorderWidth: 0,
+
                     primaryXAxis: CategoryAxis(
+                      axisLine: AxisLine(color: Colors.white24, width: 1),
+                      labelStyle: TextStyle(color: Colors.white70),
                       majorGridLines: MajorGridLines(width: 0),
                       // isVisible: false,
                     ),
                     primaryYAxis: NumericAxis(
+                      axisLine: AxisLine(color: Colors.white24, width: 1),
+                      labelStyle: TextStyle(color: Colors.white70),
                       majorGridLines: MajorGridLines(width: 0),
                       // isVisible: false,
                     ),
+
                     
 
                     // series: <LineSeries<SalesData, String>>[
                     //   LineSeries<SalesData, String>(
                     //     // Bind data source
-                        series: <ChartSeries> [
-                          AreaSeries<SalesData, String> (
-                        
+                    series: <ChartSeries> [
+                      AreaSeries<SalesData, String> (
+                        borderWidth: 1,
+                        borderGradient: gradientColors,
+                        // uncomment line below to get purple gradient in chart body
+                        // gradient: chartGradient,
+                        color: Colors.black,
+
                         // dataSource:  widget.priceList.salesDataList,
                         dataSource: state.binanceGetChartDataList,
                           // widget.priceList.salesDataList.forEach((v) {
@@ -143,7 +169,6 @@ class _ChartOverallState extends State<ChartOverall> {
                         // xValueMapper: ( price, _) => (DateFormat.jm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(price.time)*1000))).toString(),
                         // xValueMapper: ( price, _) => DateTime.fromMillisecondsSinceEpoch(int.parse(price.time)*1000).toString(),
                         yValueMapper: ( price, _) => price.price,
-                        gradient: gradientColors,
                         // Enable data label
                         dataLabelSettings: DataLabelSettings(isVisible: false, color: Colors.white)
                       ),
