@@ -24,6 +24,7 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
     /// Build our signature and HMAC hash for Binance
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
+    log(signatureBuilder);
     var sapiHmac = utf8.encode(sapi);
     var signatureBuilderHmac = utf8.encode(signatureBuilder);
     var hmac256 = new Hmac(sha256, sapiHmac);
@@ -41,6 +42,8 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
       return body;
     } else {
       log("Excepted");
+      log("Response Code = " + response.statusCode.toString());
+      log("Response data = " + response.body.toString());
       timestamp = ((DateTime.now().millisecondsSinceEpoch) + globals.binanceTimestampModifier).toString();
       String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
       var signatureBuilderHmac2 = utf8.encode(signatureBuilder2);
@@ -53,6 +56,8 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
         return body;
       } else {
         log("Excepted twice, throwing");
+        log("Response Code = " + response.statusCode.toString());
+        log("Response data = " + response.body.toString());
         throw Exception();
       }
     }

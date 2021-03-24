@@ -13,7 +13,7 @@ class CarouselDemo extends StatefulWidget {
 
 class _CarouselDemoState extends State<CarouselDemo> {
   final CarouselController buttonCarouselController = CarouselController();
-
+  
   int exch = 0;
   // current page index used for page indicator
   int _curr = 0;
@@ -55,9 +55,11 @@ class _CarouselDemoState extends State<CarouselDemo> {
                               child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState, indexCallback: _callbackSetCurr),
                             );
                           }).toList(),
+                          carouselController: buttonCarouselController,
 
                           //Slider Container properties
                           options: CarouselOptions(
+                            autoPlay: false,
                             height: displayHeight(context) - 90,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
@@ -66,8 +68,9 @@ class _CarouselDemoState extends State<CarouselDemo> {
                             onPageChanged: (index, reason) {
                               setState(() => _curr = index);
                             }),
-                        ),
-                      ]),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -90,9 +93,11 @@ class _CarouselDemoState extends State<CarouselDemo> {
     });
   }
   void _callbackSetCurr(int index) {
-    setState(() {
-      _curr = index;
-    });
+    
+    buttonCarouselController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
+    // setState(() {
+    //   _curr = index;
+    // });
   }
 }
 

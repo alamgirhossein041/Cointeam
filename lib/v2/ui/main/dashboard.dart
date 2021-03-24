@@ -40,6 +40,7 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
 
   List coinList;
+  bool _chartVisibility = true;
 
   @override
   void initState() { 
@@ -147,26 +148,32 @@ class DashboardState extends State<Dashboard> {
                                           alignment: Alignment.center,
                                           child: Row(
                                           children: <Widget> [
-                                            IconButton(
-                                              icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                            // IconButton(
+                                            //   icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                            //   onPressed: () {
+                                            //     BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.daily));
+                                            //   }
+                                            // ),
+                                            TextButton(
+                                              child: Text("( 24h )", style: TextStyle(color: Colors.white, fontSize: 14)),
                                               onPressed: () {
                                                 BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.daily));
                                               }
                                             ),
-                                            IconButton(
-                                              icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                            TextButton(
+                                              child: Text("( 7d )", style: TextStyle(color: Colors.white, fontSize: 14)),
                                               onPressed: () {
                                                 BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.weekly));
                                               }
                                             ),
-                                            IconButton(
-                                              icon: Icon(Icons.hourglass_full, color: Colors.white),
+                                            TextButton(
+                                              child: Text("( 30d )", style: TextStyle(color: Colors.white, fontSize: 14)),
                                               onPressed: () {
                                                 BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.monthly));
                                               }
                                             ),
-                                            IconButton(
-                                              icon: Icon(Icons.alarm, color: Colors.white),
+                                            TextButton(
+                                              child: Text("( 1y )", style: TextStyle(color: Colors.white, fontSize: 14)),
                                               onPressed: () {
                                                 BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.yearly));
                                               }
@@ -179,14 +186,19 @@ class DashboardState extends State<Dashboard> {
                                         flex: 1,
                                         child: IconButton(
                                         icon: Icon(Icons.stacked_line_chart, color: Colors.white),
-                                        onPressed: () => {},
+                                        onPressed: () => {
+                                          setState(() {_chartVisibility = !_chartVisibility;})
+                                        }
                                       ),
                                       ),
                                     ]
                                   ),
                                 ),
                                 SliverToBoxAdapter(
-                                  child: ChartOverall(),
+                                  child: Visibility(
+                                    visible: _chartVisibility,
+                                    child: ChartOverall(),
+                                  ),
                                 ),
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {

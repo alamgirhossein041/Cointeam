@@ -92,9 +92,9 @@ class _ChartOverallState extends State<ChartOverall> {
                     /// Hack to render x axis (hourly labels) cleanly without messing up data points
                     /// https://www.syncfusion.com/forums/160066/display-minsecmillisec-on-y-axis /// Switch y and x
                     onAxisLabelRender: (args) {
-                      log("What is args? - " + args.toString());
-                      log("Label render syncfusion " + (args.text).toString());
-                      log("timeSelection is: " + state.timeSelection.toString());
+                      // log("What is args? - " + args.toString());
+                      // log("Label render syncfusion " + (args.text).toString());
+                      // log("timeSelection is: " + state.timeSelection.toString());
                       if (args.axisName == 'primaryXAxis') {
                         if(state.timeSelection == globals.Status.weekly) {
                           args.text = 

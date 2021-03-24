@@ -18,9 +18,11 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
     String signatureBuilder = '';
 
     for (int i=0; i < coinList.length; i++) {
-      signatureBuilder += coinList[i];
-      if(i+1 < coinList.length) {
-        signatureBuilder += ',';
+      if(coinList[i] != 'SBTC') {
+        signatureBuilder += coinList[i];
+        if(i+1 < coinList.length) {
+          signatureBuilder += ',';
+        }
       }
     }
     

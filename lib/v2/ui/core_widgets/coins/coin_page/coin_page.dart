@@ -115,7 +115,7 @@ class _CoinPageState extends State<CoinPage> {
                 /// ### Top Row starts here ### ///
               Builder(
                 builder: (BuildContext innerContext) {
-                  return TopMenuRow();
+                  return TopMenuRowBackButton(text: "Add Coin");
                 }
               ),
               // TopMenuRow(precontext: context),

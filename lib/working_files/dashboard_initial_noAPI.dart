@@ -17,6 +17,8 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
@@ -76,7 +78,6 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     log("dashboard_initial_noAPI.dart - DashboardNoApiView() DPD");
-    BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
   }
 
 
@@ -156,8 +157,6 @@ class DashboardWithNoApiWorkingState extends State<DashboardWithNoApiWorking> {
   @override
   void initState() { 
     super.initState();
-    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-    BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
     log("dashboard_initial_noAPI.dart - DashboardNoApiWorking() InitState");
   }
 
@@ -1283,8 +1282,8 @@ class PanicActionButton extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.center,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Text("TRADE NOW", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                    padding: EdgeInsets.only(top: 0),
+                    child: Text("BUY / SELL", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -1292,6 +1291,7 @@ class PanicActionButton extends StatelessWidget {
                 /// TODO: COINTEAM-81
                 // callBack(),
                 // dbPortfolioPostTest.dbPortfolioPostTest(),
+                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
                 Navigator.pushNamed(context, '/sellportfolio')
               },
             ),

@@ -1,4 +1,5 @@
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
+import 'package:coinsnap/v2/repo/app_repo/binance_api_check/binance_api_check.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // Binance or FTX screenshots
   int imageIndex = 0;
   int sapiCharCount = 0;
+  bool _visibility = false;
 
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
@@ -279,7 +281,7 @@ some long text about why api linking is cool some long text about why api linkin
                           ),
                           labelStyle: TextStyle(color: Colors.white),
                           labelText: 'Secret API key',
-                          helperText: "(We only need the Secret API Key)",
+                          helperText: "",
                           helperStyle: TextStyle(color: Colors.white),
                           // toggle visibility on/off
                           suffixIcon: IconButton(
@@ -295,6 +297,14 @@ some long text about why api linking is cool some long text about why api linkin
                     },
                   ),
                 ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: Visibility(
+                visible: _visibility,
+                child: Text("\nContacting Binance...\n\nChecking Validity..."),
               ),
             ),
           ]
@@ -348,10 +358,19 @@ some long text about why api linking is cool some long text about why api linkin
     }
   }
 
-  _onChanged(String value) {
+  _onChanged(String value) async {
     sapiCharCount = value.length;
     if (sapiCharCount == 64) {
-      widget.indexCallback(6);
+      // widget.indexCallback(6);
+      setState(() => {
+      _visibility = !_visibility});
+
+      bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
+      if (response == true) {
+        widget.indexCallback(6);
+      } else {
+        _visibility = !_visibility;
+      }
     }
   }
 }

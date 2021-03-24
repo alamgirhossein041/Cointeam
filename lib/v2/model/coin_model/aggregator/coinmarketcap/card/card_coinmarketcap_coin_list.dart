@@ -108,7 +108,8 @@ class USD {
     if(percentChange24h > 0) {
       colorChange = Colors.green;
     } else if(percentChange24h < 0) {
-      colorChange = Colors.red;
+      // colorChange = Colors.red[200];
+      colorChange = Colors.redAccent[100];
     } else {
       colorChange = Colors.black;
     }

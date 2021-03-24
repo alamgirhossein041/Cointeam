@@ -110,8 +110,8 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         }
 
         for(var p in sumMap.keys) {
-          log("I think time is " + p.toString());
-          log("I think price is " + sumMap[p].toString());
+          // log("I think time is " + p.toString());
+          // log("I think price is " + sumMap[p].toString());
           // log("values: + " + i.toString());
           i++;
           // log(p.toString() + " is the time key\n" + sumMap[p].toString() + " is the time value");

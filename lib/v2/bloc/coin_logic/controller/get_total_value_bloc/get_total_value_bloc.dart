@@ -34,6 +34,8 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
       double usdSpecial = 0.0;
+      double totalPossibleUsdtSellValue = 0.0;
+      double totalPossibleBtcSellValue = 0.0;
 
       /// ### Please evaluate why we need the above values and document ### ///
 
