@@ -201,9 +201,12 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
 
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
-  
   @override
   Widget build(BuildContext context) {
+
+    // Flex row padding
+    var rowPadding = EdgeInsets.symmetric(horizontal: 0, vertical: 15);
+
     return Padding(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Container(
@@ -222,6 +225,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
                     children: <Widget> [
                       if (widget.show)
                         SearchWidget(
@@ -269,78 +274,76 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                 ),
                 /// ### Dropdown menu ends here ### ///
                 Flexible(
-                  flex: 1,
+                  flex: 2,
                   fit: FlexFit.tight,
-                  child: Row(
-                    children: <Widget> [
-                      Flexible( /// Market cap box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("Current Price", style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  return Text("\$" + widget.coinMap[selectedItemSymbol].currentPrice.toStringAsFixed(2), style: TextStyle(color: Colors.white));
+                  child: Padding(
+                    padding: rowPadding,
+                      child: Row(
+                      children: <Widget> [
+                        Flexible( /// Market cap box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              Text("Current Price", style: TextStyle(color: Colors.white38)),
+                              Builder(
+                                builder: (context) {
+                                  if(isSelected == false) {
+                                    return Text("-", style: TextStyle(color: Colors.white38));
+                                  } else {
+                                    // log(widget.coinMap.toString());
+                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    return Text("\$" + widget.coinMap[selectedItemSymbol].currentPrice.toStringAsFixed(2), style: TextStyle(color: Colors.white));
+                                  }
                                 }
-                              }
-                            ),
-                          ]
-                        )
-                      ),
-                      Flexible( /// Market dominance box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("Quantity: ",style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  return Container(
-                                    // width: 50,
-                                    // height: 35,
-                                    child: TextField(
-                                      controller: _quantity,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        enabledBorder: UnderlineInputBorder(      
-                                          borderSide: BorderSide(color: Colors.blue[200]),   
+                              ),
+                            ]
+                          )
+                        ),
+                        Flexible( /// Market dominance box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              
+                              Text("Quantity: ", style: TextStyle(color: Colors.white38)),
+                              SizedBox(
+                                // flex: 1, 
+                                width: 90,
+                                height: 25,
+                                child: Builder(
+                                  builder: (context) {
+                                    if(isSelected == false) {
+                                      return Text("-", style: TextStyle(color: Colors.white38), textAlign: TextAlign.center);
+                                    } else {
+                                      // log(widget.coinMap.toString());
+                                      // log(widget.coinMap[selectedItemSymbol].toString());
+                                      return TextField(
+                                        cursorWidth: 2,
+                                        cursorColor: Colors.white,
+                                        controller: _quantity,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          enabledBorder: UnderlineInputBorder(      
+                                            borderSide: BorderSide(color: Colors.white70),   
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(      
+                                            borderSide: BorderSide(color: Colors.white, width: 2),
+                                          ),
                                         ),
-                                      ),
-                                      // border: OutlineInputBorder(
-                                      //   borderSide: BorderSide(width: 1, color: Colors.white),
-                                      // ),
-                                    //   enabledBorder: OutlineInputBorder(
-                                    //     borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
-                                    //   ),
-                                    // //   // focusedBorder: OutlineInputBorder(
-                                    //   //   borderSide: BorderSide(width: 3, color: Colors.deepPurpleAccent),
-                                    //   // ),
-                                    //   // labelStyle: TextStyle(color: Colors.white),
-                                    //   // labelText: 'Secret API key',
-                                    //   // helperText: "(We only need the Secret API Key)",
-                                    //   // helperStyle: TextStyle(color: Colors.white),
-                                    // ),
-                                    style: TextStyle(color: Colors.white)
-                                    ),
-                                  );
-                                }
-                              }
-                            ),
-                          ]
+                                      style: TextStyle(color: Colors.white)
+                                      );
+                                    }
+                                  }
+                                ),
+                              ),
+                            ]
+                          )
                         )
-                      )
-                    ]
+                      ]
+                    ),
                   ),
                 ),
                   
@@ -364,106 +367,114 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                 //     )
                 //   )
                 // ),
-                SizedBox(
-                  height: displayHeight(context) * 0.05,
-                ),
+
                 Flexible(
                   flex: 2,
                   fit: FlexFit.tight,
-                  child: Row(
-                    children: <Widget> [
-                      Flexible( /// Market cap box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("Market Cap", style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  return Text(numberFormatter(widget.coinMap[selectedItemSymbol].marketCap), style: TextStyle(color: Colors.white));
+                  child: Padding(
+                    padding: rowPadding,
+                    child: Row(
+                      children: <Widget> [
+                        Flexible( /// Market cap box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              Text("Market Cap", style: TextStyle(color: Colors.white38)),
+                              Builder(
+                                builder: (context) {
+                                  if(isSelected == false) {
+                                    return Text("-", style: TextStyle(color: Colors.white38));
+                                  } else {
+                                    // log(widget.coinMap.toString());
+                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    return Text(numberFormatter(widget.coinMap[selectedItemSymbol].marketCap), style: TextStyle(color: Colors.white));
+                                  }
                                 }
-                              }
-                            ),
-                          ]
-                        )
-                      ),
-                      Flexible( /// Market dominance box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("All Time High", style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  return Text("\$" + widget.coinMap[selectedItemSymbol].ath.toString(), style: TextStyle(color: Colors.white));
+                              ),
+                            ]
+                          )
+                        ),
+                        Flexible( /// Market dominance box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              Text("All Time High", style: TextStyle(color: Colors.white38)),
+                              Builder(
+                                builder: (context) {
+                                  if(isSelected == false) {
+                                    return Text("-", style: TextStyle(color: Colors.white38));
+                                  } else {
+                                    // log(widget.coinMap.toString());
+                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    return Text("\$" + widget.coinMap[selectedItemSymbol].ath.toString(), style: TextStyle(color: Colors.white));
+                                  }
                                 }
-                              }
-                            ),
-                          ]
+                              ),
+                            ]
+                          )
                         )
-                      )
-                    ]
+                      ]
+                    ),
                   )
                 ),
                   // child: Text("HEllo WOrld!", style: TextStyle(color: Colors.white))),
                 Flexible(
                   flex: 2,
                   fit: FlexFit.tight,
-                  child: Row(
-                    children: <Widget> [
-                      Flexible( /// Market cap box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("24h Price Change", style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  return Text("\$" + widget.coinMap[selectedItemSymbol].priceChange24h.toStringAsFixed(2) + " (" +
-                                    widget.coinMap[selectedItemSymbol].priceChangePercentage24h.toStringAsFixed(1) + "%)", style: TextStyle(color: Colors.white));
+                  child: Padding(
+                    padding: rowPadding,
+                    child: Row(
+                      children: <Widget> [
+                        Flexible( /// Market cap box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              Text("24h Price Change", style: TextStyle(color: Colors.white38)),
+                              Builder(
+                                builder: (context) {
+                                  if(isSelected == false) {
+                                    return Text("-", style: TextStyle(color: Colors.white38));
+                                  } else {
+                                    // log(widget.coinMap.toString());
+                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    return Text("\$" + widget.coinMap[selectedItemSymbol].priceChange24h.toStringAsFixed(2) + " (" +
+                                      widget.coinMap[selectedItemSymbol].priceChangePercentage24h.toStringAsFixed(1) + "%)", style: TextStyle(color: Colors.white));
+                                  }
                                 }
-                              }
-                            ),
-                          ]
-                        )
-                      ),
-                      Flexible( /// Market dominance box
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Text("Current Supply", style: TextStyle(color: Colors.white38)),
-                            Builder(
-                              builder: (context) {
-                                if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white38));
-                                } else {
-                                  // log(widget.coinMap.toString());
-                                  // log(widget.coinMap[selectedItemSymbol].toString());
-                                  // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
-                                  return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
+                              ),
+                            ]
+                          )
+                        ),
+                        Flexible( /// Market dominance box
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget> [
+                              Text("Current Supply", style: TextStyle(color: Colors.white38)),
+                              Builder(
+                                builder: (context) {
+                                  if(isSelected == false) {
+                                    return Text("-", style: TextStyle(color: Colors.white38));
+                                  } else {
+                                    // log(widget.coinMap.toString());
+                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
+                                    return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
+                                  }
                                 }
-                              }
-                            ),
-                          ]
-                        )
-                      ),
-                    ]
+                              ),
+                            ]
+                          )
+                        ),
+                      ]
+                    ),
                   )
                 ),
                 BlocBuilder<GetCoinListBloc, GetCoinListState>(
@@ -551,7 +562,6 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                     }
                   }
                 ),
-                SizedBox(height: displayHeight(context) * 0.075)
               ]
             )
               //   Text("Placeholder for dropdown menu autocomplete", style: TextStyle(color: Colors.white, fontSize: 12)),
@@ -692,7 +702,7 @@ class PopupListItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Text(
         item,
-        style: const TextStyle(fontSize: 16),
+        style: Theme.of(context).textTheme.bodyText2,
       ),
     );
   }
@@ -706,22 +716,23 @@ class MyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    return SizedBox(
+      // padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+      width: 300,
       child: TextField(
         controller: controller,
         focusNode: focusNode,
-        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+        style: Theme.of(context).textTheme.headline1,
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white)
+            borderSide: BorderSide(color: Colors.white70, width: 1),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: 2)
           ),
           suffixIcon: Icon(Icons.search, color: Colors.white),
           border: InputBorder.none,
-          hintText: "Search coins", hintStyle: TextStyle(color: Colors.white, fontSize: 14),
+          hintText: "Search coins", hintStyle: Theme.of(context).textTheme.headline1.copyWith(color: Colors.white54, fontWeight: FontWeight.w300),
           contentPadding: const EdgeInsets.only(
             left: 16,
             right: 20,
