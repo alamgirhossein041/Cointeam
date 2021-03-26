@@ -87,7 +87,7 @@ class _AddCoinState extends State<AddCoin> {
             ),
             
             Flexible(
-              flex: 4,
+              flex: 3,
               fit: FlexFit.tight,
               child: Container(),
             )
@@ -212,8 +212,10 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
       child: Container(
         decoration: boxDeco(),
         child: Padding(
+          // padding for width of gradient border
           padding: EdgeInsets.only(top:2.75, bottom: 2.75),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             decoration: BoxDecoration(
               color: Color(0xFF1A1B20),
             ),
@@ -474,93 +476,98 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           )
                         ),
                       ]
-                    ),
+                    ),  
                   )
                 ),
-                BlocBuilder<GetCoinListBloc, GetCoinListState>(
-                  builder: (context, state) {
-                    if (state is GetCoinListLoadedState) {
-                      return FutureBuilder(
-                        future: localStorage.ready,
-                        builder: (context, snapshot) {
-                          if (snapshot.data == true) {
-                            
-                            // var primeCoin = localStorage.getItem("prime");
-                            return InkWell(
-                              child: Container(
-                                height: displayHeight(context) * 0.065,
-                                width: displayWidth(context) * 0.5,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  gradient: LinearGradient(
-                                    begin: Alignment(-0.9, -1.3),
-                                    end: Alignment(1.25, 1.25),
-                                    colors: [Color(0xFF8300FF), Color(0xFF006BFF)]
+                Flexible(
+                  flex: 2,
+                  child: BlocBuilder<GetCoinListBloc, GetCoinListState>(
+                    builder: (context, state) {
+                      if (state is GetCoinListLoadedState) {
+                        return FutureBuilder(
+                          future: localStorage.ready,
+                          builder: (context, snapshot) {
+                            if (snapshot.data == true) {
+                              
+                              // var primeCoin = localStorage.getItem("prime");
+                              return InkWell(
+                                child: Center(
+                                                                  child: Container(
+                                    height: 52,
+                                    width: 250,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(24),
+                                      gradient: LinearGradient(
+                                        begin: Alignment(-0.9, -1.3),
+                                        end: Alignment(1.25, 1.25),
+                                        colors: [Color(0xFF8300FF), Color(0xFF006BFF)]
+                                      ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("ADD TO PORTFOLIO", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+                                    ),
                                   ),
                                 ),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text("ADD TO PORTFOLIO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                                ),
-                              ),
-                              onTap: () => {
-                                // primeCoinList.add({selectedItemSymbol: double.parse(_quantity.text)}),
-                                // Navigator.pushNamed(context, '/hometest'),
-                                // dbPortfolioPostTest.dbPortfolioPostTest(),
-                                /// 20th
-                                localStorageResponse = localStorage.getItem("prime"),
-                                if(localStorageResponse != null) {
-                                  primeMap = json.decode(localStorage.getItem("prime")),
-                                },
-                                if(primeMap != null) {
-                                  if(primeMap[selectedItemSymbol] != null) {
-                                    primeMap[selectedItemSymbol] += double.parse(_quantity.text),
+                                onTap: () => {
+                                  // primeCoinList.add({selectedItemSymbol: double.parse(_quantity.text)}),
+                                  // Navigator.pushNamed(context, '/hometest'),
+                                  // dbPortfolioPostTest.dbPortfolioPostTest(),
+                                  /// 20th
+                                  localStorageResponse = localStorage.getItem("prime"),
+                                  if(localStorageResponse != null) {
+                                    primeMap = json.decode(localStorage.getItem("prime")),
+                                  },
+                                  if(primeMap != null) {
+                                    if(primeMap[selectedItemSymbol] != null) {
+                                      primeMap[selectedItemSymbol] += double.parse(_quantity.text),
+                                    } else {
+                                      // primeMap = {},
+                                      primeMap[selectedItemSymbol] = double.parse(_quantity.text),
+                                    }
+                                   /// 19th
+                                    // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
                                   } else {
-                                    // primeMap = {},
+                                    primeMap = {},
                                     primeMap[selectedItemSymbol] = double.parse(_quantity.text),
-                                  }
-                                 /// 19th
-                                  // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
-                                } else {
-                                  primeMap = {},
-                                  primeMap[selectedItemSymbol] = double.parse(_quantity.text),
-                                  // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
+                                    // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
+                                  },
+                                  log("Is this where it's going wrong"),
+                                  localStorage.setItem("prime", jsonEncode(primeMap)),
+                                  log(localStorage.getItem("prime").toString()),
+                                  /// primeMap = PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text)),
+                                  /// localStorage.setItem("prime", primeMap.toJson()),
+                                  /// 19th
                                 },
-                                log("Is this where it's going wrong"),
-                                localStorage.setItem("prime", jsonEncode(primeMap)),
-                                log(localStorage.getItem("prime").toString()),
-                                /// primeMap = PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text)),
-                                /// localStorage.setItem("prime", primeMap.toJson()),
-                                /// 19th
-                              },
-                            );
-                          } else {
-                            return loadingTemplateWidget();
+                              );
+                            } else {
+                              return loadingTemplateWidget();
+                            }
                           }
-                        }
-                      );
-                    } else {
-                      return InkWell(
-                        child: Container(
-                          height: displayHeight(context) * 0.065,
-                          width: displayWidth(context) * 0.5,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.grey,
+                        );
+                      } else {
+                        return InkWell(
+                          child: Container(
+                            height: displayHeight(context) * 0.065,
+                            width: displayWidth(context) * 0.5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: Colors.grey,
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("ADD TO PORTFOLIO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
+                            ),
                           ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("ADD TO PORTFOLIO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-                          ),
-                        ),
-                        onTap: () => {
-                          // Navigator.pushNamed(context, '/hometest'),
-                          // dbPortfolioPostTest.dbPortfolioPostTest(),
-                          log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
-                        },
-                      );
+                          onTap: () => {
+                            // Navigator.pushNamed(context, '/hometest'),
+                            // dbPortfolioPostTest.dbPortfolioPostTest(),
+                            log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
+                          },
+                        );
+                      }
                     }
-                  }
+                  ),
                 ),
               ]
             )
@@ -664,15 +671,10 @@ class SelectedItemWidget extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 8,
-                bottom: 8,
-              ),
+              padding: const EdgeInsets.all(18),
               child: Text(
                 selectedItem,
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+                style: Theme.of(context).textTheme.headline1.copyWith(fontWeight: FontWeight.w300)
               ),
             ),
           ),
