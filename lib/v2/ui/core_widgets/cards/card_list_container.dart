@@ -148,7 +148,7 @@ class _ListContainerState extends State<ListContainer> {
                     // child: SizedBox(
                     //   height: displayHeight(context) * 0.27,
                     //   child: ChartOverall(),
-                    child: ChartOverall(),
+                    // child: ChartOverall(),
                   ), /// TODO: Stop wasting time
                   
                   SliverList(

@@ -23,7 +23,10 @@ class CoingeckoList250RepositoryImpl implements ICoingeckoList250Repository {
 
     String linkBuilder = '?vs_currency=' + currency + '&per_page=' + numberOfCoins + '&page=' + pagination + '&price_change_percentage=' + percentage;
 
+    var stopWatch = Stopwatch()..start();
     var response = await http.get(requestUrl + linkBuilder);
+    stopWatch.stop();
+    log("Coingecko : " + stopWatch.elapsedMilliseconds.toString());
 
     if(response.statusCode == 200) {
       // Map<String, dynamic> body = Map.from(json.decode(response.body));

@@ -6,15 +6,23 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_stat
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
+import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
+import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart';
+import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:math' as math;
 
 
@@ -32,6 +40,7 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
 
   List coinList;
+  bool _chartVisibility = true;
 
   @override
   void initState() { 
@@ -57,6 +66,7 @@ class DashboardState extends State<Dashboard> {
       bottomNavigationBar: BottomNavBar(callBack: _callBackSetState),
       drawer: DrawerMenu(),
       body: Container(
+        height: displayHeight(context),
         child: Column(
           children: <Widget> [
             // Text("Hello World", style: TextStyle(color: Colors.white))
@@ -79,31 +89,35 @@ class DashboardState extends State<Dashboard> {
                 child: Container(
                   child: Column(
                   children: <Widget> [
-                    Expanded(
-                      flex: 5,
+                    // Expanded(
+                    //   flex: 5,
+                    //   child: HeaderBox(),
+                    // ),
+                    Container(
+                      height: (displayHeight(context) * 0.2) + 35,
                       child: HeaderBox(),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          IconButton(
-                            icon: Icon(Icons.add, color: Colors.white),
-                            onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AddCoin()),
-                              )
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.stacked_line_chart, color: Colors.white),
-                            onPressed: () => {},
-                          ),
-                        ]
-                      ),
-                    ),
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: <Widget> [
+                    //       IconButton(
+                    //         icon: Icon(Icons.add, color: Colors.white),
+                    //         onPressed: () => {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(builder: (context) => AddCoin()),
+                    //           )
+                    //         },
+                    //       ),
+                    //       IconButton(
+                    //         icon: Icon(Icons.stacked_line_chart, color: Colors.white),
+                    //         onPressed: () => {},
+                    //       ),
+                    //     ]
+                    //   ),
+                    // ),
                     Expanded(
                       flex: 15,
                       child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
@@ -111,6 +125,81 @@ class DashboardState extends State<Dashboard> {
                           if (state is GetCoinListTotalValueLoadedState) {
                             return CustomScrollView(
                               slivers: <Widget> [
+                                SliverToBoxAdapter(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget> [
+                                      Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                        icon: Icon(Icons.add, color: Colors.white),
+                                        onPressed: () => {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => AddCoin()),
+                                          )
+                                        },
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 4,
+                                        fit: FlexFit.tight,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                          children: <Widget> [
+                                            // IconButton(
+                                            //   icon: Icon(Icons.hourglass_empty, color: Colors.white),
+                                            //   onPressed: () {
+                                            //     BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.daily));
+                                            //   }
+                                            // ),
+                                            TextButton(
+                                              child: Text("( 24h )", style: TextStyle(color: Colors.white, fontSize: 14)),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.daily));
+                                              }
+                                            ),
+                                            TextButton(
+                                              child: Text("( 7d )", style: TextStyle(color: Colors.white, fontSize: 14)),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.weekly));
+                                              }
+                                            ),
+                                            TextButton(
+                                              child: Text("( 30d )", style: TextStyle(color: Colors.white, fontSize: 14)),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.monthly));
+                                              }
+                                            ),
+                                            TextButton(
+                                              child: Text("( 1y )", style: TextStyle(color: Colors.white, fontSize: 14)),
+                                              onPressed: () {
+                                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: globals.Status.yearly));
+                                              }
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                        icon: Icon(Icons.stacked_line_chart, color: Colors.white),
+                                        onPressed: () => {
+                                          setState(() {_chartVisibility = !_chartVisibility;})
+                                        }
+                                      ),
+                                      ),
+                                    ]
+                                  ),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: Visibility(
+                                    visible: _chartVisibility,
+                                    child: ChartOverall(),
+                                  ),
+                                ),
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {
                                     // return NewCardListTile(coinListData: state.coinListData, state.coinListData, state.totalValue);
@@ -180,7 +269,6 @@ class HeaderBox extends StatefulWidget {
   // const HeaderBox({Key key, this.isRefresh}) : super(key: key);
 
   // final bool isRefresh;
-  
   @override
   HeaderBoxState createState() => HeaderBoxState();
 }
@@ -197,79 +285,118 @@ class HeaderBoxState extends State<HeaderBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // duration: Duration(seconds: 2),
-      // curve: Curves.fastLinearToSlowEaseIn,
-      child: Column(
-        children: <Widget> [
-          Expanded(
-            flex: 6,
-            child: Container(
-              decoration: headerBoxDecoration,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0,2.75,0,2.75),
-                child: Container(
-                  decoration: headerBoxInnerDecoration,
-                  child: BlocConsumer<GetCoinListBloc, GetCoinListState>(
-                    listener: (context, state) {
-                      if (state is GetCoinListErrorState) {
-                        log("GetCoinListErrorState");
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is GetCoinListLoadedState) {
-                        if(state.coinList.length > 0) {
+    double heightContainer = displayHeight(context) * 0.2;
+    double heightOffset = 35;
+    return Column(
+      children: <Widget> [
+        Container(
+          height: heightContainer + heightOffset,
+          // duration: Duration(seconds: 2),
+          // curve: Curves.fastLinearToSlowEaseIn,
+          child: Stack(
+            children: <Widget> [
+              Column(
+                children: <Widget> [
+                  Container(
+                    height: heightContainer,
+                    decoration: headerBoxDecoration,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0,2.75,0,2.75),
+                      child: Container(
+                        decoration: headerBoxInnerDecoration,
+                        child: BlocConsumer<GetCoinListBloc, GetCoinListState>(
+                          listener: (context, state) {
+                            if (state is GetCoinListErrorState) {
+                              log("GetCoinListErrorState");
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is GetCoinListLoadedState) {
+                              if(state.coinList.length > 0) {
 
-                        log("GetCoinListLoadedState");
-                        log("########Double checking dev logs##########");
-                          BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
-                          
-                        } else {
-                          log("coinList == 0");
-                        }
-                        
-                        return Column(
-                          children: <Widget> [
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: HeaderBoxWalletIcon(),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
-                                listener: (context, state) {
-                                  if (state is GetCoinListTotalValueErrorState) {
-                                    log("GetCoinListTotalValueErrorState");
-                                  }
-                                },
-                                builder: (context, state) {
-                                  if (state is GetCoinListTotalValueLoadedState) {
-                                    return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white));
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              ),
+                              log("GetCoinListLoadedState");
+                              log("########Double checking dev logs##########");
+
+                              /// 21st
                               
-                              // Text("\$26,646.23", style: TextStyle(fontSize: 22, color: Colors.white)),
-                            )
-                          ]
-                        );
+                                // BlocProvider.of<CoingeckoGetChartBloc>(context).add(FetchCoingeckoGetChartEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
+                                BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: ''));
+                                BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
+                                
+                              } else {
+                                log("coinList == 0");
+                              }
+                              
+                              return Column(
+                                children: <Widget> [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: HeaderBoxWalletIcon(),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                                      listener: (context, state) {
+                                        if (state is GetCoinListTotalValueErrorState) {
+                                          log("GetCoinListTotalValueErrorState");
+                                        }
+                                      },
+                                      builder: (context, state) {
+                                        if (state is GetCoinListTotalValueLoadedState) {
+                                          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white));
+                                        } else {
+                                          return Container();
+                                        }
+                                      },
+                                    ),
+                                    // Text("\$26,646.23", style: TextStyle(fontSize: 22, color: Colors.white)),
+                                  )
+                                ]
+                              );
+                            } else {
+                              log("GetCoinList(notloaded)State");
+                              return loadingTemplateWidget();
+                            }
+                          }
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: heightContainer + heightOffset,
+                child: FutureBuilder( /// ### Panic Action Button ### ///
+                  future: readStorage("trading"), /// ### Dev-Check-1
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return CircularProgressIndicator();
+                      default:
+                      if (!snapshot.hasError) {
+                        // log(snapshot.data.toString());
+                        /// ("Return a welcome screen") ??? default comment
+                          // return DashboardWithNoApiWorking();
+                        if (snapshot.data == "none") {
+                          return EnableTradingButton();
+                        } else {
+                          return PanicActionButton();
+                        }
                       } else {
-                        log("GetCoinList(notloaded)State");
-                        return loadingTemplateWidget();
+                        return errorTemplateWidget(snapshot.error);
                       }
                     }
-                  ),
+                  },
                 ),
               ),
-            ),
-          ),
-        ],
-      ),
+            ],
+          )
+        )
+      ]
     );
   }
 }

@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 abstract class BinanceGetChartEvent extends Equatable {}
 
 class FetchBinanceGetChartEvent extends BinanceGetChartEvent {
-  final List<BinanceGetAllModel> binanceGetAllModelList;
+  final List binanceGetAllModelList;
   final Map binanceGetPricesMap;
-  var timeSelection;
+  final timeSelection;
 
   FetchBinanceGetChartEvent({this.binanceGetAllModelList, this.binanceGetPricesMap, this.timeSelection});
 

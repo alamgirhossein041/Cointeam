@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+// import 'package:coinsnap/working_files/custom_popup_menu.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
-class NewCardListTile extends StatelessWidget {
+class NewCardListTile extends StatefulWidget {
   const NewCardListTile({Key key, this.coinListData, this.coinBalancesMap, this.totalValue, this.index}) : super(key: key);
 
   final coinListData;
@@ -12,11 +17,22 @@ class NewCardListTile extends StatelessWidget {
   final int index;
 
   @override
+  NewCardListTileState createState() => NewCardListTileState();
+}
+
+class NewCardListTileState extends State<NewCardListTile> {
+
+  // List<String> menuChoices = [
+  //   'Edit',
+  //   'Delete',
+  // ];
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/coinpage', arguments: {'coinListData': coinListData.data[index], 'index' :index, 'coinBalancesMap': coinBalancesMap[coinListData.data[index].symbol], 'totalValue': totalValue});
+          Navigator.pushNamed(context, '/coinpage', arguments: {'coinListData': widget.coinListData.data[widget.index], 'index' :widget.index, 'coinBalancesMap': widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol], 'totalValue': widget.totalValue});
         },
         child: Container(
           height: displayHeight(context) * 0.11,
@@ -42,8 +58,8 @@ class NewCardListTile extends StatelessWidget {
                       // child: Text(coinListData.data[index].symbol),
                       child: Align(
                         alignment: Alignment.topCenter,
-                          child: Text((((coinBalancesMap[coinListData.data[index].symbol] * coinListData.data[index].quote.uSD.price) / totalValue) * 100).toStringAsFixed(1) + "%",
-                          style: TextStyle(color: Color(0x73EEEEEE))),
+                          child: Text((((widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price) / widget.totalValue) * 100).toStringAsFixed(1) + "%",
+                          style: TextStyle(color: Color(0x73EEEEEE), fontSize: 12)),
                       /// we need to calculate coinListData.data[index].
                       /// coinListData.data[index].symbol
                       ),
@@ -63,7 +79,7 @@ class NewCardListTile extends StatelessWidget {
                           alignment: Alignment.bottomLeft,
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 5),
-                            child: Text(coinListData.data[index].name,
+                            child: Text(widget.coinListData.data[widget.index].name,
                               style: TextStyle(color: Colors.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -71,14 +87,16 @@ class NewCardListTile extends StatelessWidget {
                           ),
                         ),
                       ),
+                      /// swap this location 23rd
                       Expanded(
                         flex: 3,
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: EdgeInsets.only(top: 5),
-                            child: Text(coinListData.data[index].quote.uSD.percentChange24h.toStringAsFixed(2) + "%",
-                              style: TextStyle(color: coinListData.data[index].quote.uSD.colorChange)),
+                            // child: Text(coinListData.data[index].quote.uSD.percentChange24h.toStringAsFixed(2) + "%"),
+                            child: Text("\$" + widget.coinListData.data[widget.index].quote.uSD.price.toStringAsFixed(2),
+                              style: TextStyle(color: widget.coinListData.data[widget.index].quote.uSD.colorChange, fontSize: 14)),
                           ),
                         ),
                       )
@@ -90,20 +108,29 @@ class NewCardListTile extends StatelessWidget {
                 flex: 4,
                 child: Column(
                   children: <Widget> [
+                    /// ### Here I think we just want the coin price???
+                    /// 23rd
                     Expanded(
                       flex: 3,
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Text(numberFormatter(coinListData.data[index].quote.uSD.marketCap),
-                            style: TextStyle(color: Color(0x73EEEEEE))),
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: Text(numberFormatter(widget.coinListData.data[widget.index].quote.uSD.marketCap),
+                            style: TextStyle(color: Color(0x73EEEEEE), fontSize: 14)),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 3,
-                      child: Container(),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Text(widget.coinListData.data[widget.index].quote.uSD.percentChange24h.toStringAsFixed(2) + "%",
+                            style: TextStyle(color: widget.coinListData.data[widget.index].quote.uSD.colorChange, fontSize: 14)),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -117,30 +144,38 @@ class NewCardListTile extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(0,0,15,5),
-                          child: Text("\$" + (coinBalancesMap[coinListData.data[index].symbol] * coinListData.data[index].quote.uSD.price).toStringAsFixed(2),
-                          style: TextStyle(color: Colors.white)),
+                          padding: EdgeInsets.fromLTRB(0,0,10,5),
+                          // child: Text((coinBalancesMap[coinListData.data[index].symbol]).toStringAsFixed(8),
+                          child: Text(balanceFormatter(widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol]),
+                          style: TextStyle(color: Color(0x73EEEEEE), fontSize: 14)),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: Align(
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.topLeft,
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(0,10,15,0),
-                          // child: Text((coinBalancesMap[coinListData.data[index].symbol]).toStringAsFixed(8),
-                          child: Text(balanceFormatter(coinBalancesMap[coinListData.data[index].symbol]),
-                          style: TextStyle(color: Color(0x73EEEEEE), fontSize: 12)),
+                          padding: EdgeInsets.fromLTRB(0,5,10,0),
+                          child: Text("\$" + (widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price).toStringAsFixed(2),
+                          style: TextStyle(color: widget.coinListData.data[widget.index].quote.uSD.colorChange, fontSize: 14)),
                         ),
                       ),
-                    )
+                    ),
                   ]
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: Container(),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: GestureDetector(
+                    onTapDown: (TapDownDetails details) {
+                      _showPopupMenu(details.globalPosition, widget.coinListData.data[widget.index].symbol);
+                    },
+                    child: Icon(Icons.more_vert, color: Colors.white),
+                  ),
+                )
               ),
             ],
           ),
@@ -262,4 +297,96 @@ class NewCardListTile extends StatelessWidget {
       ),
     );
   }
+
+  void _showPopupMenu(Offset offset, String coin) async {
+    double left = offset.dx;
+    double top = offset.dy;
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left,top,0,0),
+      items: [
+        /// Dev Todo: We don't really have an Edit screen yet
+        /// KAN-80
+        // PopupMenuItem<String>(
+        //   value: 'Edit',
+        //   child: TextButton(
+        //     child: Text('Edit'),
+        //     onPressed: () {log("We have liftoff - Edit pressed");},
+        //     style: ButtonStyle(
+        //       foregroundColor: MaterialStateProperty.resolveWith(
+        //               (state) => Colors.black)
+        //     ),
+        //   )
+        // ),
+        PopupMenuItem<String>(
+          value: 'Delete',
+          child: TextButton(
+            child: Text('Delete'),
+            onPressed: () async {
+              /// Pseudocode: Get local storage
+              /// Should return an object map
+              /// https://api.dart.dev/stable/2.10.5/dart-core/Map/remove.html
+              
+              var localStorage = LocalStorage("coinstreetapp");
+              // log(localStorage.toString());
+              var localStorageResponse = json.decode(localStorage.getItem("prime"));
+              // log("First, LocalStorage is" + localStorage.getItem("prime").toString());
+              // log("Coin to remove is: " + coin);
+              localStorageResponse.remove(coin);
+              // log("LocalStorage is now: \n");
+              // log(localStorage.getItem("prime").toString());
+              localStorage.setItem("prime", jsonEncode(localStorageResponse));
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.resolveWith(
+                      (state) => Colors.black)
+            ),
+          )
+        ),
+      ],
+      elevation: 8.0,
+    );
+  }
+
+  // void _callBackSetState() {
+  //   setState(() {});
+  // }
+
+  // void _showPopupMenu(Offset offset) async {
+  //   double left = offset.dx;
+  //   double top = offset.dy;
+  //   await showMenu(
+  //     context: context,
+  //     position: RelativeRect.fromLTRB(left,top,0,0),
+  //     items: <PopupMenuEntry> [
+        
+
+        
+  //     ],
+  //     elevation: 8.0,
+  //   );
+  // }
+
+  // _showPopupMenu(Offset offset) {
+  //   // _doSomething () => {(log("We have liftoff"))};
+  //   // double left = offset.dx;
+  //   // double top = offset.dy;
+  //   PopupMenuButton(
+  //     // context: context,
+  //     // position: RelativeRect.fromLTRB(left,top,0,0),
+  //     offset: offset,
+  //     itemBuilder: (_) => <PopupMenuItem<String>>[
+  //       PopupMenuItem<String>(
+  //         child: Text('Edit'), value: 'Edit',
+  //       ),
+  //       PopupMenuItem<String>(
+  //         child: Text('Delete'), value: 'Delete',
+  //       ),
+  //     ],
+  //     onSelected: (_) {log("We have liftoff");},
+  //     elevation: 8.0,
+  //   );
+  // }
+
 }

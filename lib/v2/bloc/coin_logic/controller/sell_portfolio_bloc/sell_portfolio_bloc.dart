@@ -19,10 +19,11 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
-  Map<String, dynamic> toFirestore = {};
+  List<String> coinsToRemove = [];
+  // Map<String, dynamic> toFirestore = {};
 
-  final firestoreInstance = FirebaseFirestore.instance;
-  final firebaseUser = FirebaseAuth.instance.currentUser;
+  // final firestoreInstance = FirebaseFirestore.instance;
+  // final firebaseUser = FirebaseAuth.instance.currentUser;
 
   // FtxSellCoinRepositoryImpl ftxSellCoinRepository;
   // FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
@@ -37,8 +38,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   Stream<SellPortfolioState> mapEventToState(SellPortfolioEvent event) async* {
     if (event is FetchSellPortfolioEvent) {
       // pctToSell = event.value / 100;
-      pctToSell = 1.0;
+      pctToSell = event.value;
       coinTicker = event.coinTicker;
+      coinsToRemove = event.coinsToRemove;
 
       yield SellPortfolioLoadingState();
       try {
@@ -46,6 +48,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
+        binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
         for(BinanceGetAllModel coins in binanceGetAllModel) {
           if(coins.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
@@ -61,22 +64,24 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('Divisor(stepSize): ' + divisor.toString());
                 log('Post-Modulo: ' + zeroTarget.toString()); 
                 log('To Sell: ' + tmp.toString());
-                log('\n');
+                log("\n\nSelling to ticker: " + coinTicker);
+                log('\n\n');
                 var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
                 log(result['code'].toString());
                 if(result['code'] == null) {
                   totalValue += double.parse(result['cummulativeQuoteQty']);
                   log("What's wrong now?");
-                  toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
+                  // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   log("Running totalValue is $totalValue");
                 }
               }
             } catch (e) {
+              log(e.toString());
               log(coins.coin + " does not have a $coinTicker pair on Binance");
             }
           }
-          toFirestore['SoldUSDT'] = totalValue;
-          toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
+          // toFirestore['SoldUSDT'] = totalValue;
+          // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
         }
 
@@ -151,9 +156,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         // log("nothing is happening here?");
 
 /// ### Uncomment above for ftx integration ### ///
-
-
-
 
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
