@@ -278,11 +278,11 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Current Price", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w300)),
+                            Text("Current Price", style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
@@ -298,17 +298,17 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Quantity: ", style: TextStyle(color: Colors.grey)),
+                            Text("Quantity: ",style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
                                   return Container(
-                                    width: 50,
-                                    height: 35,
+                                    // width: 50,
+                                    // height: 35,
                                     child: TextField(
                                       controller: _quantity,
                                       textAlign: TextAlign.center,
@@ -352,7 +352,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                 //         Builder(
                 //           builder: (context) {
                 //             if(isSelected == false) {
-                //               return Text("-", style: TextStyle(color: Colors.white));
+                //               return Text("-", style: TextStyle(color: Colors.white38));
                 //             } else {
                 //               // log(widget.coinMap.toString());
                 //               // log(widget.coinMap[selectedItemSymbol].toString());
@@ -377,11 +377,11 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Market Cap", style: TextStyle(color: Colors.grey)),
+                            Text("Market Cap", style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
@@ -397,11 +397,11 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("All Time High", style: TextStyle(color: Colors.grey)),
+                            Text("All Time High", style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
@@ -426,11 +426,11 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("24h Price Change", style: TextStyle(color: Colors.grey)),
+                            Text("24h Price Change", style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
@@ -447,11 +447,11 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         fit: FlexFit.tight,
                         child: Column(
                           children: <Widget> [
-                            Text("Current Supply", style: TextStyle(color: Colors.grey)),
+                            Text("Current Supply", style: TextStyle(color: Colors.white38)),
                             Builder(
                               builder: (context) {
                                 if(isSelected == false) {
-                                  return Text("-", style: TextStyle(color: Colors.white));
+                                  return Text("-", style: TextStyle(color: Colors.white38));
                                 } else {
                                   // log(widget.coinMap.toString());
                                   // log(widget.coinMap[selectedItemSymbol].toString());
@@ -721,7 +721,7 @@ class MyTextField extends StatelessWidget {
           ),
           suffixIcon: Icon(Icons.search, color: Colors.white),
           border: InputBorder.none,
-          hintText: "Search here...", hintStyle: TextStyle(color: Colors.white, fontSize: 14),
+          hintText: "Search coins", hintStyle: TextStyle(color: Colors.white, fontSize: 14),
           contentPadding: const EdgeInsets.only(
             left: 16,
             right: 20,
