@@ -205,7 +205,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
   Widget build(BuildContext context) {
 
     // Flex row padding
-    var rowPadding = EdgeInsets.symmetric(horizontal: 0, vertical: 15);
+    var rowPadding = EdgeInsets.only(top: 15, bottom: 15, left: 25, right: 0);
 
     return Padding(
       padding: EdgeInsets.only(top: 5, bottom: 5),
@@ -287,6 +287,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           fit: FlexFit.tight,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget> [
                               Text("Current Price", style: TextStyle(color: Colors.white38)),
                               Builder(
@@ -306,42 +307,46 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         Flexible( /// Market dominance box
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget> [
-                              
-                              Text("Quantity: ", style: TextStyle(color: Colors.white38)),
-                              SizedBox(
-                                // flex: 1, 
-                                width: 90,
-                                height: 25,
-                                child: Builder(
-                                  builder: (context) {
-                                    if(isSelected == false) {
-                                      return Text("-", style: TextStyle(color: Colors.white38), textAlign: TextAlign.center);
-                                    } else {
-                                      // log(widget.coinMap.toString());
-                                      // log(widget.coinMap[selectedItemSymbol].toString());
-                                      return TextField(
-                                        cursorWidth: 2,
-                                        cursorColor: Colors.white,
-                                        controller: _quantity,
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(      
-                                            borderSide: BorderSide(color: Colors.white70),   
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget> [
+                                
+                                Text("Quantity: ", style: TextStyle(color: Colors.white38)),
+                                SizedBox(
+                                  // flex: 1, 
+                                  width: 110,
+                                  height: 25,
+                                  child: Builder(
+                                    builder: (context) {
+                                      if(isSelected == false) {
+                                        return Text("-", style: TextStyle(color: Colors.white38));
+                                      } else {
+                                        // log(widget.coinMap.toString());
+                                        // log(widget.coinMap[selectedItemSymbol].toString());
+                                        return TextField(
+                                          cursorWidth: 2,
+                                          cursorColor: Colors.white,
+                                          controller: _quantity,
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(      
+                                              borderSide: BorderSide(color: Colors.white70),   
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(      
+                                              borderSide: BorderSide(color: Colors.white, width: 2),
+                                            ),
                                           ),
-                                          focusedBorder: UnderlineInputBorder(      
-                                            borderSide: BorderSide(color: Colors.white, width: 2),
-                                          ),
-                                        ),
-                                      style: TextStyle(color: Colors.white)
-                                      );
+                                        style: TextStyle(color: Colors.white)
+                                        );
+                                      }
                                     }
-                                  }
+                                  ),
                                 ),
-                              ),
-                            ]
+                              ]
+                            ),
                           )
                         )
                       ]
@@ -382,6 +387,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           fit: FlexFit.tight,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget> [
                               Text("Market Cap", style: TextStyle(color: Colors.white38)),
                               Builder(
@@ -401,22 +407,26 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         Flexible( /// Market dominance box
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget> [
-                              Text("All Time High", style: TextStyle(color: Colors.white38)),
-                              Builder(
-                                builder: (context) {
-                                  if(isSelected == false) {
-                                    return Text("-", style: TextStyle(color: Colors.white38));
-                                  } else {
-                                    // log(widget.coinMap.toString());
-                                    // log(widget.coinMap[selectedItemSymbol].toString());
-                                    return Text("\$" + widget.coinMap[selectedItemSymbol].ath.toString(), style: TextStyle(color: Colors.white));
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget> [
+                                Text("All Time High", style: TextStyle(color: Colors.white38)),
+                                Builder(
+                                  builder: (context) {
+                                    if(isSelected == false) {
+                                      return Text("-", style: TextStyle(color: Colors.white38));
+                                    } else {
+                                      // log(widget.coinMap.toString());
+                                      // log(widget.coinMap[selectedItemSymbol].toString());
+                                      return Text("\$" + widget.coinMap[selectedItemSymbol].ath.toString(), style: TextStyle(color: Colors.white));
+                                    }
                                   }
-                                }
-                              ),
-                            ]
+                                ),
+                              ]
+                            ),
                           )
                         )
                       ]
@@ -436,6 +446,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           fit: FlexFit.tight,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget> [
                               Text("24h Price Change", style: TextStyle(color: Colors.white38)),
                               Builder(
@@ -456,23 +467,27 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         Flexible( /// Market dominance box
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget> [
-                              Text("Current Supply", style: TextStyle(color: Colors.white38)),
-                              Builder(
-                                builder: (context) {
-                                  if(isSelected == false) {
-                                    return Text("-", style: TextStyle(color: Colors.white38));
-                                  } else {
-                                    // log(widget.coinMap.toString());
-                                    // log(widget.coinMap[selectedItemSymbol].toString());
-                                    // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
-                                    return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget> [
+                                Text("Current Supply", style: TextStyle(color: Colors.white38)),
+                                Builder(
+                                  builder: (context) {
+                                    if(isSelected == false) {
+                                      return Text("-", style: TextStyle(color: Colors.white38));
+                                    } else {
+                                      // log(widget.coinMap.toString());
+                                      // log(widget.coinMap[selectedItemSymbol].toString());
+                                      // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
+                                      return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
+                                    }
                                   }
-                                }
-                              ),
-                            ]
+                                ),
+                              ]
+                            ),
                           )
                         ),
                       ]
@@ -701,7 +716,7 @@ class PopupListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).popupMenuTheme.color),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       child: Text(
         item,
         style: Theme.of(context).textTheme.bodyText2,

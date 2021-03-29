@@ -137,6 +137,14 @@ class MyApp extends StatelessWidget {
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(primary: Colors.deepPurple[200])
           ),
+
+          // Divider theme
+          dividerTheme: DividerThemeData(
+            space: 30,
+            color: Colors.white12,
+            indent: 10,
+            endIndent: 10,
+          ),
         ),
         // initialRoute: '/hometest',
         // initialRoute: '/dashboardnoapitest',
