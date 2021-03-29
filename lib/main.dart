@@ -120,16 +120,30 @@ class MyApp extends StatelessWidget {
 
           // Default textTheme
           textTheme: TextTheme(
-            headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white),
-            headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.w400, color: Colors.white),
-            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
-            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25, height: 1.8),
-            bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.white, letterSpacing: 0.25),
+            headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: Colors.white),
+            headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.normal, color: Colors.white),
+            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
+
           ),
 
+          // Popup menu theme
+          popupMenuTheme: PopupMenuThemeData(
+            color: Color(0xFF101010),
+          ),
+          
           // Default button theme
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(primary: Colors.deepPurple[200])
+          ),
+
+          // Divider theme
+          dividerTheme: DividerThemeData(
+            space: 30,
+            color: Colors.white12,
+            indent: 10,
+            endIndent: 10,
           ),
         ),
         // initialRoute: '/hometest',
