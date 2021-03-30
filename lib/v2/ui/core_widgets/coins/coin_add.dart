@@ -203,6 +203,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+
     return Padding(
       padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.05,0,displayWidth(context) * 0.05,0),
       child: Container(
@@ -556,6 +558,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           // Navigator.pushNamed(context, '/hometest'),
                           // dbPortfolioPostTest.dbPortfolioPostTest(),
                           log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
+                          Navigator.pop(context),
+                          Scaffold.of(context).showSnackBar(snackBar),
                         },
                       );
                     }
