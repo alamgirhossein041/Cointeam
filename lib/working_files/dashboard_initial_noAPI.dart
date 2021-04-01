@@ -1359,6 +1359,7 @@ class BinanceTileBlurb extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
+                              // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
                               Navigator.pushReplacementNamed(context, '/dashboard');
                             },
                             child: Column(

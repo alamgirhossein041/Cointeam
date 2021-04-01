@@ -27,6 +27,8 @@ import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/working_files/buy_portfolio.dart';
+import 'package:coinsnap/working_files/buy_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
 import 'package:coinsnap/working_files/initial_page.dart';
@@ -140,10 +142,13 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/home',
         // initialRoute: '/dashboardnoapitest',
         initialRoute: '/initialpage',
+        // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
         // initialRoute: '/sellportfoliopage3',
         routes: {
           '/initialpage': (context) => InitialPage(),
+          '/buyportfolio': (context) => BuyPortfolioScreen(),
+          '/buyportfolio2': (context) => BuyPortfolioPage2(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),

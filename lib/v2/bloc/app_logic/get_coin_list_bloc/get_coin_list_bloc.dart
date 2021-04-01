@@ -14,6 +14,9 @@ import 'package:localstorage/localstorage.dart';
 
 class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
 
+  // bool btcCheck = false;
+  // bool ethCheck = false;
+
   GetCoinListBloc({this.binanceGetAllRepository}) : super(GetCoinListInitialState());
 
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
@@ -24,6 +27,7 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
 
   @override
   Stream<GetCoinListState> mapEventToState(GetCoinListEvent event) async* {
+    log("HEIWJOFJIDSF");
     if (event is FetchGetCoinListEvent) {
       yield GetCoinListLoadingState();
 
@@ -45,7 +49,9 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         var localStorageResponse = await localStorage.getItem("prime");
         if(localStorageResponse != null) {
           primeCoin = Map.from(json.decode(await localStorage.getItem("prime")));
+          // log(primeCoin.toString());
         } else {
+          // log("HEWJFOISJFOSDF");
           primeCoin = {};
         }
         List coinList = [];
@@ -53,15 +59,18 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         // List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), localStorage.getLocalStorage()]);
         
         List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll()]);
+        // log("Our responses is " + responses[0].toString());
 
         // Map coinBalancesMap = {};
         // log("primeCoin is " + primeCoin.toString());
         // log("hello1");
-        if(primeCoin == null) {
-          primeCoin = {};
-        }
+        // if(primeCoin == null) {
+        //   primeCoin = {};
+        // }
         // log("hello2");
         primeCoin.forEach((k,v) {
+          log("Key is: " + k.toString());
+          log("Value (unused) is: " + v.toString());
           // log(coinList
           coinList.add(k);
           // coinBalancesMap[k] = v;
@@ -89,21 +98,29 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         if (isBinanceTrading != null) {
           for(BinanceGetAllModel coin in responses[0]) {
             // if(primeCoin == null) {
+              log("coin.coin is: " + coin.coin);
               
               coinList.add(coin.coin);
               
               
             // }
             if(primeCoin[coin.coin] != null) {
+              log("Primecoin not null");
               primeCoin[coin.coin] += coin.free + coin.locked;
             } else {
+              log("Primecoin null");
+              log("coin.free + coin.locked is: " + (coin.free + coin.locked).toString());
               primeCoin[coin.coin] = coin.free + coin.locked;
             }
           }
         }
+        coinList.add('BTC');
+        coinList.add('ETH');
         coinList = coinList.toSet().toList();
         // coinList.forEach((v) =>
           // log(v.toString()));
+        
+        log("PrimeCoin: " + primeCoin.toString());
 
         /// ### Can add a yield here ### ///        
         yield GetCoinListLoadedState(coinList: coinList, coinBalancesMap: primeCoin);

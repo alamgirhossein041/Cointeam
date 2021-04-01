@@ -6,6 +6,7 @@ import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coingecko/add_coin_list_250/coingecko_list_250.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_chart_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -101,7 +102,7 @@ class DrawerMenu extends StatelessWidget {
               ),
               onTap: () {
                 CoingeckoList250RepositoryImpl helloGecko = CoingeckoList250RepositoryImpl();
-                helloGecko.getCoinMarketCapCoinLatest();
+                helloGecko.getCoinMarketCapCoinLatest('1');
                 // Navigator.pushReplacementNamed(context, '/first');
               },
             ),
@@ -162,6 +163,24 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
+                '* Log Trading API *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () async {
+                final storage = FlutterSecureStorage();
+                String binanceApi = await storage.read(key: "binanceApi");
+                String binanceSapi = await storage.read(key: "binanceSapi");
+                if(binanceApi != null) {
+                  log(binanceApi);
+                  log(binanceSapi);
+                } else {
+                  log("There is no binanceApi");
+                }
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
                 '* Delete Trading API *',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
@@ -202,11 +221,78 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                '* Sell Portfolio Screen *',
+                '* Log Portfolio Data *',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/sellportfolio');
+                final storage = LocalStorage("coinstreetapp");
+                log(storage.getItem("portfolio").toString());
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Delete Portfolio Data *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final storage = LocalStorage("coinstreetapp");
+                storage.deleteItem("portfolio");
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Buy NEO *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final BinanceBuyCoinRepositoryImpl neo = BinanceBuyCoinRepositoryImpl();
+                neo.binanceBuyCoin('NEOUSDT', 30);
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Buy XRP *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final BinanceBuyCoinRepositoryImpl xrp = BinanceBuyCoinRepositoryImpl();
+                xrp.binanceBuyCoin('XRPUSDT', 30);
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Buy LTC *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final BinanceBuyCoinRepositoryImpl ltc = BinanceBuyCoinRepositoryImpl();
+                ltc.binanceBuyCoin('LTCUSDT', 30);
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Buy BNB *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final BinanceBuyCoinRepositoryImpl bnb = BinanceBuyCoinRepositoryImpl();
+                bnb.binanceBuyCoin('BNBUSDT', 30);
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Buy CAKE *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final BinanceBuyCoinRepositoryImpl cake = BinanceBuyCoinRepositoryImpl();
+                cake.binanceBuyCoin('CAKEUSDT', 25);
               },
             ),
             SizedBox(height: 30),

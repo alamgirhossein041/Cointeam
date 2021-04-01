@@ -4,35 +4,30 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class SellPortfolioScreen extends StatefulWidget {
-  // SellPortfolio({Key key}) : super(key: key);
+class BuyPortfolioScreen extends StatefulWidget {
+
 
   @override
-  SellPortfolioScreenState createState() => SellPortfolioScreenState();
+  BuyPortfolioScreenState createState() => BuyPortfolioScreenState();
 }
 
-class SellPortfolioScreenState extends State<SellPortfolioScreen> {
+class BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
 
   String dropdownValue = 'USDT';
   int dropdownIndex = 0;
 
   double _value = 50.0;
-
   double totalValueEstimated = 0.0;
 
-  /// We will add 'ETH' back in when we have worked out
-  /// Trade bridging - many coins don't have an ETH pair
-  /// FOR EXAMPLE: Cake/usdt OK, Cake/btc OK, Cake/eth NO
+  String totalValueEstimatedString = '';
 
-  // List<String> targetCoins = ['USDT', 'BTC', 'ETH'];
-  List<String> targetCoins = ['USDT', 'BTC'];
+  List<String> baseCoins = ['USDT', 'BTC'];
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +50,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
           width: displayWidth(context),
           child: Column(
             children: <Widget> [
+              /// Copying layout from sell_portfolio.dart
               Flexible(
                 flex: 2,
                 fit: FlexFit.tight,
@@ -81,7 +77,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Selling Binance Portfolio", style: TextStyle(color: Colors.white)),
+                          child: Text("Buying Historical Portfolio", style: TextStyle(color: Colors.white)),
                         ),
                       ),
                       Flexible(
@@ -131,7 +127,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                             Flexible(
                               flex: 1,
                               fit: FlexFit.tight,
-                              child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
+                              child: Text(" Buy", style: TextStyle(fontSize: 24, color: Colors.green[300])),
                             ),
                           ]
                         )
@@ -141,7 +137,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: Text("Targets all coins in your portfolio", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          child: Text("Buying Target Portfolio", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                         )
                       ),
                       Flexible(
@@ -151,7 +147,8 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           alignment: Alignment.center,
                           child: Column(
                             children: <Widget> [
-                              Text("You will receive:", style: TextStyle(color: Colors.grey)),
+                              /// ### For now we can only use USDT or BTC to buy stuff ### ///
+                              Text("Using Base Asset:", style: TextStyle(color: Colors.grey)),
                               DropdownButton<String>(
                                 dropdownColor: uniColor,
                                 value: buildDropdownValue(dropdownIndex),
@@ -168,12 +165,12 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                 onChanged: (String newValue) {
                                   setState(() {
                                     dropdownValue = newValue;
-                                    dropdownIndex = targetCoins.indexOf(newValue);
+                                    dropdownIndex = baseCoins.indexOf(newValue);
                                     // imageIndex = targetCoins.indexOf(newValue);
                                   });
                                   // widget.callback(imageIndex);
                                 },
-                                items: targetCoins.map<DropdownMenuItem<String>>((String value) {
+                                items: baseCoins.map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -189,7 +186,6 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Align(
                           alignment: Alignment.center,
-                          // child: Text("\$14,151.61", style: TextStyle(color: Colors.white)),
                           child: BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
                             listener: (context, state) {
                               if (state is GetTotalValueErrorState) {
@@ -198,12 +194,19 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                             },
                             builder: (context, state) {
                               if (state is GetTotalValueLoadedState) {
-                                totalValueEstimated = state.totalValue * state.btcSpecial * _value / 100;
+                                if (dropdownValue == 'USDT') {
+                                  totalValueEstimated = state.usdSpecial * _value / 100;
+                                  totalValueEstimatedString = "\$" + totalValueEstimated.toStringAsFixed(2);
+                                } else if (dropdownValue == 'BTC') {
+                                  totalValueEstimated = state.btcQuantity * state.btcSpecial * _value / 100;
+                                  // totalValueEstimatedString = "B: " + totalValueEstimated.toStringAsFixed(8);
+                                  totalValueEstimatedString = "B: " + (state.btcQuantity * _value / 100).toString();
+                                }
                                 return Column(
                                   children: <Widget> [
-                                    Text("You are selling:"),
+                                    Text("You are using:"),
                                     SizedBox(height: 20),
-                                    Text((_value).toStringAsFixed(1) + "% of your portfolio", style: TextStyle(color: Colors.white))
+                                    Text(totalValueEstimatedString, style: TextStyle(color: Colors.white))
                                   ],
                                 );
                               } else {
@@ -257,7 +260,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                       Flexible(
                         flex: 1,
                         fit: FlexFit.tight,
-                        child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        child: Text("Minimum trade size per coin is \$10"),
                       ),
                       SizedBox(height: 10),
                       Flexible(
@@ -291,9 +294,8 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                     ),
                                   ),
                                   onTap: () => {
-                                    Navigator.pushNamed(context, '/sellportfolio2', arguments: {'value': _value, 'symbol': dropdownValue}),
+                                    Navigator.pushNamed(context, '/buyportfolio2', arguments: {'value': _value, 'symbol': dropdownValue}),
                                     // Navigator.pushNamed(context, '/hometest'),
-                                    
                                   },
                                 // ),
                                 // elevation: 2,
@@ -309,20 +311,20 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
                           child: TextButton(
                             onPressed: () => {
-                              Navigator.pushReplacementNamed(context, '/buyportfolio')
+                              Navigator.pushReplacementNamed(context, '/sellportfolio')
                             },
-                            child: Text("Buy Order"),
+                            child: Text("Sell Order"),
                           ),
                         )
                       )
-                    ],
+                    ]
                   )
                 )
               )
             ]
           )
-        ),
-      ),
+        )
+      )
     );
   }
   String buildDropdownValue(int selected) {

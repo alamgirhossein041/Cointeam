@@ -34,6 +34,8 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
       double usdSpecial = 0.0;
+      double btcQuantity = 0.0;
+      // double usdQuantity = 0.0;
       double totalPossibleUsdtSellValue = 0.0;
       double totalPossibleBtcSellValue = 0.0;
 
@@ -71,9 +73,9 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
           coins.btcValue = 1.0;
           coins.usdValue = btcPrice;
           coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
-          btcSpecial += coins.locked;
-          btcSpecial += coins.free;
-          totalValue += btcSpecial;
+          btcQuantity += coins.locked;
+          btcQuantity += coins.free;
+          totalValue += btcQuantity;
         } else if (coins.coin == 'USDT') {
           coins.btcValue = 1.0 / btcPrice;
           coins.usdValue = 1.0;
@@ -116,7 +118,7 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         // binanceGetAllModel.sort();
 
         binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
-        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
+        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, btcQuantity: btcQuantity, usdSpecial: usdSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
       } catch (e) {
         log("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());

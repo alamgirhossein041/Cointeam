@@ -28,8 +28,10 @@ class GetCoinListTotalValueLoadedState extends GetCoinListTotalValueState {
   final Map coinBalancesMap;
   final coinListData;
   final List coinList;
+  final double btcSpecial;
+  final double ethSpecial;
 
-  GetCoinListTotalValueLoadedState({this.totalValue, this.coinBalancesMap, this.coinListData, this.coinList});
+  GetCoinListTotalValueLoadedState({this.totalValue, this.coinBalancesMap, this.coinListData, this.coinList, this.btcSpecial, this.ethSpecial});
 
   /// List<GetTotalValueModel> GetTotalValueModel; /// there is no model /// instead we just add existing models
   

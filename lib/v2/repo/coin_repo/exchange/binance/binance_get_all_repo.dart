@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:developer';
@@ -16,8 +17,16 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
 
     /// ##### Temporary API Key load-ins ###### 
     /// ##### TODO: Add Key storage implementation ###### 
-    String api = "cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU";
-    String sapi = "mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD";
+    // String api = "cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU";
+    // String sapi = "mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD";
+
+    final secureStorage = FlutterSecureStorage();
+
+    String api = await secureStorage.read(key: 'binanceApi');
+    String sapi = await secureStorage.read(key: 'binanceSapi');
+
+    log(api);
+    log(sapi);
 
 
     /// ##### Start API Request ######

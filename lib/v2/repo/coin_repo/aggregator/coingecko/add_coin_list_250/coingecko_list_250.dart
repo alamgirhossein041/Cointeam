@@ -5,18 +5,18 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 
 abstract class ICoingeckoList250Repository  {
-  Future getCoinMarketCapCoinLatest();
+  Future getCoinMarketCapCoinLatest(String _pagination);
 }
 
 class CoingeckoList250RepositoryImpl implements ICoingeckoList250Repository {
 
   @override
-  Future getCoinMarketCapCoinLatest() async {
+  Future getCoinMarketCapCoinLatest(String _pagination) async {
     String requestUrl = 'https://api.coingecko.com/api/v3/coins/markets';
     /// ### Dev-Note: Can pass in String parameter and load it into linkBuilder as currency ### ///
     String currency = 'usd';
     String numberOfCoins = '250';
-    String pagination = '1';
+    String pagination = _pagination;
     /// ### Dev-Note: Sparkline below ### ///
     // String sparkline = 'true';
     String percentage = '1h, 24h, 7d';

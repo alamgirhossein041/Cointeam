@@ -52,7 +52,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
                           items: pageList.map((p) {
                             return Container(
                               margin: EdgeInsets.all(4.0),
-                              child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState, indexCallback: _callbackSetCurr),
+                              child: LinkAPIHelperModal(page: p, exch: exch, callback: _callbackSetState, indexCallback: _callbackSetCurr, navigatePageCallback: _callbackNavigateTo),
                             );
                           }).toList(),
                           carouselController: buttonCarouselController,
@@ -92,13 +92,24 @@ class _CarouselDemoState extends State<CarouselDemo> {
       exch = selected;
     });
   }
-  void _callbackSetCurr(int index) {
+  void _callbackSetCurr() {
     
     buttonCarouselController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
     // setState(() {
     //   _curr = index;
     // });
   }
+  void _callbackNavigateTo(int page) {
+    
+
+    /// ### Navigate to specific page ### ///
+    
+    buttonCarouselController.jumpToPage(page);
+    // setState(() {
+    //   _curr = index;
+    // });
+  }
+
 }
 
 // Helper Widgets

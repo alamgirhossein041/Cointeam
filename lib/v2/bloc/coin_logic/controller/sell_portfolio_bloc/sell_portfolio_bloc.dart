@@ -12,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
 
+import 'package:localstorage/localstorage.dart';
+
 class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   
   // SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
@@ -22,6 +24,11 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
   double divisor = 1.0;
+
+  Map<String, dynamic> coinsToSave = {};
+
+  final LocalStorage localStorage = LocalStorage("coinstreetapp");
+
   // Map<String, dynamic> toFirestore = {};
 
   // final firestoreInstance = FirebaseFirestore.instance;
@@ -88,6 +95,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   log("What's wrong now?");
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   log("Running totalValue is $totalValue");
+                  /// 25th
+                  coinsToSave[result['symbol']] = result['cummulativeQuoteQty'];
                 }
               }
             } catch (e) {
@@ -98,6 +107,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
+          coinsToSave['total'] = totalValue;
+          await localStorage.setItem("portfolio", coinsToSave);
         }
 
         /// ### This is where we would add to database?? ### ///

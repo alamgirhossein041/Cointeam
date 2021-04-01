@@ -46,7 +46,6 @@ class DashboardState extends State<Dashboard> {
   void initState() { 
     super.initState();
     log("dashboard.dart - Dashboard() InitState()");
-    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
   }
 
   @override
@@ -85,6 +84,7 @@ class DashboardState extends State<Dashboard> {
               child: RefreshIndicator(
                 onRefresh: () async {
                   // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
+                  BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
                 },
                 child: Container(
                   child: Column(
@@ -327,35 +327,88 @@ class HeaderBoxState extends State<HeaderBox> {
                                 log("coinList == 0");
                               }
                               
-                              return Column(
-                                children: <Widget> [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: HeaderBoxWalletIcon(),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
-                                      listener: (context, state) {
-                                        if (state is GetCoinListTotalValueErrorState) {
-                                          log("GetCoinListTotalValueErrorState");
-                                        }
-                                      },
-                                      builder: (context, state) {
-                                        if (state is GetCoinListTotalValueLoadedState) {
-                                          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white));
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
-                                    ),
-                                    // Text("\$26,646.23", style: TextStyle(fontSize: 22, color: Colors.white)),
-                                  )
-                                ]
+                              return BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                                listener: (context, state) {
+                                  if (state is GetCoinListTotalValueErrorState) {
+                                    log("GetCoinListTotalValueErrorState");
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is GetCoinListTotalValueLoadedState) {
+                                    return Column(
+                                      children: <Widget> [
+                                        // Flexible(
+                                        //   flex: 1,
+                                        //   fit: FlexFit.tight,
+                                        //   child: Align(
+                                        //     alignment: Alignment.topRight,
+                                        //     child: Text("BTC: \$" + state.btcSpecial.toStringAsFixed(2))
+                                        //   ),
+                                        // ),
+                                        Flexible(
+                                          flex: 3,
+                                          // child: Padding(
+                                            // padding: EdgeInsets.only(top: 20),
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: Container(),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: HeaderBoxWalletIcon(),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: Align(
+                                                    alignment: Alignment.topRight,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.fromLTRB(0,10,10,0),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget> [
+                                                          Text("BTC: \$" + state.btcSpecial.toStringAsFixed(0), style: TextStyle(fontSize: 14)), /// 25th
+                                                          SizedBox(height: 2.5),
+                                                          Text("ETH: \$" + state.ethSpecial.toStringAsFixed(0), style: TextStyle(fontSize: 14)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            // ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          flex: 4,
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Column(
+                                              children: <Widget> [
+                                                Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(fontSize: 22, color: Colors.white)),
+                                                SizedBox(height: 5),
+                                                Text("B: " + (state.totalValue / state.btcSpecial).toStringAsFixed(8), style: TextStyle(fontSize: 16, color: Colors.white)),
+                                              ]
+                                            ),
+                                          ),
+                                        ),
+                                      ]
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
                               );
+                                    // Text("\$26,646.23", style: TextStyle(fontSize: 22, color: Colors.white)),
+                                // ]
+                              // );
                             } else {
                               log("GetCoinList(notloaded)State");
                               return loadingTemplateWidget();

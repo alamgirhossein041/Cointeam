@@ -22,6 +22,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
 
   int coinCount = 0;
   double coinTotalValue = 0.0;
+  ValueNotifier<double> totalValueChange = ValueNotifier(0.0);
 
   String symbol = '';
   double percentageValue = 0.0;
@@ -274,6 +275,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                       var tmp = pmt * (v.free) * percentageValue;
                                                       if (tmp > 10) {
                                                         coinTotalValue += tmp;
+                                                        totalValueChange.value = coinTotalValue;
                                                       } else {
                                                         coinsToRemove.add(v.coin);
                                                       }
@@ -296,7 +298,12 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                     alignment: Alignment.center,
                                     child: Column(
                                       children: <Widget> [
-                                        Text("Selling \$" + coinTotalValue.toStringAsFixed(2) + " into USDT (estimated)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                        ValueListenableBuilder(
+                                          valueListenable: totalValueChange,
+                                          builder: (BuildContext context, double coinTotalValue, Widget child) {
+                                            return Text("Selling \$" + coinTotalValue.toStringAsFixed(2) + " into USDT (estimated)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
+                                          }
+                                        ),
                                         SizedBox(height: 30),
                                         Text("Binance Trade Rules:", style: TextStyle(color: Colors.white)),
                                         SizedBox(height: 10),

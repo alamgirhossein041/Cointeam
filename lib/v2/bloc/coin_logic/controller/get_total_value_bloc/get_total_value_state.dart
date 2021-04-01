@@ -33,9 +33,11 @@ class GetTotalValueLoadedState extends GetTotalValueState {
   final Map binanceGetPricesMap;
   final double totalValue;
   final double btcSpecial;
-  final coinListReceived;
+  final double btcQuantity;
+  final double usdSpecial;
+  final List<BinanceGetAllModel> coinListReceived;
 
-  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, @required this.coinListReceived, @required this.binanceGetPricesMap});
+  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, this.btcQuantity, this.usdSpecial, @required this.coinListReceived, @required this.binanceGetPricesMap});
 
   @override
   /// TODO: implement props

@@ -92,7 +92,9 @@ class CoingeckoList250Model {
     // high24h = json['high_24h'];
     // low24h = json['low_24h'];
     // priceChange24h = json['price_change_24h'];
-    priceChangePercentage24h = json['price_change_percentage_24h'];
+    if (json['price_change_percentage_24h'] != null) {
+      priceChangePercentage24h = json['price_change_percentage_24h'].toDouble();
+    }
     // marketCapChange24h = json['market_cap_change_24h'];
     // marketCapChangePercentage24h = json['market_cap_change_percentage_24h'];
     
@@ -101,19 +103,22 @@ class CoingeckoList250Model {
     
     // athChangePercentage = json['ath_change_percentage'];
     athDate = json['ath_date'];
-    atl = json['atl'];
+    if (json['atl'] != null) {
+      atl = json['atl'].toDouble();
+    }
     // atlChangePercentage = json['atl_change_percentage'];
     atlDate = json['atl_date'];
     // roi = json['roi'];
     lastUpdated = json['last_updated'];
-    priceChange24h =
-        json['price_change_24h'];
-    priceChangePercentage1hInCurrency =
-        json['price_change_percentage_1h_in_currency'];
-    priceChangePercentage24hInCurrency =
-        json['price_change_percentage_24h_in_currency'];
-    priceChangePercentage7dInCurrency =
-        json['price_change_percentage_7d_in_currency'];
+    if (json['price_change_24h'] != null) {
+      priceChange24h = json['price_change_24h'].toDouble();
+    }
+    if (json['price_change_percentage_1h_in_currency'] != null) {
+      priceChangePercentage1hInCurrency = json['price_change_percentage_1h_in_currency'].toDouble();
+    }
+    if (json['price_change_percentage_7d_in_currency'] != null) {
+      priceChangePercentage7dInCurrency = json['price_change_percentage_7d_in_currency'].toDouble();
+    }
   }
 
   Map<String, dynamic> toJson() {
