@@ -328,6 +328,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                         // log(widget.coinMap.toString());
                                         // log(widget.coinMap[selectedItemSymbol].toString());
                                         return TextField(
+                                          keyboardType: TextInputType.number,
                                           cursorWidth: 2,
                                           cursorColor: Colors.white,
                                           controller: _quantity,
@@ -548,7 +549,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                     primeMap[selectedItemSymbol] = double.parse(_quantity.text),
                                     // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
                                   },
-                                  log("Is this where it's going wrong"),
+                                  // log("Is this where it's going wrong"),
                                   localStorage.setItem("prime", jsonEncode(primeMap)),
                                   log(localStorage.getItem("prime").toString()),
                                   /// primeMap = PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text)),
