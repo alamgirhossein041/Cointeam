@@ -14,8 +14,15 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   DrawerMenu({Key key}) : super(key: key);
+
+  @override
+  DrawerMenuState createState() => DrawerMenuState();
+}
+
+class DrawerMenuState extends State<DrawerMenu> {
+  final feedbackTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -299,6 +306,20 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
+                '* LOAD DEV API *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () async {
+                final secureStorage = FlutterSecureStorage();
+
+                await secureStorage.write(key: 'binanceApi', value: 'cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU');
+                await secureStorage.write(key: 'binanceSapi', value: 'mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD');
+              },
+            ),
+            SizedBox(height: 30),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
                 '* Reset Application & State *',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
@@ -307,9 +328,46 @@ class DrawerMenu extends StatelessWidget {
                 Phoenix.rebirth(context);
               },
             ),
+            SizedBox(height: 70),
+              Center(child: Text("Feedback Box", style: TextStyle(color: Colors.white)),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30,30,30,10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: TextFormField(
+                  controller: feedbackTextController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Center(child: Text(
+                '(Submit Feedback)',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),),
+              onTap: () {
+                // Navigator.pushNamed(context, '/hometest');
+                /// DB: Change this log into an API call with whatever is in the text field
+                /// ### https://flutter.dev/docs/cookbook/forms/retrieve-input ### ///
+                log(feedbackTextController.text);
+              },
+            ),
+            SizedBox(height: 50),
           ],
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    /// DB: Make an API call with whatever is in the text field (lol)
+    feedbackTextController.dispose();
+    super.dispose();
   }
 }

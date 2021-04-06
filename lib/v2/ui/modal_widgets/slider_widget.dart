@@ -109,7 +109,6 @@ class _CarouselDemoState extends State<CarouselDemo> {
     //   _curr = index;
     // });
   }
-
 }
 
 // Helper Widgets

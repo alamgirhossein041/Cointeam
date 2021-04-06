@@ -14,7 +14,7 @@ class CoingeckoList250RepositoryImpl implements ICoingeckoList250Repository {
   Future getCoinMarketCapCoinLatest(String _pagination) async {
     String requestUrl = 'https://api.coingecko.com/api/v3/coins/markets';
     /// ### Dev-Note: Can pass in String parameter and load it into linkBuilder as currency ### ///
-    String currency = 'usd';
+    String currency = 'usd'; /// currencyconversion
     String numberOfCoins = '250';
     String pagination = _pagination;
     /// ### Dev-Note: Sparkline below ### ///

@@ -26,13 +26,13 @@ class CoingeckoList250Bloc extends Bloc<CoingeckoList250Event, CoingeckoList250S
         /// ### data is a list of CoingeckoList250Model ### ///
         
         List<dynamic> data = await Future.wait([coingeckoList250Repository.getCoinMarketCapCoinLatest('1'), coingeckoList250Repository.getCoinMarketCapCoinLatest('2'),
-            coingeckoList250Repository.getCoinMarketCapCoinLatest('3'), coingeckoList250Repository.getCoinMarketCapCoinLatest('4')]);
+            coingeckoList250Repository.getCoinMarketCapCoinLatest('3'), coingeckoList250Repository.getCoinMarketCapCoinLatest('4'), coingeckoList250Repository.getCoinMarketCapCoinLatest('5')]);
 
         // List<CoingeckoList250Model> data = 
 
         Map<String, dynamic> coingeckoMap = {};
 
-        var newList = data[0] + data[1] + data[2] + data[3];
+        var newList = data[0] + data[1] + data[2] + data[3] + data[4];
 
         newList.forEach((coingeckoModel) => coingeckoMap[coingeckoModel.symbol] = coingeckoModel);
 

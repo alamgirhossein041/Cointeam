@@ -25,8 +25,13 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     String api = await secureStorage.read(key: 'binanceApi');
     String sapi = await secureStorage.read(key: 'binanceSapi');
 
-    log(api);
-    log(sapi);
+    if(api != null) {
+      log(api);
+      log(sapi);
+    } else {
+      log("No API Connected");
+      return null;
+    }
 
 
     /// ##### Start API Request ######

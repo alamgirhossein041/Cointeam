@@ -13,7 +13,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class LinkAPIHelperModal extends StatefulWidget {
   LinkAPIHelperModal({Key key, this.page, this.exch, this.callback, this.indexCallback, this.navigatePageCallback}) : super(key: key);
-
+  /// index is nextpage, navigatepage is specific page passed as int
   final int page;
   final int exch;
   final Function callback;
@@ -60,8 +60,8 @@ class _LinkAPIHelperModalState extends State<LinkAPIHelperModal> {
   // used to specify index of imageList to display the corresponding image:
   // Binance or FTX screenshots
   int imageIndex = 0;
+  int apiCharCount = 0;
   int sapiCharCount = 0;
-  bool _visibility = false;
 
   // padding for all modal pages
   var modalPadding = EdgeInsets.all(20.0);
@@ -488,17 +488,20 @@ Swipe next.''';
   }
 
   _onChanged(String value) async {
-    sapiCharCount = value.length;
+  // TextEditingController _secretApiTextController;
+  // TextEditingController _publicApiTextController;
+    apiCharCount = _publicApiTextController.text.length;
+    sapiCharCount = _secretApiTextController.text.length;
     if (sapiCharCount == 64) {
+      if(apiCharCount == 64) {
       // widget.indexCallback(6);
-      setState(() => {
-      _visibility = !_visibility});
 
-      bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
-      if (response == true) {
-        widget.indexCallback(6);
-      } else {
-        _visibility = !_visibility;
+        bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
+        if (response == true) {
+          widget.navigatePageCallback(7);
+        } else {
+          widget.navigatePageCallback(5); /// ### Probably need to change this later to actually show error message ### ///
+        }
       }
     }
   }
