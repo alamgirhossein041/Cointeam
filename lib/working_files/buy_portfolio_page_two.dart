@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/model/db_model/db_porsche/get_portfolio_model.dart';
+import 'package:coinsnap/v2/repo/db_repo/db_porsche/get_portfolio_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -11,12 +13,16 @@ class BuyPortfolioPage2 extends StatefulWidget {
 }
 
 class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
+  final _scrollController = ScrollController();
 
   String symbol = '';
   double percentageValue = 0.0;
 
+  List<String> portfolioList = [];
+
   LocalStorage localStorage = LocalStorage("coinstreetapp");
 
+  GetPortfolioImpl dummyPortfolio = GetPortfolioImpl();
   @override
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
@@ -30,7 +36,9 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
       log("Percentage to sell is " + percentageValue.toString());
     }
 
-    localStorage.getItem("prime");
+  
+    GetPortfolioModel portfolioMap = dummyPortfolio.getPortfolio();
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -66,6 +74,93 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                         ),
                       )
                     ),
+                    Flexible(
+                      flex: 17,
+                      fit: FlexFit.tight,
+                      child: Column(
+                        children: <Widget> [
+                          Flexible(
+                            flex: 6,
+                            fit: FlexFit.tight,
+                            child: Scrollbar(
+                              controller: _scrollController,
+                              isAlwaysShown: true,
+                              thickness: 5,
+                              child: CustomScrollView(
+                                controller: _scrollController,
+                                slivers: <Widget> [
+                                  SliverToBoxAdapter(
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0,20,0,30),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Row(
+                                          children: <Widget> [
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
+                                                child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold)),
+                                              )
+                                            ),
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: Container(),
+                                            ),
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: Align(
+                                                alignment: Alignment.centerRight,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(right: 40),
+                                                  child: Text("USDT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+                                                ),
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      )
+                                    )
+                                  ),
+                                  SliverList(
+                                    delegate: SliverChildBuilderDelegate((context, index) {
+                                      portfolioMap.data.forEach((k,v) => {
+
+                                      });
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                        child: Row(
+                                          children: <Widget> [
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: GestureDetector(
+                                                child: Icon(Icons.close),
+                                                onTap: () => {
+
+                                                }
+                                              )
+                                            ),
+                                            Flexible(
+                                              flex: 3,
+                                              fit: FlexFit.tight,
+                                              child: Text(portfolioMap.data
+                                            )
+                                          ]
+                                        )
+                                      );
+                                    })
+                                  )
+                                ]
+                              )
+                            )
+                          )
+                        ]
+                      )
+                    )
                   ]
                 )
               )
