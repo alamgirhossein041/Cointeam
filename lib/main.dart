@@ -165,7 +165,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/initialpage': (context) => InitialPage(),
           '/buyportfolio': (context) => BuyPortfolioScreen(),
-          '/buyportfolio2': (context) => BuyPortfolioPage2(),
+          // '/buyportfolio2': (context) => BuyPortfolioPage2(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),

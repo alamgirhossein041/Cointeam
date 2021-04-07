@@ -56,7 +56,7 @@
 //         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
 //         /// binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
 //         /// TODO: Probably need to use coinToRemove
-//         for(BinanceGetAllModel coins in binanceGetAllModel) {
+//         for() {
 //           if(coins.coin == coinTicker) {
 //             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
 //           } else {
