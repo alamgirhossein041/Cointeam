@@ -28,6 +28,7 @@ import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/working_files/buy_portfolio.dart';
+import 'package:coinsnap/working_files/buy_portfolio_page_three.dart';
 import 'package:coinsnap/working_files/buy_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
@@ -37,6 +38,7 @@ import 'package:coinsnap/working_files/sell_portfolio.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_three.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/settings.dart';
+import 'package:coinsnap/working_files/vision.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,16 +49,16 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 
 void main() async {
-  // debugPaintSizeEnabled = true;
-  // debugPaintBaselinesEnabled = false;
-  // debugPaintLayerBordersEnabled = false;
-  // debugPaintPointersEnabled = false;
-  // debugRepaintRainbowEnabled = false;
-  // debugRepaintTextRainbowEnabled = false;
-  // debugCheckElevationsEnabled = false;
-  // debugDisableClipLayers = false;
-  // debugDisablePhysicalShapeLayers = false;
-  // debugDisableOpacityLayers = false;
+//   // debugPaintSizeEnabled = true;
+//   // debugPaintBaselinesEnabled = false;
+//   // debugPaintLayerBordersEnabled = false;
+//   // debugPaintPointersEnabled = false;
+//   // debugRepaintRainbowEnabled = false;
+//   // debugRepaintTextRainbowEnabled = false;
+//   // debugCheckElevationsEnabled = false;
+//   // debugDisableClipLayers = false;
+//   // debugDisablePhysicalShapeLayers = false;
+//   // debugDisableOpacityLayers = false;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // runApp(MyApp());
@@ -111,11 +113,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         // initialRoute: '/settings',
         theme: ThemeData(
-          // Default brightness
-          // brightness: Brightness.dark
+          // // Default brightness
+          // // brightness: Brightness.dark
 
-          // Default colours
-          // accentColor: Color(0xff8270FF),
+          // // Default colours
+          // // accentColor: Color(0xff8270FF),
           accentColor: Colors.deepPurpleAccent,
         
           // Default font family
@@ -149,13 +151,14 @@ class MyApp extends StatelessWidget {
             endIndent: 10,
           ),
         ),
-        // initialRoute: '/hometest',
-        // initialRoute: '/dashboardnoapitest',
-        // initialRoute: '/authentication',
-        // initialRoute: '/dashboard',
-        // initialRoute: '/home',
-        // initialRoute: '/dashboardnoapitest',
-        initialRoute: '/initialpage',
+        // ),
+        // // initialRoute: '/hometest',
+        // // initialRoute: '/dashboardnoapitest',
+        // // initialRoute: '/authentication',
+        // // initialRoute: '/dashboard',
+        // // initialRoute: '/home',
+        // // initialRoute: '/dashboardnoapitest',
+        initialRoute: '/dashboard2',
         // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
         // initialRoute: '/sellportfoliopage3',
@@ -172,6 +175,8 @@ class MyApp extends StatelessWidget {
           '/errorscreen': (context) => ErrorScreen(),
           '/dashboard': (context) => Dashboard(),
           '/coinpage': (context) => CoinPage(),
+          '/dashboard2': (context) => BuyPortfolioPage3(),
+          '/vision': (context) => Vision(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
           '/authentication': (context) => Authentication(),

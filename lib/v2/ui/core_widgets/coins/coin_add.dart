@@ -11,6 +11,7 @@ import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_
 import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
@@ -204,7 +205,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final snackBar = SnackBar(content: Text('Yay! A SnackBar!' + _quantity.text + selectedCoin));
+    // final snackBar = SnackBar(content: Text('Yay! A SnackBar!' + _quantity.text + selectedCoin));
 
     // Flex row padding
     var rowPadding = EdgeInsets.only(top: 15, bottom: 15, left: 25, right: 0);
@@ -556,7 +557,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                   localStorage.setItem("prime", jsonEncode(primeMap)),
                                   log(localStorage.getItem("prime").toString()),
                                   // Navigator.of(context).pop(selectedCoin),
-                                  Navigator.pop(context, selectedCoin),
+                                  Navigator.pop(context, BoxedReturns(selectedCoin, _quantity.text)),
                                   // Scaffold.of(context).showSnackBar(snackBar),
 
                                   /// primeMap = PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text)),
@@ -587,7 +588,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           // Navigator.pushNamed(context, '/hometest'),
                           // dbPortfolioPostTest.dbPortfolioPostTest(),
                           log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
-                          Scaffold.of(context).showSnackBar(snackBar),
+                          // Scaffold.of(context).showSnackBar(snackBar),
                         },
                       );
                     }

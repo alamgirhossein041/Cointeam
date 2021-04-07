@@ -17,7 +17,8 @@ import 'package:localstorage/localstorage.dart';
 class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   
   // SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
-  SellPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
+  SellPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository,
+  this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
 
   double totalValue = 0.0;
   double pctToSell = 1.0;

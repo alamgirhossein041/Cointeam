@@ -96,7 +96,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
         log("excepted twice, throwing");
         log(response.statusCode.toString());
         log(response.body.toString());
-        throw Exception();
+        // log(e.toString());
       }
     }
   }

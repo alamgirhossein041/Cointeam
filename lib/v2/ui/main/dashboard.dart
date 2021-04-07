@@ -41,7 +41,7 @@ class DashboardState extends State<Dashboard> {
 
   List coinList;
   bool _chartVisibility = true;
-  final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+  ScaffoldState scaffold; /// HACKER MANS
 
 
   @override
@@ -64,15 +64,21 @@ class DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         fullscreenDialog: true, builder: (context) => AddCoin()),
     );
+    setState(() {
+      BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+    });
     updateInformation(information);
   }
 
-  updateInformation(String information) {
-    Builder(builder: (BuildContext innerContext) {
+  updateInformation(BoxedReturns information) {
+    if(information != null) {
+    SnackBar snackBar = SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text("Adding " + information.quantityString + " " + information.coinSymbol + " to portfolio"));
       WidgetsBinding.instance.addPostFrameCallback((_) => 
-        Scaffold.of(innerContext).showSnackBar(snackBar)
-      );
-    });
+        scaffold.showSnackBar(snackBar)
+    );
+    }
     
     // setState(() => _information = information);
   }
@@ -150,7 +156,10 @@ class DashboardState extends State<Dashboard> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget> [
-                                      Flexible(
+                                      Builder(
+                                        builder: (BuildContext buildContext) {
+                                          scaffold = Scaffold.of(buildContext);
+                                          return Flexible(
                                         flex: 1,
                                         child: IconButton(
                                         icon: Icon(Icons.add, color: Colors.white),
@@ -162,7 +171,8 @@ class DashboardState extends State<Dashboard> {
                                           moveToAddCoinPage(),
                                         },
                                         ),
-                                      ),
+                                      );
+                                      }),
                                       Flexible(
                                         flex: 4,
                                         fit: FlexFit.tight,
@@ -529,3 +539,10 @@ var headerBoxInnerDecoration = BoxDecoration(
     ],
   ),
 );
+
+class BoxedReturns {
+  final String coinSymbol;
+  final String quantityString;
+
+  BoxedReturns(this.coinSymbol, this.quantityString);
+}
