@@ -41,6 +41,8 @@ class DashboardState extends State<Dashboard> {
 
   List coinList;
   bool _chartVisibility = true;
+  final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+
 
   @override
   void initState() { 
@@ -54,6 +56,25 @@ class DashboardState extends State<Dashboard> {
     log("dashboard.dart - Dashboard() DPD");
     // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
     // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
+  }
+
+  void moveToAddCoinPage() async {
+    final information = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true, builder: (context) => AddCoin()),
+    );
+    updateInformation(information);
+  }
+
+  updateInformation(String information) {
+    Builder(builder: (BuildContext innerContext) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => 
+        Scaffold.of(innerContext).showSnackBar(snackBar)
+      );
+    });
+    
+    // setState(() => _information = information);
   }
 
   double modalEdgePadding = 10;
@@ -134,10 +155,11 @@ class DashboardState extends State<Dashboard> {
                                         child: IconButton(
                                         icon: Icon(Icons.add, color: Colors.white),
                                         onPressed: () => {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => AddCoin()),
-                                          )
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => AddCoin()),
+                                          // )
+                                          moveToAddCoinPage(),
                                         },
                                         ),
                                       ),
