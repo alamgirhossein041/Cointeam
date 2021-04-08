@@ -8,18 +8,6 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
-# dependencies:
-#   flutter:
-#     sdk: flutter
-#   localstorage: ^3.0.6
-#   bloc: ^6.1.1
-#   flutter_bloc: ^6.1.1
-#   http: ^0.12.1
-#   shared_preferences: '>=0.5.12+4 <2.0.0'
-#   firebase_core: ^0.7.0
-#   firebase_auth: ^0.20.0+1
-#   cloud_firestore: ^0.16.0
-
 dependencies:
   flutter:
     sdk: flutter
@@ -62,7 +50,6 @@ dependencies:
   build_runner: ^1.11.0
   bloc_test: ^7.0.0
   qr_code_scanner: ^0.3.5
-  confetti: ^0.5.5
 
 dev_dependencies:
   flutter_test:
