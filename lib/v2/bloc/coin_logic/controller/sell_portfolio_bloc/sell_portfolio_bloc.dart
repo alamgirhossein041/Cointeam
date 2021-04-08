@@ -54,6 +54,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       coinsToRemove = event.coinsToRemove;
 
       yield SellPortfolioLoadingState();
+
+      log("8th April - Test 1");
+
       try {
         log("Our coinTicker is : " + coinTicker);
 
@@ -61,7 +64,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
+        log("8th April - Test 2");
         for(BinanceGetAllModel coins in binanceGetAllModel) {
+          log("8th April - Test 3");
           if(coins.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
@@ -87,7 +92,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   log("########");
                   result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + coins.coin, tmp);
                 } else {
-
                   result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
                 }
                 log(result['code'].toString());
@@ -97,7 +101,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   log("Running totalValue is $totalValue");
                   /// 25th
-                  coinsToSave[result['symbol']] = result['cummulativeQuoteQty'];
+                  coinsToSave[coins.coin] = result['cummulativeQuoteQty'];
                 }
               }
             } catch (e) {
@@ -108,7 +112,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
-          coinsToSave['total'] = totalValue;
+          String tmp = 'Total' + coinTicker;
+          coinsToSave[tmp] = totalValue;
           await localStorage.setItem("portfolio", coinsToSave);
         }
 
@@ -187,6 +192,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
         log("wallah");
+        log(e.toString());
         yield SellPortfolioErrorState(errorMessage : e.toString());
       }
     }

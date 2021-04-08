@@ -49,6 +49,7 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         var localStorageResponse = await localStorage.getItem("prime");
         if(localStorageResponse != null) {
           primeCoin = Map.from(json.decode(await localStorage.getItem("prime")));
+          log("THE PRIMECOIN IS " + primeCoin.toString());
           // log(primeCoin.toString());
         } else {
           // log("HEWJFOISJFOSDF");

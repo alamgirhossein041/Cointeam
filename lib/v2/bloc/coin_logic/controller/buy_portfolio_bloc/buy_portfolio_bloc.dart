@@ -12,7 +12,7 @@ import 'package:localstorage/localstorage.dart';
 
 class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   
-  BuyPortfolioBloc({this.binanceBuyCoinRepository, this.binanceExchangeInfoRepository}) : super(BuyPortfolioInitialState());
+  BuyPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository, this.binanceExchangeInfoRepository}) : super(BuyPortfolioInitialState());
 
   // double totalValue = 0.0;
   double pctToSell = 1.0;
@@ -44,6 +44,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
 
   @override
   Stream<BuyPortfolioState> mapEventToState(BuyPortfolioEvent event) async* {
+  
     if (event is FetchBuyPortfolioEvent) {
       // pctToSell = event.value / 100;
       pctToSell = event.value;
@@ -69,6 +70,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
               // log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
             // } else {
               // try {
+                log("Hi?");
                 var result;
                 // if(v == 'USDT') {
                   // divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
@@ -76,7 +78,9 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                   divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
                 // }
                 var tmp = portfolioDataMap.data[v] * pctToSell;
-                var zeroTarget = tmp % divisor;
+                log("tmp before everything is: " + tmp.toString());
+                var zeroTarget = double.parse((tmp % divisor).toStringAsFixed(6));
+                log("zeroTarget is: " + zeroTarget.toString());
                 tmp -= zeroTarget;
                 if (tmp >= divisor) {
                   log('Coin: ' + v);
@@ -189,6 +193,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
         yield BuyPortfolioLoadedState();
       } catch (e) {
         log("wallah");
+        log(e.toString());
         yield BuyPortfolioErrorState(errorMessage : e.toString());
       }
     }

@@ -25,7 +25,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
 
   LocalStorage localStorage = LocalStorage("coinstreetapp");
 
-  GetPortfolioImpl dummyPortfolio = GetPortfolioImpl();
+  GetPortfolioImpl primePortfolio = GetPortfolioImpl();
   @override
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
@@ -40,7 +40,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
     }
 
   
-    GetPortfolioModel portfolioDataMap = dummyPortfolio.getPortfolio();
+    GetPortfolioModel portfolioDataMap = primePortfolio.getPortfolio();
     /// TODO: delete index
     int devindex = 0;
     portfolioDataMap.data.forEach((k,v) => {
@@ -292,6 +292,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     ),
                                   ),
                                   onTap: () => {
+                                    log("Buy Button Pressed"),
                                     BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(value: percentageValue, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
                                     // Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol, 'portfolioMap': portfolioMap, 'portfolioList': portfolioList})
                                     /// 7th - we need to pass in something - like a list or a map or something
