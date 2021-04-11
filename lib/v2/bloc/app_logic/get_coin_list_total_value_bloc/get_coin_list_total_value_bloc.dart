@@ -40,12 +40,12 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
         /// do logic
         /// if else blah blah
         CardCoinmarketcapListModel coinListData = await coinmarketcapListQuoteRepository.getCoinMarketCapCoinList(coinList);
-        for(var coin in coinListData.data) {
+        for(var coin in coinListData.data) { /// above currency
           // log(coin.symbol);
           // log(coinBalancesMap[coin.symbol].toString());
           // log(coinBalancesMap.toString());
           // log("HELLO WORLD?");
-          if(coin.symbol == 'BTC') {
+          if(coin.symbol == 'BTC') { /// currency
             btcSpecial = coin.quote.uSD.price;
           } else if(coin.symbol == 'ETH') {
             ethSpecial = coin.quote.uSD.price;

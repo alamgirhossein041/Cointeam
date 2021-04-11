@@ -77,7 +77,8 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                 // } else {
                   divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
                 // }
-                var tmp = portfolioDataMap.data[v] * pctToSell;
+                /// This is where we do the percentage calculation
+                var tmp = (portfolioDataMap.data[v] * pctToSell);
                 log("tmp before everything is: " + tmp.toString());
                 var zeroTarget = double.parse((tmp % divisor).toStringAsFixed(6));
                 log("zeroTarget is: " + zeroTarget.toString());

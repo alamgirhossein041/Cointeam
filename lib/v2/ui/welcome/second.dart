@@ -98,9 +98,14 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
             FadeTransition(
               opacity: animationButtons,
               child: ElevatedButton(
-                onPressed: () {
-                  storage.write(key: "api", value: "ok");
-                  Navigator.pushNamed(context, '/authentication');
+                onPressed: () async {
+                  // storage.write(key: "api", value: "ok");
+                  // storage.write(key: "welcome", value: "ok");
+
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('welcome', true);
+                  
+                  Navigator.pushReplacementNamed(context, '/marketdashboard');
                 },
                 child: Text("Cool! Take me to the app"),
               ),

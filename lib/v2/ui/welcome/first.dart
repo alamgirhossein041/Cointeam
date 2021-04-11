@@ -1,6 +1,8 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
+import 'package:coinsnap/working_files/initial_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +23,7 @@ class First extends StatelessWidget {
           default:
             if (!snapshot.hasError) {
               return snapshot.data.getBool("welcome") != null /// getBool("welcome") should be named better - it is a boolean check which is null if it's the user's first time -> which we will load WelcomeView (onboarding screen), and if not null we will load HomeView
-                  ? HomeView()
+                  ? InitialPage()
                   : WelcomeView();
             } else {
               return errorTemplateWidget(snapshot.error);

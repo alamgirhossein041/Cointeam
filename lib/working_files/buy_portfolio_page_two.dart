@@ -294,7 +294,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                   onTap: () => {
                                     log("Buy Button Pressed"),
                                     BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(value: percentageValue, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
-                                    // Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol, 'portfolioMap': portfolioMap, 'portfolioList': portfolioList})
+                                    Navigator.pushNamed(context, '/sellportfolio3')
                                     /// 7th - we need to pass in something - like a list or a map or something
                                   },
                                   // ),

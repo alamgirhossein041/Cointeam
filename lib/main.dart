@@ -159,7 +159,10 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/dashboard',
         // initialRoute: '/home',
         // initialRoute: '/dashboardnoapitest',
-        initialRoute: '/initialpage',
+
+        /// initialRoute: '/initialpage',
+        initialRoute: '/authentication',
+
         // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
         // initialRoute: '/sellportfoliopage3',
