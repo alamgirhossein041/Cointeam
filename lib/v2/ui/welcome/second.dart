@@ -105,7 +105,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   await prefs.setBool('welcome', true);
                   
-                  Navigator.pushReplacementNamed(context, '/marketdashboard');
+                  Navigator.pushReplacementNamed(context, '/initialpage');
                 },
                 child: Text("Cool! Take me to the app"),
               ),

@@ -39,8 +39,12 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
       log("Percentage to sell is " + percentageValue.toString());
     }
 
-  
-    GetPortfolioModel portfolioDataMap = primePortfolio.getPortfolio();
+    /// ### TODO: Maybe replace "portfolio" with an actual string variable
+    /// ### -- GetPortfolioImpl takes a string and uses that to get portfolio from LocalStorage
+    /// 
+    /// IF NULL
+    /// 
+    GetPortfolioModel portfolioDataMap = primePortfolio.getPortfolio("portfolio");
     /// TODO: delete index
     int devindex = 0;
     portfolioDataMap.data.forEach((k,v) => {

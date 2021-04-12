@@ -112,8 +112,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
-          String tmp = 'Total' + coinTicker;
-          coinsToSave[tmp] = totalValue;
+          coinsToSave[coinTicker] = totalValue;
           await localStorage.setItem("portfolio", coinsToSave);
         }
 
