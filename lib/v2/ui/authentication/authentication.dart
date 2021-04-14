@@ -1,5 +1,6 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
+import 'package:coinsnap/v2/ui/welcome/first2.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:coinsnap/v2/auth/fireauth.dart';
@@ -143,7 +144,7 @@ class AuthenticationState extends State<Authentication> {
                       onTap: () async {
                         // bool shouldNavigate = await signIn(_emailField.text, _passwordField.text);
                         // if(shouldNavigate) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => First()));
+                          Navigator.pushReplacementNamed(context, '/first');
                         // } else {
                         //   _showDialog("Invalid Login", "Please try again", context);
                         // }

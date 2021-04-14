@@ -164,7 +164,7 @@ class DrawerMenuState extends State<DrawerMenu> {
               ),
               onTap: () {
                 final storage = FlutterSecureStorage();
-                storage.delete(key: "api");
+                storage.delete(key: "welcome");
               },
             ),
             ListTile(

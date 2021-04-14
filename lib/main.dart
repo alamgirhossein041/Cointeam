@@ -33,7 +33,7 @@ import 'package:coinsnap/working_files/buy_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
 import 'package:coinsnap/working_files/initial_page.dart';
-import 'package:coinsnap/working_files/market_dashboard.dart';
+// import 'package:coinsnap/working_files/market_dashboard.dart';
 import 'package:coinsnap/working_files/sell_portfolio.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_three.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_two.dart';
@@ -161,7 +161,8 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/dashboardnoapitest',
 
         /// initialRoute: '/initialpage',
-        initialRoute: '/authentication',
+        // initialRoute: '/authentication',
+        initialRoute: '/dashboardnoapitest',
 
         // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
@@ -175,6 +176,7 @@ class MyApp extends StatelessWidget {
           '/sellportfolio': (context) => SellPortfolioScreen(),
           '/settings': (context) => Settings(),
           '/dashboardnoapitest': (context) => DashboardNoApiView(),
+          // '/dashboardnoapitest': (context) => DashboardWithNoApiWorking(),
           // '/marketdashboard': (context) => MarketDashboard(),
           '/errorscreen': (context) => ErrorScreen(),
           '/dashboard': (context) => Dashboard(),

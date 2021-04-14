@@ -8,10 +8,13 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_co
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
 import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
 import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
@@ -151,9 +154,9 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
                     // ),
                     Expanded(
                       flex: 15,
-                      child: BlocBuilder<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
+                      child: BlocBuilder<ListTotalValueBloc, ListTotalValueState>(
                         builder: (context, state) {
-                          if (state is GetCoinListTotalValueLoadedState) {
+                          if (state is ListTotalValueLoadedState) {
                             return CustomScrollView(
                               slivers: <Widget> [
                                 // SliverToBoxAdapter(
@@ -238,11 +241,13 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
                                 // ),
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {
-                                    // return NewCardListTile(coinListData: state.coinListData, state.coinListData, state.totalValue);
-                                    return NewCardListTile(coinListData: state.coinListData, coinBalancesMap: state.coinBalancesMap, totalValue: state.totalValue, index: index);
-                                      // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
+                                    
+                                    // return NewCardListTile(coinListData: state.coinListData, coinBalancesMap: state.coinBalancesMap, totalValue: state.totalValue, index: index);
+                                    
+                                    return CardListTileWithCategory(coinList: state.coinList, index: index, cardCoinmarketcapListModel: state.cardCoinmarketcapListModel);
                                     },
-                                    childCount: state.coinListData.data.length,
+                                    childCount: (state.coinList.length - 1),
+                                    // childCount: state.coinListData.data.length,
                                   ),
                                 ),
                               ],

@@ -172,7 +172,7 @@ class _CardListTileStateWithCategory extends State<CardListTileWithCategory> {
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinList, 'index' : widget.index});
                   },
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(25,2,25,2),
+                    // padding: EdgeInsets.fromLTRB(25,2,25,2),
                     height: displayHeight(context) * 0.11,
                     width: displayWidth(context),
                     child: Card(

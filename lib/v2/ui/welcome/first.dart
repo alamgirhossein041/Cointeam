@@ -1,207 +1,247 @@
+import 'dart:developer';
+import 'dart:async';
+
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
-import 'package:coinsnap/v2/ui/main/home_view.dart';
-import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
-import 'package:coinsnap/working_files/initial_page.dart';
+import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class First extends StatelessWidget {
-  const First({Key key}) : super(key: key);
-
+class First extends StatefulWidget {
+  
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(), /// Getting a local settings cache stored on device
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-          default:
-            if (!snapshot.hasError) {
-              return snapshot.data.getBool("welcome") != null /// getBool("welcome") should be named better - it is a boolean check which is null if it's the user's first time -> which we will load WelcomeView (onboarding screen), and if not null we will load HomeView
-                  ? InitialPage()
-                  : WelcomeView();
-            } else {
-              return errorTemplateWidget(snapshot.error);
-            }
-          }
-        },
-      ),
-    );
-  }
+  FirstState createState() => FirstState();
 }
 
-class WelcomeView extends StatefulWidget {
-  WelcomeView({Key key}) : super(key: key);
-
-  @override
-  WelcomeViewState createState() => WelcomeViewState();
-}
-
-class WelcomeViewState extends State<WelcomeView> with TickerProviderStateMixin {
+class FirstState extends State<First> with TickerProviderStateMixin{
   AnimationController animationControllerWelcome;
   Animation<double> animationWelcome;
-  AnimationController animationControllerQuestion;
-  Animation<double> animationQuestion;
-  AnimationController animationControllerButtons;
-  Animation<double> animationButtons;
-
-  @override 
-  void initState() {
+  bool _visible = true;
+  
+  @override
+  void initState() { 
     super.initState();
+    /// Initialise animationControllers here if needed
     animationControllerWelcome = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
-      reverseDuration: Duration(seconds: 1),
+      reverseDuration: Duration(seconds: 2),
     );
     animationWelcome = Tween(begin: 0.0, end: 1.0).animate(animationControllerWelcome);
-
-    animationControllerQuestion = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    );
-    animationQuestion = Tween(begin: 0.0, end: 1.0).animate(animationControllerQuestion);
-
-    animationControllerButtons = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    );
-    animationButtons = Tween(begin: 0.0, end: 1.0).animate(animationControllerButtons);
   }
 
   @override
   dispose() {
     animationControllerWelcome.dispose();
-    animationControllerQuestion.dispose();
-    animationControllerButtons.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 500), () {
-      // Do something
+    Future.delayed(Duration(milliseconds: 1000), () {
       animationControllerWelcome.forward();
       Future.delayed(Duration(milliseconds: 1000), () {
-      // Do something
         animationControllerWelcome.reverse();
-        Future.delayed(Duration(milliseconds: 1500), () {
-      // Do something
-          animationControllerQuestion.forward();
-          Future.delayed(Duration(milliseconds: 1000), () {
-            animationControllerButtons.forward();
-          });
-        });
       });
     });
-    
+    Future.delayed(Duration(milliseconds: 5000), () {
+      log("Wat");
+      if(_visible == true) {
+        setState(() {
+          _visible = !_visible;
+        });
+      }
+      // Navigator.pushNamed(context, '/first');
+    });
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFF4180FF),
-          // gradient: LinearGradient(
-          //   begin: Alignment.topRight,
-          //   end: Alignment.bottomLeft,
-          //   colors: [appPink, Colors.blue],
-          // ),
-        ),
-        child: Column(
+        child: Stack(
           children: <Widget> [
-            /// ### Top row -> Night mode button START ### ///
-            SizedBox(height: displayHeight(context) * 0.065),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget> [
-                IconButton(
-                  icon: Icon(Icons.nights_stay_rounded, color: Colors.white),
-                  onPressed: () {}
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+              ),
+              /// ### Fades out ### ///
+              child: AnimatedOpacity(
+                opacity: _visible ? 1.0 : 0.0,
+                duration: Duration(milliseconds: 500),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFF2B064B), Color(0xFF381AA2)]
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget> [
+                      SizedBox(height: displayHeight(context) * 0.1),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.nights_stay_rounded, color: Colors.white),
+                            onPressed: () {}
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: FadeTransition(
+                          opacity: animationWelcome,
+                          child: Text("Welcome", style: TextStyle(fontSize: 20, color: Colors.white))
+                        ),
+                      ),
+                    ]
+                  )
                 ),
-                SizedBox(width: displayWidth(context) * 0.065),
-              ],
+              )
+              /// ### Fades out ### ///
             ),
-            /// ### Top row -> Night mode button END ### ///
-            
-            /// ### Welcome Text -> Middle of screen START ### ///
-            SizedBox(height: displayHeight(context) * 0.15),
-            FadeTransition(
-              opacity: animationWelcome,
-              child: Text("Welcome", style: TextStyle(fontSize: 20, color: Colors.white)),
-            ),
-            SizedBox(height: displayHeight(context) * 0.05),
-            FadeTransition(
-              opacity: animationQuestion,
-              child: Text("What is your experience in crypto?", style: TextStyle(fontSize: 22, color: Colors.white)),
-            ),
-            FadeTransition(
-              opacity: animationButtons,
+            AnimatedOpacity(
+              opacity: _visible ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 500),
               child: Column(
                 children: <Widget> [
-                  SizedBox(height: displayHeight(context) * 0.10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/second');
-                    },
-                    child: Text("Experienced - I want to import my portfolio"),
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
+                    child: Container(),
                   ),
-
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //       begin: Alignment.topRight,
-                  //       end: Alignment.bottomLeft,
-                  //       colors: [appPink, Colors.blue],
-                  //     ),
-                  //     borderRadius: BorderRadius.all(Radius.circular(80.0)),
-                  //   ),
-
-                    // Material(
-                    //   // child: Ink(
-                    //   //   decoration: BoxDecoration(
-                    //   //     gradient: LinearGradient(
-                    //   //       begin: Alignment.topRight,
-                    //   //       end: Alignment.bottomLeft,
-                    //   //       colors: [appPink, Colors.blue],
-                    //   //     ),
-                    //   //   ),
-                    //     // child: InkWell(
-                    //     child: InkWell(
-                    //       onTap: () {},
-                    //       child: Container(
-                            
-                    //       ), // other widget
-                    //     ),
-                    //   ),
-                        
-                      //   child: Text("Yes - take me to the app"),
-                      // ),
-                        // child: Container(
-                        //   width: displayWidth(context) * 0.6,
-                        //   constraints: BoxConstraints(minWidth: 88.0, minHeight: 36.0), // min sizes for Material buttons
-                        //   alignment: Alignment.center,
-                        //   child: Text(
-                        //     'Yes - take me to the app',
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        // ),
-
-                   
-                  // SizedBox(height: displayHeight(context) * 0.05),
-                  ElevatedButton(
-                    child: Text("Not experienced - I just want to look around"),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/second');
-                    }
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
+                    child: Column(
+                      children: <Widget> [
+                        Text("You're invited", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+                        SizedBox(height: 10),
+                        Text("to participate in", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+                        SizedBox(height: 10),
+                        Text("Coinstreet's beta.", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+                      ]
+                    )
                   ),
-                ],
+                  Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: Column(
+                      children: <Widget> [
+                        Text("Get started", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+                        Text("(Binance only)", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ]
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: Container(),
+                  ),
+                  Flexible(
+                    flex: 3,
+                    fit: FlexFit.tight,
+                    child: Column(
+                      children: <Widget> [
+                        ///
+                        Container(
+                          height: displayHeight(context) * 0.075,
+                          width: displayWidth(context) * 0.75,
+                          // child: Card(
+                          //   shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                          //   ),
+                            child: InkWell(
+                              splashColor: Colors.red,
+                              highlightColor: Colors.red,
+                              hoverColor: Colors.red,
+                              focusColor: Colors.red,
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  gradient: LinearGradient(
+                                    begin: Alignment(-1, 1),
+                                    end: Alignment(1, -1),
+                                    colors: [
+                                      Color(0xFF701EDB),
+                                      Color(0xFF0575FF),
+                                      Color(0xFF0AABFF)
+                                    ],
+                                    stops: [
+                                      0.0,
+                                      0.77,
+                                      1.0
+                                    ]
+                                  )
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("LINK API NOW", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
+                                ),
+                              ),
+                              onTap: () => {
+                                // Navigator.pushNamed(context, '/hometest'),
+                                
+                              },
+                            // ),
+                            // elevation: 2,
+                          ),
+                        ),
+                        SizedBox(height: displayHeight(context) * 0.05),
+                      ///
+                        Container(
+                          height: displayHeight(context) * 0.075,
+                          width: displayWidth(context) * 0.75,
+                          // child: Card(
+                          //   shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                          //   ),
+                            child: InkWell(
+                              splashColor: Colors.red,
+                              highlightColor: Colors.red,
+                              hoverColor: Colors.red,
+                              focusColor: Colors.red,
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  gradient: LinearGradient(
+                                    begin: Alignment(-1, 1),
+                                    end: Alignment(1, -1),
+                                    colors: [
+                                      Color(0xFF701EDB),
+                                      Color(0xFF0575FF),
+                                      Color(0xFF0AABFF)
+                                    ],
+                                    stops: [
+                                      0.0,
+                                      0.77,
+                                      1.0
+                                    ]
+                                  )
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text("I DON'T HAVE BINANCE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
+                                ),
+                              ),
+                              onTap: () => {
+                                // Navigator.pushNamed(context, '/hometest'),
+                                
+                              },
+                            // ),
+                            // elevation: 2,
+                          ),
+                        ),
+                      ///
+                      ]
+                    ),
+                  ),
+                ]
               ),
-            )
-            /// ### Welcome Text -> Middle of screen START ### ///
-          ],
-        ),
+            ),
+          ]
+        )
       ),
     );
   }

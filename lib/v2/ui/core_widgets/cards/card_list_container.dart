@@ -299,7 +299,7 @@ class _ListContainerStateWithContainer extends State<ListContainerWithContainer>
                   
                   SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                        return CardListTileWithCategory(coinList: state.coinList, index: index, cardCoinmarketcapListModel: state.cardCoinmarketcapListModel,);
+                        return CardListTileWithCategory(coinList: state.coinList, index: index, cardCoinmarketcapListModel: state.cardCoinmarketcapListModel);
                       },
                       childCount: state.coinList.length,
                     ),

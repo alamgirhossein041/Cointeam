@@ -33,7 +33,7 @@ import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
-import 'package:coinsnap/v2/ui/welcome/first.dart';
+import 'package:coinsnap/v2/ui/welcome/first2.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/hidden_panel.dart';
@@ -102,7 +102,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
           color: appBlack,
         ),
         child: FutureBuilder(
-          future: readStorage("api"),
+          future: readStorage("welcome"),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
