@@ -321,7 +321,7 @@ class NewCardListTileState extends State<NewCardListTile> {
         PopupMenuItem<String>(
           value: 'Delete',
           child: TextButton(
-            child: Text('Delete'),
+            child: Text('Delete', style: Theme.of(context).textTheme.bodyText1),
             onPressed: () async {
               /// Pseudocode: Get local storage
               /// Should return an object map

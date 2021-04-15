@@ -8,6 +8,8 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_co
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_event.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_event.dart';
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 /// ###                                                                                  ### ///
 /// ###  Version with NO API linked - list of coins retrieved from Coinmarketcap Top 100 ### ///
@@ -24,16 +26,18 @@ import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/app_repo/binance_time_sync/binance_time_sync.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
+import 'package:coinsnap/v2/ui/category/dashboard_with_category.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
 import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
-import 'package:coinsnap/v2/ui/welcome/first.dart';
+import 'package:coinsnap/v2/ui/welcome/first_OLD.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/hidden_panel.dart';
+import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -98,7 +102,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
           color: appBlack,
         ),
         child: FutureBuilder(
-          future: readStorage("api"),
+          future: readStorage("welcome"),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -116,6 +120,9 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 
                 if (snapshot.data != "none") {
                   log(snapshot.data.toString());
+                  BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+                  BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+                  BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
                   return DashboardWithNoApiWorking();
                 } else {
                   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -137,6 +144,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void _callBackSetState() {
     setState(() {
       log("Hello World");
+      BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
       // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
     });
   }
@@ -219,12 +227,12 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
   double _size = 100;
   bool _large = false;
 
-  void _updateSize() {
-    setState(() {
-      _size = _large ? 250.0 : 100.0;
-      _large = !_large;
-    });
-  }
+  // void _updateSize() {
+  //   setState(() {
+  //     _size = _large ? 250.0 : 100.0;
+  //     _large = !_large;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -589,10 +597,11 @@ class TileDefi extends StatelessWidget {
                     // Navigator.pushNamed(
                     //   context,
                     //   '/dashboardwithcategory',);
-                    Navigator.of(context).push(
+                    BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) =>
-                          DashboardWithCategory(categoryName: categoryName)
+                          DashboardWithCategoryNew(categoryName: categoryName)
                       ),
                     );
 
@@ -794,10 +803,11 @@ class TileTop100 extends StatelessWidget {
                     // Navigator.pushNamed(
                     //   context,
                     //   '/dashboardwithcategory',);
-                    Navigator.of(context).push(
+                    BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.top100CategoryData));
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) =>
-                          DashboardWithCategory(categoryName: categoryName)
+                          DashboardWithCategoryNew(categoryName: categoryName)
                       ),
                     );
 
@@ -994,10 +1004,11 @@ class TileDex extends StatelessWidget {
           child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
             onTap: () {
               log("CategoryName is " + categoryName.toString());
-              Navigator.of(context).push(
+              BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) =>
-                    DashboardWithCategory(categoryName: categoryName)
+                    DashboardWithCategoryNew(categoryName: categoryName)
                 ),
               );
 
@@ -1359,6 +1370,7 @@ class BinanceTileBlurb extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
+                              // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
                               Navigator.pushReplacementNamed(context, '/dashboard');
                             },
                             child: Column(

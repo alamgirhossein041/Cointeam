@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
@@ -21,10 +23,11 @@ class _InitialPageState extends State<InitialPage> {
   
   @override
   Widget build(BuildContext context) {
+    log("INITIALPAGE");
+    // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+    // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+    // BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
     SchedulerBinding.instance.addPostFrameCallback((_) => {Navigator.pushReplacementNamed(context, '/dashboardnoapitest')});
-    BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
-    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-    BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
     return Container();
   }
 }

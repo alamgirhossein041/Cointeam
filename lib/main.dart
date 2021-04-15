@@ -5,6 +5,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/top100/top100_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_price_info_bloc/get_price_info_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
@@ -12,11 +13,13 @@ import 'package:coinsnap/v2/repo/coin_repo/aggregator/coingecko/add_coin_list_25
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/global/global_coinmarketcap_stats_repo.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_chart_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_exchange_info_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_prices_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_repo.dart';
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/v2/ui/authentication/authentication.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
 import 'package:coinsnap/v2/ui/core_widgets/coins/coin_edit.dart';
@@ -26,14 +29,18 @@ import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/v2/ui/welcome/third.dart';
+import 'package:coinsnap/working_files/buy_portfolio.dart';
+import 'package:coinsnap/working_files/buy_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/error_screen.dart';
 import 'package:coinsnap/working_files/initial_page.dart';
-import 'package:coinsnap/working_files/market_dashboard.dart';
+// import 'package:coinsnap/working_files/market_dashboard.dart';
 import 'package:coinsnap/working_files/sell_portfolio.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_three.dart';
 import 'package:coinsnap/working_files/sell_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/settings.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -66,6 +73,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
     
@@ -78,7 +86,7 @@ class MyApp extends StatelessWidget {
           create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
         BlocProvider<SellPortfolioBloc>(
-          create: (context) => SellPortfolioBloc(binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+          create: (context) => SellPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
         BlocProvider<CardCoinmarketcapCoinLatestBloc> (
           create: (context) => CardCoinmarketcapCoinLatestBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
@@ -104,8 +112,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<CoingeckoList250Bloc> (
           create: (context) => CoingeckoList250Bloc(coingeckoList250Repository: CoingeckoList250RepositoryImpl()),
         ),
+        BlocProvider<BuyPortfolioBloc> (
+          create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+        ),
       ],
       child: MaterialApp(
+        navigatorObservers: <NavigatorObserver>[
+          observer
+        ],
         // initialRoute: '/settings',
         theme: ThemeData(
           // Default brightness
@@ -152,26 +166,35 @@ class MyApp extends StatelessWidget {
         // initialRoute: '/dashboard',
         // initialRoute: '/home',
         // initialRoute: '/dashboardnoapitest',
-        initialRoute: '/initialpage',
+
+        /// initialRoute: '/initialpage',
+        // initialRoute: '/authentication',
+        initialRoute: '/dashboardnoapitest',
+
+        // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
         // initialRoute: '/sellportfoliopage3',
         routes: {
           '/initialpage': (context) => InitialPage(),
+          '/buyportfolio': (context) => BuyPortfolioScreen(),
+          '/buyportfolio2': (context) => BuyPortfolioPage2(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),
           '/settings': (context) => Settings(),
           '/dashboardnoapitest': (context) => DashboardNoApiView(),
+          // '/dashboardnoapitest': (context) => DashboardWithNoApiWorking(),
           // '/marketdashboard': (context) => MarketDashboard(),
           '/errorscreen': (context) => ErrorScreen(),
           '/dashboard': (context) => Dashboard(),
           '/coinpage': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
+          '/third': (context) => Third(),
           '/authentication': (context) => Authentication(),
           '/hometest': (context) => HomeView(),
           '/editcointest': (context) => EditCoin(),
-          '/addcointest': (context) => AddCoin(),
+          '/addcoin': (context) => AddCoin(),
           '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),

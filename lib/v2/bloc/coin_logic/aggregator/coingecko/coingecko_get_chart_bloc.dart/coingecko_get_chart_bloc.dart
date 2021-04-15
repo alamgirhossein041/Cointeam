@@ -23,7 +23,7 @@ class CoingeckoGetChartBloc extends Bloc<CoingeckoGetChartEvent, CoingeckoGetCha
 
       try {
         /// ### data is a list of CoingeckoList250Model ### ///
-        List<CoingeckoList250Model> data = await coingeckoList250Repository.getCoinMarketCapCoinLatest();
+        List<CoingeckoList250Model> data = await coingeckoList250Repository.getCoinMarketCapCoinLatest('1');
 
         Map<String, dynamic> coingeckoGetChartMap = {};
 

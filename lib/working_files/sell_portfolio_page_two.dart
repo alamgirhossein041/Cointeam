@@ -5,6 +5,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
 import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,12 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
 
   int coinCount = 0;
   double coinTotalValue = 0.0;
+  ValueNotifier<double> totalValueChange = ValueNotifier(0.0);
 
   String symbol = '';
   double percentageValue = 0.0;
+
+  List<BinanceGetAllModel> coinListReceived = [];
 
   List<String> coinsToRemove = [];
 
@@ -123,6 +127,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                         },
                         builder: (context, state) {
                           if (state is GetTotalValueLoadedState) {
+                            coinListReceived = state.coinListReceived;
                             return Column(
                               children: <Widget> [
                                 Flexible(
@@ -174,57 +179,145 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                         ),
                                         SliverList(
                                           delegate: SliverChildBuilderDelegate((context, index) {
-                                            return Padding(
-                                              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                              child: Row(
-                                                children: <Widget> [
-                                                  Flexible(
-                                                    flex: 1,
-                                                    fit: FlexFit.tight,
-                                                    child: Container(), /// ### Todo: Icon
-                                                  ),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    fit: FlexFit.tight,
-                                                    child: Text(state.coinListReceived[index].coin),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    fit: FlexFit.tight,
-                                                    child: Align(
-                                                      alignment: Alignment.centerRight,
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                        child: Builder(
-                                                          builder: (context) {
-                                                            final condition = state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] != null;
-                                                          //   if (condition) {
-                                                          //     coinCount++;
 
-                                                          //     log("HEll o" + coinCount.toString());
-                                                          //     coinTotalValue += state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free);
-                                                          //     return Text("\$" + 
-                                                          // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2));
-                                                          //   } else {
-                                                          //     return Text("No USDT Pair");
-                                                          //   }
-                                                            
-                                                          // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2)) /// ### When we have logic to cancel 'locked' limit order coins, we will add .locked quantity here
-                                                          return condition ? Text("\$" + 
-                                                          (state.coinListReceived[index].totalUsdValue * percentageValue).toStringAsFixed(2))
-                                                            : Text("No USDT Pair");
-                                                          }
-                                                        ),
+                                            // state.coinListReceived.forEach((v) {
+                                            //         var pmt = state.binanceGetPricesMap[v.coin + 'USDT'];
+                                            //         if(pmt != null) {
+                                            //           var tmp = pmt * (v.free) * percentageValue;
+                                            //           if (tmp > 10) {
+                                            //             coinTotalValue += tmp;
+                                            //             totalValueChange.value = coinTotalValue;
+                                            //           } else {
+                                            //             coinsToRemove.add(v.coin);
+                                            //           }
+                                            
+                                            double tmp = state.binanceGetPricesMap[coinListReceived[index].coin + 'USDT'];
+                                            if (tmp != null) {
+                                              double pmt = tmp * (coinListReceived[index].free * percentageValue);
+                                              if (pmt > 10) {
+                                                
+                                                log("Print PMT Line");
+                                                
+                                                return Padding(
+                                                  padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                                  child: Row(
+                                                    children: <Widget> [
+                                                      Flexible(
+                                                        flex: 1,
+                                                        fit: FlexFit.tight,
+                                                        child: GestureDetector(
+                                                          child: Icon(Icons.close),
+                                                          onTap: () => {
+                                                            // coinListReceived.removeWhere((item) => item.coin == coinListReceived[index].coin)
+                                                            coinsToRemove.add(coinListReceived[index].coin),
+                                                            coinListReceived.removeAt(index),
+                                                            setState(() {}),
+                                                            /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
+                                                          },
+                                                        ), /// ### Todo: Icon
                                                       ),
-                                                    )
-                                                  )
-                                                ]
-                                              ),
-                                            );
+                                                      Flexible(
+                                                        flex: 3,
+                                                        fit: FlexFit.tight,
+                                                        child: Text(coinListReceived[index].coin),
+                                                      ),
+                                                      Flexible(
+                                                        flex: 3,
+                                                        fit: FlexFit.tight,
+                                                        child: Align(
+                                                          alignment: Alignment.centerRight,
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                                            child: Builder(
+                                                              builder: (context) {
+                                                                final condition = state.binanceGetPricesMap[coinListReceived[index].coin + 'USDT'] != null;
+                                                              //   if (condition) {
+                                                              //     coinCount++;
+
+                                                              //     log("HEll o" + coinCount.toString());
+                                                              //     coinTotalValue += state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free);
+                                                              //     return Text("\$" + 
+                                                              // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2));
+                                                              //   } else {
+                                                              //     return Text("No USDT Pair");
+                                                              //   }
+                                                                
+                                                              // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2)) /// ### When we have logic to cancel 'locked' limit order coins, we will add .locked quantity here
+                                                              return condition ? Text("\$" + 
+                                                              (coinListReceived[index].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                                                : Text("No USDT Pair");
+                                                              }
+                                                            ),
+                                                          ),
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),
+                                                );
+                                              } else {
+                                                coinsToRemove.add(coinListReceived[index].coin);
+                                                return Container();
+                                              }
+                                            } else {
+                                              return Container();
+                                            }
                                           },
-                                          childCount: state.coinListReceived.length
+                                          childCount: coinListReceived.length
                                           ),
                                         )
+                                        // SliverList(
+                                        //   delegate: SliverChildBuilderDelegate((context, index) {
+                                        //     return Padding(
+                                        //       padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                        //       child: Row(
+                                        //         children: <Widget> [
+                                        //           Flexible(
+                                        //             flex: 1,
+                                        //             fit: FlexFit.tight,
+                                        //             child: Container(), /// ### Todo: Icon
+                                        //           ),
+                                        //           Flexible(
+                                        //             flex: 3,
+                                        //             fit: FlexFit.tight,
+                                        //             child: Text(state.coinListReceived[index].coin),
+                                        //           ),
+                                        //           Flexible(
+                                        //             flex: 3,
+                                        //             fit: FlexFit.tight,
+                                        //             child: Align(
+                                        //               alignment: Alignment.centerRight,
+                                        //               child: Padding(
+                                        //                 padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                        //                 child: Builder(
+                                        //                   builder: (context) {
+                                        //                     final condition = state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] != null;
+                                        //                   //   if (condition) {
+                                        //                   //     coinCount++;
+
+                                        //                   //     log("HEll o" + coinCount.toString());
+                                        //                   //     coinTotalValue += state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free);
+                                        //                   //     return Text("\$" + 
+                                        //                   // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2));
+                                        //                   //   } else {
+                                        //                   //     return Text("No USDT Pair");
+                                        //                   //   }
+                                                            
+                                        //                   // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2)) /// ### When we have logic to cancel 'locked' limit order coins, we will add .locked quantity here
+                                        //                   return condition ? Text("\$" + 
+                                        //                   (state.coinListReceived[index].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                        //                     : Text("No USDT Pair");
+                                        //                   }
+                                        //                 ),
+                                        //               ),
+                                        //             )
+                                        //           )
+                                        //         ]
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        //   childCount: state.coinListReceived.length /// 3rd
+                                        //   ),
+                                        // )
                                       ]
                                     ),
                                   ),
@@ -268,12 +361,13 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                               // child: Text("\$" + (state.totalValue * state.btcSpecial / 1.1).toStringAsFixed(2)),
                                               child: Builder(
                                                 builder: (context) {
-                                                  state.coinListReceived.forEach((v) {
+                                                  coinListReceived.forEach((v) {
                                                     var pmt = state.binanceGetPricesMap[v.coin + 'USDT'];
                                                     if(pmt != null) {
                                                       var tmp = pmt * (v.free) * percentageValue;
                                                       if (tmp > 10) {
                                                         coinTotalValue += tmp;
+                                                        totalValueChange.value = coinTotalValue;
                                                       } else {
                                                         coinsToRemove.add(v.coin);
                                                       }
@@ -282,7 +376,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                   return Text("\$" + coinTotalValue.toStringAsFixed(2));
                                                 }
                                               )
-                                            ),
+                                            )
                                           )
                                         )
                                       ]
@@ -296,12 +390,16 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                     alignment: Alignment.center,
                                     child: Column(
                                       children: <Widget> [
-                                        Text("Selling " + (percentageValue*100).toStringAsFixed(1) + "% of portfolio into USDT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                        ValueListenableBuilder(
+                                          valueListenable: totalValueChange,
+                                          builder: (BuildContext context, double coinTotalValue, Widget child) {
+                                            return Text("Selling \$" + coinTotalValue.toStringAsFixed(2) + " into USDT (estimated)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
+                                          }
+                                        ),
                                         SizedBox(height: 30),
                                         Text("Binance Trade Rules:", style: TextStyle(color: Colors.white)),
                                         SizedBox(height: 10),
                                         Text("Values under \$10 cannot be sold.", style: TextStyle(color: Colors.white)),
-
                                       ]
                                     )
                                   )

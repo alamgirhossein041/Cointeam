@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_state.dart';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_exchange_info_model.dart';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_model.dart';
+import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_exchange_info_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_repo.dart';
@@ -11,15 +12,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
 
+import 'package:localstorage/localstorage.dart';
+
 class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   
   // SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
-  SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
+  SellPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository,
+  this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
 
   double totalValue = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
+  double divisor = 1.0;
+
+  Map<String, dynamic> coinsToSave = {};
+
+  final LocalStorage localStorage = LocalStorage("coinstreetapp");
+
   // Map<String, dynamic> toFirestore = {};
 
   // final firestoreInstance = FirebaseFirestore.instance;
@@ -29,6 +39,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   // FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
   // FtxExchangeInfoRepositoryImpl ftxExchangeInfoRepository;
   BinanceSellCoinRepositoryImpl binanceSellCoinRepository;
+  BinanceBuyCoinRepositoryImpl binanceBuyCoinRepository;
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
 
@@ -43,18 +54,29 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       coinsToRemove = event.coinsToRemove;
 
       yield SellPortfolioLoadingState();
+
+      log("8th April - Test 1");
+
       try {
+        log("Our coinTicker is : " + coinTicker);
 
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
+        log("8th April - Test 2");
         for(BinanceGetAllModel coins in binanceGetAllModel) {
+          log("8th April - Test 3");
           if(coins.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
             try {
-              double divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+              var result;
+              if(coins.coin == 'USDT') {
+                divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
+              } else {
+                divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+              }
               var tmp = coins.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
@@ -66,13 +88,20 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 log('To Sell: ' + tmp.toString());
                 log("\n\nSelling to ticker: " + coinTicker);
                 log('\n\n');
-                var result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
+                if(coins.coin == 'USDT') {
+                  log("########");
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + coins.coin, tmp);
+                } else {
+                  result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
+                }
                 log(result['code'].toString());
                 if(result['code'] == null) {
                   totalValue += double.parse(result['cummulativeQuoteQty']);
                   log("What's wrong now?");
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   log("Running totalValue is $totalValue");
+                  /// 25th
+                  coinsToSave[coins.coin] = result['cummulativeQuoteQty'];
                 }
               }
             } catch (e) {
@@ -83,6 +112,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
           log(totalValue.toString());
+          coinsToSave[coinTicker] = totalValue;
+          await localStorage.setItem("portfolio", coinsToSave);
         }
 
         /// ### This is where we would add to database?? ### ///
@@ -160,6 +191,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
         log("wallah");
+        log(e.toString());
         yield SellPortfolioErrorState(errorMessage : e.toString());
       }
     }

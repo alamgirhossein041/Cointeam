@@ -1,20 +1,16 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/repo/coin_repo/aggregator/coingecko/add_coin_list_250/coingecko_list_250.dart';
-import 'package:coinsnap/v2/repo/coin_repo/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
-import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
-import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_chart_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:localstorage/localstorage.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   DrawerMenu({Key key}) : super(key: key);
+
+  @override
+  DrawerMenuState createState() => DrawerMenuState();
+}
+
+class DrawerMenuState extends State<DrawerMenu> {
+  final feedbackTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +55,7 @@ class DrawerMenu extends StatelessWidget {
               title: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'User Name Placeholderrrrrrrrrrr',
+                  'Welcome',
                   style: TextStyle(color: Colors.white, fontSize:16),
                 ),
               ),
@@ -68,60 +64,8 @@ class DrawerMenu extends StatelessWidget {
             SizedBox(height: displayHeight(context) * 0.025),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              /// title: Text('Portfolio 1 - Live'),
               title: Text(
-                'Test Crypto Compare',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                CryptoCompareRepositoryImpl hello = CryptoCompareRepositoryImpl();
-                hello.getHourlyCryptoCompare();
-                // Navigator.pushReplacementNamed(context, '/first');
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              /// title: Text('Portfolio 1 - Live'),
-              title: Text(
-                'Test Binance',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                BinanceGetChartRepositoryImpl helloBinance = BinanceGetChartRepositoryImpl();
-                helloBinance.getBinanceChart('btc', '');
-                // Navigator.pushReplacementNamed(context, '/first');
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              /// title: Text('Portfolio 1 - Live'),
-              title: Text(
-                'Test CoinGecko',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                CoingeckoList250RepositoryImpl helloGecko = CoingeckoList250RepositoryImpl();
-                helloGecko.getCoinMarketCapCoinLatest();
-                // Navigator.pushReplacementNamed(context, '/first');
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              /// title: Text('Portfolio 1 - Live'),
-              title: Text(
-                'Test CoinMarketCap',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                CardCoinmarketcapCoinLatestRepositoryImpl helloCmc = CardCoinmarketcapCoinLatestRepositoryImpl();
-                helloCmc.getCoinMarketCapCoinLatest();
-                // Navigator.pushReplacementNamed(context, '/first');
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                'Dashboard - No API',
+                'Dashboard',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
@@ -141,89 +85,237 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'New Portfolio Screen',
+                'My Portfolio',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
                 Navigator.pushReplacementNamed(context, '/dashboard');
               },  
             ),
+            SizedBox(height: 320),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                '* Delete 1st Time Login API *',
+                "More Coming Soon...",
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                final storage = FlutterSecureStorage();
-                storage.delete(key: "api");
               },
             ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                '* Delete Trading API *',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                final storage = FlutterSecureStorage();
-                storage.delete(key: "trading");
+            /// ///
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Delete 1st Time Login API *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = FlutterSecureStorage();
+            //     storage.delete(key: "welcome");
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Log Trading API *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () async {
+            //     final storage = FlutterSecureStorage();
+            //     String binanceApi = await storage.read(key: "binanceApi");
+            //     String binanceSapi = await storage.read(key: "binanceSapi");
+            //     if(binanceApi != null) {
+            //       log(binanceApi);
+            //       log(binanceSapi);
+            //     } else {
+            //       log("There is no binanceApi");
+            //     }
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Delete Trading API *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = FlutterSecureStorage();
+            //     storage.delete(key: "trading");
                 
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                '* Clear Local Storage *',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                final storage = LocalStorage("coinstreetapp");
-                storage.clear();
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                '* Log Local Storage *',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                final storage = LocalStorage("coinstreetapp");
-                log(storage.getItem("prime").toString());
-                // json.decode(storage.getItem("prime")).forEach((k,v) {
-                //   log(k.toString());
-                //   log(v.toString());
-                // });
-                // log(storage.getItem("prime").symbol.toString());
-                /// 19th oh mfer the key value store can't just be called as 
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                '* Sell Portfolio Screen *',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/sellportfolio');
-              },
-            ),
-            SizedBox(height: 30),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                '* Reset Application & State *',
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
-                // Navigator.pushNamed(context, '/hometest');
-                Phoenix.rebirth(context);
-              },
-            ),
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Clear Local Storage *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = LocalStorage("coinstreetapp");
+            //     storage.clear();
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Log Local Storage *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = LocalStorage("coinstreetapp");
+            //     log(storage.getItem("prime").toString());
+            //     // json.decode(storage.getItem("prime")).forEach((k,v) {
+            //     //   log(k.toString());
+            //     //   log(v.toString());
+            //     // });
+            //     // log(storage.getItem("prime").symbol.toString());
+            //     /// 19th oh mfer the key value store can't just be called as 
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Log Portfolio Data *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = LocalStorage("coinstreetapp");
+            //     log(storage.getItem("portfolio").toString());
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Delete Portfolio Data *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final storage = LocalStorage("coinstreetapp");
+            //     storage.deleteItem("portfolio");
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Buy NEO *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final BinanceBuyCoinRepositoryImpl neo = BinanceBuyCoinRepositoryImpl();
+            //     neo.binanceBuyCoin('NEOUSDT', 30);
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Buy XRP *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final BinanceBuyCoinRepositoryImpl xrp = BinanceBuyCoinRepositoryImpl();
+            //     xrp.binanceBuyCoin('XRPUSDT', 30);
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Buy LTC *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final BinanceBuyCoinRepositoryImpl ltc = BinanceBuyCoinRepositoryImpl();
+            //     ltc.binanceBuyCoin('LTCUSDT', 30);
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Buy BNB *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final BinanceBuyCoinRepositoryImpl bnb = BinanceBuyCoinRepositoryImpl();
+            //     bnb.binanceBuyCoin('BNBUSDT', 30);
+            //   },
+            // ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Buy CAKE *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final BinanceBuyCoinRepositoryImpl cake = BinanceBuyCoinRepositoryImpl();
+            //     cake.binanceBuyCoin('CAKEUSDT', 25);
+            //   },
+            // ),
+            // SizedBox(height: 30),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* LOAD DEV API *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () async {
+            //     final secureStorage = FlutterSecureStorage();
+
+            //     await secureStorage.write(key: 'binanceApi', value: 'cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU');
+            //     await secureStorage.write(key: 'binanceSapi', value: 'mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD');
+            //   },
+            // ),
+            // SizedBox(height: 30),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     '* Reset Application & State *',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     // Navigator.pushNamed(context, '/hometest');
+            //     Phoenix.rebirth(context);
+            //   },
+            // ),
+            // /// Comment up to here ///
+            // SizedBox(height: 70),
+            //   Center(child: Text("Feedback Box", style: TextStyle(color: Colors.white)),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(30,30,30,10),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: Colors.white,
+            //     ),
+            //     child: TextFormField(
+            //       controller: feedbackTextController,
+            //       keyboardType: TextInputType.multiline,
+            //       maxLines: 10,
+            //     ),
+            //   ),
+            // ),
+            // ListTile(
+            //   title: Center(child: Text(
+            //     '(Submit Feedback)',
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),),
+            //   onTap: () {
+            //     // Navigator.pushNamed(context, '/hometest');
+            //     /// DB: Change this log into an API call with whatever is in the text field
+            //     /// ### https://flutter.dev/docs/cookbook/forms/retrieve-input ### ///
+            //     log(feedbackTextController.text);
+            //   },
+            // ),
+            // SizedBox(height: 500),
           ],
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    /// DB: Make an API call with whatever is in the text field (lol)
+    feedbackTextController.dispose();
+    super.dispose();
   }
 }

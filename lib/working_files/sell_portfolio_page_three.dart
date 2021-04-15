@@ -98,7 +98,8 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                             fit: FlexFit.tight,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("You sold " + (percentageValue*100).toString() + "% of your portfolio", style: TextStyle(color: Colors.white))
+                              // child: Text("You sold " + (percentageValue*100).toString() + "% of your portfolio", style: TextStyle(color: Colors.white))
+                              child: Text("You have received:", style: TextStyle(color: Colors.white)),
                             )
                           ),
                           Flexible(
@@ -109,6 +110,14 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                               child: Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.white, fontSize: 30))
                             ),
                           ),
+                          // Flexible(
+                          //   flex: 1,
+                          //   fit: FlexFit.tight,
+                          //   child: Align(
+                          //     alignment: Alignment.center,
+                          //     child: Text(
+                          //   )
+                          // )
                           // Flexible(
                           //   flex: 1,
                           //   fit: FlexFit.tight,
@@ -190,13 +199,17 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                     fit: FlexFit.tight,
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: Text("Placing market orders, do not close the app", style: TextStyle(color: Colors.white, fontSize: 28)),
+                      child: Column(
+                        children: <Widget> [
+                          Text("Placing market orders", style: TextStyle(color: Colors.white, fontSize: 28)),
+                          Text("Do not close the app", style: TextStyle(color: Colors.white, fontSize: 28)),
+                        ]
+                      )
                     ),
                   );
                 }
               }
             )
-            
           ]
         ),
       )

@@ -11,6 +11,7 @@ import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_
 import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
@@ -193,6 +194,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
   String selectedItemSymbol;
   bool isSelected = false;
   TextEditingController _quantity = TextEditingController();
+  String selectedCoin = '';
 
   var localStorageResponse;
 
@@ -203,6 +205,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // final snackBar = SnackBar(content: Text('Yay! A SnackBar!' + _quantity.text + selectedCoin));
 
     // Flex row padding
     var rowPadding = EdgeInsets.only(top: 15, bottom: 15, left: 25, right: 0);
@@ -251,6 +254,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                             //   selectedItemSymbol = item.symbol;
                             //   isSelected = true;
                             // });
+                            
                             return SelectedItemWidget(item.name, _callBackDeleteSelected, deleteSelectedItem);
                           },
                           noItemsFoundWidget: NoItemsFound(),
@@ -260,6 +264,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                           onItemSelected: (item) {
                             /// ### VoidCallback parent widget setState??? ### ///
                             setState(() {
+                              selectedCoin = item.symbol;
                               selectedItemSymbol = item.symbol;
                               isSelected = true;
                               var localQuantity = localStorage.getItem(item.symbol);
@@ -327,6 +332,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                         // log(widget.coinMap.toString());
                                         // log(widget.coinMap[selectedItemSymbol].toString());
                                         return TextField(
+                                          keyboardType: TextInputType.number,
                                           cursorWidth: 2,
                                           cursorColor: Colors.white,
                                           controller: _quantity,
@@ -507,7 +513,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                               // var primeCoin = localStorage.getItem("prime");
                               return InkWell(
                                 child: Center(
-                                                                  child: Container(
+                                  child: Container(
                                     height: 52,
                                     width: 250,
                                     decoration: BoxDecoration(
@@ -547,9 +553,13 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                     primeMap[selectedItemSymbol] = double.parse(_quantity.text),
                                     // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
                                   },
-                                  log("Is this where it's going wrong"),
+                                  // log("Is this where it's going wrong"),
                                   localStorage.setItem("prime", jsonEncode(primeMap)),
                                   log(localStorage.getItem("prime").toString()),
+                                  // Navigator.of(context).pop(selectedCoin),
+                                  Navigator.pop(context, BoxedReturns(selectedCoin, _quantity.text)),
+                                  // Scaffold.of(context).showSnackBar(snackBar),
+
                                   /// primeMap = PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text)),
                                   /// localStorage.setItem("prime", primeMap.toJson()),
                                   /// 19th
@@ -574,14 +584,15 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                               child: Text("ADD TO PORTFOLIO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
                             ),
                           ),
-                          onTap: () => {
-                            // Navigator.pushNamed(context, '/hometest'),
-                            // dbPortfolioPostTest.dbPortfolioPostTest(),
-                            log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
-                          },
-                        );
-                      }
+                        onTap: () => {
+                          // Navigator.pushNamed(context, '/hometest'),
+                          // dbPortfolioPostTest.dbPortfolioPostTest(),
+                          log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
+                          // Scaffold.of(context).showSnackBar(snackBar),
+                        },
+                      );
                     }
+                  }
                   ),
                 ),
               ]

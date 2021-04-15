@@ -69,7 +69,10 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             child: Icon(Icons.arrow_back, color: Colors.white),
-                            onTap: () => {Navigator.pop(context)},
+                            onTap: () => {
+                              Navigator.pop(context),
+                              setState(() {})
+                            },
                           )
                         ),
                       ),
@@ -115,9 +118,22 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                       Flexible(
                         flex: 2,
                         fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("Cross Sell", style: TextStyle(fontSize: 24))
+                        child: Row(
+                          children: <Widget> [
+                            Flexible(
+                              flex: 1,
+                              fit: FlexFit.tight,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text("Cross", style: TextStyle(fontSize: 24, color: Colors.grey[400])),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              fit: FlexFit.tight,
+                              child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
+                            ),
+                          ]
                         )
                       ),
                       Flexible(
@@ -248,9 +264,9 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         flex: 3,
                         fit: FlexFit.tight,
                         child: Align(
-                          alignment: Alignment.center,
+                          alignment: Alignment.bottomCenter,
                           child: Padding(
-                            padding: EdgeInsets.only(bottom: displayHeight(context) * 0.1),
+                            padding: EdgeInsets.only(bottom: displayHeight(context) * 0.03),
                             child: Container( /// ### Review Order button
                               height: displayHeight(context) * 0.055,
                               width: displayWidth(context) * 0.35,
@@ -286,6 +302,19 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           ),
                         )
                       ),
+                      Flexible(
+                        flex: 2,
+                        fit: FlexFit.tight,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
+                          // child: TextButton(
+                          //   onPressed: () => {
+                          //     Navigator.pushReplacementNamed(context, '/buyportfolio')
+                          //   },
+                            child: Text("Buy Order"),
+                          // ),
+                        )
+                      )
                     ],
                   )
                 )
