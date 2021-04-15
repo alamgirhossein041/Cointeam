@@ -29,13 +29,6 @@
             {
               "client_id": "782600715815-4nro4ljr2cbth3as4gsd5llqc32nh8it.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "782600715815-nt84t74hqoek9hv3fmmolegbaljuqrbm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.coinsnap"
-              }
             }
           ]
         }

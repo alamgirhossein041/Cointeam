@@ -14,14 +14,14 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
 
-class DrawerMenu extends StatefulWidget {
-  DrawerMenu({Key key}) : super(key: key);
+class DrawerMenuDev extends StatefulWidget {
+  DrawerMenuDev({Key key}) : super(key: key);
 
   @override
   DrawerMenuState createState() => DrawerMenuState();
 }
 
-class DrawerMenuState extends State<DrawerMenu> {
+class DrawerMenuState extends State<DrawerMenuDev> {
   final feedbackTextController = TextEditingController();
 
   @override
@@ -67,7 +67,7 @@ class DrawerMenuState extends State<DrawerMenu> {
               title: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Welcome',
+                  'User Name Placeholderrrrrrrrrrr',
                   style: TextStyle(color: Colors.white, fontSize:16),
                 ),
               ),
@@ -76,8 +76,60 @@ class DrawerMenuState extends State<DrawerMenu> {
             SizedBox(height: displayHeight(context) * 0.025),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
               title: Text(
-                'Dashboard',
+                'Test Crypto Compare',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                CryptoCompareRepositoryImpl hello = CryptoCompareRepositoryImpl();
+                hello.getHourlyCryptoCompare();
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test Binance',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                BinanceGetChartRepositoryImpl helloBinance = BinanceGetChartRepositoryImpl();
+                helloBinance.getBinanceChart('btc', '');
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test CoinGecko',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                CoingeckoList250RepositoryImpl helloGecko = CoingeckoList250RepositoryImpl();
+                helloGecko.getCoinMarketCapCoinLatest('1');
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                'Test CoinMarketCap',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                CardCoinmarketcapCoinLatestRepositoryImpl helloCmc = CardCoinmarketcapCoinLatestRepositoryImpl();
+                helloCmc.getCoinMarketCapCoinLatest();
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                'Dashboard - No API',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
@@ -97,14 +149,13 @@ class DrawerMenuState extends State<DrawerMenu> {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                'My Portfolio',
+                'New Portfolio Screen',
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
                 Navigator.pushReplacementNamed(context, '/dashboard');
               },  
             ),
-            /// ///
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
@@ -277,7 +328,6 @@ class DrawerMenuState extends State<DrawerMenu> {
                 Phoenix.rebirth(context);
               },
             ),
-            /// Comment up to here ///
             SizedBox(height: 70),
               Center(child: Text("Feedback Box", style: TextStyle(color: Colors.white)),
             ),
@@ -306,7 +356,7 @@ class DrawerMenuState extends State<DrawerMenu> {
                 log(feedbackTextController.text);
               },
             ),
-            SizedBox(height: 500),
+            SizedBox(height: 50),
           ],
         ),
       ),

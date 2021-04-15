@@ -62,6 +62,7 @@ class DashboardState extends State<Dashboard> {
     final information = await Navigator.push(
       context,
       MaterialPageRoute(
+        settings: RouteSettings(name: '/addcoin'),
         fullscreenDialog: true, builder: (context) => AddCoin()),
     );
     setState(() {

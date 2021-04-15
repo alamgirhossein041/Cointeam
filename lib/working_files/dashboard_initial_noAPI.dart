@@ -33,7 +33,7 @@ import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
 import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
-import 'package:coinsnap/v2/ui/welcome/first2.dart';
+import 'package:coinsnap/v2/ui/welcome/first_OLD.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/hidden_panel.dart';
@@ -120,6 +120,9 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 
                 if (snapshot.data != "none") {
                   log(snapshot.data.toString());
+                  BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+                  BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+                  BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
                   return DashboardWithNoApiWorking();
                 } else {
                   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -141,6 +144,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void _callBackSetState() {
     setState(() {
       log("Hello World");
+      BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
       // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
     });
   }

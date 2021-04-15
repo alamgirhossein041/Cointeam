@@ -24,9 +24,9 @@ class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
     log("INITIALPAGE");
-    BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
-    BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-    BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
+    // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
+    // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+    // BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
     SchedulerBinding.instance.addPostFrameCallback((_) => {Navigator.pushReplacementNamed(context, '/dashboardnoapitest')});
     return Container();
   }

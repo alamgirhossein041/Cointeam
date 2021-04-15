@@ -99,8 +99,15 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
               timeOffset = 31449600000;
             }
             if(timeNow - timeOffset < h.openTimestamp) {
-              sumMap[h.openTimestamp] == null ? sumMap[h.openTimestamp] = double.parse(h.open) * binanceGetPricesMap[tmp] :
-              sumMap[h.openTimestamp] += double.parse(h.open) * binanceGetPricesMap[tmp];
+              if(sumMap[h.openTimestamp] == null) {
+                sumMap[h.openTimestamp] = double.parse(h.open) * binanceGetPricesMap[tmp];
+              } else {
+                if(h.open != null) {
+                  log(h.toString());
+                  log(g.coinTicker);
+                  sumMap[h.openTimestamp] += double.parse(h.open) * binanceGetPricesMap[tmp];
+                }
+              }
             }
             // sumMap[h.openTimestamp] = sumMap[h.openTimestamp] + double.parse(h.open);
             // log("Or");
@@ -165,6 +172,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         yield BinanceGetChartLoadedState(binanceGetChartDataList: priceTimeDataList, timeSelection: timeSelection); /// TODO : insert parameters later
         // log("???/");
       } catch (e) {
+        log(e.toString());
         log("Something went wrong in binance_get_chart_bloc.dart");
         yield BinanceGetChartErrorState(errorMessage : e.toString());
       }

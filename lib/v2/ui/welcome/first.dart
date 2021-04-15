@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:async';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
 
 class First extends StatefulWidget {
@@ -19,11 +21,15 @@ class FirstState extends State<First> with TickerProviderStateMixin{
   @override
   void initState() { 
     super.initState();
+    analytics.logEvent(
+      name: 'welcome_screen_1'
+    );
+    
     /// Initialise animationControllers here if needed
     animationControllerWelcome = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
-      reverseDuration: Duration(seconds: 2),
+      reverseDuration: Duration(seconds: 1),
     );
     animationWelcome = Tween(begin: 0.0, end: 1.0).animate(animationControllerWelcome);
   }
@@ -36,21 +42,23 @@ class FirstState extends State<First> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      animationControllerWelcome.forward();
+    if(_visible == true) {
       Future.delayed(Duration(milliseconds: 1000), () {
-        animationControllerWelcome.reverse();
-      });
-    });
-    Future.delayed(Duration(milliseconds: 5000), () {
-      log("Wat");
-      if(_visible == true) {
-        setState(() {
-          _visible = !_visible;
+        animationControllerWelcome.forward();
+        Future.delayed(Duration(milliseconds: 2000), () {
+          animationControllerWelcome.reverse();
         });
-      }
+      });
+    }
+    if(_visible == true) {
+      Future.delayed(Duration(milliseconds: 5000), () {
+        log("Wat");
+          setState(() {
+            _visible = !_visible;
+          });
       // Navigator.pushNamed(context, '/first');
-    });
+      });
+    }
     return Scaffold(
       body: Container(
         child: Stack(
@@ -86,11 +94,11 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                         ),
                       ),
                       Flexible(
-                        flex: 1,
+                        flex: 4,
                         fit: FlexFit.tight,
                         child: FadeTransition(
                           opacity: animationWelcome,
-                          child: Text("Welcome", style: TextStyle(fontSize: 20, color: Colors.white))
+                          child: Text("Welcome", style: TextStyle(fontSize: 30, color: Colors.white))
                         ),
                       ),
                     ]
@@ -180,8 +188,10 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                                 ),
                               ),
                               onTap: () => {
+                                // writeStorage("welcome", "true"),
+                                // Navigator.pushReplacementNamed(context, '/initialpage')
                                 // Navigator.pushNamed(context, '/hometest'),
-                                
+                                Navigator.pushReplacementNamed(context, '/second')
                               },
                             // ),
                             // elevation: 2,
