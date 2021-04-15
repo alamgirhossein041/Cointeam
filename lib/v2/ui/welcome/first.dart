@@ -3,8 +3,6 @@ import 'dart:async';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/services/firebase_analytics.dart';
-import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
-import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
 
 class First extends StatefulWidget {

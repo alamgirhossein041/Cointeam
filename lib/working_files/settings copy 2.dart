@@ -72,15 +72,15 @@ class SettingsState extends State<Settings> {
                   height: displayHeight(context) * 0.07,
                   child: GestureDetector(
                     onTap: () => {
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (BuildContext context) => Dialog(
-                      //     /// Manual padding override because Dialog's default padding is FAT
-                      //     insetPadding: EdgeInsets.all(10),
-                      //     /// Connect API tutorial modal
-                      //     child: CarouselDemo(),
-                      //   ),
-                      // ),
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                          /// Manual padding override because Dialog's default padding is FAT
+                          insetPadding: EdgeInsets.all(10),
+                          /// Connect API tutorial modal
+                          child: CarouselDemo(),
+                        ),
+                      ),
                     },
                     child: Container(
                       decoration: GreyUndersideBorder,
@@ -93,7 +93,7 @@ class SettingsState extends State<Settings> {
                               alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: EdgeInsets.only(left: 30),
-                                child: Text("Beta v1.0", style: TextStyle(color: Colors.white)),
+                                child: Text("Connect Exchange", style: TextStyle(color: Colors.white)),
                               ),
                             ),
                           ),
@@ -104,8 +104,7 @@ class SettingsState extends State<Settings> {
                               alignment: Alignment.centerRight,
                               child: Padding(
                                 padding: EdgeInsets.only(right: 30),
-                                // child: Icon(Icons.keyboard_arrow_right, color: Colors.grey)
-                                child: Container(),
+                                child: Icon(Icons.keyboard_arrow_right, color: Colors.grey)
                               ),
                             ),
                           )
