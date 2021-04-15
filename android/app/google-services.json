@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "782600715815",
-    "project_id": "coinsnap-6b7f6",
-    "storage_bucket": "coinsnap-6b7f6.appspot.com"
+    "project_number": "572881460039",
+    "project_id": "coinstreet-fe89a",
+    "storage_bucket": "coinstreet-fe89a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:782600715815:android:0800fc0a1d9d7fdeea5802",
+        "mobilesdk_app_id": "1:572881460039:android:b1f468d5e13b4da7634a62",
         "android_client_info": {
-          "package_name": "com.example.coinsnap"
+          "package_name": "com.beta.coinstreet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "782600715815-4nro4ljr2cbth3as4gsd5llqc32nh8it.apps.googleusercontent.com",
+          "client_id": "572881460039-j20kgvgoi723gbeunedu3h2lp6dk7u52.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCA0UjBGEg_fZa_HqOPtpfYfTA45pCJE0g"
+          "current_key": "AIzaSyDKs1v9rkIMS5USVmn-zdQKlh8AV6AC1EA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "782600715815-4nro4ljr2cbth3as4gsd5llqc32nh8it.apps.googleusercontent.com",
+              "client_id": "572881460039-j20kgvgoi723gbeunedu3h2lp6dk7u52.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "782600715815-nt84t74hqoek9hv3fmmolegbaljuqrbm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.coinsnap"
-              }
             }
           ]
         }

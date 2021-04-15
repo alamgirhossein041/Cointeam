@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coinsnap">
+    package="com.beta.coinstreet">
    <application
         android:label="Coinstreet"
         android:icon="@mipmap/ic_launcher">

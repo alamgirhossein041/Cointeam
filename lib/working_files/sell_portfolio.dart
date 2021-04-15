@@ -307,12 +307,12 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Padding(
                           padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
-                          child: TextButton(
-                            onPressed: () => {
-                              Navigator.pushReplacementNamed(context, '/buyportfolio')
-                            },
+                          // child: TextButton(
+                          //   onPressed: () => {
+                          //     Navigator.pushReplacementNamed(context, '/buyportfolio')
+                          //   },
                             child: Text("Buy Order"),
-                          ),
+                          // ),
                         )
                       )
                     ],

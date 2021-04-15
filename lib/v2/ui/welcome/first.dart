@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/services/firebase_analytics.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
 
 class First extends StatefulWidget {
@@ -234,8 +235,9 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                                 ),
                               ),
                               onTap: () => {
+                                writeStorage("welcome", "true"),
+                                Navigator.pushReplacementNamed(context, '/dashboardnoapitest')
                                 // Navigator.pushNamed(context, '/hometest'),
-                                
                               },
                             // ),
                             // elevation: 2,
