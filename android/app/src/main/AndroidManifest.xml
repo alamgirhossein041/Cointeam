@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.beta.coinstreet">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Coinstreet"
         android:icon="@mipmap/ic_launcher">
