@@ -16,7 +16,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
 
   // double totalValue = 0.0;
   double totalBuyQuote = 1.0;
-  double pctToSell = 1.0;
+  // double pctToSell = 1.0;
   String coinTicker = "USDT";
   // List<String> coinsToRemove = [];
   double divisor = 1.0;
@@ -48,7 +48,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   
     if (event is FetchBuyPortfolioEvent) {
       // pctToSell = event.value / 100;
-      pctToSell = event.value;
+      totalBuyQuote = event.totalBuyQuote;
       coinTicker = event.coinTicker;
       // coinsToRemove = event.coinsToRemove;
       portfolioList = event.portfolioList;
@@ -85,7 +85,8 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                 log(v);
                 log(portfolioDataMap.data.toString());
                 log(portfolioDataMap.data[v].toString());
-                log(pctToSell.toString());
+                log(totalBuyQuote.toString());
+                ///
                 double buyQuantity = double.parse(portfolioDataMap.data[v]);
                 var tmp = (buyQuantity * pctToSell);
                 log("tmp before everything is: " + tmp.toString());
