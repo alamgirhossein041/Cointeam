@@ -126,7 +126,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         /// ### This is where we would add to database?? ### ///
 
         log(totalValue.toString());
-        coinsToSave[coinTicker] = totalValue;
+        coinsToSave[coinTicker + "TOTAL"] = totalValue;
         await localStorage.setItem("portfolio", coinsToSave);
         // log("pushed to firestore");
         // log("error1");

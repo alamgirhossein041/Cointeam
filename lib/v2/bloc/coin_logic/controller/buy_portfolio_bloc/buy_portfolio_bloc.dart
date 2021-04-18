@@ -20,6 +20,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   String coinTicker = "USDT";
   // List<String> coinsToRemove = [];
   double divisor = 1.0;
+  String originalCoinTicker = "";
 
   List<String> portfolioList = [];
   GetPortfolioModel portfolioDataMap;
@@ -67,8 +68,16 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
         
         /// if(portfolioList != null) {
         
+        if(portfolioDataMap.data["USDTTOTAL"] != null) {
+          originalCoinTicker = "USDTTOTAL";
+        } else if(portfolioDataMap.data["BTCTOTAL"] != null) {
+          originalCoinTicker = "BTCTOTAL";
+        } else {
+          log("Neither USDT or BTC detected");
+        }
+        
           portfolioList.forEach((v) async {
-            if(v == coinTicker) {
+            if(v == (coinTicker + "TOTAL")) {
               log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
             } else {
               try {
@@ -88,7 +97,8 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                 log(totalBuyQuote.toString());
                 ///
                 double buyQuantity = double.parse(portfolioDataMap.data[v]);
-                var tmp = (buyQuantity * pctToSell);
+                // var tmp = (buyQuantity * pctToSell);
+                var tmp = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
                 log("tmp before everything is: " + tmp.toString());
                 var zeroTarget = double.parse((tmp % divisor).toStringAsFixed(6));
                 log("zeroTarget is: " + zeroTarget.toString());
