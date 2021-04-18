@@ -25,6 +25,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
   double divisor = 1.0;
+  // int i = 0;
 
   Map<String, dynamic> coinsToSave = {};
 
@@ -65,11 +66,12 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
         log("8th April - Test 2");
-        // for(BinanceGetAllModel coins in binanceGetAllModel) {
-          binanceGetAllModel.forEach((v) async {
+        // for(BinanceGetAllModel v in binanceGetAllModel) {
+          await Future.forEach(binanceGetAllModel, (v) async {
           log("8th April - Test 3");
           if(v.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
+            // i++;
           } else {
             try {
               var result;
@@ -105,14 +107,23 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   coinsToSave[v.coin] = result['cummulativeQuoteQty'];
                 }
               }
+              // i++;
             } catch (e) {
               log(e.toString());
               log(v.coin + " does not have a $coinTicker pair on Binance");
+              // i++;
             }
           }
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
+
+        /// use i++ counter!
+        /// 
+
         });
+        log(totalValue.toString());
+        coinsToSave[coinTicker + "TOTAL"] = totalValue;
+        await localStorage.setItem("portfolio", coinsToSave);
 
         /// ### This is where we would add to database?? ### ///
 
@@ -125,9 +136,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
         /// ### This is where we would add to database?? ### ///
 
-        log(totalValue.toString());
-        coinsToSave[coinTicker + "TOTAL"] = totalValue;
-        await localStorage.setItem("portfolio", coinsToSave);
         // log("pushed to firestore");
         // log("error1");
 
