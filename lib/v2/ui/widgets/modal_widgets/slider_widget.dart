@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/link_api_helper_modal.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/link_api_helper_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

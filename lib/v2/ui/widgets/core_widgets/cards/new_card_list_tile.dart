@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/numbers.dart';
 // import 'package:coinsnap/working_files/custom_popup_menu.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class NewCardListTileState extends State<NewCardListTile> {
     return Container(
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/coinpage', arguments: {'coinListData': widget.coinListData.data[widget.index], 'index' :widget.index, 'coinBalancesMap': widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol], 'totalValue': widget.totalValue});
+          Navigator.pushNamed(context, '/viewcoin', arguments: {'coinListData': widget.coinListData.data[widget.index], 'index' :widget.index, 'coinBalancesMap': widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol], 'totalValue': widget.totalValue});
         },
         child: Container(
           height: displayHeight(context) * 0.11,
@@ -187,7 +186,7 @@ class NewCardListTileState extends State<NewCardListTile> {
         //         ),
         //         child: GestureDetector(
         //           onTap: () {
-        //             // Navigator.pushNamed(context, '/coinpage', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
+        //             // Navigator.pushNamed(context, '/viewcoin', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
         //           },
         //           child: Container(
         //             padding: EdgeInsets.fromLTRB(25,2,25,2),

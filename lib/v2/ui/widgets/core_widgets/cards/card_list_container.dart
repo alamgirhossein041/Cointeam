@@ -13,9 +13,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_ch
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
-import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
-import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/cards/card_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;

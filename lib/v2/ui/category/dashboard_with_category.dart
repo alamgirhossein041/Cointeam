@@ -6,27 +6,20 @@ import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_stat
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_state.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_state.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
-import 'package:coinsnap/v2/ui/core_widgets/cards/new_card_list_tile.dart';
-import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
-import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/cards/card_list_tile.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart';
-import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 import 'dart:math' as math;
 
 

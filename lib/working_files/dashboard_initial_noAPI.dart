@@ -27,23 +27,17 @@ import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/app_repo/binance_time_sync/binance_time_sync.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
 import 'package:coinsnap/v2/ui/category/dashboard_with_category.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
-import 'package:coinsnap/v2/ui/main/dashboard.dart';
-import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
-import 'package:coinsnap/v2/ui/welcome/first_OLD.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
-import 'package:coinsnap/working_files/hidden_panel.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:math' as math;
-import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
@@ -426,7 +420,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                     Container(
                       height: _heightHideContainer + _heightOffset,
                       child: FutureBuilder( /// ### Panic Action Button ### ///
-                        future: readStorage("trading"), /// ### Dev-Check-1
+                        future: readStorage("trading"), /// ### 16th
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
@@ -532,7 +526,7 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                       // height: displayHeight(context) * 0.245,
                           // TileAddPortfolio(),
                       child: FutureBuilder(
-                        future: readStorage("trading"),
+                        future: readStorage("binance"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
@@ -1216,7 +1210,7 @@ class EnableTradingButton extends StatelessWidget {
                   child: Text("ENABLE TRADING", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
               ),
-              onTap: () => {
+              onTap: () {
                 /// Dev-5: UNCOMMENT BELOW
                 // showDialog(
                 //   context: context,
@@ -1227,20 +1221,23 @@ class EnableTradingButton extends StatelessWidget {
                 //     child: CarouselDemo(),
                 //   ),
                 // ),
-                /// Dev-5: Uncomment up to here
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    /// Manual padding override because Dialog's default padding is FAT
-                    insetPadding: EdgeInsets.all(10),
-                    /// Connect API tutorial modal
-                    child: CarouselDemo(),
-                  ),
-                ),
-                writeStorage("trading", "binance"),
-                // dbPortfolioPostTest.dbPortfolioPostTest(),
-                /// ### Adds "trading" to local_secure_storage for the check in Dev-Check-1
-                /// ### Press middle bottom_nav_bar button to remove
+
+
+                /// 17th April Release 1.0.13
+                // showDialog(
+                //   context: context,
+                //   builder: (BuildContext context) => Dialog(
+                //     /// Manual padding override because Dialog's default padding is FAT
+                //     insetPadding: EdgeInsets.all(10),
+                //     /// Connect API tutorial modal
+                //     child: CarouselDemo(),
+                //   ),
+                // ),
+                // writeStorage("trading", "binance"),
+                /// 17th April Release 1.0.13
+                
+                Navigator.pushReplacementNamed(context, '/second');
+
               },
             ),
             elevation: 2,
@@ -1326,6 +1323,13 @@ Future<String> readStorage(String _key) async {
   }
 }
 
+void deleteStorage(String _key) async {
+
+  final storage = new FlutterSecureStorage();
+
+  await storage.delete(key: _key);
+}
+
 void writeStorage(String _key, String _value) async {
 
   final storage = new FlutterSecureStorage();
@@ -1371,7 +1375,7 @@ class BinanceTileBlurb extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-                              Navigator.pushReplacementNamed(context, '/dashboard');
+                              Navigator.pushReplacementNamed(context, '/viewportfolio');
                             },
                             child: Column(
                               children: <Widget> [
@@ -1536,8 +1540,8 @@ class AddPortfolioBlurb extends StatelessWidget {
               /// ### We can just set a blank item for now... Right?
               // localStorage.setItem("isPrime", true);
               // localStorage.setItem("prime", []);
-              /// 19th
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              /// Dashboard()
+              Navigator.pushReplacementNamed(context, '/viewportfolio');
             },
             child: Column(
               children: <Widget> [

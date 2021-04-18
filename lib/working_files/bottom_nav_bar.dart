@@ -40,7 +40,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                         }),
                         IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
                           /// ### Dev-5: Delete (and maybe put in its own helper file with dashboard_initial_noAPI class readStorage)
-                          storage.delete(key: "trading");
+                          // storage.delete(key: "trading");
                         }),
                         /// ### Bottom right button on bottomnavbar ### ///
                         IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),

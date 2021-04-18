@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/app_repo/binance_api_check/binance_api_check.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

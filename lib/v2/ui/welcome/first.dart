@@ -236,7 +236,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                               ),
                               onTap: () => {
                                 writeStorage("welcome", "true"),
-                                Navigator.pushReplacementNamed(context, '/dashboardnoapitest')
+                                Navigator.pushReplacementNamed(context, '/home')
                                 // Navigator.pushNamed(context, '/hometest'),
                               },
                             // ),

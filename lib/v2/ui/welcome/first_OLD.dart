@@ -1,8 +1,9 @@
 import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+// import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:coinsnap/working_files/initial_page.dart';
 import 'package:flutter/material.dart';

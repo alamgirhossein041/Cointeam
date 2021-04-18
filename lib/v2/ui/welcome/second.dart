@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -75,7 +76,9 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
               flex: 1,
               fit: FlexFit.tight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/first');
+                },
                 child: Text("I don't have a QR Code")
               )
             ),
@@ -129,6 +132,8 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
         await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
 
         if(qrSanityCheck == true) {
+          writeStorage("trading", "true");
+          writeStorage("binance", "true");
 
           Navigator.pushReplacementNamed(context, '/third');
           qrSanityCheck = false;

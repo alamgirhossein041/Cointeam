@@ -4,8 +4,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -307,12 +306,12 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Padding(
                           padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
-                          // child: TextButton(
-                          //   onPressed: () => {
-                          //     Navigator.pushReplacementNamed(context, '/buyportfolio')
-                          //   },
+                          child: TextButton(
+                            onPressed: () => {
+                              Navigator.pushReplacementNamed(context, '/buyportfolio')
+                            },
                             child: Text("Buy Order"),
-                          // ),
+                          ),
                         )
                       )
                     ],

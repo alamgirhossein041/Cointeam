@@ -11,15 +11,14 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
-import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/price_container/price_container.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:flutter/material.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';

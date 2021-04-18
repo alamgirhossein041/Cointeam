@@ -1,4 +1,4 @@
-import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/modal_success.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class Third extends StatelessWidget {
               onPressed: () => {
                 writeStorage("welcome", "true"),
                 // future: readStorage("welcome"),
-                Navigator.pushReplacementNamed(context, '/dashboardnoapitest')
+                Navigator.pushReplacementNamed(context, '/home')
               },
               child: Text("Dashboard"),
             ),

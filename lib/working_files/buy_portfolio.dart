@@ -4,7 +4,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -294,7 +294,7 @@ class BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
                                     ),
                                   ),
                                   onTap: () => {
-                                    Navigator.pushNamed(context, '/buyportfolio2', arguments: {'value': _value, 'symbol': dropdownValue}),
+                                    Navigator.pushNamed(context, '/buyportfolio2', arguments: {'value': totalValueEstimated, 'symbol': dropdownValue}),
                                     // Navigator.pushNamed(context, '/hometest'),
                                   },
                                 // ),

@@ -15,6 +15,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   BuyPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository, this.binanceExchangeInfoRepository}) : super(BuyPortfolioInitialState());
 
   // double totalValue = 0.0;
+  double totalBuyQuote = 1.0;
   double pctToSell = 1.0;
   String coinTicker = "USDT";
   // List<String> coinsToRemove = [];
@@ -52,6 +53,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
       // coinsToRemove = event.coinsToRemove;
       portfolioList = event.portfolioList;
       portfolioDataMap = event.portfolioDataMap;
+      totalBuyQuote = event.totalBuyQuote;
 
       yield BuyPortfolioLoadingState();
       try {
@@ -66,19 +68,26 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
         /// if(portfolioList != null) {
         
           portfolioList.forEach((v) async {
-            // if(coins.coin == coinTicker) {
-              // log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
-            // } else {
-              // try {
+            if(v == coinTicker) {
+              log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
+            } else {
+              try {
                 log("Hi?");
                 var result;
                 // if(v == 'USDT') {
                   // divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
                 // } else {
-                  divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
+                divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
                 // }
                 /// This is where we do the percentage calculation
-                var tmp = (portfolioDataMap.data[v] * pctToSell);
+                
+                log(portfolioDataMap.toString());
+                log(v);
+                log(portfolioDataMap.data.toString());
+                log(portfolioDataMap.data[v].toString());
+                log(pctToSell.toString());
+                double buyQuantity = double.parse(portfolioDataMap.data[v]);
+                var tmp = (buyQuantity * pctToSell);
                 log("tmp before everything is: " + tmp.toString());
                 var zeroTarget = double.parse((tmp % divisor).toStringAsFixed(6));
                 log("zeroTarget is: " + zeroTarget.toString());
@@ -107,6 +116,10 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                     // coinsToSave[result['symbol']] = result['cummulativeQuoteQty'];
                   }
                 }
+          } catch (e) {
+            log(e.toString());
+          }
+            }
           });
         // } catch (e) {
         //   log(e.toString());

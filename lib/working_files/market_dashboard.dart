@@ -4,29 +4,21 @@
 /// ###                                                                                  ### ///
 /// ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  ### ///
 
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_state.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
-import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
-import 'package:coinsnap/v2/ui/core_widgets/price_container/price_container.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
-import 'package:coinsnap/v2/ui/menu_drawer/drawer_widget.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:math' as math;
-import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';

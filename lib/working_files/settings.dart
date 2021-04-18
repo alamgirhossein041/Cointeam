@@ -1,8 +1,4 @@
-import 'dart:developer';
-
-import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {

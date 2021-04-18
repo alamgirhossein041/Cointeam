@@ -65,34 +65,35 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
         log("8th April - Test 2");
-        for(BinanceGetAllModel coins in binanceGetAllModel) {
+        // for(BinanceGetAllModel coins in binanceGetAllModel) {
+          binanceGetAllModel.forEach((v) async {
           log("8th April - Test 3");
-          if(coins.coin == coinTicker) {
+          if(v.coin == coinTicker) {
             log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
             try {
               var result;
-              if(coins.coin == 'USDT') {
-                divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
+              if(v.coin == 'USDT') {
+                divisor = double.parse(binanceSymbols[coinTicker + v.coin][2].stepSize);
               } else {
-                divisor = double.parse(binanceSymbols[coins.coin + coinTicker][2].stepSize);
+                divisor = double.parse(binanceSymbols[v.coin + coinTicker][2].stepSize);
               }
-              var tmp = coins.free * pctToSell;
+              var tmp = v.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
               if (tmp >= divisor) {
-                log('Coin: ' + coins.coin);
-                log('Coin Qty to sell: ' + coins.free.toString());
+                log('Coin: ' + v.coin);
+                log('Coin Qty to sell: ' + v.free.toString());
                 log('Divisor(stepSize): ' + divisor.toString());
                 log('Post-Modulo: ' + zeroTarget.toString()); 
                 log('To Sell: ' + tmp.toString());
                 log("\n\nSelling to ticker: " + coinTicker);
                 log('\n\n');
-                if(coins.coin == 'USDT') {
+                if(v.coin == 'USDT') {
                   log("########");
-                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + coins.coin, tmp);
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
                 } else {
-                  result = await binanceSellCoinRepository.binanceSellCoin(coins.coin + coinTicker, tmp);
+                  result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp);
                 }
                 log(result['code'].toString());
                 if(result['code'] == null) {
@@ -101,20 +102,17 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   log("Running totalValue is $totalValue");
                   /// 25th
-                  coinsToSave[coins.coin] = result['cummulativeQuoteQty'];
+                  coinsToSave[v.coin] = result['cummulativeQuoteQty'];
                 }
               }
             } catch (e) {
               log(e.toString());
-              log(coins.coin + " does not have a $coinTicker pair on Binance");
+              log(v.coin + " does not have a $coinTicker pair on Binance");
             }
           }
           // toFirestore['SoldUSDT'] = totalValue;
           // toFirestore['Timestamp'] = DateTime.now().millisecondsSinceEpoch;
-          log(totalValue.toString());
-          coinsToSave[coinTicker] = totalValue;
-          await localStorage.setItem("portfolio", coinsToSave);
-        }
+        });
 
         /// ### This is where we would add to database?? ### ///
 
@@ -127,7 +125,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
         /// ### This is where we would add to database?? ### ///
 
-        totalValue = 0.0;
+        log(totalValue.toString());
+        coinsToSave[coinTicker] = totalValue;
+        await localStorage.setItem("portfolio", coinsToSave);
         // log("pushed to firestore");
         // log("error1");
 

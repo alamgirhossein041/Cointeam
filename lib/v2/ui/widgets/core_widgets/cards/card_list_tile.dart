@@ -31,7 +31,7 @@ class _CardListTileState extends State<CardListTile> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/coinpage', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
+                    Navigator.pushNamed(context, '/viewcoin', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
                   },
                   child: Container(
                     padding: EdgeInsets.fromLTRB(25,2,25,2),

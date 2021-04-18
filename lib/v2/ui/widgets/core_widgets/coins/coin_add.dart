@@ -8,13 +8,11 @@ import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_state.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_250/coingecko_list_250.dart';
-import 'package:coinsnap/v2/ui/buttons/colourful_button.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
 import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/numbers.dart';
 import 'package:coinsnap/working_files/drawer.dart';
-import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';

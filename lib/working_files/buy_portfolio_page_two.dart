@@ -19,7 +19,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
   final _scrollController = ScrollController();
 
   String symbol = '';
-  double percentageValue = 0.0;
+  double totalBuyQuote = 0.0;
 
   List<String> portfolioList = [];
 
@@ -34,9 +34,9 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
       log("Arguments is null");
     } else {
       symbol = arguments['symbol'];
-      percentageValue = arguments['value'] / 100;
+      totalBuyQuote = arguments['value'];
       log("Target symbol is " + symbol);
-      log("Percentage to sell is " + percentageValue.toString());
+      log("Total Buy Quote is " + totalBuyQuote.toString());
     }
 
     /// ### TODO: Maybe replace "portfolio" with an actual string variable
@@ -297,7 +297,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                   ),
                                   onTap: () => {
                                     log("Buy Button Pressed"),
-                                    BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(value: percentageValue, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
+                                    BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: totalBuyQuote, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
                                     Navigator.pushNamed(context, '/sellportfolio3')
                                     /// 7th - we need to pass in something - like a list or a map or something
                                   },

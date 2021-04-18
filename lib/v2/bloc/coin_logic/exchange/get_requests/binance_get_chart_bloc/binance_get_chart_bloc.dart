@@ -103,8 +103,8 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
                 sumMap[h.openTimestamp] = double.parse(h.open) * binanceGetPricesMap[tmp];
               } else {
                 if(h.open != null) {
-                  log(h.toString());
-                  log(g.coinTicker);
+                  // log(h.toString());
+                  // log(g.coinTicker);
                   sumMap[h.openTimestamp] += double.parse(h.open) * binanceGetPricesMap[tmp];
                 }
               }
