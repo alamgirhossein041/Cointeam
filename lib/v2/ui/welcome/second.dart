@@ -131,6 +131,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
 
 
         if(qrSanityCheck == true) {
+          qrSanityCheck = false;
           await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
           await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
           await secureStorage.write(key: 'trading', value: 'true');
@@ -139,7 +140,6 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
           // writeStorage("binance", "true");
 
           Navigator.pushReplacementNamed(context, '/third');
-          qrSanityCheck = false;
         }
 
         /// 1st
