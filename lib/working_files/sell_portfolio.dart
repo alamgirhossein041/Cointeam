@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
@@ -192,7 +192,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           child: BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
                             listener: (context, state) {
                               if (state is GetTotalValueErrorState) {
-                                log("An error occurred in sell_portfolio.dart - GetTotalValueErrorState");
+                                debugPrint("An error occurred in sell_portfolio.dart - GetTotalValueErrorState");
                               }
                             },
                             builder: (context, state) {

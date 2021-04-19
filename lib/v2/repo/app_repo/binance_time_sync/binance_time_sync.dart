@@ -3,7 +3,7 @@ import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_
 import 'package:http/http.dart' as http;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class IBinanceTimeSyncRepository  {
   Future getBinanceTimeSyncLatest();
@@ -21,20 +21,20 @@ class BinanceTimeSyncRepositoryImpl implements IBinanceTimeSyncRepository {
     stopWatch.stop();
     var dateTime = DateTime.now().millisecondsSinceEpoch;
     var timeTaken = stopWatch.elapsedMilliseconds;
-    // log("Time taken = " + timeTaken.toString());
+    // debugPrint("Time taken = " + timeTaken.toString());
     timeTaken = (timeTaken~/2);
 
     if(response.statusCode == 200) {
       var string = json.decode(response.body);
 
       globals.binanceTimestampModifier = dateTime - string['serverTime'].toInt() - timeTaken;
-      log("Global = " + globals.binanceTimestampModifier.toString());
+      debugPrint("Global = " + globals.binanceTimestampModifier.toString());
       
 
       return;
     } else {
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       throw Exception();
     }
   }

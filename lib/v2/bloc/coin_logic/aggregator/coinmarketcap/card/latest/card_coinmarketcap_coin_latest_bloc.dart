@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
@@ -32,7 +32,7 @@ class CardCoinmarketcapCoinLatestBloc extends Bloc<CardCoinmarketcapCoinLatestEv
         /// TODO: probably fix up LIST
         // yield FirestoreGetUserDataLoadedState(FirestoreGetUserDataModel: FirestoreGetUserDataModel);
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield CardCoinmarketcapCoinLatestErrorState(errorMessage : e.toString());
       }
     }

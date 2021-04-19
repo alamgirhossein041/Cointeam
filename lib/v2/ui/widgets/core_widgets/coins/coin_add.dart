@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_state.dart';
@@ -60,25 +60,25 @@ class _AddCoinState extends State<AddCoin> {
               child: BlocConsumer<CoingeckoList250Bloc, CoingeckoList250State>(
                 listener: (context, state) {
                   if (state is CoingeckoList250ErrorState) {
-                    log("Error in coin_add.dart -> AddCoin(), CoingeckoList250 Bloc");
+                    debugPrint("Error in coin_add.dart -> AddCoin(), CoingeckoList250 Bloc");
                     return errorTemplateWidget("Error");
                   }
                 },
                 builder: (context, state) {
                   if (state is CoingeckoList250InitialState) {
-                    log("CoingeckoList250InitialState");
+                    debugPrint("CoingeckoList250InitialState");
                     return loadingTemplateWidget();
                   } else if (state is CoingeckoList250LoadingState) {
-                    log("CoingeckoList250LoadingState");
+                    debugPrint("CoingeckoList250LoadingState");
                     return loadingTemplateWidget();
                   } else if (state is CoingeckoList250LoadedState) {  
-                    log("CoingeckoList250LoadedState");
+                    debugPrint("CoingeckoList250LoadedState");
                     return AddCoinWidget(show: _show, coinList: state.coingeckoModelList, coinMap: state.coingeckoMap, callBackFunction: _callBackSetState);
                   } else if (state is CoingeckoList250ErrorState) {
-                    log("CoingeckoListErrorState" + state.errorMessage);
+                    debugPrint("CoingeckoListErrorState" + state.errorMessage);
                     return Container();
                   } else {
-                    log("CoingeckoList???State");
+                    debugPrint("CoingeckoList???State");
                     return Container();
                   }
                 }
@@ -165,7 +165,7 @@ class _AddCoinState extends State<AddCoin> {
   }
   void _callBackSetState(var item) {
     setState(() {
-      log("Coin Add (setState Callback)");
+      debugPrint("Coin Add (setState Callback)");
       _selectedItem = item;
     });
   }
@@ -267,7 +267,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                               isSelected = true;
                               var localQuantity = localStorage.getItem(item.symbol);
                               if (localQuantity != null) {
-                                log("localQuantity is " + localQuantity.toString());
+                                debugPrint("localQuantity is " + localQuantity.toString());
                                 _quantity = localQuantity;
                               }
                             });
@@ -298,8 +298,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                   if(isSelected == false) {
                                     return Text("-", style: TextStyle(color: Colors.white38));
                                   } else {
-                                    // log(widget.coinMap.toString());
-                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    // debugPrint(widget.coinMap.toString());
+                                    // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                     return Text("\$" + widget.coinMap[selectedItemSymbol].currentPrice.toStringAsFixed(2), style: TextStyle(color: Colors.white));
                                   }
                                 }
@@ -327,8 +327,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                       if(isSelected == false) {
                                         return Text("-", style: TextStyle(color: Colors.white38));
                                       } else {
-                                        // log(widget.coinMap.toString());
-                                        // log(widget.coinMap[selectedItemSymbol].toString());
+                                        // debugPrint(widget.coinMap.toString());
+                                        // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                         return TextField(
                                           keyboardType: TextInputType.number,
                                           cursorWidth: 2,
@@ -368,8 +368,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                 //             if(isSelected == false) {
                 //               return Text("-", style: TextStyle(color: Colors.white38));
                 //             } else {
-                //               // log(widget.coinMap.toString());
-                //               // log(widget.coinMap[selectedItemSymbol].toString());
+                //               // debugPrint(widget.coinMap.toString());
+                //               // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                 //               return Text("\$" + widget.coinMap[selectedItemSymbol].currentPrice.toStringAsFixed(2), style: TextStyle(color: Colors.white));
                 //             }
                 //           }
@@ -399,8 +399,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                   if(isSelected == false) {
                                     return Text("-", style: TextStyle(color: Colors.white38));
                                   } else {
-                                    // log(widget.coinMap.toString());
-                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    // debugPrint(widget.coinMap.toString());
+                                    // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                     return Text(numberFormatter(widget.coinMap[selectedItemSymbol].marketCap), style: TextStyle(color: Colors.white));
                                   }
                                 }
@@ -423,8 +423,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                     if(isSelected == false) {
                                       return Text("-", style: TextStyle(color: Colors.white38));
                                     } else {
-                                      // log(widget.coinMap.toString());
-                                      // log(widget.coinMap[selectedItemSymbol].toString());
+                                      // debugPrint(widget.coinMap.toString());
+                                      // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                       return Text("\$" + widget.coinMap[selectedItemSymbol].ath.toString(), style: TextStyle(color: Colors.white));
                                     }
                                   }
@@ -458,8 +458,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                   if(isSelected == false) {
                                     return Text("-", style: TextStyle(color: Colors.white38));
                                   } else {
-                                    // log(widget.coinMap.toString());
-                                    // log(widget.coinMap[selectedItemSymbol].toString());
+                                    // debugPrint(widget.coinMap.toString());
+                                    // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                     return Text("\$" + widget.coinMap[selectedItemSymbol].priceChange24h.toStringAsFixed(2) + " (" +
                                       widget.coinMap[selectedItemSymbol].priceChangePercentage24h.toStringAsFixed(1) + "%)", style: TextStyle(color: Colors.white));
                                   }
@@ -483,8 +483,8 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                     if(isSelected == false) {
                                       return Text("-", style: TextStyle(color: Colors.white38));
                                     } else {
-                                      // log(widget.coinMap.toString());
-                                      // log(widget.coinMap[selectedItemSymbol].toString());
+                                      // debugPrint(widget.coinMap.toString());
+                                      // debugPrint(widget.coinMap[selectedItemSymbol].toString());
                                       // return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toString() + " / " + widget.coinMap[selectedItemSymbol].totalSupply.toString(), style: TextStyle(color: Colors.grey));
                                       return Text(widget.coinMap[selectedItemSymbol].circulatingSupply.toStringAsFixed(0), style: TextStyle(color: Colors.white));
                                     }
@@ -551,9 +551,9 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                                     primeMap[selectedItemSymbol] = double.parse(_quantity.text),
                                     // primeMap.add(PrimeMap(symbol: selectedItemSymbol, quantity: double.parse(_quantity.text))),
                                   },
-                                  // log("Is this where it's going wrong"),
+                                  // debugPrint("Is this where it's going wrong"),
                                   localStorage.setItem("prime", jsonEncode(primeMap)),
-                                  log(localStorage.getItem("prime").toString()),
+                                  debugPrint(localStorage.getItem("prime").toString()),
                                   // Navigator.of(context).pop(selectedCoin),
                                   Navigator.pop(context, BoxedReturns(selectedCoin, _quantity.text)),
                                   // Scaffold.of(context).showSnackBar(snackBar),
@@ -585,7 +585,7 @@ class AddCoinWidgetState extends State<AddCoinWidget> {
                         onTap: () => {
                           // Navigator.pushNamed(context, '/hometest'),
                           // dbPortfolioPostTest.dbPortfolioPostTest(),
-                          log("Greyed out Add To Portfolio button pressed in coin_add.dart"),
+                          debugPrint("Greyed out Add To Portfolio button pressed in coin_add.dart"),
                           // Scaffold.of(context).showSnackBar(snackBar),
                         },
                       );

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/chart/global_coinmarketcap_stats_model.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 abstract class IGlobalCoinmarketcapStatsRepository  {
@@ -36,8 +36,8 @@ class GlobalCoinmarketcapStatsRepositoryImpl implements IGlobalCoinmarketcapStat
       GlobalCoinmarketcapStatsModel globalCoinmarketcapStatsModel = GlobalCoinmarketcapStatsModel.fromJson(body);
       return globalCoinmarketcapStatsModel;
     } else {
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       throw Exception();
     }
   }

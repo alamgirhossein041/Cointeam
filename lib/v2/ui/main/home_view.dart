@@ -24,7 +24,7 @@ import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -324,7 +324,7 @@ class _DashboardWithCategoryState extends State<DashboardWithCategory> {
   //       ),
   //     );
   //   } else {
-  //     log(categoryName.toString());
+  //     debugPrint(categoryName.toString());
   //     Navigator.pushNamed(context, '/authentication');
   //   }
   // }
@@ -424,7 +424,7 @@ class DashboardWithCategoryOptions extends StatelessWidget {
         ),
       );
     } else {
-      log(categoryName.toString());
+      debugPrint(categoryName.toString());
       Navigator.pushNamed(context, '/authentication');
     }
   }

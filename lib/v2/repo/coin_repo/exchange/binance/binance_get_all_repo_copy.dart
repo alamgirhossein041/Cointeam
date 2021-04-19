@@ -3,7 +3,7 @@ import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_all_mo
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class IBinanceGetAllRepository {
   Future<List<BinanceGetAllModel>> getBinanceGetAll();
@@ -41,10 +41,10 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     /// ###### End API Request ######
     
     if(response.statusCode == 200) {
-      // log(response.body.toString());
+      // debugPrint(response.body.toString());
       /// Handle API response and parse
       List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
-      // log("asdf");
+      // debugPrint("asdf");
       /// Remove coins from list that are empty
       var toRemove = [];
       binanceGetAllModel.forEach((v) {
@@ -52,13 +52,13 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
           toRemove.add(v);
         }
       });
-      // log("`12123`");
+      // debugPrint("`12123`");
       binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
-      // log("Something is wrong");
-      // log(binanceGetAllModel.toString());
+      // debugPrint("Something is wrong");
+      // debugPrint(binanceGetAllModel.toString());
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
-      log("excepted");
+      debugPrint("excepted");
       throw Exception();
     }
   }

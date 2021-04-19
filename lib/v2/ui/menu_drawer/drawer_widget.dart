@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:flutter/material.dart';
@@ -73,22 +73,22 @@ class MyDrawerState extends State<MyDrawer> {
             // BlocListener<FirestoreGetUserDataBloc, FirestoreGetUserDataState>(
             //   listener: (context, state) {
             //     if (state is FirestoreGetUserDataErrorState) {
-            //       log("error in FirestoreGetUserDataErrorState in text.dart");
+            //       debugPrint("error in FirestoreGetUserDataErrorState in text.dart");
             //     }
             //   },
             //   child: BlocBuilder<FirestoreGetUserDataBloc, FirestoreGetUserDataState>( /// Both bloc types to be built (refactor existing controllers)
             //     builder: (context, state) {
             //       if (state is FirestoreGetUserDataInitialState) {
-            //         log("FirestoreGetUserDataInitialState");
+            //         debugPrint("FirestoreGetUserDataInitialState");
             //         return Text("InitialLoadingState");
             //       } else if (state is FirestoreGetUserDataLoadingState) {
-            //         log("FirestoreGetUserDataLoadingState");
+            //         debugPrint("FirestoreGetUserDataLoadingState");
             //         return Text("Loading State");
             //       } else if (state is FirestoreGetUserDataLoadedState) {
-            //         log("FirestoreGetUserDataLoadedState");
+            //         debugPrint("FirestoreGetUserDataLoadedState");
             //         var tmp = state.portfolioMap;
-            //         log("tmp['HistPortfolios']: " + tmp['HistPortfolios'].toString());
-            //         log("tmp['HistPorfolios'][0]['BTC']: " + tmp['HistPortfolios'][0]['BTC'].toString());
+            //         debugPrint("tmp['HistPortfolios']: " + tmp['HistPortfolios'].toString());
+            //         debugPrint("tmp['HistPorfolios'][0]['BTC']: " + tmp['HistPortfolios'][0]['BTC'].toString());
 
             //         return Column(
             //           children: <Widget> [
@@ -114,7 +114,7 @@ class MyDrawerState extends State<MyDrawer> {
             //             )]),
             //           ]);
             //       } else if (state is FirestoreGetUserDataErrorState) {
-            //         log("FirestoreGetUserDataErrorState");
+            //         debugPrint("FirestoreGetUserDataErrorState");
             //         return buildErrorTemplate(state.errorMessage);
             //       } else {
             //         return null;

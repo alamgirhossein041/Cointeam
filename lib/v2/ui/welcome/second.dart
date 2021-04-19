@@ -123,7 +123,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
     controller.scannedDataStream.listen((scanData) {
       setState(() async {
         result = scanData; /// 31st
-        // log(result.code);
+        // debugPrint(result.code);
         Map<String, dynamic> body = Map.from(json.decode(result.code));
         QrResult qrDecoded = QrResult.fromJson(body);
         final secureStorage = FlutterSecureStorage();

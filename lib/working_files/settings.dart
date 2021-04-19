@@ -68,9 +68,9 @@ class SettingsState extends State<Settings> {
                   height: displayHeight(context) * 0.07,
                   child: GestureDetector(
                     onTap: () => {
-                      // showDialog(
+                      // showDiadebugPrint(
                       //   context: context,
-                      //   builder: (BuildContext context) => Dialog(
+                      //   builder: (BuildContext context) => DiadebugPrint(
                       //     /// Manual padding override because Dialog's default padding is FAT
                       //     insetPadding: EdgeInsets.all(10),
                       //     /// Connect API tutorial modal

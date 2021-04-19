@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class GlobalCoinmarketcapStatsEvent extends Equatable {}
 
@@ -11,5 +11,5 @@ class FetchGlobalCoinmarketcapStatsEvent extends GlobalCoinmarketcapStatsEvent {
   
   /// TODO: stuff
   List<Object> get props => null;
-    // log("hello?");
+    // debugPrint("hello?");
 }

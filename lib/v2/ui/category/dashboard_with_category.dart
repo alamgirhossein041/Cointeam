@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
@@ -45,13 +45,13 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
   @override
   void initState() { 
     super.initState();
-    log("dashboard_with_category.dart - DashboardWithCategory() InitState()");
+    debugPrint("dashboard_with_category.dart - DashboardWithCategory() InitState()");
   }
 
   @override
   void didChangeDependencies() { /// ### Calls everything inside on screen load ### ///
     super.didChangeDependencies();
-    log("dashboard_with_category.dart - DashboardWithCategory() DPD");
+    debugPrint("dashboard_with_category.dart - DashboardWithCategory() DPD");
     // BlocProvider.of<GetPortfolioDataBloc>(context).add(FetchGetPortfolioDataEvent());
     // BlocProvider.of<CardCoinmarketcapCoinLatestBloc>(context).add(FetchCardCoinmarketcapCoinLatestEvent());
   }
@@ -268,7 +268,7 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
     // return BlocConsumer<GetCoinListBloc, GetCoinListState>(
     //   listener: (context, state) {
     //     if (state is GetCoinListErrorState) {
-    //       log("error in GetCoinListState in home_view.dart");
+    //       debugPrint("error in GetCoinListState in home_view.dart");
     //       Navigator.of(context).pushNamed('/errorscreen');
     //     } else if (state is GetCoinListCoinListState) {
     //       coinList = state.coinList;
@@ -279,10 +279,10 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
     //   },
     //   builder: (context, state) {
     //     if (state is GetCoinListLoadedState) {   /// ### Comes with state.coinListData -- type CardCoinmarketcapListModel
-    //       log("GetCoinListLoadedState");
+    //       debugPrint("GetCoinListLoadedState");
     //       return 
     //     } else {
-    //       log("GetCoinListLoadingState");
+    //       debugPrint("GetCoinListLoadingState");
     //       return CircularProgressIndicator();
     //     }
     //   }
@@ -292,7 +292,7 @@ class DashboardWithCategoryNewState extends State<DashboardWithCategoryNew> {
   /// ### Callback function for child widget to setState (and refresh) on this widget ### ///
   void _callBackSetState() {
     setState(() {
-      log("Hello World");
+      debugPrint("Hello World");
       BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
       /// 19th
     });
@@ -313,7 +313,7 @@ class HeaderBoxState extends State<HeaderBox> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    log("dashboard.dart -> HeaderBox() DPD");
+    debugPrint("dashboard.dart -> HeaderBox() DPD");
     // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListBlocEvent());
   }
 
@@ -341,15 +341,15 @@ class HeaderBoxState extends State<HeaderBox> {
                         child: BlocConsumer<GetCoinListBloc, GetCoinListState>(
                           listener: (context, state) {
                             if (state is GetCoinListErrorState) {
-                              log("GetCoinListErrorState");
+                              debugPrint("GetCoinListErrorState");
                             }
                           },
                           builder: (context, state) {
                             if (state is GetCoinListLoadedState) {
                               if(state.coinList.length > 0) {
 
-                              log("GetCoinListLoadedState");
-                              log("########Double checking dev logs##########");
+                              debugPrint("GetCoinListLoadedState");
+                              debugPrint("########Double checking dev logs##########");
 
                               /// 21st
                               
@@ -358,13 +358,13 @@ class HeaderBoxState extends State<HeaderBox> {
                                 BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
                                 
                               } else {
-                                log("coinList == 0");
+                                debugPrint("coinList == 0");
                               }
                               
                               return BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
                                 listener: (context, state) {
                                   if (state is GetCoinListTotalValueErrorState) {
-                                    log("GetCoinListTotalValueErrorState");
+                                    debugPrint("GetCoinListTotalValueErrorState");
                                   }
                                 },
                                 builder: (context, state) {
@@ -444,7 +444,7 @@ class HeaderBoxState extends State<HeaderBox> {
                                 // ]
                               // );
                             } else {
-                              log("GetCoinList(notloaded)State");
+                              debugPrint("GetCoinList(notloaded)State");
                               return loadingTemplateWidget();
                             }
                           }
@@ -465,7 +465,7 @@ class HeaderBoxState extends State<HeaderBox> {
                         return CircularProgressIndicator();
                       default:
                       if (!snapshot.hasError) {
-                        // log(snapshot.data.toString());
+                        // debugPrint(snapshot.data.toString());
                         /// ("Return a welcome screen") ??? default comment
                           // return DashboardWithNoApiWorking();
                         if (snapshot.data == "none") {

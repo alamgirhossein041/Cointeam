@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class CoingeckoGetChartEvent extends Equatable {}
 

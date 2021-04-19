@@ -23,7 +23,7 @@ import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -281,19 +281,19 @@ class NoApiPriceContainer extends StatelessWidget {
                               BlocListener<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>(
                                 listener: (context, state) {
                                   if (state is GlobalCoinmarketcapStatsErrorState) {
-                                    log("error in GlobalCoinmarketcapStatsState in home_view.dart");
+                                    debugPrint("error in GlobalCoinmarketcapStatsState in home_view.dart");
                                   }
                                 },
                                 child: BlocBuilder<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>( /// Both bloc types to be built (refactor existing controllers)
                                   builder: (context, state) {
                                     if (state is GlobalCoinmarketcapStatsInitialState) {
-                                      log("GlobalCoinmarketcapStatsInitialState");
+                                      debugPrint("GlobalCoinmarketcapStatsInitialState");
                                       return loadingTemplateWidget();
                                     } else if (state is GlobalCoinmarketcapStatsLoadingState) {
-                                      log("GlobalCoinmarketcapStatsLoadingState");
+                                      debugPrint("GlobalCoinmarketcapStatsLoadingState");
                                       return loadingTemplateWidget();
                                     } else if (state is GlobalCoinmarketcapStatsLoadedState) {
-                                      log("GlobalCoinmarketcapStatsLoadedState");
+                                      debugPrint("GlobalCoinmarketcapStatsLoadedState");
                                       return Padding(
                                         padding: EdgeInsets.only(top: 15),
                                         child: Column(
@@ -492,7 +492,7 @@ class TileDefi extends StatelessWidget {
                 ),
                 child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
                   onTap: () {
-                    log("CategoryName is " + categoryName.toString());
+                    debugPrint("CategoryName is " + categoryName.toString());
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
                     // Navigator.pushNamed(
                     //   context,
@@ -691,7 +691,7 @@ class TileTop100 extends StatelessWidget {
                 ),
                 child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
                   onTap: () {
-                    log("CategoryName is " + categoryName.toString());
+                    debugPrint("CategoryName is " + categoryName.toString());
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
                     // Navigator.pushNamed(
                     //   context,
@@ -888,7 +888,7 @@ class TileDex extends StatelessWidget {
           ),
           child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
             onTap: () {
-              log("CategoryName is " + categoryName.toString());
+              debugPrint("CategoryName is " + categoryName.toString());
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>

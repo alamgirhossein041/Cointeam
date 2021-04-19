@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class IDBUserPostTest {
   Future dbUserPostTest();
@@ -10,6 +10,6 @@ class DBUserPostTest implements IDBUserPostTest {
   @override
     dbUserPostTest() async {
       var response = http.get(requestUrl);
-      log(response.toString());
+      debugPrint(response.toString());
   }
 }

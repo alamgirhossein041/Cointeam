@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/startup_logic/startup_event.dart';
 import 'package:coinsnap/v2/bloc/startup_logic/startup_state.dart';
@@ -34,8 +34,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         /// // List<MasterCoinModel> masterCoinList
 
       } catch (e) {
-        log("The error is in startup_bloc.dart");
-        log(e.toString());
+        debugPrint("The error is in startup_bloc.dart");
+        debugPrint(e.toString());
         yield StartupErrorState(errorMessage : e.toString());
       }
     }

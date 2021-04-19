@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_price_info_bloc/get_price_info_event.dart';
@@ -23,13 +23,13 @@ class GetPriceInfoBloc extends Bloc<GetPriceInfoEvent, GetPriceInfoState> {
         
         var coinPrice = binanceGetPricesMap[event.coinTicker + 'USDT'];
         
-        log("Coin Price is: " + coinPrice.toString());
+        debugPrint("Coin Price is: " + coinPrice.toString());
         /// do logic
         /// if else blah blah
         
         yield GetPriceInfoLoadedState(coinPrice: coinPrice); /// TODO : insert parameters later
       } catch (e) {
-        log("Something went wrong in get_price_info_bloc.dart");
+        debugPrint("Something went wrong in get_price_info_bloc.dart");
         yield GetPriceInfoErrorState(errorMessage : e.toString());
       }
     }

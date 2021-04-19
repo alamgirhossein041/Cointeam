@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
@@ -218,7 +218,7 @@ class DashboardState extends State<Dashboard> {
   /// ### Callback function for child widget to setState (and refresh) on this widget ### ///
   void _callBackSetState() {
     setState(() {
-      log("Hello World");
+      debugPrint("Hello World");
       BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
       /// 19th
     });
@@ -253,23 +253,23 @@ class HeaderBoxState extends State<HeaderBox> {
                         child: BlocConsumer<GetCoinListBloc, GetCoinListState>(
                           listener: (context, state) {
                             if (state is GetCoinListErrorState) {
-                              log("GetCoinListErrorState");
+                              debugPrint("GetCoinListErrorState");
                             }
                           },
                           builder: (context, state) {
                             if (state is GetCoinListLoadedState) {
                               if(state.coinList.length > 0) {
-                              log("GetCoinListLoadedState");
+                              debugPrint("GetCoinListLoadedState");
                                 BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.coinList, binanceGetPricesMap: state.coinBalancesMap, timeSelection: ''));
                                 BlocProvider.of<GetCoinListTotalValueBloc>(context).add(FetchGetCoinListTotalValueEvent(coinList: state.coinList, coinBalancesMap: state.coinBalancesMap));
                               } else {
-                                log("coinList == 0");
+                                debugPrint("coinList == 0");
                               }
                               
                               return BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
                                 listener: (context, state) {
                                   if (state is GetCoinListTotalValueErrorState) {
-                                    log("GetCoinListTotalValueErrorState");
+                                    debugPrint("GetCoinListTotalValueErrorState");
                                   }
                                 },
                                 builder: (context, state) {
@@ -335,7 +335,7 @@ class HeaderBoxState extends State<HeaderBox> {
                                 },
                               );
                             } else {
-                              log("GetCoinList(notloaded)State");
+                              debugPrint("GetCoinList(notloaded)State");
                               return loadingTemplateWidget();
                             }
                           }
@@ -356,7 +356,7 @@ class HeaderBoxState extends State<HeaderBox> {
                         return CircularProgressIndicator();
                       default:
                       if (!snapshot.hasError) {
-                        // log(snapshot.data.toString());
+                        // debugPrint(snapshot.data.toString());
                         /// ("Return a welcome screen") ??? default comment
                           // return DashboardWithNoApiWorking();
                         if (snapshot.data == "none") {

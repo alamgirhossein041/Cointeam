@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class ICardCoinmarketcapCoinListRepository  {
   Future getCoinMarketCapCoinList(List coinList);
@@ -27,7 +27,7 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
     }
     
     requestUrl += signatureBuilder;
-    log(requestUrl);
+    debugPrint(requestUrl);
 
     var response = await http.get(requestUrl, headers: {
       'X-CMC_PRO_API_KEY': api
@@ -35,15 +35,15 @@ class CardCoinmarketcapCoinListRepositoryImpl implements ICardCoinmarketcapCoinL
 
     // var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
-      // log("YAY");
-      // log(response.body.toString());
+      // debugPrint("YAY");
+      // debugPrint(response.body.toString());
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      // log("BOO");
+      // debugPrint("BOO");
       CardCoinmarketcapListModel cardCoinmarketcapListModel = CardCoinmarketcapListModel.fromJson(body);
       return cardCoinmarketcapListModel;
     } else {
-      log(response.body.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.body.toString());
+      debugPrint(response.statusCode.toString());
       throw Exception();
     }
   }

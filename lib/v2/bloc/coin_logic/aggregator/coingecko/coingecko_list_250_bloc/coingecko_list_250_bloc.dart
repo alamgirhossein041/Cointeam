@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_list_250_bloc/coingecko_list_250_event.dart';
@@ -39,7 +39,7 @@ class CoingeckoList250Bloc extends Bloc<CoingeckoList250Event, CoingeckoList250S
         yield CoingeckoList250LoadedState(coingeckoModelList: newList, coingeckoMap: coingeckoMap);
         /// TODO: probably fix up LIST
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield CoingeckoList250ErrorState(errorMessage : e.toString());
       }
     }

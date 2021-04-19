@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/controller/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/buy_portfolio_bloc/buy_portfolio_event.dart';
@@ -31,12 +31,12 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 
     if (arguments == null) {
-      log("Arguments is null");
+      debugPrint("Arguments is null");
     } else {
       symbol = arguments['symbol'];
       totalBuyQuote = arguments['value'];
-      log("Target symbol is " + symbol);
-      log("Total Buy Quote is " + totalBuyQuote.toString());
+      debugPrint("Target symbol is " + symbol);
+      debugPrint("Total Buy Quote is " + totalBuyQuote.toString());
     }
 
     /// ### TODO: Maybe replace "portfolio" with an actual string variable
@@ -48,7 +48,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
     /// TODO: delete index
     int devindex = 0;
     portfolioDataMap.data.forEach((k,v) => {
-      log(devindex.toString()),
+      debugPrint(devindex.toString()),
       portfolioList.add(k),
       devindex++
     });
@@ -296,7 +296,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     ),
                                   ),
                                   onTap: () => {
-                                    log("Buy Button Pressed"),
+                                    debugPrint("Buy Button Pressed"),
                                     BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: totalBuyQuote, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
                                     Navigator.pushNamed(context, '/sellportfolio3')
                                     /// 7th - we need to pass in something - like a list or a map or something

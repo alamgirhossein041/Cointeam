@@ -7,10 +7,11 @@ import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_buy_coin_rep
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_exchange_info_repo.dart';
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_repo.dart';
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:localstorage/localstorage.dart';
 
@@ -26,6 +27,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   List<String> coinsToRemove = [];
   double divisor = 1.0;
   // int i = 0;
+  bool tradeSuccessful = false;
 
   Map<String, dynamic> coinsToSave = {};
 
@@ -56,21 +58,21 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
       yield SellPortfolioLoadingState();
 
-      log("8th April - Test 1");
+      debugPrint("8th April - Test 1");
 
       try {
-        log("Our coinTicker is : " + coinTicker);
+        debugPrint("Our coinTicker is : " + coinTicker);
 
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
-        log("8th April - Test 2");
+        debugPrint("8th April - Test 2");
         // for(BinanceGetAllModel v in binanceGetAllModel) {
           await Future.forEach(binanceGetAllModel, (v) async {
-          log("8th April - Test 3");
+          debugPrint("8th April - Test 3");
           if(v.coin == coinTicker) {
-            log("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
+            debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
             // i++;
           } else {
             try {
@@ -84,33 +86,36 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
               if (tmp >= divisor) {
-                log('Coin: ' + v.coin);
-                log('Coin Qty to sell: ' + v.free.toString());
-                log('Divisor(stepSize): ' + divisor.toString());
-                log('Post-Modulo: ' + zeroTarget.toString()); 
-                log('To Sell: ' + tmp.toString());
-                log("\n\nSelling to ticker: " + coinTicker);
-                log('\n\n');
+                debugPrint('Coin: ' + v.coin);
+                debugPrint('Coin Qty to sell: ' + v.free.toString());
+                debugPrint('Divisor(stepSize): ' + divisor.toString());
+                debugPrint('Post-Modulo: ' + zeroTarget.toString()); 
+                debugPrint('To Sell: ' + tmp.toString());
+                debugPrint("\n\nSelling to ticker: " + coinTicker);
+                debugPrint('\n\n');
                 if(v.coin == 'USDT') {
-                  log("########");
+                  debugPrint("########");
                   result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
                 } else {
                   result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp);
                 }
-                log(result['code'].toString());
+                debugPrint(result['code'].toString());
                 if(result['code'] == null) {
                   totalValue += double.parse(result['cummulativeQuoteQty']);
-                  log("What's wrong now?");
+                  debugPrint("What's wrong now?");
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
-                  log("Running totalValue is $totalValue");
+                  debugPrint("Running totalValue is $totalValue");
                   /// 25th
                   coinsToSave[v.coin] = result['cummulativeQuoteQty'];
+                  if(tradeSuccessful == false) {
+                    tradeSuccessful = true;
+                  }
                 }
               }
               // i++;
             } catch (e) {
-              log(e.toString());
-              log(v.coin + " does not have a $coinTicker pair on Binance");
+              debugPrint(e.toString());
+              debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
               // i++;
             }
           }
@@ -121,13 +126,19 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         /// 
 
         });
-        log(totalValue.toString());
+        debugPrint(totalValue.toString());
         coinsToSave[coinTicker + "TOTAL"] = totalValue;
         await localStorage.setItem("portfolio", coinsToSave);
+        if(tradeSuccessful == true) {
+          analytics.logEvent(
+            name: "sell_portfolio",
+            parameters: {"totalValue": totalValue}
+          );
+        }
 
         /// ### This is where we would add to database?? ### ///
 
-        // log(toFirestore.toString());
+        // debugPrint(toFirestore.toString());
         // firestoreInstance
         //   .collection("Users")
         //   .doc("Wtf")
@@ -136,29 +147,29 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
         /// ### This is where we would add to database?? ### ///
 
-        // log("pushed to firestore");
-        // log("error1");
+        // debugPrint("pushed to firestore");
+        // debugPrint("error1");
 
         // FtxExchangeInfoModel ftxExchangeInfoModel = await ftxExchangeInfoRepository.getFtxExchangeInfo();
-        // log("error2");
+        // debugPrint("error2");
 
         // FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
-        // log("error3");
+        // debugPrint("error3");
 
         // Map ftxSymbols = Map.fromIterable(ftxExchangeInfoModel.result, key: (e) => e.name, value: (e) => e.sizeIncrement); /// we need more than just a key and value so maybe change this from Map to something else
-        // log("error4");
+        // debugPrint("error4");
 
 
 
 
 /// ### Uncomment below for FTX integration (check bugs) ###
         // for (var coins in ftxGetBalanceModel.result) {
-        //   log("error5");
+        //   debugPrint("error5");
 
         //   if (coins.coin == 'BTC/USDT') {
-        //     log("ftx coins.coin = 'BTC/USDT'");
+        //     debugPrint("ftx coins.coin = 'BTC/USDT'");
         //   } else if (coins.coin == 'BTC/USD') {
-        //     log("ftx coins.coin = 'BTC/USD'");
+        //     debugPrint("ftx coins.coin = 'BTC/USD'");
         //   } else {
         //     try {
         //       double divisor = ftxSymbols[coins.coin];
@@ -166,40 +177,40 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         //       var zeroTarget = tmp % divisor;
         //       tmp -= zeroTarget;
         //       if (tmp >= divisor) {
-        //         log('Coin: ' + coins.coin);
-        //         log('Coin Qty to sell: ' + coins.free.toString());
-        //         log('Divisor(stepSize): ' + divisor.toString());
-        //         log('Post-Modulo: ' + zeroTarget.toString()); 
-        //         log('To Sell: ' + tmp.toString());
-        //         log('\n');
+        //         debugPrint('Coin: ' + coins.coin);
+        //         debugPrint('Coin Qty to sell: ' + coins.free.toString());
+        //         debugPrint('Divisor(stepSize): ' + divisor.toString());
+        //         debugPrint('Post-Modulo: ' + zeroTarget.toString()); 
+        //         debugPrint('To Sell: ' + tmp.toString());
+        //         debugPrint('\n');
         //       }
 
         //       /// sell logic here
               
         //       var result = await ftxSellCoinRepository.ftxSellCoin(coins.coin + '/BTC', tmp);
         //       //  {
-        //       //   log('Coin: ' + coins.coin);
+        //       //   debugPrint('Coin: ' + coins.coin);
         //       //   var result = await ftxSell`CoinRepository.ftxSellCoin(coins.coin);
         //       // }
-        //       log(result.toString());
+        //       debugPrint(result.toString());
         //     } catch (e) {
-        //       log(coins.coin + " does not have a BTC pair on FTX");
+        //       debugPrint(coins.coin + " does not have a BTC pair on FTX");
         //     }
         //   }
         // }
 
 
-        // log("sup");
+        // debugPrint("sup");
         // // btcSpecial = binanceGetPricesMap['BTCUSDT'];
         // // yield GetTotalValueLoadedState(totalValue: totalValue, btcSpecial: btcSpecial);
-        // log("nothing is happening here?");
+        // debugPrint("nothing is happening here?");
 
 /// ### Uncomment above for ftx integration ### ///
 
         yield SellPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
-        log("wallah");
-        log(e.toString());
+        debugPrint("wallah");
+        debugPrint(e.toString());
         yield SellPortfolioErrorState(errorMessage : e.toString());
       }
     }

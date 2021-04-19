@@ -310,7 +310,7 @@ class NewCardListTileState extends State<NewCardListTile> {
         //   value: 'Edit',
         //   child: TextButton(
         //     child: Text('Edit'),
-        //     onPressed: () {log("We have liftoff - Edit pressed");},
+        //     onPressed: () {debugPrint("We have liftoff - Edit pressed");},
         //     style: ButtonStyle(
         //       foregroundColor: MaterialStateProperty.resolveWith(
         //               (state) => Colors.black)
@@ -327,13 +327,13 @@ class NewCardListTileState extends State<NewCardListTile> {
               /// https://api.dart.dev/stable/2.10.5/dart-core/Map/remove.html
               
               var localStorage = LocalStorage("coinstreetapp");
-              // log(localStorage.toString());
+              // debugPrint(localStorage.toString());
               var localStorageResponse = json.decode(localStorage.getItem("prime"));
-              // log("First, LocalStorage is" + localStorage.getItem("prime").toString());
-              // log("Coin to remove is: " + coin);
+              // debugPrint("First, LocalStorage is" + localStorage.getItem("prime").toString());
+              // debugPrint("Coin to remove is: " + coin);
               localStorageResponse.remove(coin);
-              // log("LocalStorage is now: \n");
-              // log(localStorage.getItem("prime").toString());
+              // debugPrint("LocalStorage is now: \n");
+              // debugPrint(localStorage.getItem("prime").toString());
               localStorage.setItem("prime", jsonEncode(localStorageResponse));
               Navigator.pop(context);
             },
@@ -368,7 +368,7 @@ class NewCardListTileState extends State<NewCardListTile> {
   // }
 
   // _showPopupMenu(Offset offset) {
-  //   // _doSomething () => {(log("We have liftoff"))};
+  //   // _doSomething () => {(debugPrint("We have liftoff"))};
   //   // double left = offset.dx;
   //   // double top = offset.dy;
   //   PopupMenuButton(
@@ -383,7 +383,7 @@ class NewCardListTileState extends State<NewCardListTile> {
   //         child: Text('Delete'), value: 'Delete',
   //       ),
   //     ],
-  //     onSelected: (_) {log("We have liftoff");},
+  //     onSelected: (_) {debugPrint("We have liftoff");},
   //     elevation: 8.0,
   //   );
   // }

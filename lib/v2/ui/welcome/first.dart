@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
@@ -58,7 +58,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
     }
     if(_visible == true) {
       Future.delayed(Duration(milliseconds: 5000), () {
-        log("Wat");
+        debugPrint("Wat");
           setState(() {
             _visible = !_visible;
           });

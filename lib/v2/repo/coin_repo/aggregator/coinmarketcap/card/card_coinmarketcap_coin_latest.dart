@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_latest.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class ICardCoinmarketcapCoinLatestRepository  {
   Future getCoinMarketCapCoinLatest();
@@ -22,7 +22,7 @@ class CardCoinmarketcapCoinLatestRepositoryImpl implements ICardCoinmarketcapCoi
       'X-CMC_PRO_API_KEY': api
     });
     stopWatch.stop();
-    log("Coinmarketcap: " + stopWatch.elapsedMilliseconds.toString());
+    debugPrint("Coinmarketcap: " + stopWatch.elapsedMilliseconds.toString());
 
     
 
@@ -32,8 +32,8 @@ class CardCoinmarketcapCoinLatestRepositoryImpl implements ICardCoinmarketcapCoi
       CoinMarketCapCoinLatestModel coinMarketCapCoinLatestModel = CoinMarketCapCoinLatestModel.fromJson(body);
       return coinMarketCapCoinLatestModel;
     } else {
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       throw Exception();
     }
   }

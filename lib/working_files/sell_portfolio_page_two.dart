@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_state.dart';
@@ -36,12 +36,12 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 
     if (arguments == null) {
-      log("Arguments is null");
+      debugPrint("Arguments is null");
     } else {
       symbol = arguments['symbol'];
       percentageValue = arguments['value'] / 100;
-      log("Target symbol is " + symbol);
-      log("Percentage to sell is " + percentageValue.toString());
+      debugPrint("Target symbol is " + symbol);
+      debugPrint("Percentage to sell is " + percentageValue.toString());
     }
     return Scaffold(
       body: Container(
@@ -121,7 +121,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                       child: BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
                         listener: (context, state) {
                           if (state is GetTotalValueErrorState) {
-                            log("Error occured in sell_portfolio_page_two.dart, GetTotalValueBloc");
+                            debugPrint("Error occured in sell_portfolio_page_two.dart, GetTotalValueBloc");
                           }
                         },
                         builder: (context, state) {
@@ -195,7 +195,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                               double pmt = tmp * (coinListReceived[index].free * percentageValue);
                                               if (pmt > 10) {
                                                 
-                                                log("Print PMT Line");
+                                                debugPrint("Print PMT Line");
                                                 
                                                 return Padding(
                                                   padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
@@ -233,7 +233,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                               //   if (condition) {
                                                               //     coinCount++;
 
-                                                              //     log("HEll o" + coinCount.toString());
+                                                              //     debugPrint("HEll o" + coinCount.toString());
                                                               //     coinTotalValue += state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free);
                                                               //     return Text("\$" + 
                                                               // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2));
@@ -293,7 +293,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                         //                   //   if (condition) {
                                         //                   //     coinCount++;
 
-                                        //                   //     log("HEll o" + coinCount.toString());
+                                        //                   //     debugPrint("HEll o" + coinCount.toString());
                                         //                   //     coinTotalValue += state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free);
                                         //                   //     return Text("\$" + 
                                         //                   // (state.binanceGetPricesMap[state.coinListReceived[index].coin + 'USDT'] * (state.coinListReceived[index].free)).toStringAsFixed(2));

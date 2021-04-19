@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 
@@ -148,8 +148,8 @@ class CryptoCompareHourlyModel {
         
       }
     } catch (e) {
-      log("Error in crypto_compare.fromJsonToChart");
-      log(e.toString());
+      debugPrint("Error in crypto_compare.fromJsonToChart");
+      debugPrint(e.toString());
       return;
     }
   }

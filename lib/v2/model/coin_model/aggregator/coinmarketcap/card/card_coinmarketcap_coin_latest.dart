@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class Data {
       this.quote});
 
   Data.fromJson(Map<String, dynamic> json) {
-    // log(json['name'].toString());
+    // debugPrint(json['name'].toString());
     name = json['name'];
     symbol = json['symbol'];
     lastUpdated = json['last_updated'];

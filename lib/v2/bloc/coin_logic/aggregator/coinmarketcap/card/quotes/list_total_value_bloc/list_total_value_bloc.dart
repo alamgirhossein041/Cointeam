@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/quotes/list_total_value_bloc/list_total_value_event.dart';
@@ -26,7 +26,7 @@ class ListTotalValueBloc extends Bloc<ListTotalValueEvent, ListTotalValueState> 
       yield ListTotalValueLoadingState();
 
 
-      // log(event.coinList.toString());
+      // debugPrint(event.coinList.toString());
       try {
         if(event.coinList[0] == 'Top100') {
           
@@ -40,7 +40,7 @@ class ListTotalValueBloc extends Bloc<ListTotalValueEvent, ListTotalValueState> 
         /// TODO: probably fix up LIST
         // yield FirestoreGetUserDataLoadedState(FirestoreGetUserDataModel: FirestoreGetUserDataModel);
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield ListTotalValueErrorState(errorMessage : e.toString());
       }
     }

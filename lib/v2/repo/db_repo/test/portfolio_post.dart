@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:coinsnap/v2/model/db_model/test.dart/db_user_model.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class IDBPortfolioPostTest {
   Future dbPortfolioPostTest();
@@ -25,7 +25,7 @@ class DBPortfolioPostTest implements IDBPortfolioPostTest {
       );
 
         var json = jsonEncode(dbUserModel.toJson());
-      // log(json);
+      // debugPrint(json);
 
 
       var response = await http.post(
@@ -42,6 +42,6 @@ class DBPortfolioPostTest implements IDBPortfolioPostTest {
         /// ### See Above ### ///
       );
       
-      log(response.body.toString());
+      debugPrint(response.body.toString());
   }
 }

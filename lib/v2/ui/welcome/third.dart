@@ -1,9 +1,23 @@
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/v2/ui/widgets/modal_widgets/modal_success.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
 
-class Third extends StatelessWidget {
+class Third extends StatefulWidget {
 
+  @override
+  _ThirdState createState() => _ThirdState();
+}
+
+class _ThirdState extends State<Third> {
+  @override
+  void initState() { 
+    super.initState();
+    analytics.logEvent(
+      name: "api_binance"
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 // import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
@@ -55,7 +55,7 @@ class WelcomeViewState extends State<WelcomeView> with TickerProviderStateMixin 
 
   @override 
   void initState() {
-    log("WELCOMEVIEW IN FIRST.DART");
+    debugPrint("WELCOMEVIEW IN FIRST.DART");
     super.initState();
     animationControllerWelcome = AnimationController(
       vsync: this,

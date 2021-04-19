@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_portfolio_data_bloc/get_portfolio_data_event.dart';
@@ -45,7 +45,7 @@ class GetPortfolioDataBloc extends Bloc<GetPortfolioDataEvent, GetPortfolioDataS
         /// TODO: probably fix up LIST
         // yield FirestoreGetUserDataLoadedState(FirestoreGetUserDataModel: FirestoreGetUserDataModel);
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield GetPortfolioDataErrorState(errorMessage : e.toString());
       }
     }

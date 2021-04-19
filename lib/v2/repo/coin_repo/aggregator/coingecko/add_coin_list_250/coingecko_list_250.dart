@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_250/coingecko_list_250.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class ICoingeckoList250Repository  {
   Future getCoinMarketCapCoinLatest(String _pagination);
@@ -26,21 +26,21 @@ class CoingeckoList250RepositoryImpl implements ICoingeckoList250Repository {
     var stopWatch = Stopwatch()..start();
     var response = await http.get(requestUrl + linkBuilder);
     stopWatch.stop();
-    log("Coingecko : " + stopWatch.elapsedMilliseconds.toString());
+    debugPrint("Coingecko : " + stopWatch.elapsedMilliseconds.toString());
 
     if(response.statusCode == 200) {
       // Map<String, dynamic> body = Map.from(json.decode(response.body));
       // List<CoingeckoList250Model> coingeckoList250ModelList = CoingeckoList250Model.fromJson(body);
-      // log("Hello World");
+      // debugPrint("Hello World");
       List<CoingeckoList250Model> coingeckoList250ModelList = json.decode(response.body).cast<Map<String, dynamic>>().map<CoingeckoList250Model>((json) => CoingeckoList250Model.fromJson(json)).toList();
       // Map<String, dynamic> coingeckoMap = {},
 
 
-      // log("Goodbye World");
+      // debugPrint("Goodbye World");
       return coingeckoList250ModelList;
     } else {
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       throw Exception();
     }
   }

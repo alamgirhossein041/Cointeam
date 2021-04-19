@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 class BinanceGetChartModel {  /// Repository returns 1 of this object which has List result
   List<BinanceGetChartData> kLineList;

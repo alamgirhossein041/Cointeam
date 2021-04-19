@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _InitialPageState extends State<InitialPage> {
   
   @override
   Widget build(BuildContext context) {
-    log("INITIALPAGE");
+    debugPrint("INITIALPAGE");
     // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
     // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
     // BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
