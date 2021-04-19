@@ -23,6 +23,8 @@ class DrawerMenu extends StatefulWidget {
 
 class DrawerMenuState extends State<DrawerMenu> {
   final feedbackTextController = TextEditingController();
+  String testApi = "Test Api";
+  final secureStorage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,21 @@ class DrawerMenuState extends State<DrawerMenu> {
               onTap: () {
                 BinanceGetChartRepositoryImpl helloBinance = BinanceGetChartRepositoryImpl();
                 helloBinance.getBinanceChart('btc', '');
+                // Navigator.pushReplacementNamed(context, '/first');
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              /// title: Text('Portfolio 1 - Live'),
+              title: Text(
+                testApi,
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () async {
+                var api = await secureStorage.read(key: "binanceApi");
+                setState(() {
+                  testApi = api.toString();
+                });
                 // Navigator.pushReplacementNamed(context, '/first');
               },
             ),

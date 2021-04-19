@@ -22,8 +22,8 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
 
     final secureStorage = FlutterSecureStorage();
 
-    String api = await secureStorage.read(key: 'binanceApi');
-    String sapi = await secureStorage.read(key: 'binanceSapi');
+    String api = await secureStorage.read(key: "binanceApi");
+    String sapi = await secureStorage.read(key: "binanceSapi");
 
     if(api != null) {
       log(api);

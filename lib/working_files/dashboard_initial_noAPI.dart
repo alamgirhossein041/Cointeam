@@ -530,6 +530,7 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
+                              return Text("None");
                             case ConnectionState.waiting:
                               return Container();
                             default:

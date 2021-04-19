@@ -205,6 +205,8 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                     Text((_value).toStringAsFixed(1) + "% of your portfolio", style: TextStyle(color: Colors.white))
                                   ],
                                 );
+                              } else if (state is GetTotalValueErrorState) {
+                                return Text(state.errorMessage);
                               } else {
                                 return loadingTemplateWidget();
                               }

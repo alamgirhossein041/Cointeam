@@ -128,12 +128,15 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
         QrResult qrDecoded = QrResult.fromJson(body);
         final secureStorage = FlutterSecureStorage();
 
-        await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
-        await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
+
 
         if(qrSanityCheck == true) {
-          writeStorage("trading", "true");
-          writeStorage("binance", "true");
+          await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
+          await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
+          await secureStorage.write(key: 'trading', value: 'true');
+          // writeStorage("trading", "true");
+          await secureStorage.write(key: 'binance', value: 'true');
+          // writeStorage("binance", "true");
 
           Navigator.pushReplacementNamed(context, '/third');
           qrSanityCheck = false;

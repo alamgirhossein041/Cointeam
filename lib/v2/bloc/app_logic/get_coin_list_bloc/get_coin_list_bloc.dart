@@ -26,7 +26,8 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         final LocalStorage localStorage = LocalStorage("coinstreetapp");
         Map primeCoin;
 
-        String isBinanceTrading = await secureStorage.read(key: "trading");
+        // String isBinanceTrading = await secureStorage.read(key: "trading");
+        String isBinanceTrading = await secureStorage.read(key: "binance");
         var localStorageResponse = await localStorage.getItem("prime");
         if(localStorageResponse != null) {
           primeCoin = Map.from(json.decode(await localStorage.getItem("prime")));
