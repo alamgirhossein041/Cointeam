@@ -1,4 +1,7 @@
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_bloc.dart';
+import 'package:coinsnap/v2/bloc/coin_logic/controller/get_total_value_bloc/get_total_value_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -36,14 +39,31 @@ class BottomNavBarState extends State<BottomNavBar> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget> [
                         /// ### Bottom left button on bottomnavbar ### ///
-                        IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-                        }),
-                        IconButton(icon: Icon(Icons.help_center, color: Color(0xFFA9B1D9)), onPressed: () {
-                          /// ### Dev-5: Delete (and maybe put in its own helper file with dashboard_initial_noAPI class readStorage)
-                          // storage.delete(key: "trading");
-                        }),
+                        Column(
+                          children: <Widget> [
+                            IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            }),
+                            Text("Home", style: TextStyle(color: Color(0xFFA9B1D9)))
+                          ]
+                        ),
+                        Column(
+                          children: <Widget> [
+                            IconButton(icon: Icon(Icons.bolt, color: Colors.yellowAccent[100]), onPressed: () {
+                              BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                              Navigator.pushNamed(context, '/sellportfolio');
+                            }),
+                            Text("Trade", style: TextStyle(color: Colors.yellowAccent[100]))
+                          ]
+                        ),
                         /// ### Bottom right button on bottomnavbar ### ///
-                        IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
+                        Column(
+                          children: <Widget> [
+                            IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
+                            Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9)))
+                          ]
+                        ),
+                        
                       ],
                     ),
                   ),
