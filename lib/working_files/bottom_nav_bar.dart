@@ -33,37 +33,83 @@ class BottomNavBarState extends State<BottomNavBar> {
               color: Color(0xFF2E374E),
               child: Column(
                 children: <Widget> [
-                  SizedBox(height: 5),
+                  // SizedBox(height: 5),
                   Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget> [
-                        /// ### Bottom left button on bottomnavbar ### ///
-                        Column(
-                          children: <Widget> [
-                            IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/home');
-                            }),
-                            Text("Home", style: TextStyle(color: Color(0xFFA9B1D9)))
-                          ]
-                        ),
-                        Column(
-                          children: <Widget> [
-                            IconButton(icon: Icon(Icons.bolt, color: Colors.yellowAccent[100]), onPressed: () {
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
                               BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
                               Navigator.pushNamed(context, '/sellportfolio');
-                            }),
-                            Text("Trade", style: TextStyle(color: Colors.yellowAccent[100]))
-                          ]
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.bolt, color: Colors.yellowAccent[100])
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Trade", style: TextStyle(color: Colors.yellowAccent[100], fontSize: 12)),
+                                ),
+                            ],)
+                          ),
                         ),
-                        /// ### Bottom right button on bottomnavbar ### ///
-                        Column(
-                          children: <Widget> [
-                            IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
-                            Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9)))
-                          ]
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.home, color: Color(0xFFA9B1D9)),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
+                                ),
+                            ],)
+                          ),
                         ),
-                        
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.callBack();
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.refresh, color: Color(0xFFA9B1D9)),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
+                                ),
+                            ],)
+                          ),
+                        ),
                       ],
                     ),
                   ),
