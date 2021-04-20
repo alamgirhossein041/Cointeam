@@ -33,52 +33,85 @@ class BottomNavBarState extends State<BottomNavBar> {
               color: Color(0xFF2E374E),
               child: Column(
                 children: <Widget> [
-                  // SizedBox(height: 5),
                   Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget> [
-                        /// ### Bottom left button on bottomnavbar ### ///
-                        Column(
-                          children: <Widget> [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: IconButton(icon: Icon(Icons.home, color: Color(0xFFA9B1D9)), onPressed: () {
-                                Navigator.pushReplacementNamed(context, '/home');
-                              }),
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9)))
-                            ),
-                          ]
-                        ),
-                        Column(
-                          children: <Widget> [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: IconButton(icon: Icon(Icons.bolt, color: Colors.yellowAccent[100]), onPressed: () {
-                                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
-                                Navigator.pushNamed(context, '/sellportfolio');
-                              }),
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Text("Trade", style: TextStyle(color: Colors.yellowAccent[100]))
-                            ),
-                          ]
-                        ),
-                        /// ### Bottom right button on bottomnavbar ### ///
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Column(
-                            children: <Widget> [
-                              IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
-                              Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9)))
-                            ]
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                              Navigator.pushNamed(context, '/sellportfolio');
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                SizedBox(height: 8),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.bolt, color: Colors.yellowAccent[100])
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Trade", style: TextStyle(color: Colors.yellowAccent[100], fontSize: 12)),
+                                ),
+                            ],)
                           ),
                         ),
-                        
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                SizedBox(height: 8),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.home, color: Color(0xFFA9B1D9)),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
+                                ),
+                            ],)
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.callBack();
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                SizedBox(height: 8),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.refresh, color: Color(0xFFA9B1D9)),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
+                                ),
+                            ],)
+                          ),
+                        ),
                       ],
                     ),
                   ),

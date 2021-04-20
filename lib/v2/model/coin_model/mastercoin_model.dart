@@ -2,6 +2,7 @@ import 'package:coinsnap/v2/model/coin_model/aggregator/coingecko/add_coin_list_
 // import 'package:coinsnap/v2/model/coin_model/aggregator/coinmarketcap/card/card_coinmarketcap_coin_list.dart';
 
 class MasterCoinModel {
+  Map<String, dynamic> csTicker;
   String csId;
   String csName;
   String csSymbol;
