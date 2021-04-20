@@ -33,7 +33,6 @@ class BottomNavBarState extends State<BottomNavBar> {
               color: Color(0xFF2E374E),
               child: Column(
                 children: <Widget> [
-                  // SizedBox(height: 5),
                   Expanded(
                     child: Row(
                       children: <Widget> [
@@ -49,6 +48,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                             behavior: HitTestBehavior.opaque,
                             child: Column(
                               children: <Widget> [
+                                SizedBox(height: 8),
                                 Flexible(
                                   flex: 1,
                                   fit: FlexFit.tight,
@@ -73,6 +73,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                             behavior: HitTestBehavior.opaque,
                             child: Column(
                               children: <Widget> [
+                                SizedBox(height: 8),
                                 Flexible(
                                   flex: 1,
                                   fit: FlexFit.tight,
@@ -97,6 +98,7 @@ class BottomNavBarState extends State<BottomNavBar> {
                             behavior: HitTestBehavior.opaque,
                             child: Column(
                               children: <Widget> [
+                                SizedBox(height: 8),
                                 Flexible(
                                   flex: 1,
                                   fit: FlexFit.tight,
