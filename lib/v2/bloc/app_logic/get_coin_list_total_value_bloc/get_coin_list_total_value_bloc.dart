@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_total_value_bloc/get_coin_list_total_value_event.dart';
@@ -23,7 +23,7 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
 
       /// airport
       
-      // log(coinBalancesMap.toString());
+      // debugPrint(coinBalancesMap.toString());
       double totalValue = 0.0;
       yield GetCoinListTotalValueLoadingState();
       try {
@@ -44,8 +44,8 @@ class GetCoinListTotalValueBloc extends Bloc<GetCoinListTotalValueEvent, GetCoin
         coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         yield GetCoinListTotalValueLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap, coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial); /// TODO : insert parameters later
       } catch (e) {
-        log(e.toString());
-        log("Something went wrong in get_coin_list_total_value_bloc.dart");
+        debugPrint(e.toString());
+        debugPrint("Something went wrong in get_coin_list_total_value_bloc.dart");
         yield GetCoinListTotalValueErrorState(errorMessage : e.toString());
       }
     }

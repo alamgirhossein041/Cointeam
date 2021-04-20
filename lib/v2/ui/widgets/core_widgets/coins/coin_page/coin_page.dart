@@ -1,9 +1,8 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
@@ -45,15 +44,15 @@ class _CoinPageState extends State<CoinPage> {
     /// ### Dev Testing Values ### ///
     
     if (arguments == null) {
-      log("Arguments is null");
+      debugPrint("Arguments is null");
     } else {
-    //   log("Arguments is: " + arguments['cryptoData'].toString());
-    //   log(arguments['cryptoData'][arguments['index']].toString());
-    //   log(arguments['cryptoData'][arguments['index']].coin);
-    //   log(arguments['cryptoData'][arguments['index']].name);
-    //   log(arguments['cryptoData'][arguments['index']].free.toString());
-    //   log(arguments['cryptoData'][arguments['index']].locked.toString());
-    //   log(arguments['cryptoData'][arguments['index']].btcValue.toString());
+    //   debugPrint("Arguments is: " + arguments['cryptoData'].toString());
+    //   debugPrint(arguments['cryptoData'][arguments['index']].toString());
+    //   debugPrint(arguments['cryptoData'][arguments['index']].coin);
+    //   debugPrint(arguments['cryptoData'][arguments['index']].name);
+    //   debugPrint(arguments['cryptoData'][arguments['index']].free.toString());
+    //   debugPrint(arguments['cryptoData'][arguments['index']].locked.toString());
+    //   debugPrint(arguments['cryptoData'][arguments['index']].btcValue.toString());
       index = arguments['index'];
       coinBalance = arguments['coinBalancesMap'];
       coinListData = arguments['coinListData'];
@@ -63,7 +62,7 @@ class _CoinPageState extends State<CoinPage> {
       // totalValue = balance * usdValue;
       // coinName = arguments['cryptoData'][arguments['index']].name;
       // portfolioValue = arguments['portfolioValue'];
-      log(totalValue.toString());
+      debugPrint(totalValue.toString());
     }
 
     usdValue = coinBalance * coinListData.quote.uSD.price;
@@ -91,8 +90,8 @@ class _CoinPageState extends State<CoinPage> {
     }
 
     // if(totalValue != null && portfolioValue != null) {
-    //   log(totalValue.toString());
-    //   log(portfolioValue.toString());
+    //   debugPrint(totalValue.toString());
+    //   debugPrint(portfolioValue.toString());
     //   portfolioShareString = ((totalValue / portfolioValue) * 100).toStringAsFixed(1);
     // }
 

@@ -1,10 +1,11 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class First extends StatefulWidget {
   
@@ -16,10 +17,16 @@ class FirstState extends State<First> with TickerProviderStateMixin{
   AnimationController animationControllerWelcome;
   Animation<double> animationWelcome;
   bool _visible = true;
+
+  final storage = FlutterSecureStorage();
   
   @override
   void initState() { 
     super.initState();
+    /// ### We call storage.deleteAll() once on first time use,
+    /// ### This prevents a host of android specific errors related,
+    /// ### To hanging due to old bits of storage
+    storage.deleteAll();
     analytics.logEvent(
       name: 'welcome_screen_1'
     );
@@ -51,7 +58,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
     }
     if(_visible == true) {
       Future.delayed(Duration(milliseconds: 5000), () {
-        log("Wat");
+        debugPrint("Wat");
           setState(() {
             _visible = !_visible;
           });
@@ -236,7 +243,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                               ),
                               onTap: () => {
                                 writeStorage("welcome", "true"),
-                                Navigator.pushReplacementNamed(context, '/dashboardnoapitest')
+                                Navigator.pushReplacementNamed(context, '/home')
                                 // Navigator.pushNamed(context, '/hometest'),
                               },
                             // ),

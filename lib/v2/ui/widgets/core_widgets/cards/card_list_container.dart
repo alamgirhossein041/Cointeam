@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
@@ -13,9 +13,7 @@ import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_ch
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/coin_repo/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
-import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_tile.dart';
-import 'package:coinsnap/v2/ui/core_widgets/charts/syncfusion_chart_cartesian.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/cards/card_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
@@ -52,7 +50,7 @@ class _ListContainerState extends State<ListContainer> {
       // child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
       //   listener: (context, state) {
       //     if (state is GetTotalValueErrorState) {
-      //       log("error in GetTotalValueBloc in card_list_container.dart");
+      //       debugPrint("error in GetTotalValueBloc in card_list_container.dart");
       //     }
       //   },
       //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
@@ -78,16 +76,16 @@ class _ListContainerState extends State<ListContainer> {
             // child: BlocListener<BinanceGetChartBloc, BinanceGetChartState>(
             //   listener: (context, state) {
             //     if (state is BinanceGetChartErrorState) {
-            //       log("error in GetTotalValueBloc in card_list_container.dart");
+            //       debugPrint("error in GetTotalValueBloc in card_list_container.dart");
             //     }
             //   },
             //   child: BlocBuilder<BinanceGetChartBloc, BinanceGetChartState>( /// Both bloc types to be built (refactor existing controllers)
             //     builder: (context, state) {
             //       if (state is BinanceGetChartInitialState) {
-            //         log("BinanceGetChartInitialState");
+            //         debugPrint("BinanceGetChartInitialState");
             //         return Container();
             //       } else if (state is BinanceGetChartLoadingState) {
-            //         log("BinanceGetChartLoadingState");
+            //         debugPrint("BinanceGetChartLoadingState");
             //         return Container();
             //       } else if (state is BinanceGetChartLoadedState) {
             //         return SizedBox(
@@ -105,7 +103,7 @@ class _ListContainerState extends State<ListContainer> {
       child: BlocListener<GetTotalValueBloc, GetTotalValueState>(
         listener: (context, state) {
           if (state is GetTotalValueErrorState) {
-            log("error in GetTotalValueBloc in card_list_container.dart");
+            debugPrint("error in GetTotalValueBloc in card_list_container.dart");
           }
         },
         child: BlocBuilder<GetTotalValueBloc, GetTotalValueState>( /// Both bloc types to be built (refactor existing controllers)
@@ -254,7 +252,7 @@ class _ListContainerStateWithContainer extends State<ListContainerWithContainer>
       child: BlocListener<ListTotalValueBloc, ListTotalValueState>(
         listener: (context, state) {
           if (state is ListTotalValueErrorState) {
-            log("error in ListTotalValueBloc in card_list_container.dart");
+            debugPrint("error in ListTotalValueBloc in card_list_container.dart");
           }
         },
         child: BlocBuilder<ListTotalValueBloc, ListTotalValueState>( /// Both bloc types to be built (refactor existing controllers)

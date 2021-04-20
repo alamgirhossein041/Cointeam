@@ -1,7 +1,7 @@
 
 
 import 'dart:convert';
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/model/db_model/db_porsche/get_portfolio_model.dart';
 import 'package:localstorage/localstorage.dart';
@@ -16,7 +16,7 @@ class GetPortfolioImpl implements IGetPortfolioRepository {
     final LocalStorage localStorage = LocalStorage("coinstreetapp");
     // return GetPortfolioModel.fromJson(GetPortfolioDummyData.getData);
     var localStorageResponse = localStorage.getItem(_portfolio);
-    log("8th April: Our local storage is - " + localStorageResponse.toString());
+    debugPrint("8th April: Our local storage is - " + localStorageResponse.toString());
     return GetPortfolioModel.fromJson(localStorageResponse);
   }
 }

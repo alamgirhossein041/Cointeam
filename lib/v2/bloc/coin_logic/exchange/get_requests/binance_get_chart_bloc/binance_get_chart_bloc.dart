@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_event.dart';
@@ -20,7 +20,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
       var listOfUserCoins = event.binanceGetAllModelList;
       var binanceGetPricesMap = event.binanceGetPricesMap;
       var timeSelection = event.timeSelection;
-      // log(timeSelection.toString());
+      // debugPrint(timeSelection.toString());
       // var mapOfPrices = event.binanceGetPricesMap;
       // Map mapOfPrices = {};
       /// TODO: DELETE mapOfPrices
@@ -29,7 +29,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
       yield BinanceGetChartLoadingState();
       try {
         // BinanceGetChartModel binanceGetChartModel = await binanceGetChartRepository.getBinanceChart('BTC');
-        // log(binanceGetChartModel.toString());
+        // debugPrint(binanceGetChartModel.toString());
 // List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
 
         /// responses is a list of BinanceGetChartModel 1-1 for the listOfUserCoins
@@ -39,19 +39,19 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         //   futures.add(binanceGetChartRepository.getBinanceChart(b.coin));
         //   // mapOfPrices[b.coin] = binanceGetChartRepository.getBinanceChart(b.coin),
         // }
-        // log("HELLO");
+        // debugPrint("HELLO");
         
         Map<String, double> userCoinMap = {};
 
         var futures = <Future>[];
-          // log("Sup");
-          // log(listOfUserCoins.toString());
+          // debugPrint("Sup");
+          // debugPrint(listOfUserCoins.toString());
         for (var f in listOfUserCoins) {
-          // log("Sup");
+          // debugPrint("Sup");
           futures.add(binanceGetChartRepository.getBinanceChart(f, timeSelection));
           /// ### I guess this is where we worry about timerange ### ///
           
-          // log("Hello " + f.coin);
+          // debugPrint("Hello " + f.coin);
           // userCoinMap[f.coin] = binanceGetPricesMap[f.coin];
           /// WE may be able to replace this shitty map implementation by simply passing in the quantity into the binanceGetChartRepository.getBinanceChart method
         }
@@ -72,7 +72,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         //   var timestamp;
         //   var sum;
         //   timestamp = resolvedFutures[0].kLineList.openTimestamp;
-        //   log("Timestamp is" + timestamp.toString());
+        //   debugPrint("Timestamp is" + timestamp.toString());
 
         //   priceSumList.add(
 
@@ -80,12 +80,12 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         // }
 
         for (var g in resolvedFutures) {
-          // log("What's up " + g.kLineList.toString());
+          // debugPrint("What's up " + g.kLineList.toString());
           var tmp = g.coinTicker;
-          // log("Quantity of " + g.coinTicker + " is : " + userCoinMap[tmp].toString());
+          // debugPrint("Quantity of " + g.coinTicker + " is : " + userCoinMap[tmp].toString());
           for (var h in g.kLineList) {
-            // log("Dissected " + h.openTimestamp.toString());
-            // log("Second " + h.open);
+            // debugPrint("Dissected " + h.openTimestamp.toString());
+            // debugPrint("Second " + h.open);
 
             /// ### IF TIME SELECTIONS ### ///
 
@@ -103,25 +103,25 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
                 sumMap[h.openTimestamp] = double.parse(h.open) * binanceGetPricesMap[tmp];
               } else {
                 if(h.open != null) {
-                  log(h.toString());
-                  log(g.coinTicker);
+                  // debugPrint(h.toString());
+                  // debugPrint(g.coinTicker);
                   sumMap[h.openTimestamp] += double.parse(h.open) * binanceGetPricesMap[tmp];
                 }
               }
             }
             // sumMap[h.openTimestamp] = sumMap[h.openTimestamp] + double.parse(h.open);
-            // log("Or");
-            // log("Current sum @ " + h.openTimestamp.toString() + " is " + sumMap[h.openTimestamp].toString());
+            // debugPrint("Or");
+            // debugPrint("Current sum @ " + h.openTimestamp.toString() + " is " + sumMap[h.openTimestamp].toString());
           }
           // priceTimeDataList.add(SalesData(time: g.kLineList[i])
         }
 
         for(var p in sumMap.keys) {
-          // log("I think time is " + p.toString());
-          // log("I think price is " + sumMap[p].toString());
-          // log("values: + " + i.toString());
+          // debugPrint("I think time is " + p.toString());
+          // debugPrint("I think price is " + sumMap[p].toString());
+          // debugPrint("values: + " + i.toString());
           i++;
-          // log(p.toString() + " is the time key\n" + sumMap[p].toString() + " is the time value");
+          // debugPrint(p.toString() + " is the time key\n" + sumMap[p].toString() + " is the time value");
           priceTimeDataList.add(SalesData(time: p.toString(), price: sumMap[p]));
         }
         
@@ -129,21 +129,21 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
 
 
         // var wtf = await Future.wait(listOfUserCoins.map((d) => binanceGetChartRepository.getBinanceChart((d.coin))));
-        // // log("HELLO123");
-        // // log(wtf[0].coinTicker);
+        // // debugPrint("HELLO123");
+        // // debugPrint(wtf[0].coinTicker);
         // Map newmap = Map.fromIterable(wtf,
         //   key: (item) => item.coinTicker,
         //   value: (item) => item);
-          // log("HELLO");
-        // log(mapOfPrices['ETH'].toString());
-        // log(mapOfPrices['IOTA'].toString());
-        // log(newmap['BTC'].toString());
-        // log(newmap['ETH'].toString());
+          // debugPrint("HELLO");
+        // debugPrint(mapOfPrices['ETH'].toString());
+        // debugPrint(mapOfPrices['IOTA'].toString());
+        // debugPrint(newmap['BTC'].toString());
+        // debugPrint(newmap['ETH'].toString());
 
         // listOfUserCoins.forEach((v) {
         //   mapOfPrices[v.coin] = binanceGetChartRepository.getBinanceChart();
-        //   log("This is going to be slow");
-        //   log(mapOfPrices[v.coin].toString());
+        //   debugPrint("This is going to be slow");
+        //   debugPrint(mapOfPrices[v.coin].toString());
         // });
 
 
@@ -154,7 +154,7 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
         //   timestamps.add(v.openTimestamp);
         //   // priceCloseSum.add(
         //     // responses.forEach((y) {
-        //     //   log("Rawer: " + y.toString());
+        //     //   debugPrint("Rawer: " + y.toString());
         //     // });
         // });
 
@@ -164,16 +164,16 @@ class BinanceGetChartBloc extends Bloc<BinanceGetChartEvent, BinanceGetChartStat
 
         // await Future.foreach()
 
-        // log(v.openTimestamp.toString()));
-        // log(binanceGetChartModel.toString());
+        // debugPrint(v.openTimestamp.toString()));
+        // debugPrint(binanceGetChartModel.toString());
         /// do logic
         /// if else blah blah
         
         yield BinanceGetChartLoadedState(binanceGetChartDataList: priceTimeDataList, timeSelection: timeSelection); /// TODO : insert parameters later
-        // log("???/");
+        // debugPrint("???/");
       } catch (e) {
-        log(e.toString());
-        log("Something went wrong in binance_get_chart_bloc.dart");
+        debugPrint(e.toString());
+        debugPrint("Something went wrong in binance_get_chart_bloc.dart");
         yield BinanceGetChartErrorState(errorMessage : e.toString());
       }
     }

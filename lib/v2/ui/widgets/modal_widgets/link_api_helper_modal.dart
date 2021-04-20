@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/app_repo/binance_api_check/binance_api_check.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/modal_success.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/modal_success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -537,13 +537,13 @@ Swipe next.''';
     controller.scannedDataStream.listen((scanData) {
       setState(() async {
         result = scanData; /// 31st
-        // log(result.code);
+        // debugPrint(result.code);
         Map<String, dynamic> body = Map.from(json.decode(result.code));
         QrResult qrDecoded = QrResult.fromJson(body);
         // QrResult qrDecoded = json.decode(result.code).fromJson();
-        // log(qrDecoded.toString());
-        // log("Hello World: " + qrDecoded.toString());
-        log("apiKey is " + qrDecoded.apiKey);
+        // debugPrint(qrDecoded.toString());
+        // debugPrint("Hello World: " + qrDecoded.toString());
+        debugPrint("apiKey is " + qrDecoded.apiKey);
         // _publicApiTextController.value = TextEditingValue(
         //   text: qrDecoded.apiKey,
         //   selection: TextSelection.fromPosition(
@@ -556,8 +556,8 @@ Swipe next.''';
         //     TextPosition(offset: qrDecoded.secretKey.length),
         //   )
         // );
-        // log(_publicApiTextController.text);
-        // log(_secretApiTextController.text);
+        // debugPrint(_publicApiTextController.text);
+        // debugPrint(_secretApiTextController.text);
         final secureStorage = FlutterSecureStorage();
 
         await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);

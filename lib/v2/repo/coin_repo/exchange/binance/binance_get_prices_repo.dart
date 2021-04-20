@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/exchange/binance/binance_get_prices_model.dart';
 import 'package:http/http.dart' as http;
 
-// import 'dart:developer';
+// import 'package:flutter/material.dart';
 
 abstract class IBinanceGetPricesRepository  {
   Future getBinancePricesInfo();

@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/card/latest/card_coinmarketcap_coin_latest_event.dart';
@@ -13,11 +13,9 @@ import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_ch
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_all_repo.dart';
-import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_prices_repo.dart';
-import 'package:coinsnap/v2/ui/core_widgets/cards/card_list_container.dart';
-import 'package:coinsnap/v2/ui/core_widgets/price_container/container_panel.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/cards/card_list_container.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/price_container/container_panel.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +54,7 @@ class _PriceContainerState extends State<PriceContainer> {
     _heightShowContainer = displayHeight(widget.context) * 0.4;
     _heightOffset = displayHeight(widget.context) * 0.065 ;
     BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
-    // log("Here you go + " + widget.category.toString());
+    // debugPrint("Here you go + " + widget.category.toString());
   }
 
   @override
@@ -135,24 +133,24 @@ class _PriceContainerState extends State<PriceContainer> {
                         BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
                           listener: (context, state) {
                             if (state is GetTotalValueErrorState) {
-                              log("error in GetTotalValueState in home_view.dart");
+                              debugPrint("error in GetTotalValueState in home_view.dart");
                             } else if (state is GetTotalValueResponseState) {
-                              log("Is it working?");
+                              debugPrint("Is it working?");
                               BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
                             }
                           },
                           builder: (context, state) {
                             if (state is GetTotalValueInitialState) {
-                              log("GetTotalValueInitialState");
+                              debugPrint("GetTotalValueInitialState");
                               return loadingTemplateWidget();
                             } else if (state is GetTotalValueLoadingState) {
-                              log("GetTotalValueLoadingStatedoodoo");
+                              debugPrint("GetTotalValueLoadingStatedoodoo");
                               return loadingTemplateWidget();
                             } else if (state is GetTotalValueResponseState) {
-                              log("GetTotalValueResponseReceivedState");
+                              debugPrint("GetTotalValueResponseReceivedState");
                               return loadingTemplateWidget();
                             } else if (state is GetTotalValueLoadedState) {
-                              log("GetTotalValueLoadedState");
+                              debugPrint("GetTotalValueLoadedState");
                               return Column(
                                 children: <Widget> [
                                   Row(
@@ -179,83 +177,10 @@ class _PriceContainerState extends State<PriceContainer> {
                             }
                           }
                         ),
-                        // BlocListener<GetTotalValueBloc, GetTotalValueState>(
-                        //   listener: (context, state) {
-                        //     if (state is GetTotalValueErrorState) {
-                        //       log("error in GetTotalValueState in home_view.dart");
-                        //     } else if (state is GetTotalValueResponseState) {
-                        //       log("Is it working?");
-                        //     }
-                        //   },
-                        //   child: BlocBuilder<GetTotalValueBloc, GetTotalValueState> -- GetTotalValueEvent( /// Both bloc types to be built (refactor existing controllers)
-                        //     builder: (context, state) {
-                        //       if (state is GetTotalValueInitialState) {
-                        //         log("GetTotalValueInitialState");
-                        //         return loadingTemplateWidget();
-                        //       } else if (state is GetTotalValueLoadingState) {
-                        //         log("GetTotalValueLoadingStatedoodoo");
-                        //         return loadingTemplateWidget();
-                        //       } else if (state is GetTotalValueResponseState) {
-                        //         log("GetTotalValueResponseReceivedState");
-                        //         BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent());
-                        //         return loadingTemplateWidget();
-                        //       } else if (state is GetTotalValueLoadedState) {
-                        //         log("GetTotalValueLoadedState");
-                        //         return Column(
-                        //           children: <Widget> [
-                        //             Row(
-                        //   /// TODO: Alignment (padding?)
-                        //               children: <Widget> [
-                        //                 Container(
-                        //                   padding: EdgeInsets.fromLTRB(displayWidth(context) * 0.3, 23, 0, 0),
-                        //                   child: Row( /// ### Start Bitcoin total value line here ### ///
-                        //                     children: <Widget> [
-                        //                       Icon(CryptoFontIcons.BTC, color: Colors.white, size: 14),
-                        //                       Text(state.totalValue.toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.white)),
-                        //                     ],
-                        //                   ), /// ### End Bitcoin total value line here ### ///
-                        //                 )
-                        //               ],
-                        //             ),
-                        //             Text("\$" + (state.totalValue * state.btcSpecial).toStringAsFixed(2), style: TextStyle(fontSize: 28, color: Colors.white)),
-                        //           ],
-                        //         );
-                                
-                          
-                        //       } else {
-                        //         return Text("Placeholder in home_view.dart -> PriceContainer()");
-                        //       }
-                        //     }
-                        //   ),
-                        // ),
                         
 
 
                         /// ### Start Expanded Buttons Here ### ///
-
-                        // Column(
-                        //   children: <Widget> [
-                        //     Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: <Widget> [
-                        //         Text("Price", style: TextStyle(fontSize: 20, color: Colors.white)),
-                        //         Text("\$3,616.62"),
-                        //       ],
-                        //     ),
-                        //     Row(
-
-                        //     ),
-                        //     Row(),
-                        //     SizedBox(),
-                        //   ],
-                        // ),
-
-                        // /// ### Providing the GetTotalValueBloc to the child ContainerPanel widget (file stored in ui_root/v2/core_widgets) ### ///
-                        // BlocProvider<GetTotalValueBloc>(
-                        //   create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-                        //   child: ContainerPanel(panelVisibility: _panelVisibility),
-                        //   // ScalingAnimatedContainer(),
-                        // ),
                         ContainerPanel(panelVisibility: _panelVisibility),
 
                         /// ### End Expanded Buttons Here ### ///
@@ -384,16 +309,16 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
     _heightHideContainer = displayHeight(widget.context) * 0.2;
     _heightShowContainer = displayHeight(widget.context) * 0.4;
     _heightOffset = displayHeight(widget.context) * 0.065 ;
-    // log(widget.coinList.toString());
+    // debugPrint(widget.coinList.toString());
     if(widget.category == globals.Categories.top100) {
-      // log(widget.coinList.toString());
+      // debugPrint(widget.coinList.toString());
       BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: widget.coinList));
     } else if(widget.category == globals.Categories.defi) {
       BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.defiCategoryData));
     } else if(widget.category == globals.Categories.cexdex) {
       BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
     }
-    log("Here you go + " + widget.category.toString());
+    debugPrint("Here you go + " + widget.category.toString());
   }
 
   @override
@@ -472,24 +397,24 @@ class _PriceContainerStateWithCategory extends State<PriceContainerWithCategory>
                         BlocConsumer<ListTotalValueBloc, ListTotalValueState>(
                           listener: (context, state) {
                             if (state is ListTotalValueErrorState) {
-                              log("error in ListTotalValueState in price_container(withcategory).dart");
+                              debugPrint("error in ListTotalValueState in price_container(withcategory).dart");
                             } else if (state is ListTotalValueResponseState) {
-                              log("Is it working?");
+                              debugPrint("Is it working?");
                               // BlocProvider.of<BinanceGetChartBloc>(context).add(FetchBinanceGetChartEvent(binanceGetAllModelList: state.binanceGetAllModelList, binanceGetPricesMap: state.binanceGetPricesMap));
                             }
                           },
                           builder: (context, state) {
                             if (state is ListTotalValueInitialState) {
-                              log("ListTotalValueInitialState");
+                              debugPrint("ListTotalValueInitialState");
                               return loadingTemplateWidget();
                             } else if (state is ListTotalValueLoadingState) {
-                              log("ListTotalValueLoadingStatedoodoo");
+                              debugPrint("ListTotalValueLoadingStatedoodoo");
                               return loadingTemplateWidget();
                             } else if (state is ListTotalValueResponseState) {
-                              log("ListTotalValueResponseReceivedState");
+                              debugPrint("ListTotalValueResponseReceivedState");
                               return loadingTemplateWidget();
                             } else if (state is ListTotalValueLoadedState) {
-                              log("ListTotalValueLoadedState");
+                              debugPrint("ListTotalValueLoadedState");
                               return Column(
                                 children: <Widget> [
                                   Row(

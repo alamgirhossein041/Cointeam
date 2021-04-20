@@ -1,4 +1,5 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 
@@ -69,7 +70,7 @@ class DrawerMenuState extends State<DrawerMenu> {
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/dashboardnoapitest');
+                Navigator.pushReplacementNamed(context, '/home');
               },
             ),
             // ListTile(
@@ -89,7 +90,11 @@ class DrawerMenuState extends State<DrawerMenu> {
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/dashboard');
+                analytics.logEvent(
+                  name: "check_portfolio",
+                  parameters: {"clickedFrom": "menu"}
+                );
+                Navigator.pushReplacementNamed(context, '/viewportfolio');
               },  
             ),
             SizedBox(height: 320),
@@ -125,10 +130,10 @@ class DrawerMenuState extends State<DrawerMenu> {
             //     String binanceApi = await storage.read(key: "binanceApi");
             //     String binanceSapi = await storage.read(key: "binanceSapi");
             //     if(binanceApi != null) {
-            //       log(binanceApi);
-            //       log(binanceSapi);
+            //       debugPrint(binanceApi);
+            //       debugPrint(binanceSapi);
             //     } else {
-            //       log("There is no binanceApi");
+            //       debugPrint("There is no binanceApi");
             //     }
             //   },
             // ),
@@ -163,12 +168,12 @@ class DrawerMenuState extends State<DrawerMenu> {
             //   ),
             //   onTap: () {
             //     final storage = LocalStorage("coinstreetapp");
-            //     log(storage.getItem("prime").toString());
+            //     debugPrint(storage.getItem("prime").toString());
             //     // json.decode(storage.getItem("prime")).forEach((k,v) {
-            //     //   log(k.toString());
-            //     //   log(v.toString());
+            //     //   debugPrint(k.toString());
+            //     //   debugPrint(v.toString());
             //     // });
-            //     // log(storage.getItem("prime").symbol.toString());
+            //     // debugPrint(storage.getItem("prime").symbol.toString());
             //     /// 19th oh mfer the key value store can't just be called as 
             //   },
             // ),
@@ -180,7 +185,7 @@ class DrawerMenuState extends State<DrawerMenu> {
             //   ),
             //   onTap: () {
             //     final storage = LocalStorage("coinstreetapp");
-            //     log(storage.getItem("portfolio").toString());
+            //     debugPrint(storage.getItem("portfolio").toString());
             //   },
             // ),
             // ListTile(
@@ -301,7 +306,7 @@ class DrawerMenuState extends State<DrawerMenu> {
             //     // Navigator.pushNamed(context, '/hometest');
             //     /// DB: Change this log into an API call with whatever is in the text field
             //     /// ### https://flutter.dev/docs/cookbook/forms/retrieve-input ### ///
-            //     log(feedbackTextController.text);
+            //     debugPrint(feedbackTextController.text);
             //   },
             // ),
             // SizedBox(height: 500),

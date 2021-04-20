@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coingecko/coingecko_get_chart_bloc.dart/coingecko_get_chart_event.dart';
@@ -32,7 +32,7 @@ class CoingeckoGetChartBloc extends Bloc<CoingeckoGetChartEvent, CoingeckoGetCha
         yield CoingeckoGetChartLoadedState(coingeckoGetChartDataList: data, timeSelection: []);
         /// TODO: probably fix up LIST
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield CoingeckoGetChartErrorState(errorMessage : e.toString());
       }
     }

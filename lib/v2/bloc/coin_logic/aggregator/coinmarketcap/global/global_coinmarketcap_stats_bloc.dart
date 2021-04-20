@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/aggregator/coinmarketcap/global/global_coinmarketcap_stats_event.dart';
@@ -32,7 +32,7 @@ class GlobalCoinmarketcapStatsBloc extends Bloc<GlobalCoinmarketcapStatsEvent, G
         /// TODO: probably fix up LIST
         // yield FirestoreGetUserDataLoadedState(FirestoreGetUserDataModel: FirestoreGetUserDataModel);
       } catch (e) {
-        log(e.toString());
+        debugPrint(e.toString());
         yield GlobalCoinmarketcapStatsErrorState(errorMessage : e.toString());
       }
     }

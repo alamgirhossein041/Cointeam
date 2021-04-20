@@ -1,8 +1,4 @@
-import 'dart:developer';
-
-import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
@@ -72,9 +68,9 @@ class SettingsState extends State<Settings> {
                   height: displayHeight(context) * 0.07,
                   child: GestureDetector(
                     onTap: () => {
-                      // showDialog(
+                      // showDiadebugPrint(
                       //   context: context,
-                      //   builder: (BuildContext context) => Dialog(
+                      //   builder: (BuildContext context) => DiadebugPrint(
                       //     /// Manual padding override because Dialog's default padding is FAT
                       //     insetPadding: EdgeInsets.all(10),
                       //     /// Connect API tutorial modal

@@ -21,15 +21,15 @@ import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_get_prices_r
 import 'package:coinsnap/v2/repo/coin_repo/exchange/binance/binance_sell_coin_repo.dart';
 import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/v2/ui/authentication/authentication.dart';
-import 'package:coinsnap/v2/ui/core_widgets/coins/coin_add.dart';
-import 'package:coinsnap/v2/ui/core_widgets/coins/coin_edit.dart';
-import 'package:coinsnap/v2/ui/core_widgets/coins/coin_page/coin_page.dart';
 import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
 import 'package:coinsnap/v2/ui/welcome/second.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/v2/ui/welcome/third.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/coins/coin_add.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/coins/coin_edit.dart';
+import 'package:coinsnap/v2/ui/widgets/core_widgets/coins/coin_page/coin_page.dart';
 import 'package:coinsnap/working_files/buy_portfolio.dart';
 import 'package:coinsnap/working_files/buy_portfolio_page_two.dart';
 import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
@@ -161,15 +161,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // initialRoute: '/hometest',
-        // initialRoute: '/dashboardnoapitest',
-        // initialRoute: '/authentication',
-        // initialRoute: '/dashboard',
         // initialRoute: '/home',
-        // initialRoute: '/dashboardnoapitest',
+        // initialRoute: '/authentication',
+        // initialRoute: '/viewportfolio',
+        // initialRoute: '/home',
+        // initialRoute: '/home',
 
         /// initialRoute: '/initialpage',
         // initialRoute: '/authentication',
-        initialRoute: '/dashboardnoapitest',
+        initialRoute: '/home',
 
         // initialRoute: '/buyportfolio',
         // initialRoute: '/sellportfolio',
@@ -182,12 +182,10 @@ class MyApp extends StatelessWidget {
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),
           '/settings': (context) => Settings(),
-          '/dashboardnoapitest': (context) => DashboardNoApiView(),
-          // '/dashboardnoapitest': (context) => DashboardWithNoApiWorking(),
-          // '/marketdashboard': (context) => MarketDashboard(),
+          '/home': (context) => DashboardNoApiView(),
           '/errorscreen': (context) => ErrorScreen(),
-          '/dashboard': (context) => Dashboard(),
-          '/coinpage': (context) => CoinPage(),
+          '/viewportfolio': (context) => Dashboard(),
+          '/viewcoin': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
           '/third': (context) => Third(),

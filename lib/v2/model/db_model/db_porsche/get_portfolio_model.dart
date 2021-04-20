@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 class GetPortfolioModel {
   Map<String, dynamic> data = {};
@@ -6,11 +6,11 @@ class GetPortfolioModel {
   GetPortfolioModel({this.data});
 
   GetPortfolioModel.fromJson(json) {
-    log("HELLOOOOOOOO");
-    log(json.toString());
+    debugPrint("HELLOOOOOOOO");
+    debugPrint(json.toString());
       json.forEach((k,v) {
-        log("8th April: " + k);
-        log("8th April: " + v.toString());
+        debugPrint("8th April: " + k);
+        debugPrint("8th April: " + v.toString());
         data[k] = v;
       });
   }

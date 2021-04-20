@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coinsnap/v2/model/coin_model/aggregator/cryptocompare/chart/chart_cryptocompare.dart';
 import 'package:http/http.dart' as http;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class ICryptoCompareRepository  {
   Future getHourlyCryptoCompare();
@@ -18,7 +18,7 @@ class CryptoCompareRepositoryImpl implements ICryptoCompareRepository {
     var stopWatch = Stopwatch()..start();
     var response = await http.get(requestUrl);
     stopWatch.stop();
-    log("CryptoCompare: " + stopWatch.elapsedMilliseconds.toString());
+    debugPrint("CryptoCompare: " + stopWatch.elapsedMilliseconds.toString());
     if(response.statusCode == 200) {
       Map<String, dynamic> body = Map.from(json.decode(response.body));
       // CryptoCompareModel cryptoCompareModel = CryptoCompareModel.fromJson(body);

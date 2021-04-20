@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/numbers.dart';
 // import 'package:coinsnap/working_files/custom_popup_menu.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class NewCardListTileState extends State<NewCardListTile> {
     return Container(
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/coinpage', arguments: {'coinListData': widget.coinListData.data[widget.index], 'index' :widget.index, 'coinBalancesMap': widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol], 'totalValue': widget.totalValue});
+          Navigator.pushNamed(context, '/viewcoin', arguments: {'coinListData': widget.coinListData.data[widget.index], 'index' :widget.index, 'coinBalancesMap': widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol], 'totalValue': widget.totalValue});
         },
         child: Container(
           height: displayHeight(context) * 0.11,
@@ -187,7 +186,7 @@ class NewCardListTileState extends State<NewCardListTile> {
         //         ),
         //         child: GestureDetector(
         //           onTap: () {
-        //             // Navigator.pushNamed(context, '/coinpage', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
+        //             // Navigator.pushNamed(context, '/viewcoin', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index, 'portfolioValue' : widget.portfolioValue});
         //           },
         //           child: Container(
         //             padding: EdgeInsets.fromLTRB(25,2,25,2),
@@ -311,7 +310,7 @@ class NewCardListTileState extends State<NewCardListTile> {
         //   value: 'Edit',
         //   child: TextButton(
         //     child: Text('Edit'),
-        //     onPressed: () {log("We have liftoff - Edit pressed");},
+        //     onPressed: () {debugPrint("We have liftoff - Edit pressed");},
         //     style: ButtonStyle(
         //       foregroundColor: MaterialStateProperty.resolveWith(
         //               (state) => Colors.black)
@@ -328,13 +327,13 @@ class NewCardListTileState extends State<NewCardListTile> {
               /// https://api.dart.dev/stable/2.10.5/dart-core/Map/remove.html
               
               var localStorage = LocalStorage("coinstreetapp");
-              // log(localStorage.toString());
+              // debugPrint(localStorage.toString());
               var localStorageResponse = json.decode(localStorage.getItem("prime"));
-              // log("First, LocalStorage is" + localStorage.getItem("prime").toString());
-              // log("Coin to remove is: " + coin);
+              // debugPrint("First, LocalStorage is" + localStorage.getItem("prime").toString());
+              // debugPrint("Coin to remove is: " + coin);
               localStorageResponse.remove(coin);
-              // log("LocalStorage is now: \n");
-              // log(localStorage.getItem("prime").toString());
+              // debugPrint("LocalStorage is now: \n");
+              // debugPrint(localStorage.getItem("prime").toString());
               localStorage.setItem("prime", jsonEncode(localStorageResponse));
               Navigator.pop(context);
             },
@@ -369,7 +368,7 @@ class NewCardListTileState extends State<NewCardListTile> {
   // }
 
   // _showPopupMenu(Offset offset) {
-  //   // _doSomething () => {(log("We have liftoff"))};
+  //   // _doSomething () => {(debugPrint("We have liftoff"))};
   //   // double left = offset.dx;
   //   // double top = offset.dy;
   //   PopupMenuButton(
@@ -384,7 +383,7 @@ class NewCardListTileState extends State<NewCardListTile> {
   //         child: Text('Delete'), value: 'Delete',
   //       ),
   //     ],
-  //     onSelected: (_) {log("We have liftoff");},
+  //     onSelected: (_) {debugPrint("We have liftoff");},
   //     elevation: 8.0,
   //   );
   // }

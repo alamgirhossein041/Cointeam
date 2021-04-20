@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/controller/sell_portfolio_bloc/sell_portfolio_event.dart';
@@ -26,7 +26,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 
     if (arguments == null) {
-      log("Arguments is null in SellPage3");
+      debugPrint("Arguments is null in SellPage3");
     } else {
       symbol = arguments['symbol'];
       percentageValue = arguments['value'];
@@ -50,12 +50,12 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
             BlocConsumer<SellPortfolioBloc, SellPortfolioState>(
               listener: (context, state) {
                 if (state is SellPortfolioErrorState) {
-                  log("Error in sell_portfolio_page_three.dart - SellPortfolioBloc");
+                  debugPrint("Error in sell_portfolio_page_three.dart - SellPortfolioBloc");
                 }
               },
               builder: (context, state) {
                 if (state is SellPortfolioLoadedState) {
-                  log("SellPortfolioLoadedState");
+                  debugPrint("SellPortfolioLoadedState");
                   return Flexible(
                     flex: 12,
                     fit: FlexFit.tight,

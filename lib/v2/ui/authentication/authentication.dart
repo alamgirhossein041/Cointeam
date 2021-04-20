@@ -1,9 +1,6 @@
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/ui/welcome/first.dart';
-import 'package:coinsnap/v2/ui/welcome/first_OLD.dart';
-import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:coinsnap/v2/auth/fireauth.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
@@ -146,7 +143,7 @@ class AuthenticationState extends State<Authentication> {
                         // if(shouldNavigate) {
                           Navigator.pushReplacementNamed(context, '/first');
                         // } else {
-                        //   _showDialog("Invalid Login", "Please try again", context);
+                        //   _showDiadebugPrint("Invalid Login", "Please try again", context);
                         // }
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardNoApiView()));
                         /// ### We need to do some logic to check whether their Binance API is connected ### ///
@@ -183,7 +180,7 @@ class AuthenticationState extends State<Authentication> {
                         // if(shouldNavigate) {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => First()));
                         // } else {
-                        //   _showDialog("Invalid Registration Details", "Please try again", context);
+                        //   _showDiadebugPrint("Invalid Registration Details", "Please try again", context);
                         // }
                       },
                     ),
@@ -213,12 +210,12 @@ class CheckInternet {
         case DataConnectionStatus.connected:
           // internetStatus = "Connected to the Internet";
           // contentMessage = "Connected to the Internet";
-          // _showDialog(internetStatus, contentMessage, context);
+          // _showDiadebugPrint(internetStatus, contentMessage, context);
           break;
         case DataConnectionStatus.disconnected:
           internetStatus = "You are not connected to the Internet";
           contentMessage = "Please check your connection to the Internet";
-          _showDialog(internetStatus, contentMessage, context);
+          _showDiadebugPrint(internetStatus, contentMessage, context);
           break;
       }
     });
@@ -229,7 +226,7 @@ class CheckInternet {
 }
 }
 
-void _showDialog(String title, String content, BuildContext context) {
+void _showDiadebugPrint(String title, String content, BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {

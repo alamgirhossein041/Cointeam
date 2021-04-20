@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/helpers/colors_helper.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
@@ -74,7 +74,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Connect Exchange tapped")},
+                    onTap: () => {debugPrint("Connect Exchange tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -110,7 +110,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Default Currency tapped")},
+                    onTap: () => {debugPrint("Default Currency tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -153,7 +153,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Default Sell to: tapped")},
+                    onTap: () => {debugPrint("Default Sell to: tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -196,7 +196,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Show Balances tapped")},
+                    onTap: () => {debugPrint("Show Balances tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -232,7 +232,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Enable Fullscreen Charts tapped")},
+                    onTap: () => {debugPrint("Enable Fullscreen Charts tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -268,7 +268,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Margin Enabled tapped")},
+                    onTap: () => {debugPrint("Margin Enabled tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -304,7 +304,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Enter Code tapped")},
+                    onTap: () => {debugPrint("Enter Code tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -340,7 +340,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Rate & Review Tapped")},
+                    onTap: () => {debugPrint("Rate & Review Tapped")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -376,7 +376,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Feedback")},
+                    onTap: () => {debugPrint("Feedback")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(
@@ -412,7 +412,7 @@ class SettingsState extends State<Settings> {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: GestureDetector(
-                    onTap: () => {log("Logout")},
+                    onTap: () => {debugPrint("Logout")},
                     child: Container(
                       decoration: GreyUndersideBorder,
                       child: Row(

@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_bloc.dart';
 import 'package:coinsnap/v2/bloc/coin_logic/exchange/get_requests/binance_get_chart_bloc/binance_get_chart_state.dart';
@@ -82,18 +82,18 @@ class _ChartOverallState extends State<ChartOverall> {
     return BlocConsumer<BinanceGetChartBloc, BinanceGetChartState>(
       listener: (context, state) {
         if (state is BinanceGetChartErrorState) {
-          log("error in syncfusioncharts");
+          debugPrint("error in syncfusioncharts");
         }
       },
       builder: (context, state) {
         if (state is BinanceGetChartInitialState) {
-          log("BinanceGetChartInitialState");
+          debugPrint("BinanceGetChartInitialState");
           return Container();
         } else if (state is BinanceGetChartLoadingState) {
-          log("BinanceGetChartLoadingState");
+          debugPrint("BinanceGetChartLoadingState");
           return Container();
         } else if (state is BinanceGetChartLoadedState) {
-          log("BinanceGetChartLoadedState");
+          debugPrint("BinanceGetChartLoadedState");
           return SizedBox(
             height: displayHeight(context) * 0.27,
             child: Scaffold(
@@ -105,9 +105,9 @@ class _ChartOverallState extends State<ChartOverall> {
                     /// Hack to render x axis (hourly labels) cleanly without messing up data points
                     /// https://www.syncfusion.com/forums/160066/display-minsecmillisec-on-y-axis /// Switch y and x
                     onAxisLabelRender: (args) {
-                      // log("What is args? - " + args.toString());
-                      // log("Label render syncfusion " + (args.text).toString());
-                      // log("timeSelection is: " + state.timeSelection.toString());
+                      // debugPrint("What is args? - " + args.toString());
+                      // debugPrint("Label render syncfusion " + (args.text).toString());
+                      // debugPrint("timeSelection is: " + state.timeSelection.toString());
                       if (args.axisName == 'primaryXAxis') {
                         if(state.timeSelection == globals.Status.weekly) {
                           args.text = 
@@ -162,7 +162,7 @@ class _ChartOverallState extends State<ChartOverall> {
                         // dataSource:  widget.priceList.salesDataList,
                         dataSource: state.binanceGetChartDataList,
                           // widget.priceList.salesDataList.forEach((v) {
-                          //   log("Hello");
+                          //   debugPrint("Hello");
                           // }
                         
                         xValueMapper: ( price, _) => price.time.toString(),
@@ -193,7 +193,7 @@ class _ChartOverallState extends State<ChartOverall> {
     //         /// Hack to render x axis (hourly labels) cleanly without messing up data points
     //         /// https://www.syncfusion.com/forums/160066/display-minsecmillisec-on-y-axis /// Switch y and x
     //         onAxisLabelRender: (args) {
-    //           log((args.text).toString());
+    //           debugPrint((args.text).toString());
     //           if (args.axisName == 'primaryXAxis') {
     //             args.text = 
     //               DateFormat.j().format(DateTime.fromMillisecondsSinceEpoch((double.parse(args.text)*1000).toInt()));
@@ -223,7 +223,7 @@ class _ChartOverallState extends State<ChartOverall> {
                 
     //             dataSource:  widget.priceList.salesDataList,
     //               // widget.priceList.salesDataList.forEach((v) {
-    //               //   log("Hello");
+    //               //   debugPrint("Hello");
     //               // }
                 
     //             xValueMapper: ( price, _) => double.parse(price.time),

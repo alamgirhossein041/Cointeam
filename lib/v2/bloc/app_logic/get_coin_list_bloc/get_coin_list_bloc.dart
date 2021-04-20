@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/v2/bloc/app_logic/get_coin_list_bloc/get_coin_list_event.dart';
@@ -26,7 +26,8 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         final LocalStorage localStorage = LocalStorage("coinstreetapp");
         Map primeCoin;
 
-        String isBinanceTrading = await secureStorage.read(key: "trading");
+        // String isBinanceTrading = await secureStorage.read(key: "trading");
+        String isBinanceTrading = await secureStorage.read(key: "binance");
         var localStorageResponse = await localStorage.getItem("prime");
         if(localStorageResponse != null) {
           primeCoin = Map.from(json.decode(await localStorage.getItem("prime")));
@@ -58,8 +59,8 @@ class GetCoinListBloc extends Bloc<GetCoinListEvent, GetCoinListState> {
         /// ### We will continue getting all data ### ///
         
       } catch (e) {
-        log("The error is in get_coin_list_bloc.dart");
-        log(e.toString());
+        debugPrint("The error is in get_coin_list_bloc.dart");
+        debugPrint(e.toString());
         yield GetCoinListErrorState(errorMessage : e.toString());
       }
     }

@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 abstract class IBinanceApiCheckRepository  {
   Future getBinanceApiCheckLatest();
@@ -47,8 +47,8 @@ class BinanceApiCheckRepositoryImpl implements IBinanceApiCheckRepository {
     if(response.statusCode == 200) {
       return true;
     } else {
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
       return 0;
       // throw Exception();
     }

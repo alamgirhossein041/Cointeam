@@ -26,29 +26,24 @@ import 'package:coinsnap/v2/helpers/global_library.dart';
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:coinsnap/v2/repo/app_repo/binance_time_sync/binance_time_sync.dart';
 import 'package:coinsnap/v2/repo/db_repo/test/portfolio_post.dart';
+import 'package:coinsnap/v2/services/firebase_analytics.dart';
 import 'package:coinsnap/v2/ui/category/dashboard_with_category.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/loading_screen.dart';
-import 'package:coinsnap/v2/ui/helper_widgets/numbers.dart';
-import 'package:coinsnap/v2/ui/main/dashboard.dart';
-import 'package:coinsnap/v2/ui/main/home_view.dart';
 import 'package:coinsnap/v2/ui/menu_drawer/top_menu_row.dart';
-import 'package:coinsnap/v2/ui/modal_widgets/slider_widget.dart';
-import 'package:coinsnap/v2/ui/welcome/first_OLD.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/loading_screen.dart';
+import 'package:coinsnap/v2/ui/widgets/helper_widgets/numbers.dart';
+import 'package:coinsnap/v2/ui/widgets/modal_widgets/slider_widget.dart';
 import 'package:coinsnap/working_files/bottom_nav_bar.dart';
 import 'package:coinsnap/working_files/drawer.dart';
-import 'package:coinsnap/working_files/hidden_panel.dart';
 import 'package:coinsnap/working_files/initial_category_data.dart';
 import 'package:crypto_font_icons/crypto_font_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:math' as math;
-import 'package:coinsnap/v2/asset/icon_custom/icon_custom.dart' as CustomIcon;
 import 'package:coinsnap/v2/helpers/global_library.dart' as globals;
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:crypto_font_icons/crypto_font_icon_data.dart';
 
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';
@@ -75,13 +70,13 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   void initState() {
     /// TODO: stuff
     super.initState();
-    log("dashboard_initial_noAPI.dart - DashboardNoApiView() InitState");
+    debugPrint("dashboard_initial_noAPI.dart - DashboardNoApiView() InitState");
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    log("dashboard_initial_noAPI.dart - DashboardNoApiView() DPD");
+    debugPrint("dashboard_initial_noAPI.dart - DashboardNoApiView() DPD");
   }
 
 
@@ -119,7 +114,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
                 helloWorld.getBinanceTimeSyncLatest();
                 
                 if (snapshot.data != "none") {
-                  log(snapshot.data.toString());
+                  debugPrint(snapshot.data.toString());
                   BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
                   BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
                   BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());
@@ -143,7 +138,7 @@ class DashboardNoApiViewState extends State<DashboardNoApiView> {
   
   void _callBackSetState() {
     setState(() {
-      log("Hello World");
+      debugPrint("Hello World");
       BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
       // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
     });
@@ -165,14 +160,14 @@ class DashboardWithNoApiWorkingState extends State<DashboardWithNoApiWorking> {
   @override
   void initState() { 
     super.initState();
-    log("dashboard_initial_noAPI.dart - DashboardNoApiWorking() InitState");
+    debugPrint("dashboard_initial_noAPI.dart - DashboardNoApiWorking() InitState");
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // log("CoingeckoList250Bloc in dashboard_initial_noAPI.dart");
-    log("dashboard_initial_noAPI.dart - DashboardWithNoApiWorking() DPD");
+    // debugPrint("CoingeckoList250Bloc in dashboard_initial_noAPI.dart");
+    debugPrint("dashboard_initial_noAPI.dart - DashboardWithNoApiWorking() DPD");
   }
 
   @override
@@ -308,19 +303,19 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                                     BlocListener<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>(
                                       listener: (context, state) {
                                         if (state is GlobalCoinmarketcapStatsErrorState) {
-                                          log("error in GlobalCoinmarketcapStatsState in home_view.dart");
+                                          debugPrint("error in GlobalCoinmarketcapStatsState in home_view.dart");
                                         }
                                       },
                                       child: BlocBuilder<GlobalCoinmarketcapStatsBloc, GlobalCoinmarketcapStatsState>( /// Both bloc types to be built (refactor existing controllers)
                                         builder: (context, state) {
                                           if (state is GlobalCoinmarketcapStatsInitialState) {
-                                            log("GlobalCoinmarketcapStatsInitialState");
+                                            debugPrint("GlobalCoinmarketcapStatsInitialState");
                                             return loadingTemplateWidget();
                                           } else if (state is GlobalCoinmarketcapStatsLoadingState) {
-                                            log("GlobalCoinmarketcapStatsLoadingState");
+                                            debugPrint("GlobalCoinmarketcapStatsLoadingState");
                                             return loadingTemplateWidget();
                                           } else if (state is GlobalCoinmarketcapStatsLoadedState) {
-                                            log("GlobalCoinmarketcapStatsLoadedState");
+                                            debugPrint("GlobalCoinmarketcapStatsLoadedState");
                                             return Padding(
                                               padding: EdgeInsets.only(top: 15),
                                               child: Column(
@@ -426,7 +421,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                     Container(
                       height: _heightHideContainer + _heightOffset,
                       child: FutureBuilder( /// ### Panic Action Button ### ///
-                        future: readStorage("trading"), /// ### Dev-Check-1
+                        future: readStorage("trading"), /// ### 16th
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
@@ -434,7 +429,7 @@ class NoApiPriceContainerState extends State<NoApiPriceContainer> with SingleTic
                               return CircularProgressIndicator();
                             default:
                             if (!snapshot.hasError) {
-                              // log(snapshot.data.toString());
+                              // debugPrint(snapshot.data.toString());
                               /// ("Return a welcome screen") ??? default comment
                                 // return DashboardWithNoApiWorking();
                               if (snapshot.data == "none") {
@@ -532,17 +527,22 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                       // height: displayHeight(context) * 0.245,
                           // TileAddPortfolio(),
                       child: FutureBuilder(
-                        future: readStorage("trading"),
+                        future: readStorage("binance"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
+                              return Text("None");
                             case ConnectionState.waiting:
                               return Container();
                             default:
                             if (!snapshot.hasError) {
                               if (snapshot.data != "none") {
-                                log(snapshot.data.toString());
+                                debugPrint(snapshot.data.toString());
                                 // return DashboardWithNoApiWorking();
+                                analytics.logEvent(
+                                  name: "check_portfolio",
+                                  parameters: {"clickedFrom": "home"}
+                                );
                                 
                                 return BinanceTileBlurb(); /// 19th
                               } else {
@@ -592,7 +592,7 @@ class TileDefi extends StatelessWidget {
                 ),
                 child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
                   onTap: () {
-                    log("CategoryName is " + categoryName.toString());
+                    debugPrint("CategoryName is " + categoryName.toString());
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
                     // Navigator.pushNamed(
                     //   context,
@@ -798,7 +798,7 @@ class TileTop100 extends StatelessWidget {
                 ),
                 child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
                   onTap: () {
-                    log("CategoryName is " + categoryName.toString());
+                    debugPrint("CategoryName is " + categoryName.toString());
                     // Navigator.pushNamed(context, '/coinview', arguments: {'cryptoData' : widget.coinListMap, 'index' : widget.index});
                     // Navigator.pushNamed(
                     //   context,
@@ -1003,7 +1003,7 @@ class TileDex extends StatelessWidget {
           ),
           child: GestureDetector( /// ### TODO: Cointeam-81 ### ///
             onTap: () {
-              log("CategoryName is " + categoryName.toString());
+              debugPrint("CategoryName is " + categoryName.toString());
               BlocProvider.of<ListTotalValueBloc>(context).add(FetchListTotalValueEvent(coinList: InitialCategoryData.cexDexCategoryData));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
@@ -1216,31 +1216,34 @@ class EnableTradingButton extends StatelessWidget {
                   child: Text("ENABLE TRADING", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
               ),
-              onTap: () => {
+              onTap: () {
                 /// Dev-5: UNCOMMENT BELOW
-                // showDialog(
+                // showDiadebugPrint(
                 //   context: context,
-                //   builder: (BuildContext context) => Dialog(
+                //   builder: (BuildContext context) => DiadebugPrint(
                 //     /// Manual padding override because Dialog's default padding is FAT
                 //     insetPadding: EdgeInsets.all(10),
                 //     /// Connect API tutorial modal
                 //     child: CarouselDemo(),
                 //   ),
                 // ),
-                /// Dev-5: Uncomment up to here
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    /// Manual padding override because Dialog's default padding is FAT
-                    insetPadding: EdgeInsets.all(10),
-                    /// Connect API tutorial modal
-                    child: CarouselDemo(),
-                  ),
-                ),
-                writeStorage("trading", "binance"),
-                // dbPortfolioPostTest.dbPortfolioPostTest(),
-                /// ### Adds "trading" to local_secure_storage for the check in Dev-Check-1
-                /// ### Press middle bottom_nav_bar button to remove
+
+
+                /// 17th April Release 1.0.13
+                // showDiadebugPrint(
+                //   context: context,
+                //   builder: (BuildContext context) => DiadebugPrint(
+                //     /// Manual padding override because Dialog's default padding is FAT
+                //     insetPadding: EdgeInsets.all(10),
+                //     /// Connect API tutorial modal
+                //     child: CarouselDemo(),
+                //   ),
+                // ),
+                // writeStorage("trading", "binance"),
+                /// 17th April Release 1.0.13
+                
+                Navigator.pushReplacementNamed(context, '/second');
+
               },
             ),
             elevation: 2,
@@ -1326,6 +1329,13 @@ Future<String> readStorage(String _key) async {
   }
 }
 
+void deleteStorage(String _key) async {
+
+  final storage = new FlutterSecureStorage();
+
+  await storage.delete(key: _key);
+}
+
 void writeStorage(String _key, String _value) async {
 
   final storage = new FlutterSecureStorage();
@@ -1371,7 +1381,7 @@ class BinanceTileBlurb extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-                              Navigator.pushReplacementNamed(context, '/dashboard');
+                              Navigator.pushReplacementNamed(context, '/viewportfolio');
                             },
                             child: Column(
                               children: <Widget> [
@@ -1421,7 +1431,7 @@ class BinanceTileBlurb extends StatelessWidget {
                                                 BlocConsumer<GetCoinListTotalValueBloc, GetCoinListTotalValueState>(
                                                   listener: (context, state) {
                                                     if (state is GetCoinListTotalValueErrorState) {
-                                                      log("Error in GetCoinListTotalValue at Binance blurb on market dashboard");
+                                                      debugPrint("Error in GetCoinListTotalValue at Binance blurb on market dashboard");
                                                       return Text("An error has occured", style: TextStyle(color: Colors.white));
                                                     }
                                                   },
@@ -1454,7 +1464,7 @@ class BinanceTileBlurb extends StatelessWidget {
                       //     ),
                       //     child: GestureDetector(
                       //       onTap: () {
-                      //         log("User has clicked on Add Portfolio Blurb (in BinanceTileBlurb())");
+                      //         debugPrint("User has clicked on Add Portfolio Blurb (in BinanceTileBlurb())");
                       //       },
                       //       child: Column(
                       //         children: <Widget> [
@@ -1505,6 +1515,8 @@ class BinanceTileBlurb extends StatelessWidget {
               ],
             ),
           );
+        } else if (state is GetCoinListErrorState) {
+          return errorTemplateWidget("Error: " + state.errorMessage);
         } else {
           return Container();
         }
@@ -1531,13 +1543,13 @@ class AddPortfolioBlurb extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              log("User has clicked on Add Portfolio Blurb");
+              debugPrint("User has clicked on Add Portfolio Blurb");
               // localStorage.setItem("prime", [].toJSONEncodable()); 
               /// ### We can just set a blank item for now... Right?
               // localStorage.setItem("isPrime", true);
               // localStorage.setItem("prime", []);
-              /// 19th
-              Navigator.pushReplacementNamed(context, '/dashboard');
+              /// Dashboard()
+              Navigator.pushReplacementNamed(context, '/viewportfolio');
             },
             child: Column(
               children: <Widget> [

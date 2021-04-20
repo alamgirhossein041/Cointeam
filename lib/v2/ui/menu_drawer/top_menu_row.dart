@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class TopMenuRow extends StatelessWidget {
           icon: Icon(Icons.menu, color: Colors.white),
           onPressed: () {
             Scaffold.of(context).openDrawer();
-            log("Hello World");
+            debugPrint("Hello World");
             // scaffoldState.currentState.openDrawer();
           },
         ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:coinsnap/v2/helpers/sizes_helper.dart';
+import 'package:coinsnap/working_files/dashboard_initial_noAPI.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -75,7 +76,9 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
               flex: 1,
               fit: FlexFit.tight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/first');
+                },
                 child: Text("I don't have a QR Code")
               )
             ),
@@ -120,18 +123,23 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
     controller.scannedDataStream.listen((scanData) {
       setState(() async {
         result = scanData; /// 31st
-        // log(result.code);
+        // debugPrint(result.code);
         Map<String, dynamic> body = Map.from(json.decode(result.code));
         QrResult qrDecoded = QrResult.fromJson(body);
         final secureStorage = FlutterSecureStorage();
 
-        await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
-        await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
+
 
         if(qrSanityCheck == true) {
+          qrSanityCheck = false;
+          await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
+          await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
+          await secureStorage.write(key: 'trading', value: 'true');
+          // writeStorage("trading", "true");
+          await secureStorage.write(key: 'binance', value: 'true');
+          // writeStorage("binance", "true");
 
           Navigator.pushReplacementNamed(context, '/third');
-          qrSanityCheck = false;
         }
 
         /// 1st
