@@ -1515,6 +1515,8 @@ class BinanceTileBlurb extends StatelessWidget {
               ],
             ),
           );
+        } else if (state is GetCoinListErrorState) {
+          return errorTemplateWidget("Error: " + state.errorMessage);
         } else {
           return Container();
         }

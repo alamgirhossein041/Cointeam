@@ -56,13 +56,13 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
       String requestUrl2 = 'https://' + _binanceUrl + '/api/v3/order?' + signatureBuilder2 + '&signature=$digest2';
       var response2 = await http.post(requestUrl2, headers: {'X-MBX-APIKEY': api});
       if(response2.statusCode == 200) {
-        Map<String, dynamic> body = Map.from(json.decode(response.body));
+        Map<String, dynamic> body = Map.from(json.decode(response2.body));
         debugPrint("Response of Binance sell is: " + body.toString());
         return body;
       } else {
         debugPrint("Excepted twice, throwing");
-        debugPrint("Response Code = " + response.statusCode.toString());
-        debugPrint("Response data = " + response.body.toString());
+        debugPrint("Response Code = " + response2.statusCode.toString());
+        debugPrint("Response data = " + response2.body.toString());
         throw Exception();
       }
     }

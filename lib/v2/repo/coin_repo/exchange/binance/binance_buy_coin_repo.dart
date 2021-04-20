@@ -57,14 +57,14 @@ class BinanceBuyCoinRepositoryImpl implements IBinanceBuyCoinRepository {
       String requestUrl2 = 'https://' + _binanceUrl + '/api/v3/order?' + signatureBuilder2 + '&signature=$digest2';
       var response2 = await http.post(requestUrl2, headers: {'X-MBX-APIKEY': api});
       if(response2.statusCode == 200) {
-        Map<String, dynamic> body = Map.from(json.decode(response.body));
+        Map<String, dynamic> body = Map.from(json.decode(response2.body));
       
         debugPrint("Response of Binance buy is: " + body.toString());
         return body;
       } else {
         debugPrint("excepted twice, throwing");
-        debugPrint(response.statusCode.toString());
-        debugPrint(response.body.toString());
+        debugPrint(response2.statusCode.toString());
+        debugPrint(response2.body.toString());
         throw Exception();
       }
     }

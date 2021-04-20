@@ -52,6 +52,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     /// ###### End API Request ######
     
     if(response.statusCode == 200) {
+      debugPrint("HELLO WE ARE FIGHTING DREAMERS111");
       // debugPrint(response.body.toString());
       /// Handle API response and parse
       List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
@@ -72,6 +73,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       debugPrint("excepted");
       debugPrint(response.statusCode.toString());
       debugPrint(response.body.toString());
+      debugPrint("HELLO WE ARE FIGHTING DREAMERS222");
       timestamp = ((DateTime.now().millisecondsSinceEpoch) - globals.binanceTimestampModifier).toString();
       
       String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000';
@@ -81,7 +83,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
 
       var response2 = await http.get(requestUrl2, headers: {'X-MBX-APIKEY': api});
       if(response2.statusCode == 200) {
-        List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
+        List<BinanceGetAllModel> binanceGetAllModel = json.decode(response2.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
         // debugPrint("asdf");
         /// Remove coins from list that are empty
         var toRemove = [];
@@ -94,8 +96,8 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
         return binanceGetAllModel;
       } else {
         debugPrint("excepted twice, throwing");
-        debugPrint(response.statusCode.toString());
-        debugPrint(response.body.toString());
+        debugPrint(response2.statusCode.toString());
+        debugPrint(response2.body.toString());
         // debugPrint(e.toString());
       }
     }
