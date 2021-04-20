@@ -33,7 +33,7 @@ class BottomNavBarState extends State<BottomNavBar> {
               color: Color(0xFF2E374E),
               child: Column(
                 children: <Widget> [
-                  SizedBox(height: 5),
+                  // SizedBox(height: 5),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,27 +41,42 @@ class BottomNavBarState extends State<BottomNavBar> {
                         /// ### Bottom left button on bottomnavbar ### ///
                         Column(
                           children: <Widget> [
-                            IconButton(icon: Icon(Icons.swap_vert, color: Color(0xFFA9B1D9)), onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/home');
-                            }),
-                            Text("Home", style: TextStyle(color: Color(0xFFA9B1D9)))
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: IconButton(icon: Icon(Icons.home, color: Color(0xFFA9B1D9)), onPressed: () {
+                                Navigator.pushReplacementNamed(context, '/home');
+                              }),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9)))
+                            ),
                           ]
                         ),
                         Column(
                           children: <Widget> [
-                            IconButton(icon: Icon(Icons.bolt, color: Colors.yellowAccent[100]), onPressed: () {
-                              BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
-                              Navigator.pushNamed(context, '/sellportfolio');
-                            }),
-                            Text("Trade", style: TextStyle(color: Colors.yellowAccent[100]))
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: IconButton(icon: Icon(Icons.bolt, color: Colors.yellowAccent[100]), onPressed: () {
+                                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                                Navigator.pushNamed(context, '/sellportfolio');
+                              }),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Text("Trade", style: TextStyle(color: Colors.yellowAccent[100]))
+                            ),
                           ]
                         ),
                         /// ### Bottom right button on bottomnavbar ### ///
-                        Column(
-                          children: <Widget> [
-                            IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
-                            Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9)))
-                          ]
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            children: <Widget> [
+                              IconButton(icon: Icon(Icons.refresh, color: Color(0xFFA9B1D9)), onPressed: () {widget.callBack();}),
+                              Text("Refresh", style: TextStyle(color: Color(0xFFA9B1D9)))
+                            ]
+                          ),
                         ),
                         
                       ],
