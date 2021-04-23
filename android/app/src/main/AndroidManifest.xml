@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coinsnap">
+    package="com.beta.coinstreet">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="coinsnap"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Coinstreet"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:fullBackupContent="false">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
