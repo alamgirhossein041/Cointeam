@@ -1,11 +1,4 @@
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
-
-
-// tests to see if the add coin screen pops up correctly
-// after tapping the + button
-// its only functionality is to bring up the add coin screen.
-
+import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
 /// user flow 1: preloaded list of coins from coingecko
 /// 1. User opens app
 /// 2. User clicks on portfolio
@@ -37,7 +30,6 @@
 /// 
 
 
-import 'package:coinsnap/v2/ui/main/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
