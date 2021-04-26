@@ -1,120 +1,186 @@
-import 'dart:io';
-
-import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_bloc.dart';
-import 'package:coinsnap/bloc/firestore/firestore_get_user_data_bloc/firestore_get_user_data_event.dart';
-import 'package:coinsnap/bloc/internal/coin_data/card/derivative/card_crypto_data_bloc.dart/card_crypto_data_bloc.dart';
-import 'package:coinsnap/bloc/logic/buy_portfolio_bloc_TEST_DELETE/buy_portfolio_bloc.dart';
-import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_bloc.dart';
-import 'package:coinsnap/bloc/logic/get_price_info_bloc/get_price_info_state.dart';
-import 'package:coinsnap/bloc/logic/get_total_value_bloc/get_total_value_bloc.dart';
-import 'package:coinsnap/bloc/logic/sell_portfolio_bloc/sell_portfolio_bloc.dart';
-import 'package:coinsnap/data/repository/auth/buy_coin/binance_buy_coin.dart';
-import 'package:coinsnap/data/repository/auth/get_all/binance_get_all.dart';
-import 'package:coinsnap/data/repository/auth/get_all/ftx_get_balance.dart';
-import 'package:coinsnap/data/repository/auth/sell_coin/binance_sell_coin.dart';
-import 'package:coinsnap/data/repository/firestore/firestore_get_user_data.dart';
-import 'package:coinsnap/data/repository/internal/coin_data/card/coinmarketcap_coin_latest.dart';
-import 'package:coinsnap/data/repository/unauth/exchange/binance_get_exchange_info.dart';
-import 'package:coinsnap/data/repository/unauth/prices/binance_get_prices.dart';
-import 'package:coinsnap/data/repository/unauth/prices/ftx_get_prices.dart';
-import 'package:coinsnap/test/testjson/test_crypto_json.dart';
-import 'package:coinsnap/ui_root/pages/builder/builder.dart';
-import 'package:coinsnap/ui_root/pages/builder/test.dart';
-import 'package:coinsnap/ui_root/pages/coin_view/coin_view.dart';
-import 'package:coinsnap/ui_root/template/home_old/home_view.dart';
-import 'package:coinsnap/ui_root/template/home/home_view_real.dart';
-import 'package:coinsnap/ui_root/pages/portfolio.dart';
-import 'package:coinsnap/ui_root/template/small/card/portfolio_list_tile.dart';
+import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
+import 'package:coinsnap/modules/app_load/initial_page.dart';
+import 'package:coinsnap/modules/app_load/repos/coingecko_list_250.dart';
+import 'package:coinsnap/modules/categories/top100/coinmarketcap_top100_data_bloc/top100_total_value_bloc.dart';
+import 'package:coinsnap/modules/categories/top100/repos/coinmarketcap_top100.dart';
+import 'package:coinsnap/modules/chart/bloc/coin/binance_get_individual_chart_bloc.dart';
+import 'package:coinsnap/modules/chart/bloc/portfolio/binance_get_chart_bloc.dart';
+import 'package:coinsnap/modules/chart/repos/binance_chart.dart';
+import 'package:coinsnap/modules/coin/pages/coin_add.dart';
+import 'package:coinsnap/modules/coin/pages/coin_view.dart';
+import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
+import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/data/binance_price/repos/binance_get_prices.dart';
+import 'package:coinsnap/modules/data/global_stats/coingecko/bloc/gecko_global_stats_bloc.dart';
+import 'package:coinsnap/modules/data/global_stats/coingecko/repos/gecko_global_stats.dart';
+import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_bloc.dart';
+import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_coinmarketcap_stats_repo.dart';
+import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
+import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
+import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
+import 'package:coinsnap/modules/onboarding/pages/welcome_screen_2.dart';
+import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
+import 'package:coinsnap/modules/home/pages/home.dart';
+import 'package:coinsnap/modules/portfolio/bloc/coinmarketcap_list_data_bloc/list_total_value_bloc.dart';
+import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
+import 'package:coinsnap/modules/portfolio/repos/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_1.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_2.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_3.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_1.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/widgets/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'ui_root/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:path_provider/path_provider.dart';
+
+/// ### Dev only ### ///
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 void main() async {
+  // debugPaintSizeEnabled = true;
+  // debugPaintBaselinesEnabled = false;
+  // debugPaintLayerBordersEnabled = false;
+  // debugPaintPointersEnabled = false;
+  // debugRepaintRainbowEnabled = false;
+  // debugRepaintTextRainbowEnabled = false;
+  // debugCheckElevationsEnabled = false;
+  // debugDisableClipLayers = false;
+  // debugDisablePhysicalShapeLayers = false;
+  // debugDisableOpacityLayers = false;
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  final dir = Directory(appDocumentDir.path + "/dir");
-  await dir.create().then((value) {
-    File file = File('${value.path}/example.txt');
-    file.writeAsString('123)');
-  });
   await Firebase.initializeApp();
-  runApp(MyApp());
+  // runApp(MyApp());
+  /// ### Dev Phoenix (resets app state) ### ///
+  runApp(
+    Phoenix(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  // final FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
     
     return MultiBlocProvider(
       providers: [
         BlocProvider<GetTotalValueBloc>(
-          create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetPricesRepository: FtxGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
+          create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
-        BlocProvider<GetPriceInfoBloc>(
-          create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+        BlocProvider<StartupBloc>(
+          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
-        BlocProvider<SellPortfolioBloc>(
-          create: (context) => SellPortfolioBloc(binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
-        ),
-         BlocProvider<BuyPortfolioBloc>(
-          create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
-        ),
-        BlocProvider<FirestoreGetUserDataBloc> (
-          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-          create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl()),
-        ),
-        BlocProvider<CardCryptoDataBloc> (
-          // create: (context) => FirestoreGetUserDataBloc(firestoreGetUserDataRepository: FirestoreGetUserDataRepositoryImpl())..add(FetchFirestoreGetUserDataEvent()),
-          create: (context) => CardCryptoDataBloc(cardCryptoDataRepository: CoinMarketCapCoinLatestRepositoryImpl()),
-        ),
-        // BlocProvider<BlocC>(
-        //   create: (BuildContext context) => BlocC(),
+        // BlocProvider<GetPriceInfoBloc>(
+        //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         // ),
-      ],
-
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+        BlocProvider<SellPortfolioBloc>(
+          create: (context) => SellPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
-        initialRoute: '/home',
+        // BlocProvider<CardCoinmarketcapCoinLatestBloc> (
+        //   create: (context) => CardCoinmarketcapCoinLatestBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
+        // ),
+        BlocProvider<GlobalCoinmarketcapStatsBloc> (
+          create: (context) => GlobalCoinmarketcapStatsBloc(globalCoinmarketcapStatsRepository: GlobalCoinmarketcapStatsRepositoryImpl()),
+        ),
+        BlocProvider<GeckoGlobalStatsBloc> (
+          create: (context) => GeckoGlobalStatsBloc(geckoGlobalStatsRepo: GeckoGlobalStatsRepoImpl()),
+        ),
+        BlocProvider<BinanceGetChartBloc> (
+          create: (context) => BinanceGetChartBloc(binanceGetChartRepository: BinanceGetChartRepositoryImpl()),
+        ),
+        BlocProvider<BinanceGetIndividualChartBloc> (
+          create: (context) => BinanceGetIndividualChartBloc(binanceGetChartRepository: BinanceGetChartRepositoryImpl()),
+        ),
+        BlocProvider<ListTotalValueBloc> (
+          create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
+        ),
+        BlocProvider<Top100TotalValueBloc> (
+          create: (context) => Top100TotalValueBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
+        ),
+        // BlocProvider<GetCoinListBloc> (
+        //   create: (context) => GetCoinListBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl()),
+        // ),
+        // BlocProvider<GetCoinListTotalValueBloc> (
+        //   create: (context) => GetCoinListTotalValueBloc(coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl()),
+        // ),
+        BlocProvider<CoingeckoList250Bloc> (
+          create: (context) => CoingeckoList250Bloc(coingeckoList250Repository: CoingeckoList250RepositoryImpl()),
+        ),
+        BlocProvider<BuyPortfolioBloc> (
+          create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+        ),
+      ],
+      child: MaterialApp(
+        // navigatorObservers: <NavigatorObserver>[
+          // observer
+        // ],
+        theme: ThemeData(
+          // Default brightness
+          // brightness: Brightness.dark
+          // Default colours
+          // accentColor: Color(0xff8270FF),
+          accentColor: Colors.deepPurpleAccent,
+        
+          // Default font family
+          fontFamily: 'Roboto',
+
+          // Default textTheme
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: Colors.white),
+            headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.normal, color: Colors.white),
+            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
+
+          ),
+
+          // Popup menu theme
+          popupMenuTheme: PopupMenuThemeData(
+            color: Color(0xFF101010),
+          ),
+          
+          // Default button theme
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(primary: Colors.deepPurple[200])
+          ),
+
+          // Divider theme
+          dividerTheme: DividerThemeData(
+            space: 30,
+            color: Colors.white12,
+            indent: 10,
+            endIndent: 10,
+          ),
+        ),
+        initialRoute: '/initialpage',
         routes: {
-          '/home': (context) => HomeViewReal(),
-          // '/home': (context) => HomeViewReal(), /// TODO: Change this to Authentication() for production
-          // '/home': (context) => TestView(),
-          // '/home': (context) => Authentication(),
-          '/builder': (context) => PortfolioBuilderView(), /// TODO: Have {id} subroutes? If possible
-          '/testview': (context) => TestView(),
-          // '/homeviewreal': (context) => BlocProvider<GetPriceInfoBloc>(
-          //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-          //   child: HomeViewReal(),
-          // ),
-          '/homeviewreal': (context) => HomeViewReal(),
-          '/coinview': (context) => CoinView(),
-          // '/portfolio': (context) => PriceContai
+          '/initialpage': (context) => InitialPage(),
+          '/buyportfolio': (context) => BuyPortfolioScreen(),
+          '/buyportfolio2': (context) => BuyPortfolioPage2(),
+          '/buyportfolio3': (context) => BuyPortfolioPage3 (),
+          '/sellportfolio3': (context) => SellPortfolioPage3(),
+          '/sellportfolio2': (context) => SellPortfolioPage2(),
+          '/sellportfolio': (context) => SellPortfolioScreen(),
+          '/settings': (context) => Settings(),
+          '/home': (context) => DashboardNoApiView(),
+          '/viewportfolio': (context) => Dashboard(),
+          '/viewcoin': (context) => CoinPage(),
+          '/first': (context) => First(),
+          '/second': (context) => Second(),
+          '/third': (context) => Third(),
+          // '/authentication': (context) => Authentication(),
+          // '/editcointest': (context) => EditCoin(),
+          '/addcoin': (context) => AddCoin(),
+          // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),
     );
-      // create: (BuildContext context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-      // child: MaterialApp(
-      //   theme: ThemeData(
-      //     primarySwatch: Colors.blue,
-      //   ),
-      //   initialRoute: '/home',
-      //   routes: {
-      //     /// '/home': (context) => HomeViewReal(),
-      //     '/home': (context) => Authentication(), /// TODO: Change this to Authentication() for production
-      //     '/builder': (context) => PortfolioBuilderView(), /// TODO: Have {id} subroutes? If possible
-      //     '/testview': (context) => TestView(),
-      //     '/homeviewreal': (context) => BlocProvider<GetPriceInfoBloc>(
-      //       create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-      //       child: HomeViewReal(),
-      //     ),
-      //     '/coinview': (context) => CoinView(),
-      //     // '/portfolio': (context) => PriceContai
-      //   }
-      // ),
-    // );
   }
 }
