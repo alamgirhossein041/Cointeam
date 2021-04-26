@@ -138,37 +138,44 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     delegate: SliverChildBuilderDelegate((context, index) {
                                       return Padding(
                                         padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                        child: Row(
-                                          children: <Widget> [
-                                            Flexible(
-                                              flex: 1,
-                                              fit: FlexFit.tight,
-                                              child: GestureDetector(
-                                                child: Icon(Icons.close),
-                                                onTap: () => {
+                                        child: Builder(
+                                          builder: (context) {
+                                            final condition = portfolioList[index] != 'USDTTOTAL' && portfolioList[index] != 'BTCTOTAL';
+                                            return condition ? BuyPortfolio2Row(portfolioList[index], portfolioDataMap.data[portfolioList[index]])
+                                              : Container();
+                                            }
+                                        //   ),
+                                        //   Row(
+                                        //   children: <Widget> [
+                                        //     Flexible(
+                                        //       flex: 1,
+                                        //       fit: FlexFit.tight,
+                                        //       child: GestureDetector(
+                                        //         child: Icon(Icons.close),
+                                        //         onTap: () => {
 
-                                                }
-                                              )
-                                            ),
-                                            Flexible(
-                                              flex: 3,
-                                              fit: FlexFit.tight,
-                                              child: Text(portfolioList[index]),
-                                              // child: Container(),
-                                            ),
-                                            Flexible(
-                                              flex: 3,
-                                              fit: FlexFit.tight,
-                                              child: Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                  child: Text("\$" + portfolioDataMap.data[portfolioList[index]].toString()),
-                                                )
-                                              )
-                                            )
-                                            // )
-                                          ]
+                                        //         }
+                                        //       )
+                                        //     ),
+                                        //     Flexible(
+                                        //       flex: 3,
+                                        //       fit: FlexFit.tight,
+                                        //       child: Text(portfolioList[index]),
+                                        //       // child: Container(),
+                                        //     ),
+                                        //     Flexible(
+                                        //       flex: 3,
+                                        //       fit: FlexFit.tight,
+                                        //       child: Align(
+                                        //         alignment: Alignment.centerRight,
+                                        //         child: Padding(
+                                        //           padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                        //           child: Text("\$" + portfolioDataMap.data[portfolioList[index]].toStringAsFixed(2)),
+                                        //         )
+                                        //       )
+                                        //     )
+                                        //     // )
+                                        //   ]
                                         )
                                       );
                                     },
@@ -233,7 +240,19 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                         //     return Text("\$" + coinTotalValue.toStringAsFixed(2));
                                         //   }
                                         // )
-                                        child: Text("Hello World"),
+                                        child: Builder(
+                                          builder: (context) {
+                                            final conditionUsd = portfolioDataMap.data['USDTTOTAL'] != null;
+                                            final conditionBtc = portfolioDataMap.data['BTCTOTAL'] != null;
+                                            if(conditionUsd) {
+                                              return Text("\$" + portfolioDataMap.data['USDTTOTAL'].toStringAsFixed(2));
+                                            } else if(conditionBtc) {
+                                              return Text("\$" + portfolioDataMap.data['BTCTOTAL'].toStringAsFixed(2));
+                                            } else {
+                                              return Container();
+                                            }
+                                          }
+                                        )
                                       )
                                     )
                                   )
@@ -288,7 +307,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                   onTap: () => {
                                     debugPrint("Buy Button Pressed"),
                                     BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: totalBuyQuote, coinTicker: symbol, portfolioList: portfolioList, portfolioDataMap: portfolioDataMap)),
-                                    Navigator.pushNamed(context, '/sellportfolio3')
+                                    Navigator.pushNamed(context, '/buyportfolio3')
                                     /// 7th - we need to pass in something - like a list or a map or something
                                   },
                                   // ),
@@ -347,6 +366,47 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
           ]
         )
       )
+    );
+  }
+}
+
+class BuyPortfolio2Row extends StatelessWidget {
+  const BuyPortfolio2Row(this.coinName, this.coinQuantity);
+  final String coinName;
+  final double coinQuantity;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget> [
+        Flexible(
+          flex: 1,
+          fit: FlexFit.tight,
+          child: GestureDetector(
+            child: Icon(Icons.close),
+            onTap: () => {
+
+            }
+          )
+        ),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Text(coinName),
+          // child: Container(),
+        ),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+              child: Text("\$" + coinQuantity.toStringAsFixed(2)),
+            )
+          )
+        )
+      ]
     );
   }
 }

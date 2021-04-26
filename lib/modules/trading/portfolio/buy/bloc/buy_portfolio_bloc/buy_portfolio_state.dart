@@ -19,9 +19,9 @@ class BuyPortfolioLoadingState extends BuyPortfolioState {
 
 class BuyPortfolioLoadedState extends BuyPortfolioState {
 
-  // final double totalValue;
+  final double totalValue;
 
-  // BuyPortfolioLoadedState({@required this.totalValue});
+  BuyPortfolioLoadedState({@required this.totalValue});
   // BuyPortfolioLoadedState()
 
   /// THIS IS THE MAIN ONE

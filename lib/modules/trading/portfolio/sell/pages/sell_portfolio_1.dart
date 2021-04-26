@@ -197,6 +197,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                   ],
                                 );
                               } else if (state is GetTotalValueErrorState) {
+                                /// 26th
                                 return Text(state.errorMessage);
                               } else {
                                 return loadingTemplateWidget();

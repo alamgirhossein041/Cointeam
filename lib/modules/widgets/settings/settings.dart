@@ -2,6 +2,7 @@ import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coi
 import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_event.dart';
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_event.dart';
+import 'package:coinsnap/modules/utils/colors_helper.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,7 +108,7 @@ class SettingsState extends State<Settings> {
                               alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: EdgeInsets.only(left: 30),
-                                child: Text("Beta v1.0", style: TextStyle(color: Colors.white)),
+                                child: Text("Beta v1.0.32", style: TextStyle(color: Colors.white)),
                               ),
                             ),
                           ),
@@ -180,6 +181,51 @@ class SettingsState extends State<Settings> {
                       )
                     ),
                   )
+                ),
+                Flexible(
+                  flex: 5,
+                  fit: FlexFit.tight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget> [
+                      Container(
+                        height: displayHeight(context) * 0.07,
+                        child: GestureDetector(
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                backgroundColor: appBlack,
+                                title: Text("CoinStreet", style: TextStyle(color: Colors.grey[350])),
+                                content: Text("Made in Australia\n\n\nCredits to: \n\nAndrew, Hana and Michael\n\n\nBeta Release 1.0.32\n\nwww.coinstreetapp.com", style: TextStyle(color: Colors.grey[350])),
+                              )
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.grey), top: BorderSide(color: Colors.grey)),
+                            ),
+                            child: Row(
+                              children: <Widget> [
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 30),
+                                      child: Text("About Us", style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            )
+                          ),
+                        )
+                      ),
+                      SizedBox(height: 30),
+                    ]
+                  ),
                 ),
               ]
             )

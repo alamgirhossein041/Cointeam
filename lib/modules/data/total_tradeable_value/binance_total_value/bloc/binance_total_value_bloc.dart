@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
@@ -35,12 +37,14 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         try {
         /// ### Binance ### ///
           List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
-          binanceGetPricesMap = Map.fromIterable(responses[1], key: (e) => e.symbol, value: (e) => e.price);
+          // binanceGetPricesMap = Map.fromIterable(responses[1], key: (e) => e.symbol, value: (e) => e.price);
+          binanceGetPricesMap = responses[1];
           yield GetTotalValueResponseState(binanceGetAllModelList: responses[0], binanceGetPricesMap: binanceGetPricesMap);
           binanceGetAllModel = responses[0];
         } catch (e) {
-          handleError(e);
           debugPrint("The error in get_total_value_bloc 1 " + e.toString());
+          log(e.toString());
+          handleError(e);
         }
         /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
         /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();

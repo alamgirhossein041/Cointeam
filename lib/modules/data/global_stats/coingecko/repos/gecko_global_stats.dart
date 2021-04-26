@@ -14,7 +14,6 @@ class GeckoGlobalStatsRepoImpl implements IGeckoGlobalStatsRepo {
     String requestUrl = 'https://api.coingecko.com/api/v3/global';
     var response = await http.get(requestUrl);
     if(response.statusCode == 200) {
-      log("Sup");
       GeckoGlobalStats geckoGlobalStats = GeckoGlobalStats.fromJson(json.decode(response.body));
       return geckoGlobalStats;
     } else {

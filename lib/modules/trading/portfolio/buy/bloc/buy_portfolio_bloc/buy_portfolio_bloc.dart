@@ -6,8 +6,8 @@ import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.
 import 'package:coinsnap/modules/trading/models/get_portfolio.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
-import 'package:coinsnap/modules/trading/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +22,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   // List<String> coinsToRemove = [];
   double divisor = 1.0;
   String originalCoinTicker = "";
+  double totalValue = 0.0;
 
   List<String> portfolioList = [];
   GetPortfolioModel portfolioDataMap;
@@ -69,44 +70,48 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
         } else {
           debugPrint("Neither USDT or BTC detected");
         }
-        
-          portfolioList.forEach((v) async {
-            if(v == (coinTicker + "TOTAL")) {
-              debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
-            } else {
-              try {
-                debugPrint("Hi?");
-                var result;
-                // if(v == 'USDT') {
-                  // divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
-                // } else {
-                divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
-                // }
-                /// This is where we do the percentage calculation
-                ///
-                double buyQuantity = double.parse(portfolioDataMap.data[v]);
-                // var tmp = (buyQuantity * pctToSell);
-                var tmp = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
-                var zeroTarget = double.parse((tmp % divisor).toStringAsFixed(6));
-                tmp -= zeroTarget;
-                if (tmp >= divisor) {
-                  if(v == 'USDT') {
-                    result = await binanceSellCoinRepository.binanceSellCoin(coinTicker + v, tmp);
-                  } else {
-                    result = await binanceBuyCoinRepository.binanceBuyCoin(v + coinTicker, tmp);
+        portfolioList.forEach((v) async {
+          if(v == (coinTicker + "TOTAL")) {
+            debugPrint("Skipping $coinTicker... Because we don't sell $coinTicker to $coinTicker");
+            log("Skipping $coinTicker... Because we don't sell $coinTicker to $coinTicker");
+          } else {
+            try {
+              var result;
+              // if(v == 'USDT') {
+                // divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
+              // } else {
+              divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
+              // }
+              /// This is where we do the percentage calculation
+              ///
+              double buyQuantity = double.parse(portfolioDataMap.data[v]);
+              // var tmp = (buyQuantity * pctToSell);
+              totalValue = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
+              var zeroTarget = double.parse((totalValue % divisor).toStringAsFixed(6));
+              totalValue -= zeroTarget;
+              if (totalValue >= divisor && totalValue > 10) {
+                if(v == 'USDT') {
+                  if(v != coinTicker) {
+                    log(coinTicker);
+                    log(v);
+                    log(totalValue.toString());
+                    result = await binanceSellCoinRepository.binanceSellCoin(coinTicker + v, totalValue);
+                    log(result.toString());
                   }
-                  log(result['code'].toString());
-                  debugPrint(result['code'].toString());
-                  if(result['code'] == null) {
-                    log("null result['code']");
-                    debugPrint("null result['code']");
-                  }
+                } else {
+                  log("else" + coinTicker);
+                  log("else" + v);
+                  log("else" + totalValue.toString());
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(v + coinTicker, totalValue);
+                  log(result.toString());
                 }
-              } catch (e) {
-                debugPrint(e.toString());
               }
+            } catch (e) {
+              log(e.toString());
+              debugPrint(e.toString());
             }
-          });
+          }
+        });
     
 
           /// ### This is where we would add to database?? ### ///
@@ -165,9 +170,10 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
 
 /// ### Uncomment above for ftx integration ### ///
 
-        yield BuyPortfolioLoadedState();
+        yield BuyPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
-        debugPrint("wallah");
+        log("Error in BuyPortfolioBloc");
+        debugPrint("Error in BuyPortfolioBloc");
         debugPrint(e.toString());
         yield BuyPortfolioErrorState(errorMessage : e.toString());
       }

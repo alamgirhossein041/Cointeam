@@ -23,7 +23,6 @@ class GeckoGlobalStatsBloc extends Bloc<GeckoGlobalStatsEvent, GeckoGlobalStatsS
         await storageCurrency.ready.then((_) {
           currency = storageCurrency.getItem("currency").toLowerCase();
         });
-        log(currency);
         yield GeckoGlobalStatsLoadedState(geckoGlobalStats: geckoGlobalStats, currency: currency);
       } catch (e) {
         log(e.toString());
