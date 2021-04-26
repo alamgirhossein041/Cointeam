@@ -1,7 +1,10 @@
+import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
+import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_event.dart';
 import 'package:coinsnap/modules/services/firebase_analytics.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -91,45 +94,78 @@ class DrawerMenuState extends State<DrawerMenu> {
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                "Change Currency to AUD",
-                style: TextStyle(color: Colors.white, fontSize:18),
+              title: Row(
+                children: <Widget> [
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
+                    child: Text(
+                      "Sell   ",
+                      style: TextStyle(color: Colors.white, fontSize:18),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 6,
+                    fit: FlexFit.tight,
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Icon(Icons.bolt, color: Colors.yellowAccent[200]),
+                    ),
+                  ),
+                ],
               ),
               onTap: () {
-                final localStorage = LocalStorage("settings");
-                localStorage.setItem("currency", "AUD");
+                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                Navigator.pushNamed(context, '/sellportfolio');
               },
             ),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                "Change Currency to USD",
-                style: TextStyle(color: Colors.white, fontSize:18),
+              title: Row(
+                children: <Widget> [
+                  Flexible(
+                    flex: 2,
+                    fit: FlexFit.tight,
+                    child: Text(
+                      "Buy   ",
+                      style: TextStyle(color: Colors.white, fontSize:18),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 6,
+                    fit: FlexFit.tight,
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Icon(Icons.bolt, color: Colors.blue[200]),
+                    ),
+                  ),
+                ],
               ),
               onTap: () {
-                final localStorage = LocalStorage("settings");
-                localStorage.setItem("currency", "USD");
+                BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent());
+                Navigator.pushNamed(context, '/buyportfolio');
               },
             ),
+            // ListTile(
+            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+            //   title: Text(
+            //     "Binance API real quick",
+            //     style: TextStyle(color: Colors.white, fontSize:18),
+            //   ),
+            //   onTap: () {
+            //     final secureStorage = FlutterSecureStorage();
+            //     secureStorage.write(key: "binance", value: "true");
+            //   },
+            // ),
+            SizedBox(height: 200),
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
               title: Text(
-                "Binance API real quick",
+                "Settings",
                 style: TextStyle(color: Colors.white, fontSize:18),
               ),
               onTap: () {
-                final secureStorage = FlutterSecureStorage();
-                secureStorage.write(key: "binance", value: "true");
-              },
-            ),
-            SizedBox(height: 250),
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-              title: Text(
-                "More Coming Soon...",
-                style: TextStyle(color: Colors.white, fontSize:18),
-              ),
-              onTap: () {
+                Navigator.pushNamed(context, '/settings');
               },
             ),
             /// ///

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coinsnap/modules/data/binance_price/models/binance_exchange_info.dart';
 import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
@@ -5,8 +7,8 @@ import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.
 import 'package:coinsnap/modules/services/firebase_analytics.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_state.dart';
-import 'package:coinsnap/modules/trading/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
@@ -40,6 +42,15 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   @override
   Stream<SellPortfolioState> mapEventToState(SellPortfolioEvent event) async* {
     if (event is FetchSellPortfolioEvent) {
+      totalValue = 0.0;
+      pctToSell = 1.0;
+      coinTicker = "BTC";
+      coinsToRemove = [];
+      divisor = 1.0;
+      // int i = 0;
+      tradeSuccessful = false;
+
+      coinsToSave = {};
       pctToSell = event.value;
       coinTicker = event.coinTicker;
       coinsToRemove = event.coinsToRemove;
@@ -88,7 +99,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   debugPrint("Running totalValue is $totalValue");
                   /// 25th
-                  coinsToSave[v.coin] = result['cummulativeQuoteQty'];
+                  coinsToSave[v.coin] = double.parse(result['cummulativeQuoteQty']);
                   if(tradeSuccessful == false) {
                     tradeSuccessful = true;
                   }
@@ -102,6 +113,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
             }
           }
         });
+        log(totalValue.toString());
         debugPrint(totalValue.toString());
         coinsToSave[coinTicker + "TOTAL"] = totalValue;
         await localStorage.setItem("portfolio", coinsToSave);

@@ -17,8 +17,6 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
 
     /// ##### Temporary API Key load-ins ###### 
     /// ##### TODO: Add Key storage implementation ###### 
-    // String api = "cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU";
-    // String sapi = "mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD";
 
     final secureStorage = FlutterSecureStorage();
 

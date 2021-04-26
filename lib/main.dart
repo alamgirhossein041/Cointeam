@@ -27,12 +27,13 @@ import 'package:coinsnap/modules/portfolio/repos/coinmarketcap_coin_data.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_1.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_2.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_3.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_1.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
-import 'package:coinsnap/modules/trading/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
+import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:coinsnap/modules/widgets/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,6 +164,7 @@ class MyApp extends StatelessWidget {
           '/initialpage': (context) => InitialPage(),
           '/buyportfolio': (context) => BuyPortfolioScreen(),
           '/buyportfolio2': (context) => BuyPortfolioPage2(),
+          '/buyportfolio3': (context) => BuyPortfolioPage3 (),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),

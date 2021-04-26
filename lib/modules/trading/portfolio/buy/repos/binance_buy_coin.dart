@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -17,8 +18,6 @@ class BinanceBuyCoinRepositoryImpl implements IBinanceBuyCoinRepository {
 
     /// ##### Temporary API Key load-ins ###### 
     /// ##### TODO: Add Key storage implementation ###### 
-    // String api = "cqtoVuNi7dgrkz2w66ClFLupoBEtVvWqK53KwmT1HZohkDVbsi9lmRSo4BpjpHSU";
-    // String sapi = "mdRxuJLmpPgDPPfrAXMh2idVzMFeCU6lDwoxQXpBSQ2Iq8zxOdNjFdofUZT1yIgD";
 
     final secureStorage = FlutterSecureStorage();
 
@@ -43,10 +42,13 @@ class BinanceBuyCoinRepositoryImpl implements IBinanceBuyCoinRepository {
     /// ###### End API Request ######
     if(response.statusCode == 200) {
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      
+      log("Response of Binance buy is: " + body.toString());
       debugPrint("Response of Binance buy is: " + body.toString());
       return body;
     } else {
+      log("excepted");
+      log(response.statusCode.toString());
+      log(response.body.toString());
       debugPrint("excepted");
       debugPrint(response.statusCode.toString());
       debugPrint(response.body.toString());
@@ -58,10 +60,13 @@ class BinanceBuyCoinRepositoryImpl implements IBinanceBuyCoinRepository {
       var response2 = await http.post(requestUrl2, headers: {'X-MBX-APIKEY': api});
       if(response2.statusCode == 200) {
         Map<String, dynamic> body = Map.from(json.decode(response2.body));
-      
+        log("Response of Binance buy is: " + body.toString());
         debugPrint("Response of Binance buy is: " + body.toString());
         return body;
       } else {
+        log("excepted twice, throwing");
+        log(response2.statusCode.toString());
+        log(response2.body.toString());
         debugPrint("excepted twice, throwing");
         debugPrint(response2.statusCode.toString());
         debugPrint(response2.body.toString());

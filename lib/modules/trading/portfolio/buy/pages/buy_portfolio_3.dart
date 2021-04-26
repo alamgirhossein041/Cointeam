@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
+import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,6 +53,7 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
               },
               builder: (context, state) {
                 if (state is BuyPortfolioLoadedState) {
+                  log("BuyPortfolioLoadedState");
                   debugPrint("BuyPortfolioLoadedState");
                   return Flexible(
                     flex: 12,
@@ -102,7 +106,7 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
                             fit: FlexFit.tight,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("\$0.00" , style: TextStyle(color: Colors.white, fontSize: 30))
+                              child: Text("\$" + state.totalValue.toString(), style: TextStyle(color: Colors.white, fontSize: 30))
                             ),
                           ),
                           Flexible(
@@ -168,11 +172,9 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
                       ),
                     ),
                   );
-            //     }
-            //   },
-            // ),
-                  
-                } else {
+                } else if (state is BuyPortfolioErrorState) {
+                  return Text(state.errorMessage);
+                } else if (state is BuyPortfolioLoadingState) {
                   return Flexible(
                     flex: 2,
                     fit: FlexFit.tight,
@@ -186,6 +188,8 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
                       )
                     ),
                   );
+                } else {
+                  return loadingTemplateWidget();
                 }
               }
             )

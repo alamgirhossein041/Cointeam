@@ -9,6 +9,5 @@ class GeckoGlobalStats {
   GeckoGlobalStats.fromJson(Map<String, dynamic> json) {
 		totalMarketCap = json['data']['total_market_cap'];
     totalMarketCapPct = json['data']['market_cap_percentage'];
-    log(totalMarketCap.toString());
 	}
 }
