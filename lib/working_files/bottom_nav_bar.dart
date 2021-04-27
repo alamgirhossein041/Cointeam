@@ -52,12 +52,12 @@ class BottomNavBarState extends State<BottomNavBar> {
                                 Flexible(
                                   flex: 1,
                                   fit: FlexFit.tight,
-                                  child: Icon(Icons.bolt, color: Colors.yellowAccent[100])
+                                  child: Icon(Icons.bolt, color: Colors.yellow[600])
                                 ),
                                 Flexible(
                                   flex: 1,
                                   fit: FlexFit.tight,
-                                  child: Text("Trade", style: TextStyle(color: Colors.yellowAccent[100], fontSize: 12)),
+                                  child: Text("Trade", textAlign: TextAlign.center, style: TextStyle(color: Colors.yellow, fontSize: 12)),
                                 ),
                             ],)
                           ),
