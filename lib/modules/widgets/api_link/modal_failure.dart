@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// {@title Title text}
 /// {@body body Widget to display}
 /// {@actionButton Next action to take from this end screen, usually "ok" or "return to dash" etc.}
-class ModalSuccess extends StatelessWidget {
+class ModalFailure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +31,34 @@ class ModalSuccess extends StatelessWidget {
               Flexible(
                 flex: 1,
                 fit: FlexFit.tight,
-                child: Icon(Icons.done, color: Colors.greenAccent, size: 55),
+                child: Icon(Icons.cancel_outlined, color: Colors.redAccent, size: 55),
               ),
               Flexible(
                 flex: 1,
                 // fit: FlexFit.tight,
                 child: Text(
-                  "Binance Linked",
+                  "Binance Failed",
                   style: Theme.of(context).textTheme.headline1
                 ),
               ),
               Flexible(
-                flex: 2,
+                flex: 1,
+                // fit: FlexFit.tight,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    "Invalid Api-Key ID",
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
                 // fit: FlexFit.tight,
                 child: Center(
                   child: Text(
-                    "Congratulations!\n\nAll features of this app has been unlocked.",
+                    "Try again later.",
                     style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
@@ -58,11 +70,11 @@ class ModalSuccess extends StatelessWidget {
                 child: Center(
                   child: TextButton(
                     onPressed: () => {
-                      writeStorage("welcome", "true"),
+                      // writeStorage("welcome", "true"),
                       // future: readStorage("welcome"),
-                      Navigator.pushReplacementNamed(context, '/home')
+                      Navigator.popUntil(context, ModalRoute.withName('/linkapitext'))
                     },
-                    child: Text("Dashboard"),
+                    child: Text("Go back"),
                   ),
                 ),
               ),

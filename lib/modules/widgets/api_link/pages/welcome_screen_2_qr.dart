@@ -76,7 +76,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
               fit: FlexFit.tight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/first');
+                  Navigator.pushReplacementNamed(context, '/linkapitext');
                 },
                 child: Text("I don't have a QR Code")
               )
@@ -92,7 +92,6 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
     );
   }
   /// QR STUFF (Expensive, plz refactor)
-  
   
   Widget _buildQrView(BuildContext context) {
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
@@ -122,14 +121,10 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
         result = scanData; /// 31st
         Map<String, dynamic> body = Map.from(json.decode(result.code));
         QrResult qrDecoded = QrResult.fromJson(body);
-        final secureStorage = FlutterSecureStorage();
+        // final secureStorage = FlutterSecureStorage();
         if(qrSanityCheck == true) {
           qrSanityCheck = false;
-          await secureStorage.write(key: 'binanceApi', value: qrDecoded.apiKey);
-          await secureStorage.write(key: 'binanceSapi', value: qrDecoded.secretKey);
-          await secureStorage.write(key: 'trading', value: 'true');
-          await secureStorage.write(key: 'binance', value: 'true');
-          Navigator.pushReplacementNamed(context, '/third');
+          Navigator.pushReplacementNamed(context, '/checkapi', arguments: {'api': qrDecoded.apiKey, 'sapi': qrDecoded.secretKey});
         }
       });
     });
