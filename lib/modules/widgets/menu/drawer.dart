@@ -1,5 +1,6 @@
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_event.dart';
+import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/services/firebase_analytics.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class DrawerMenu extends StatefulWidget {
 
 class DrawerMenuState extends State<DrawerMenu> {
   final feedbackTextController = TextEditingController();
-
+  
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -146,6 +147,25 @@ class DrawerMenuState extends State<DrawerMenu> {
                 Navigator.pushNamed(context, '/buyportfolio');
               },
             ),
+            FutureBuilder(
+              future: readStorage("trading"),
+              builder: (context, snapshot) {
+                if(snapshot.data != null) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+                    title: Text(
+                      "Link Api",
+                      style: TextStyle(color: Colors.white, fontSize:18),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/second');
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
             // ListTile(
             //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
             //   title: Text(
@@ -169,17 +189,17 @@ class DrawerMenuState extends State<DrawerMenu> {
               },
             ),
             /// ///
-            // ListTile(
-            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-            //   title: Text(
-            //     '* Delete 1st Time Login API *',
-            //     style: TextStyle(color: Colors.white, fontSize:18),
-            //   ),
-            //   onTap: () {
-            //     final storage = FlutterSecureStorage();
-            //     storage.delete(key: "welcome");
-            //   },
-            // ),
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Delete 1st Time Login API *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () {
+                final storage = FlutterSecureStorage();
+                storage.delete(key: "welcome");
+              },
+            ),
             // ListTile(
             //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
             //   title: Text(
@@ -198,18 +218,19 @@ class DrawerMenuState extends State<DrawerMenu> {
             //     }
             //   },
             // ),
-            // ListTile(
-            //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
-            //   title: Text(
-            //     '* Delete Trading API *',
-            //     style: TextStyle(color: Colors.white, fontSize:18),
-            //   ),
-            //   onTap: () {
-            //     final storage = FlutterSecureStorage();
-            //     storage.delete(key: "trading");
+            ListTile(
+              contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+              title: Text(
+                '* Delete Trading API *',
+                style: TextStyle(color: Colors.white, fontSize:18),
+              ),
+              onTap: () async {
+                final storage = FlutterSecureStorage();
+                await storage.delete(key: "trading");
+                await storage.delete(key: "binance");
                 
-            //   },
-            // ),
+              },
+            ),
             // ListTile(
             //   contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
             //   title: Text(

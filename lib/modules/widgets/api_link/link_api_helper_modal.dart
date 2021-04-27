@@ -442,24 +442,24 @@ Swipe next.''';
       } else if (page == 7) {
       // page 7
       return Container (
-        padding: modalPadding,
-        child: ModalSuccess(
-          icon: Icon(Icons.done, color: Colors.greenAccent, size: 55),
-          title: exchanges[widget.exch] + " Linked",
-          body: Center(
-            child: Text(
-              "Congratulations!\n\nAll features of this app has been unlocked.",
-              style: Theme.of(context).textTheme.bodyText2,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          actionButton: Center(
-            child: TextButton(
-              onPressed: () => {Navigator.pop(context)},
-              child: Text("Return to Dashboard"),
-            ),
-          )
-        ),
+        // padding: modalPadding,
+        // child: ModalSuccess(
+        //   icon: Icon(Icons.done, color: Colors.greenAccent, size: 55),
+        //   title: exchanges[widget.exch] + " Linked",
+        //   body: Center(
+        //     child: Text(
+        //       "Congratulations!\n\nAll features of this app has been unlocked.",
+        //       style: Theme.of(context).textTheme.bodyText2,
+        //       textAlign: TextAlign.center,
+        //     ),
+        //   ),
+        //   actionButton: Center(
+        //     child: TextButton(
+        //       onPressed: () => {Navigator.pop(context)},
+        //       child: Text("Return to Dashboard"),
+        //     ),
+        //   )
+        // ),
       );
     } else {
       return Container (
@@ -496,12 +496,12 @@ Swipe next.''';
       if(apiCharCount == 64) {
       // widget.indexCallback(6);
 
-        bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
-        if (response == true) {
-          widget.navigatePageCallback(7);
-        } else {
-          widget.navigatePageCallback(5); /// ### Probably need to change this later to actually show error message ### ///
-        }
+        // bool response = await BinanceApiCheckRepositoryImpl().getBinanceApiCheckLatest();
+        // if (response == true) {
+        //   widget.navigatePageCallback(7);
+        // } else {
+        //   widget.navigatePageCallback(5); /// ### Probably need to change this later to actually show error message ### ///
+        // }
       }
     }
   }

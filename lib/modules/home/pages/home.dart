@@ -786,12 +786,12 @@ class EnableTradingButton extends StatelessWidget {
                 ),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text("ENABLE TRADING", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                  child: Text("LINK API", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
               ),
               onTap: () {
                 /// TODO: Route to API link
-                Navigator.pushReplacementNamed(context, '/second');
+                Navigator.pushNamed(context, '/second');
               },
             ),
             elevation: 2,
