@@ -18,7 +18,9 @@ import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_co
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
-import 'package:coinsnap/modules/onboarding/pages/welcome_screen_2.dart';
+import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
+import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_qr.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
 import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/portfolio/bloc/coinmarketcap_list_data_bloc/list_total_value_bloc.dart';
@@ -34,6 +36,8 @@ import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.d
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_text.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_check.dart';
 import 'package:coinsnap/modules/widgets/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -174,10 +178,14 @@ class MyApp extends StatelessWidget {
           '/viewcoin': (context) => CoinPage(),
           '/first': (context) => First(),
           '/second': (context) => Second(),
-          '/third': (context) => Third(),
+          // '/third': (context) => Third(),
           // '/authentication': (context) => Authentication(),
           // '/editcointest': (context) => EditCoin(),
           '/addcoin': (context) => AddCoin(),
+          '/linkapitext': (context) => LinkAPIText(),
+          '/checkapi': (context) => CheckBinanceApi(),
+          '/modalsuccess': (context) => ModalSuccess(),
+          '/modalfailure': (context) => ModalFailure(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),
