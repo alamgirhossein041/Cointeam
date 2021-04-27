@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/repos/exchanges/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_state.dart';

@@ -37,7 +37,7 @@ class ModalSuccess extends StatelessWidget {
                 flex: 1,
                 // fit: FlexFit.tight,
                 child: Text(
-                  "Binance Linked",
+                  "API Linked",
                   style: Theme.of(context).textTheme.headline1
                 ),
               ),
@@ -46,7 +46,7 @@ class ModalSuccess extends StatelessWidget {
                 // fit: FlexFit.tight,
                 child: Center(
                   child: Text(
-                    "Congratulations!\n\nAll features of this app has been unlocked.",
+                    "Congratulations!\n\nNew features of this app have been unlocked.",
                     style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),

@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';

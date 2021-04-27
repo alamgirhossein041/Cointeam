@@ -1,7 +1,7 @@
-import 'package:coinsnap/modules/trading/models/get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/local/get_portfolio.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
-import 'package:coinsnap/modules/trading/repos/get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/repos/local/get_portfolio.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:coinsnap/modules/data/binance_price/models/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/repos/exchanges/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/services/firebase_analytics.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_state.dart';

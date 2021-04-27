@@ -50,7 +50,20 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
         padding: modalPadding,
         child: Column(
           children: <Widget> [
-            Container(height: 70),
+            Container(height: 30),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.blueGrey, size: 30),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              )
+            ),
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -70,7 +83,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
               fit: FlexFit.tight,
               child: _buildQrView(context)
             ),
-            SizedBox(height: displayHeight(context) * 0.08),
+            SizedBox(height: displayHeight(context) * 0.04),
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
@@ -78,7 +91,7 @@ class SecondState extends State<Second> with TickerProviderStateMixin {
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/linkapitext');
                 },
-                child: Text("I don't have a QR Code")
+                child: Text("I don't have a QR Code", style: TextStyle(fontSize: 20))
               )
             ),
             Flexible(

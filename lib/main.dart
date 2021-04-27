@@ -9,7 +9,7 @@ import 'package:coinsnap/modules/chart/repos/binance_chart.dart';
 import 'package:coinsnap/modules/coin/pages/coin_add.dart';
 import 'package:coinsnap/modules/coin/pages/coin_view.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/repos/exchanges/binance_get_portfolio.dart';
 import 'package:coinsnap/modules/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/modules/data/global_stats/coingecko/bloc/gecko_global_stats_bloc.dart';
 import 'package:coinsnap/modules/data/global_stats/coingecko/repos/gecko_global_stats.dart';
@@ -20,7 +20,9 @@ import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
-import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_qr.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_select.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_ftx.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_qr.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
 import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/portfolio/bloc/coinmarketcap_list_data_bloc/list_total_value_bloc.dart';
@@ -36,8 +38,9 @@ import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.d
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
-import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_text.dart';
-import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_check.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_text.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_4_check.dart';
+import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_4_check_ftx.dart';
 import 'package:coinsnap/modules/widgets/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -182,8 +185,11 @@ class MyApp extends StatelessWidget {
           // '/authentication': (context) => Authentication(),
           // '/editcointest': (context) => EditCoin(),
           '/addcoin': (context) => AddCoin(),
+          '/linkapiselect': (context) => LinkAPISelect(),
           '/linkapitext': (context) => LinkAPIText(),
+          '/linkapiftx': (context) => LinkAPIFtx(),
           '/checkapi': (context) => CheckBinanceApi(),
+          '/checkftxapi': (context) => CheckFtxApi(),
           '/modalsuccess': (context) => ModalSuccess(),
           '/modalfailure': (context) => ModalFailure(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),

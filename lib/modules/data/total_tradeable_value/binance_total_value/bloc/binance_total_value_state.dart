@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
