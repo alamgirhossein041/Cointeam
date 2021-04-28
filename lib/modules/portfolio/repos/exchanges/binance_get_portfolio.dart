@@ -57,6 +57,9 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
+      for(int i = 0; i < 2 && globals.binanceTimestampModifier == 0; i++) {
+        await Future.delayed(Duration(seconds: 1));
+      }
       debugPrint("excepted");
       debugPrint(response.statusCode.toString());
       debugPrint(response.body.toString());
@@ -64,9 +67,6 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       log(response.statusCode.toString());
       log(response.body.toString());
       log("HELLO WE ARE FIGHTING DREAMERS222");
-      if(globals.binanceTimestampModifier == null) {
-        await Future.delayed(Duration(seconds: 1));
-      }
       timestamp = ((DateTime.now().millisecondsSinceEpoch) - globals.binanceTimestampModifier).toString();
       
       String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000';

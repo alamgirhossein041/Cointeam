@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_event.dart';
@@ -383,9 +384,17 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10,10,0,0),
+                        child: Text("My Portfolios", style: TextStyle(color: Colors.white, fontSize: 16)),
+                      ),
+                    ), /// 28th
                     Container(
                       child: FutureBuilder(
-                        future: readStorage("binance"),
+                        // future: readStorage("binance"),
+                        future: readStorage("portfolio"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
@@ -400,8 +409,40 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                                   name: "check_portfolio",
                                   parameters: {"clickedFrom": "home"}
                                 );
-                                return BinanceTileBlurb(); /// 19th
+                                // log(json.decode(snapshot.data).toString());
+                                // log(json.decode(snapshot.data)['ftx'].toString());
+                                var data = json.decode(snapshot.data);
+                                log(data.toString());
+                                
+                                return Container(
+                                  height: 200,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: <Widget> [
+                                      // for(int i=0; data.length>i; i++)
+                                      if(data['binance'] != null)... [
+                                        // BinanceTileBlurb(),
+                                      ],
+                                      // if(data['ftx'] != null)... [
+                                      //   PortfolioBlurb(),
+                                      // ],
+                                      // Container((() {
+
+                                      // })()),
+                                      if(data['portfolios'] != null)... [
+                                        for(int i = 0; data['portfolios'].length > i; i++)
+                                        // for(int i = 0; 5 > i; i++)
+                                        PortfolioBlurb(),
+                                      ]
+                                    ]
+                                  ),
+                                );
+
+                                /// Get storage "portfolio" - map of portfolios
+                                // return BinanceTileBlurb();
                               } else {
+                                Map<String, dynamic> portfolios = {"binance": true, "ftx": false, "portfolio": {"1": true, "2": true}};
+                                writeStorage("portfolio", json.encode(portfolios));
                                 return AddPortfolioBlurb();
                               }
                             } else {
@@ -985,15 +1026,99 @@ class BinanceTileBlurb extends StatelessWidget {
             ),
           );
         } else if (state is StartupInitialState) {
+          log("Initial");
           return Container();
         } else if (state is StartupLoadingState) {
+          log("Loading");
           return loadingTemplateWidget();
         } else if (state is StartupErrorState) {
+          log("Error");
           return errorTemplateWidget("Error: " + state.errorMessage);
         } else {
+          log("Else");
           return Container();
         }
       }
+    );
+  }
+}
+
+class PortfolioBlurb extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: displayHeight(context) * 0.225,
+      child: InkWell(
+        child: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              // BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+              // Navigator.pushReplacementNamed(context, '/viewportfolio');
+              log("Portfolio Blurbl Clicked"); ///28th
+            },
+            child: Column(
+              children: <Widget> [
+                Expanded(
+                  flex: 1,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Container(
+                      height: displayHeight(context) * 0.240,
+                      width: displayWidth(context) * 0.385,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF191B31),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      /// ### Card content starts here ### ///
+                      child: Column(
+                        children: <Widget> [
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10,0,0,0),
+                              child: Row(
+                                children: <Widget> [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Icon(CryptoFontIcons.DASH, color: Colors.orange),
+                                  ),
+                                  Expanded(
+                                    flex: 7,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("Portfolio 1", style: TextStyle(color: Colors.white))
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: <Widget> [
+                                Text("Total Value:", style: TextStyle(color: Colors.white)),
+                                // Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.blue)),
+                                Text("\$9999.99"),
+                              ]
+                            )
+                          )
+                        ]
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ),
     );
   }
 }
