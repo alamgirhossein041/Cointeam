@@ -35,6 +35,33 @@ class BottomNavBarState extends State<BottomNavBar> {
                     child: Row(
                       children: <Widget> [
 
+                        // Home button
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            },
+                            // makes the whole area clickable
+                            behavior: HitTestBehavior.opaque,
+                            child: Column(
+                              children: <Widget> [
+                                SizedBox(height: 8),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Icon(Icons.home, color: Color(0xFFA9B1D9)),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  fit: FlexFit.tight,
+                                  child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
+                                ),
+                            ],)
+                          ),
+                        ),
+
                         // Trade button
                         Flexible(
                           flex: 1,
@@ -63,33 +90,6 @@ class BottomNavBarState extends State<BottomNavBar> {
                           ),
                         ),
 
-                        // Home button
-                        Flexible(
-                          flex: 1,
-                          fit: FlexFit.tight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(context, '/home');
-                            },
-                            // makes the whole area clickable
-                            behavior: HitTestBehavior.opaque,
-                            child: Column(
-                              children: <Widget> [
-                                SizedBox(height: 8),
-                                Flexible(
-                                  flex: 1,
-                                  fit: FlexFit.tight,
-                                  child: Icon(Icons.home, color: Color(0xFFA9B1D9)),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  fit: FlexFit.tight,
-                                  child: Text("Home", style: TextStyle(color: Color(0xFFA9B1D9), fontSize: 12)),
-                                ),
-                            ],)
-                          ),
-                        ),
-                        
                         // Refresh button
                         Flexible(
                           flex: 1,
