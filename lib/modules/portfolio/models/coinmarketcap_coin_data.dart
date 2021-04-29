@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CardCoinmarketcapListModel {
   Status status;
   List<Data> data;
-
+  
   CardCoinmarketcapListModel({this.status, this.data});
 
   CardCoinmarketcapListModel.fromJson(Map<String, dynamic> json) {

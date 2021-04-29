@@ -8,12 +8,12 @@ import 'package:coinsnap/modules/utils/global_library.dart' as globals;
 import 'package:flutter/material.dart';
 
 abstract class IBinanceGetAllRepository {
-  Future<List<BinanceGetAllModel>> getBinanceGetAll();
+  Future<BinancePortfolioModel> getBinanceGetAll();
 }
 
 class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
   @override
-  Future<List<BinanceGetAllModel>> getBinanceGetAll() async {
+  Future<BinancePortfolioModel> getBinanceGetAll() async {
     String _binanceUrl = 'api.binance.com';
     final secureStorage = FlutterSecureStorage();
 
@@ -46,16 +46,20 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     
     if(response.statusCode == 200) {
       /// Handle API response and parse
-      List<BinanceGetAllModel> binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
+      // BinanceGetAllModel binanceGetAllModel = json.decode(response.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
+      BinancePortfolioModel binancePortfolioModel = BinancePortfolioModel.fromJson(json.decode(response.body));
       /// Remove coins from list that are empty
       var toRemove = [];
-      binanceGetAllModel.forEach((v) {
-        if(v.name == null) {
-          toRemove.add(v);
+      binancePortfolioModel.data.forEach((k,v) => {
+        if(v.total == 0) {
+          toRemove.add(k)
         }
       });
-      binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
-      return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
+      toRemove.forEach((k) => {
+        binancePortfolioModel.data.remove(k)
+      });
+      // binancePortfolioModel.removeWhere((i) => toRemove.contains(i));
+      return binancePortfolioModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
       for(int i = 0; i < 2 && globals.binanceTimestampModifier == 0; i++) {
         await Future.delayed(Duration(seconds: 1));
@@ -76,16 +80,17 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
 
       var response2 = await http.get(requestUrl2, headers: {'X-MBX-APIKEY': api});
       if(response2.statusCode == 200) {
-        List<BinanceGetAllModel> binanceGetAllModel = json.decode(response2.body).cast<Map<String, dynamic>>().map<BinanceGetAllModel>((json) => BinanceGetAllModel.fromJson(json)).toList();
+        BinancePortfolioModel binancePortfolioModel = json.decode(response2.body);
         /// Remove coins from list that are empty
         var toRemove = [];
-        binanceGetAllModel.forEach((v) {
+        binancePortfolioModel.data.forEach((k,v) => {
           if(v.name == null) {
-            toRemove.add(v);
+            toRemove.add(k)
           }
         });
-        binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
-        return binanceGetAllModel;
+        toRemove.forEach((k) => {
+          binancePortfolioModel.data.remove(k)
+        });
       } else {
         debugPrint("excepted twice, throwing");
         debugPrint(response2.statusCode.toString());
@@ -93,6 +98,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
         log("excepted twice, throwing");
         log(response2.statusCode.toString());
         log(response2.body.toString());
+        return null;
       }
     }
   }

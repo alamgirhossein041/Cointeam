@@ -1,56 +1,51 @@
-class BinanceGetAllModel {  /// Repository returns a List of this model
-  String coin;
-  bool depositAllEnable;
-  bool withdrawAllEnable;
+class BinancePortfolioModel {  /// Repository returns a List of this model
+  Map<String, dynamic> data = {};
+
+  BinancePortfolioModel.fromJson(List json) {
+    if (json != null) {
+      json.forEach((object) {
+        data[object['coin']] = BinanceCoinData.fromJson(object);
+      });
+    }
+  }
+}
+
+class BinanceCoinData {
   String name;
   double free;
   double locked;
   double freeze;
-  double withdrawing;
-  double ipoing;
-  double ipoable;
   double storage;
   bool isLegalMoney;
   bool trading;
-  List<dynamic> networkList;
-  double btcValue;
+  double total;
   double usdValue;
+  double btcValue;
   double totalUsdValue;
 
-  BinanceGetAllModel(
-      {this.coin,
-      this.depositAllEnable,
-      this.withdrawAllEnable,
-      this.name,
-      this.free,
-      this.locked,
-      this.freeze,
-      this.withdrawing,
-      this.ipoing,
-      this.ipoable,
-      this.storage,
-      this.isLegalMoney,
-      this.trading,
-      this.networkList,});
+  BinanceCoinData({
+    this.name,
+    this.free,
+    this.locked,
+    this.freeze,
+    this.storage,
+    this.isLegalMoney,
+    this.trading
+  });
 
-BinanceGetAllModel.fromJson(Map<String, dynamic> json) {
-    if(double.parse(json['free']) > 0 || double.parse(json['locked']) > 0) {
-      coin = json['coin'].toString();
-      depositAllEnable = json['depositAllEnable'];
-      withdrawAllEnable = json['withdrawAllEnable'];
-      name = json['name'].toString();
-      free = double.parse(json['free']);
-      locked = double.parse(json['locked']);
-      freeze = double.parse(json['freeze']);
-      withdrawing = double.parse(json['withdrawing']);
-      ipoing = double.parse(json['ipoing']);
-      ipoable = double.parse(json['ipoable']);
-      storage = double.parse(json['storage']);
+  BinanceCoinData.fromJson(Map<String, dynamic> json) {
+  // json.forEach((k,v) => {
+      name = json['name']?.toString();
+      free = double.parse(json['free'] ?? 0);
+      locked = double.parse(json['locked'] ?? 0);
+      freeze = double.parse(json['freeze'] ?? 0);
+      storage = double.parse(json['storage'] ?? 0);
       isLegalMoney = json['isLegalMoney'];
       trading = json['trading'];
-      networkList = json['networkList'].toList();
-    }
-  }
+      total = free + locked + freeze + storage;
+  // });
+}
+
 
   // BinanceGetAllModel.addPriceFromJson(Map<String, dynamic> json) {
   //   /// some logic

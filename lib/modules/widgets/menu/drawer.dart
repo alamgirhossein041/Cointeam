@@ -148,17 +148,36 @@ class DrawerMenuState extends State<DrawerMenu> {
               },
             ),
             FutureBuilder(
-              future: readStorage("trading"),
+              future: readStorage("binance"),
               builder: (context, snapshot) {
-                if(snapshot.data != null) {
+                if(snapshot.data == null) {
                   return ListTile(
                     contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
                     title: Text(
-                      "Link Api",
+                      "Link Binance",
                       style: TextStyle(color: Colors.white, fontSize:18),
                     ),
                     onTap: () {
                       Navigator.pushNamed(context, '/second');
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            FutureBuilder(
+              future: readStorage("ftx"),
+              builder: (context, snapshot) {
+                if(snapshot.data == null) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+                    title: Text(
+                      "Link FTX",
+                      style: TextStyle(color: Colors.white, fontSize:18),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/linkapiftx');
                     },
                   );
                 } else {

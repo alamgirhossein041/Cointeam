@@ -58,39 +58,40 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       
       try {
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
-        List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
+        BinancePortfolioModel binancePortfolioModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
-        binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
-        debugPrint("8th April - Test 2");
-          await Future.forEach(binanceGetAllModel, (v) async {
-          debugPrint("8th April - Test 3");
-          if(v.coin == coinTicker) {
+        // binancePortfolioModel.removeWhere((i) => coinsToRemove.contains(i.coin));
+        coinsToRemove.forEach((i) => {
+          binancePortfolioModel.data.remove(i)
+        });
+          await Future.forEach(binancePortfolioModel.data.entries, (MapEntry entry) async {
+          if(entry.key == coinTicker) {
             debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
             // i++;
           } else {
             try {
               var result;
-              if(v.coin == 'USDT') {
-                divisor = double.parse(binanceSymbols[coinTicker + v.coin][2].stepSize);
+              if(entry.key == 'USDT') {
+                divisor = double.parse(binanceSymbols[coinTicker + entry.key][2].stepSize);
               } else {
-                divisor = double.parse(binanceSymbols[v.coin + coinTicker][2].stepSize);
+                divisor = double.parse(binanceSymbols[entry.key + coinTicker][2].stepSize);
               }
-              var tmp = v.free * pctToSell;
+              var tmp = entry.value.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
               if (tmp >= divisor) {
-                debugPrint('Coin: ' + v.coin);
-                debugPrint('Coin Qty to sell: ' + v.free.toString());
+                debugPrint('Coin: ' + entry.key);
+                debugPrint('Coin Qty to sell: ' + entry.value.free.toString());
                 debugPrint('Divisor(stepSize): ' + divisor.toString());
                 debugPrint('Post-Modulo: ' + zeroTarget.toString()); 
                 debugPrint('To Sell: ' + tmp.toString());
                 debugPrint("\n\nSelling to ticker: " + coinTicker);
                 debugPrint('\n\n');
-                if(v.coin == 'USDT') {
+                if(entry.key == 'USDT') {
                   debugPrint("########");
-                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + entry.key, tmp);
                 } else {
-                  result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp);
+                  result = await binanceSellCoinRepository.binanceSellCoin(entry.key + coinTicker, tmp);
                 }
                 debugPrint(result['code'].toString());
                 if(result['code'] == null) {
@@ -99,7 +100,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                   // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                   debugPrint("Running totalValue is $totalValue");
                   /// 25th
-                  coinsToSave[v.coin] = double.parse(result['cummulativeQuoteQty']);
+                  coinsToSave[entry.key] = double.parse(result['cummulativeQuoteQty']);
                   if(tradeSuccessful == false) {
                     tradeSuccessful = true;
                   }
@@ -108,7 +109,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               // i++;
             } catch (e) {
               debugPrint(e.toString());
-              debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
+              debugPrint(entry.key + " does not have a $coinTicker pair on Binance");
               // i++;
             }
           }

@@ -60,7 +60,7 @@ class ModalSuccess extends StatelessWidget {
                     onPressed: () => {
                       writeStorage("welcome", "true"),
                       // future: readStorage("welcome"),
-                      Navigator.pushReplacementNamed(context, '/home')
+                      Navigator.pushNamedAndRemoveUntil(context, "/home", (Route<dynamic> route) => false),
                     },
                     child: Text("Dashboard"),
                   ),

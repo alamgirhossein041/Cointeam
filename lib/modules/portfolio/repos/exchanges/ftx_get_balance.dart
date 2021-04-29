@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:coinsnap/modules/portfolio/models/exchanges/ftx_get_balance.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:developer';
@@ -17,11 +19,17 @@ class FtxGetBalanceRepositoryImpl implements IFtxGetBalanceRepository {
    
     String _ftxUrl = 'ftx.com';
     String requestUrl = 'https://' + _ftxUrl + '/api/wallet/balances';
+    final secureStorage = FlutterSecureStorage();
 
-    /// ##### Temporary API Key load-ins ###### 
-    /// ##### TODO: Add Key storage implementation ###### 
-    String api = "mykdwU8Sde4IHAs0LNMPIYGUZ4wIR6wVdYpZZo_q";
-    String sapi = "nI5jp5mGREebIeaOP0kWv_TQrwVOID0Nj5XIPe-i";
+    String api = await secureStorage.read(key: "ftxApi");
+    String sapi = await secureStorage.read(key: "ftxSapi");
+
+    if(api != null) {
+      debugPrint("API OK");
+    } else {
+      debugPrint("No API Connected");
+      return null;
+    }
 
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     String signatureBuilder = timestamp + 'GET' + '/api/wallet/balances';
@@ -47,7 +55,7 @@ class FtxGetBalanceRepositoryImpl implements IFtxGetBalanceRepository {
       log(ftxGetBalanceModel.toString());
       return ftxGetBalanceModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
     } else {
-      throw Exception();
+      return null;
     }
   }
 }

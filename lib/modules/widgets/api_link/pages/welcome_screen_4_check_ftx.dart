@@ -27,7 +27,9 @@ class _CheckFtxApiState extends State<CheckFtxApi> {
         api = arguments['api'];
         sapi = arguments['sapi'];
       }
-      log("TWICE");
+      log(api);
+      log(sapi);
+
       checkApi(api, sapi);
       sanityCheck = false;
     }
@@ -61,7 +63,6 @@ class _CheckFtxApiState extends State<CheckFtxApi> {
       await secureStorage.write(key: 'ftxApi', value: api);
       await secureStorage.write(key: 'ftxSapi', value: sapi);
       await secureStorage.write(key: 'trading', value: 'true');
-      await secureStorage.write(key: 'binance', value: 'true');
       await secureStorage.write(key: 'ftx', value: 'true');
       Navigator.pushNamed(context, '/modalsuccess');
     } else {

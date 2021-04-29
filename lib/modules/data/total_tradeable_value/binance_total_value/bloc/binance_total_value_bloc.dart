@@ -20,12 +20,12 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
 
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
-  List<BinanceGetAllModel> binanceGetAllModelList;
+  BinancePortfolioModel binancePortfolioModelList;
 
   @override
   Stream<GetTotalValueState> mapEventToState(GetTotalValueEvent event) async* {
     Map binanceGetPricesMap;
-    List<BinanceGetAllModel> binanceGetAllModel;
+    BinancePortfolioModel binanceGetAllModel;
     if (event is FetchGetTotalValueEvent) {
       double btcSpecial = 0.0;
       double totalValue = 0.0;
@@ -49,52 +49,49 @@ class GetTotalValueBloc extends Bloc<GetTotalValueEvent, GetTotalValueState> {
         /// CoinbaseGetAccountModel coinbaseGetAccountModel = await coinbaseGetAccountRepository.getCoinbaseGetAccount();
         /// FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
       var btcPrice = binanceGetPricesMap['BTCUSDT'];
-      for(BinanceGetAllModel coins in binanceGetAllModel) {
-        if(coins.coin == 'BTC') {
+      binanceGetAllModel.data.forEach((k,coins) {
+        if(k == 'BTC') {
           coins.btcValue = 1.0;
           coins.usdValue = btcPrice;
-          coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
-          btcQuantity += coins.locked;
-          btcQuantity += coins.free;
+          coins.totalUsdValue = coins.usdValue * (coins.total);
+          btcQuantity += coins.total;
           totalValue += btcQuantity;
-        } else if (coins.coin == 'USDT') {
+        } else if (k == 'USDT') {
           coins.btcValue = 1.0 / btcPrice;
           coins.usdValue = 1.0;
-          coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
-          usdSpecial += coins.locked;
-          usdSpecial += coins.free;
+          coins.totalUsdValue = coins.usdValue * (coins.total);
+          usdSpecial += coins.total;
         } else {
           try {
-            coins.btcValue = binanceGetPricesMap[coins.coin + 'BTC'];
+            coins.btcValue = binanceGetPricesMap[k + 'BTC'];
             coins.usdValue = coins.btcValue * btcPrice;
-            coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
-            totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.locked;
-            totalValue += binanceGetPricesMap[coins.coin + 'BTC'] * coins.free;
+            coins.totalUsdValue = coins.usdValue * (coins.total);
+            totalValue += binanceGetPricesMap[k + 'BTC'] * coins.total;
           } catch (e) {
             try {
-              if(coins.coin == 'AUD') {
-                coins.btcValue = 1 / binanceGetPricesMap['BTC' + coins.coin];
-                coins.usdValue = binanceGetPricesMap[coins.coin + 'USDT'];
-                coins.totalUsdValue = coins.usdValue * (coins.free + coins.locked);
-                totalValue += coins.locked / binanceGetPricesMap['BTC' + coins.coin];
-                totalValue += coins.free / binanceGetPricesMap['BTC' + coins.coin];
+              if(k == 'AUD') {
+                coins.btcValue = 1 / binanceGetPricesMap['BTC' + k];
+                coins.usdValue = binanceGetPricesMap[k + 'USDT'];
+                coins.totalUsdValue = coins.usdValue * (coins.total);
+                totalValue += coins.total / binanceGetPricesMap['BTC' + k];
               } else {
-                coins.totalUsdValue = 0;
+                coins.totalUsdValue = 0.0;
               }
             } catch (f) {
-              debugPrint(coins.coin.toString() + " gave a nested catch error");
+              debugPrint(k.toString() + " gave a nested catch error");
               debugPrint(f.toString());
             }
            
           }
         }
-      }
+      });
         btcSpecial = btcPrice;
         debugPrint(totalValue.toString());
         debugPrint(btcSpecial.toString());
         totalValue += usdSpecial / await btcPrice;
-        binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
-        yield GetTotalValueLoadedState(coinListReceived: binanceGetAllModel, btcSpecial: btcSpecial, btcQuantity: btcQuantity, usdSpecial: usdSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
+        List<String> binanceList = binanceGetAllModel.data.keys.toList()..sort((a, b) => binanceGetAllModel.data[b].totalUsdValue.compareTo(binanceGetAllModel.data[a].totalUsdValue));
+        // binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
+        yield GetTotalValueLoadedState(binanceModel: binanceGetAllModel, binanceList: binanceList, btcSpecial: btcSpecial, btcQuantity: btcQuantity, usdSpecial: usdSpecial, totalValue: totalValue, binanceGetPricesMap: binanceGetPricesMap);
       } catch (e) {
         debugPrint("wallah");
         yield GetTotalValueErrorState(errorMessage : e.toString());

@@ -18,7 +18,7 @@ class GetTotalValueLoadingState extends GetTotalValueState {
 
 class GetTotalValueResponseState extends GetTotalValueState {
 
-  final List<BinanceGetAllModel> binanceGetAllModelList;
+  final BinancePortfolioModel binanceGetAllModelList;
   final Map binanceGetPricesMap;
 
   GetTotalValueResponseState({@required this.binanceGetAllModelList, @required this.binanceGetPricesMap});
@@ -34,9 +34,10 @@ class GetTotalValueLoadedState extends GetTotalValueState {
   final double btcSpecial;
   final double btcQuantity;
   final double usdSpecial;
-  final List<BinanceGetAllModel> coinListReceived;
+  final BinancePortfolioModel binanceModel;
+  final List<String> binanceList;
 
-  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, this.btcQuantity, this.usdSpecial, @required this.coinListReceived, @required this.binanceGetPricesMap});
+  GetTotalValueLoadedState({@required this.totalValue, @required this.btcSpecial, this.btcQuantity, this.usdSpecial, @required this.binanceModel, @required this.binanceGetPricesMap, @required this.binanceList});
 
   @override
   List<Object> get props => null;

@@ -18,6 +18,7 @@ import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_co
 import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
+import 'package:coinsnap/modules/portfolio/repos/exchanges/ftx_get_balance.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_select.dart';
@@ -82,7 +83,7 @@ class MyApp extends StatelessWidget {
           create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
         BlocProvider<StartupBloc>(
-          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
         ),
         // BlocProvider<GetPriceInfoBloc>(
         //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),

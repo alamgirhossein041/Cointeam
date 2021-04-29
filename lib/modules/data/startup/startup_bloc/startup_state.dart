@@ -1,3 +1,4 @@
+import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -34,13 +35,21 @@ class StartupLoadingState extends StartupState {
 
 class StartupLoadedState extends StartupState {
   StartupLoadedState({this.totalValue, this.coinListData, this.coinBalancesMap,
-                      this.coinList, this.btcSpecial, this.ethSpecial});
+                      this.coinList, this.btcSpecial, this.ethSpecial,
+                      this.binancePortfolioModel, this.binanceTotalValueUsd,
+                      this.ftxTotalValueUsd, this.ftxPortfolioModel,
+                      this.portfolioMap});
   final totalValue;
   final coinListData;
   final coinBalancesMap;
   final coinList;
   final btcSpecial;
   final ethSpecial;
+  final binancePortfolioModel;
+  final binanceTotalValueUsd;
+  final ftxTotalValueUsd;
+  final ftxPortfolioModel;
+  final portfolioMap;
 
   // StartupLoadedState({this.coinList, this.coinBalancesMap});
 

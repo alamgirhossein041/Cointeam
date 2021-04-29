@@ -71,10 +71,13 @@ class ModalFailure extends StatelessWidget {
                 // fit: FlexFit.tight,
                 child: Center(
                   child: TextButton(
-                    onPressed: () => {
+                    onPressed: () {
                       // writeStorage("welcome", "true"),
                       // future: readStorage("welcome"),
-                      Navigator.popUntil(context, ModalRoute.withName('/linkapiselect'))
+                      int count = 0;
+                      Navigator.popUntil(context, (route) {
+                          return count++ == 2;
+                      });
                     },
                     child: Text("Go back"),
                   ),

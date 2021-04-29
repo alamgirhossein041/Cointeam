@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
 class NewCardListTile extends StatefulWidget {
-  const NewCardListTile({Key key, this.coinListData, this.coinBalancesMap, this.totalValue, this.index}) : super(key: key);
+  const NewCardListTile({Key key, this.coinListData, this.coinBalancesMap, this.totalValue, this.index, this.portfolioMap}) : super(key: key);
 
   final coinListData;
   final coinBalancesMap;
   final double totalValue;
   final int index;
+  final portfolioMap;
 
   @override
   NewCardListTileState createState() => NewCardListTileState();
@@ -56,7 +57,7 @@ class NewCardListTileState extends State<NewCardListTile> {
                       // child: Text(coinListData.data[index].symbol),
                       child: Align(
                         alignment: Alignment.topCenter,
-                          child: Text((((widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price) / widget.totalValue) * 100).toStringAsFixed(1) + "%",
+                          child: Text((((widget.portfolioMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price) / widget.totalValue) * 100).toStringAsFixed(1) + "%",
                           style: TextStyle(color: Color(0x73EEEEEE), fontSize: 12)),
                       /// we need to calculate coinListData.data[index].
                       /// coinListData.data[index].symbol
