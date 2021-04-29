@@ -136,11 +136,13 @@ class MyApp extends StatelessWidget {
           // Default font family
           fontFamily: 'Roboto',
 
+          highlightColor: Colors.deepPurpleAccent.withAlpha(10),
+
           // Default textTheme
           textTheme: TextTheme(
             headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: Colors.white),
             headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.normal, color: Colors.white),
-            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
             bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
             bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
 
