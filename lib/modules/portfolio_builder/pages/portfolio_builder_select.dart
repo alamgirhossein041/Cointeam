@@ -29,7 +29,7 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
           children: [
             ClipPath(
               clipper: TrapeziumClipperRight(),
-              child: quickBuildButton(),
+              child: QuickBuildButton(),
             ), 
             ClipPath(
               clipper: TrapeziumClipperLeft(),
@@ -41,40 +41,49 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
     );
   }
 
-  quickBuildButton() {
-    return Card(
-      // decoration: BoxDecoration(
-      //   color: Colors.blue,
-      //   boxShadow: [
-      //     BoxShadow(
-      //       color: Colors.red,
-      //       blurRadius: 2.0,
-      //       spreadRadius: 0.0,
-      //       offset: Offset(2.0, 2.0),
-      //     ),
-      //   ]
-      // ),
-      // height: 200,
-      // width: displayWidth(context),
-      
+  defaultBuildButton() {
+    return Container(
       color: Colors.blue,
-      child: InkWell(
-        splashColor: Colors.purple.withAlpha(30),
+      height: 200,
+      width: displayWidth(context),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Flexible(
+            flex: 2,
+            child: Text('bleh')
+          ),  
+          Flexible(
+            flex: 1,
+            child: Text('blaaah')
+          ),  
+        ],
+      ), 
+    );
+  }
+
+}
+
+class QuickBuildButton extends StatelessWidget{
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.blue,
+        child: SizedBox(
+          height: 200,
+          child: InkWell(
+        splashColor: Colors.white.withAlpha(30),
         onTap: () {
           print('quickbuild card tapped');
         },
-
-        child: SizedBox(
-          height: 200,
-          child: Stack(
+        child:
+          Stack(
             children: [
               Positioned(
                 right:0,
                 child: Container(
                   width: 200,
                   height: 200,
-                  color: Colors.indigo,
-                  child: Text("image goes here"),
+                  child: Image.asset("graphics/assets/coins_placeholder.jpg")
                 ),
               ),
               Container(
@@ -97,28 +106,6 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
       ), 
     );
   }
-  
-  defaultBuildButton() {
-    return Container(
-      color: Colors.blue,
-      height: 200,
-      width: displayWidth(context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Flexible(
-            flex: 2,
-            child: Text('bleh')
-          ),  
-          Flexible(
-            flex: 1,
-            child: Text('blaaah')
-          ),  
-        ],
-      ), 
-    );
-  }
-
 }
 
 class TrapeziumClipperRight extends CustomClipper<Path>{
