@@ -2,6 +2,7 @@ import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/modules/utils/colors_helper.dart';
 
+final double cardHeight = 180;
 
 class PortfolioBuilderSelect extends StatefulWidget {
   PortfolioBuilderSelect();
@@ -11,6 +12,7 @@ class PortfolioBuilderSelect extends StatefulWidget {
 }
 
 class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,6 +29,13 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 70),
+              child: Text(
+                "Choose a build method",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+            ),
             ClipPath(
               clipper: TrapeziumClipperRight(),
               child: QuickBuildButton(),
@@ -44,23 +53,51 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
  
 class DefaultBuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      height: 200,
-      width: displayWidth(context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Flexible(
-            flex: 2,
-            child: Text('bleh')
-          ),  
-          Flexible(
-            flex: 1,
-            child: Text('blaaah')
-          ),  
-        ],
-      ), 
+    return Card(
+      elevation: 12,
+      child: SizedBox(
+        height: cardHeight,
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(right: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Advanced Build',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    )
+                  ),  
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      'Everything under your countrol.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ), 
+                ],
+              ),
+            ),
+            Ink.image(
+              image: AssetImage("graphics/assets/coins_placeholder.jpg"),
+              fit: BoxFit.cover,
+              child: InkWell(
+                splashColor: Colors.deepPurple[400].withAlpha(50),
+                onTap: () {
+                  print('quickbuild card tapped');
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -68,43 +105,50 @@ class DefaultBuildButton extends StatelessWidget {
 class QuickBuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blue,
-        child: SizedBox(
-          height: 200,
-          child: InkWell(
-        splashColor: Colors.white.withAlpha(30),
-        onTap: () {
-          print('quickbuild card tapped');
-        },
-        child:
-          Stack(
-            children: [
-              Positioned(
-                right:0,
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  child: Image.asset("graphics/assets/coins_placeholder.jpg")
-                ),
+      elevation: 12,
+      child: SizedBox(
+        height: cardHeight,
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Quick Build',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    )
+                  ),  
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      'Fast, easy, no frills.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ), 
+                ],
               ),
-              Container(
-                child: Row(
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Text('Quick Build')
-                    ),  
-                    Flexible(
-                      flex: 1,
-                      child: Text('Fast, easy, no frills.')
-                    ), 
-                  ],
-                ),
+            ),
+            Ink.image(
+              image: AssetImage("graphics/assets/coins_placeholder.jpg"),
+              fit: BoxFit.cover,
+              child: InkWell(
+                splashColor: Colors.deepPurple[400].withAlpha(50),
+                onTap: () {
+                  print('quickbuild card tapped');
+                },
               ),
-
-          ],),
+            ),
+          ],
         ),
-      ), 
+      ),
     );
   }
 }
