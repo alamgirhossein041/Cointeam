@@ -33,15 +33,17 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
             ), 
             ClipPath(
               clipper: TrapeziumClipperLeft(),
-              child: defaultBuildButton(),
+              child: DefaultBuildButton(),
             ),
           ],
         )
       ),
     );
   }
-
-  defaultBuildButton() {
+}
+ 
+class DefaultBuildButton extends StatelessWidget {
+  Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
       height: 200,
@@ -61,10 +63,9 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
       ), 
     );
   }
-
 }
 
-class QuickBuildButton extends StatelessWidget{
+class QuickBuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.blue,
