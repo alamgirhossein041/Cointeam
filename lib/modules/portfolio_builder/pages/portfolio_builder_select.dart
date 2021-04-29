@@ -50,57 +50,6 @@ class _PortfolioBuilderSelectState extends State<PortfolioBuilderSelect> {
     );
   }
 }
- 
-class DefaultBuildButton extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 12,
-      child: SizedBox(
-        height: cardHeight,
-        child: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.only(right: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        'Advanced Build',
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    )
-                  ),  
-                  Flexible(
-                    flex: 1,
-                    child: Text(
-                      'Everything under your countrol.',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )
-                  ), 
-                ],
-              ),
-            ),
-            Ink.image(
-              image: AssetImage("graphics/assets/coins_placeholder.jpg"),
-              fit: BoxFit.cover,
-              child: InkWell(
-                splashColor: Colors.deepPurple[400].withAlpha(50),
-                onTap: () {
-                  print('quickbuild card tapped');
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class QuickBuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -143,6 +92,58 @@ class QuickBuildButton extends StatelessWidget {
                 splashColor: Colors.deepPurple[400].withAlpha(50),
                 onTap: () {
                   print('quickbuild card tapped');
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+ 
+class DefaultBuildButton extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 12,
+      child: SizedBox(
+        height: cardHeight,
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        'Advanced Build',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    )
+                  ),  
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      'Everything under your countrol.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ), 
+                ],
+              ),
+            ),
+            Ink.image(
+              image: AssetImage("graphics/assets/coins_placeholder.jpg"),
+              fit: BoxFit.cover,
+              child: InkWell(
+                splashColor: Colors.deepPurple[400].withAlpha(50),
+                onTap: () {
+                  print('advbuild card tapped');
                 },
               ),
             ),
