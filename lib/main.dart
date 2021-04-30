@@ -21,7 +21,7 @@ import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_qr.dart';
-import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
+// import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
 import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/portfolio/bloc/coinmarketcap_list_data_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
@@ -36,6 +36,7 @@ import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.d
 import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/portfolio_builder/pages/portfolio_builder_select.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_text.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_check.dart';
 import 'package:coinsnap/modules/widgets/settings/settings.dart';
@@ -135,15 +136,29 @@ class MyApp extends StatelessWidget {
           // Default font family
           fontFamily: 'Roboto',
 
+          highlightColor: Colors.deepPurpleAccent.withAlpha(10),
+
           // Default textTheme
           textTheme: TextTheme(
             headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: Colors.white),
             headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.normal, color: Colors.white),
-            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.normal, color: Colors.white),
+            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
             bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
             bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
 
           ),
+
+          // Appbar theme
+          appBarTheme: AppBarTheme(
+            color: Colors.transparent,
+            actionsIconTheme: IconThemeData(
+              size: 24,
+              color: Colors.white,
+            ),
+          ),
+
+          // Scaffold background colour
+          scaffoldBackgroundColor: Colors.transparent,
 
           // Popup menu theme
           popupMenuTheme: PopupMenuThemeData(
@@ -172,6 +187,7 @@ class MyApp extends StatelessWidget {
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),
+          '/buildportfolio' : (context) => PortfolioBuilderSelect(),
           '/settings': (context) => Settings(),
           '/home': (context) => DashboardNoApiView(),
           '/viewportfolio': (context) => Dashboard(),

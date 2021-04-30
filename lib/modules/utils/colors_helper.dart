@@ -26,3 +26,7 @@ const uniColor = Color(0xFF25365b);
 // final Color textLight = Colors.blueGrey[50];
 /// grey text colour
 // const textGrey = Color(0xFFDFDFE2);
+
+// background gradient
+const bgGrad1 = Color(0xFF17171A);
+const bgGrad2 = Color(0xFF18171A);
