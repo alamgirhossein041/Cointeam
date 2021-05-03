@@ -887,7 +887,8 @@ class PanicActionButton extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
+              // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
+              // BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
               Navigator.pushNamed(context, '/sellportfolio')
             },
           ),

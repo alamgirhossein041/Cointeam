@@ -57,7 +57,7 @@ class NewCardListTileState extends State<NewCardListTile> {
                       // child: Text(coinListData.data[index].symbol),
                       child: Align(
                         alignment: Alignment.topCenter,
-                          child: Text((((widget.portfolioMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price) / widget.totalValue) * 100).toStringAsFixed(1) + "%",
+                          child: Text((((widget.portfolioMap[widget.coinListData.data[widget.index].symbol]['total'] * widget.coinListData.data[widget.index].quote.uSD.price) / widget.totalValue) * 100).toStringAsFixed(1) + "%",
                           style: TextStyle(color: Color(0x73EEEEEE), fontSize: 12)),
                       /// we need to calculate coinListData.data[index].
                       /// coinListData.data[index].symbol
@@ -95,7 +95,7 @@ class NewCardListTileState extends State<NewCardListTile> {
                             padding: EdgeInsets.only(top: 5),
                             // child: Text(coinListData.data[index].quote.uSD.percentChange24h.toStringAsFixed(2) + "%"),
                             child: Text("\$" + widget.coinListData.data[widget.index].quote.uSD.price.toStringAsFixed(2),
-                              style: TextStyle(color: widget.coinListData.data[widget.index].quote.uSD.colorChange, fontSize: 14)),
+                              style: TextStyle(color: Colors.blueAccent[200], fontSize: 14)),
                           ),
                         ),
                       )
@@ -145,7 +145,7 @@ class NewCardListTileState extends State<NewCardListTile> {
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(0,0,10,5),
                           // child: Text((coinBalancesMap[coinListData.data[index].symbol]).toStringAsFixed(8),
-                          child: Text(balanceFormatter(widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol]),
+                          child: Text(balanceFormatter(widget.portfolioMap[widget.coinListData.data[widget.index].symbol]['total']),
                           style: TextStyle(color: Color(0x73EEEEEE), fontSize: 14)),
                         ),
                       ),
@@ -156,8 +156,8 @@ class NewCardListTileState extends State<NewCardListTile> {
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(0,5,10,0),
-                          child: Text("\$" + (widget.coinBalancesMap[widget.coinListData.data[widget.index].symbol] * widget.coinListData.data[widget.index].quote.uSD.price).toStringAsFixed(2),
-                          style: TextStyle(color: widget.coinListData.data[widget.index].quote.uSD.colorChange, fontSize: 14)),
+                          child: Text("\$" + (widget.portfolioMap[widget.coinListData.data[widget.index].symbol]['total'] * widget.coinListData.data[widget.index].quote.uSD.price).toStringAsFixed(2),
+                          style: TextStyle(color: Colors.blue[200], fontSize: 14)),
                         ),
                       ),
                     ),

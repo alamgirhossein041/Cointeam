@@ -28,7 +28,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     yield StartupInitialState();
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<String> coinList = [];
-    List<String> localCoinList = [];
+    List<String> toRemove = [];
     Map binanceBalancesMap = {};
     Map localBalancesMap = {};
     Map ftxBalancesMap = {};
@@ -41,6 +41,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     double binanceTotalValueUsd = 0.0;
     double btcSpecial = 0.0;
     double ethSpecial = 0.0;
+    double totalValue = 0.0;
     Map<String, Map<String, dynamic>> portfolioMap = {};
         
     if (event is FetchStartupEvent) {
@@ -72,7 +73,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         // if (isBinanceTrading != null) {
         // for(BinanceGetAllModel coin in binancePortfolioModel) {
         binancePortfolioModel.data.forEach((k,v) => {
-          coinList.add(k),
           if(portfolioMap[k] == null) {
             portfolioMap[k] = {},
             portfolioMap[k]['total'] = v.total,
@@ -82,11 +82,21 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           portfolioMap[k]['binance'] = v.total,
           /// ### Here we use Binance Prices to calculate total values ### ///
           if(binancePrices[k + 'USDT'] != null) {
-            binanceTotalValueUsd += v.total * binancePrices[k + 'USDT']
+            coinList.add(k),
+            binanceTotalValueUsd += v.total * binancePrices[k + 'USDT'],
+            binancePortfolioModel.data[k].totalUsdValue = v.total * binancePrices[k + 'USDT']
           } else if(binancePrices[k + 'BTC'] != null) {
-            binanceTotalValueUsd += v.total * binancePrices[k + 'BTC'] * btcSpecial
+            coinList.add(k),
+            binanceTotalValueUsd += v.total * binancePrices[k + 'BTC'] * btcSpecial,
+            binancePortfolioModel.data[k].totalUsdValue = v.total * binancePrices[k + 'BTC'] * btcSpecial,
+          } else if(k == 'USDT') {
+            coinList.add(k),
+            binanceTotalValueUsd += v.total,
+            binancePortfolioModel.data[k].totalUsdValue = v.total,
+            log(v.total.toString()),
           } else {
-            log(k + " has no btc or usdt pair")
+            binancePortfolioModel.data[k].totalUsdValue = 0.0,
+            log(k + " has no btc or usdt pair") 
           }
         });
           // if(binanceBalancesMap[coin.coin] != null) {
@@ -107,6 +117,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           portfolioMap[k]['ftx'] = v.available,
           ftxTotalValueUsd += v.usdValue
         });
+        log(portfolioMap.toString());
           // coinList.addAll(ftxPortfolioModel.data.fo);
           // if(binanceBalancesMap[coin.coin] != null) {
           //   binanceBalancesMap[coin.coin] += coin.total;
@@ -116,6 +127,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             // ftxTotalValueUsd
           // }
         // }
+        // totalValue += ftxTotalValueUsd;
+        // totalValue += binanceTotalValueUsd;
 
         /// Removes duplicates from coinList
         coinList = coinList.toSet().toList();
@@ -129,7 +142,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       }
 
       /// GetCoinListTotalValue logic
-      double totalValue = 0.0;
       CardCoinmarketcapListModel coinListData;
       try {
         if(coinList.length > 0) {
@@ -142,6 +154,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         /// ### extremely inefficient ### ///
         for(var coin in coinListData.data) {
           if(localBalancesMap[coin.symbol] != null) {
+            log("****");
             totalValue += coin.quote.uSD.price * localBalancesMap[coin.symbol];
           }
         }
@@ -157,8 +170,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         //     binanceBalancesMap[coin.symbol] = 0.0;
         //   }
           // totalValue += binanceBalancesMap[coin.symbol] * coin.quote.uSD.price;
+          // log(totalValue.toString());
         totalValue += binanceTotalValueUsd;
+        // log(totalValue.toString());
         totalValue += ftxTotalValueUsd;
+        // log(totalValue.toString());
         // }
         if(binanceBalancesMap['AUD'] != null) {
           if(currency == 'USD') {
@@ -168,10 +184,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           }
         }
 
-
-
-        
-        // coinListData.data..sort((a, b) => (binancePortfolioModel.data[b].totalValueUsd).compareTo(a.quote.uSD.price * binanceBalancesMap[a.symbol]));
+        coinListData.data..sort((a, b) => ((portfolioMap[b.symbol]['total'] * b.quote.uSD.price).compareTo(portfolioMap[a.symbol]['total'] * a.quote.uSD.price)));
 
         // coinListData.data..sort((a, b) => (b.quote.uSD.price * binanceBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * binanceBalancesMap[a.symbol]));
 

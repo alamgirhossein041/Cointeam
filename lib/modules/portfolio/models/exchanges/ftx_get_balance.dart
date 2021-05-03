@@ -29,7 +29,7 @@ class FtxCoinData {
   });
 
   FtxCoinData.fromJson(Map<String, dynamic> json) {
-    available = json['availableWiuthoutBorrow'] ?? 0;
+    available = json['availableWithoutBorrow'] ?? 0;
     total = json['total'] ?? 0;
     usdValue = json['usdValue'] ?? 0;
   }

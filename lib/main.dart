@@ -1,3 +1,4 @@
+import 'package:coinsnap/features/home/pages/home.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/initial_page.dart';
 import 'package:coinsnap/modules/app_load/repos/coingecko_list_250.dart';
@@ -167,7 +168,7 @@ class MyApp extends StatelessWidget {
             endIndent: 10,
           ),
         ),
-        initialRoute: '/initialpage',
+        initialRoute: '/home',
         routes: {
           '/initialpage': (context) => InitialPage(),
           '/buyportfolio': (context) => BuyPortfolioScreen(),
@@ -177,7 +178,8 @@ class MyApp extends StatelessWidget {
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),
           '/settings': (context) => Settings(),
-          '/home': (context) => DashboardNoApiView(),
+          '/homeold': (context) => DashboardNoApiView(),
+          '/home': (context) => Home(),
           '/viewportfolio': (context) => Dashboard(),
           '/viewcoin': (context) => CoinPage(),
           '/first': (context) => First(),
