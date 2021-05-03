@@ -38,7 +38,8 @@ class StartupLoadedState extends StartupState {
                       this.coinList, this.btcSpecial, this.ethSpecial,
                       this.binancePortfolioModel, this.binanceTotalValueUsd,
                       this.ftxTotalValueUsd, this.ftxPortfolioModel,
-                      this.portfolioMap});
+                      this.portfolioMap, this.bnbSpecial,
+                      this.dogeSpecial, this.xrpSpecial, this.adaSpecial, this.dotSpecial, this.uniSpecial});
   final totalValue;
   final coinListData;
   final coinBalancesMap;
@@ -50,6 +51,12 @@ class StartupLoadedState extends StartupState {
   final ftxTotalValueUsd;
   final ftxPortfolioModel;
   final portfolioMap;
+  final double bnbSpecial;
+  final double dogeSpecial;
+  final double xrpSpecial;
+  final double adaSpecial;
+  final double dotSpecial;
+  final double uniSpecial;
 
   // StartupLoadedState({this.coinList, this.coinBalancesMap});
 
@@ -58,6 +65,26 @@ class StartupLoadedState extends StartupState {
 
   @override
   /// TODO: implement props
+  List<Object> get props => null;
+}
+
+class StartupTotalValueState extends StartupState {
+
+  final double totalValue;
+  final double btcSpecial;
+  final double ethSpecial;
+  final double bnbSpecial;
+  final double dogeSpecial;
+  final double xrpSpecial;
+  final double adaSpecial;
+  final double dotSpecial;
+  final double uniSpecial;
+
+  StartupTotalValueState({@required this.totalValue, this.btcSpecial, this.ethSpecial, this.bnbSpecial,
+                          this.dogeSpecial, this.xrpSpecial, this.adaSpecial, this.dotSpecial, this.uniSpecial});
+
+  @override
+  /// TODO: stuff
   List<Object> get props => null;
 }
 

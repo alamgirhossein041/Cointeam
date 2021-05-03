@@ -23,7 +23,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
     if(api != null) {
       debugPrint("API OK");
     } else {
-      debugPrint("No API Connected");
+      debugPrint("No Binance API Connected");
       return null;
     }
 

@@ -12,7 +12,7 @@ Widget errorTemplateWidget(String errorMessage) {
       padding: const EdgeInsets.all(15.0),
       child: Text(
         errorMessage,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black),
       ),
     ),
   );

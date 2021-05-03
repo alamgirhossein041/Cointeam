@@ -27,7 +27,7 @@ class FtxGetBalanceRepositoryImpl implements IFtxGetBalanceRepository {
     if(api != null) {
       debugPrint("API OK");
     } else {
-      debugPrint("No API Connected");
+      debugPrint("No FTX API Connected");
       return null;
     }
 
