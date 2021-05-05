@@ -1,4 +1,9 @@
 import 'package:coinsnap/features/home/pages/home.dart';
+import 'package:coinsnap/features/portfolio/pages/portfolio.dart';
+import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_1.dart';
+import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_2.dart';
+import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_3.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/initial_page.dart';
 import 'package:coinsnap/modules/app_load/repos/coingecko_list_250.dart';
@@ -34,10 +39,6 @@ import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/b
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_1.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_2.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_3.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_1.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_2.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/pages/sell_portfolio_3.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_text.dart';
@@ -195,6 +196,7 @@ class MyApp extends StatelessWidget {
           '/checkftxapi': (context) => CheckFtxApi(),
           '/modalsuccess': (context) => ModalSuccess(),
           '/modalfailure': (context) => ModalFailure(),
+          '/portfolio': (context) => Portfolio(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),

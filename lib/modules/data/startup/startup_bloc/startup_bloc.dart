@@ -123,9 +123,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         totalValue += binanceTotalValueUsd;
         totalValue += ftxTotalValueUsd;
 
-        yield StartupTotalValueState(totalValue: totalValue, btcSpecial: btcSpecial, ethSpecial: ethSpecial, bnbSpecial: bnbSpecial,
-                                    xrpSpecial: xrpSpecial, dogeSpecial: dogeSpecial, adaSpecial: adaSpecial, dotSpecial: dotSpecial,
-                                    uniSpecial: uniSpecial);
+        yield StartupTotalValueState(totalValue: totalValue, btcSpecial: btcSpecial, ethSpecial: ethSpecial);
 
           // coinList.addAll(ftxPortfolioModel.data.fo);
           // if(binanceBalancesMap[coin.coin] != null) {
@@ -169,9 +167,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         //   }
           // totalValue += binanceBalancesMap[coin.symbol] * coin.quote.uSD.price;
           // log(totalValue.toString());
-        totalValue += binanceTotalValueUsd;
         // log(totalValue.toString());
-        totalValue += ftxTotalValueUsd;
         // log(totalValue.toString());
         // }
         // if(binanceBalancesMap['AUD'] != null) {
@@ -188,9 +184,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
         yield StartupLoadedState(totalValue: totalValue, coinListData: coinListData, binancePortfolioModel: binancePortfolioModel,
                                 coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, ftxPortfolioModel: ftxPortfolioModel,
-                                binanceTotalValueUsd: binanceTotalValueUsd, ftxTotalValueUsd: ftxTotalValueUsd, bnbSpecial: bnbSpecial,
-                                    xrpSpecial: xrpSpecial, dogeSpecial: dogeSpecial, adaSpecial: adaSpecial, dotSpecial: dotSpecial,
-                                    uniSpecial: uniSpecial);
+                                binanceTotalValueUsd: binanceTotalValueUsd, ftxTotalValueUsd: ftxTotalValueUsd);
 
       } catch (e) {
         debugPrint("The error is in startup_bloc.dart part 2");

@@ -29,22 +29,26 @@ class HomeState extends State<Home> {
           children: <Widget> [
             SizedBox(height: 60),
             Flexible(
-              flex: 2,
+              flex: 1,
               fit: FlexFit.tight,
               child: CoinTicker(),
             ),
             Flexible(
-              flex: 1,
+              flex: 2,
               fit: FlexFit.tight,
-              child: Container(),
-            ),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Center(
+              child: Column(
+                children: <Widget> [
+                  Center(
+                    child: Text(
+                      "Total Value", style: TextStyle(fontSize: 28, color: Colors.black)
+                    )
+                  ),
+                  Center(
                 /// Total Value Bloc
                 // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
-                child: TotalValue(),
+                    child: TotalValue(),
+                  ),
+                ]
               )
             ),
             SizedBox(
@@ -53,38 +57,24 @@ class HomeState extends State<Home> {
             Flexible(
               flex: 2,
               fit: FlexFit.tight,
-              child: GestureDetector(
-                child: Column(
-                  children: <Widget> [
-                    /// State Change - Live Mode / Preview Mode
-                    Stack(
-                      alignment: FractionalOffset.center,
-                      children: <Widget> [
-                        Center(
-                          child: Container(
-                            width: displayWidth(context) * 0.30,
-                            child: Center(
-                              child: Text("Live mode", style: TextStyle(color: Colors.black))
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: displayWidth(context) * 0.625,
-                          child: Icon(Icons.online_prediction, color: Colors.green, size: 20)
-                        ),
-                      ]
-                    ),
-                    Icon(Icons.toggle_on, size: 46)
-                  ]
-                )
-              )
+              child: LivePreviewMode(),
             ),
             Flexible(
-              flex: 5,
+              flex: 3,
               fit: FlexFit.tight,
               child: Align(
                 alignment: Alignment.topCenter,
-                child: Icon(Icons.offline_bolt, size: 110),
+                child: SizedBox(
+                  width: 110, /// this helps align IconButton properly
+                  height: 110,
+                  child: IconButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: () => {
+                      Navigator.pushNamed(context, '/sellportfolio')
+                    },
+                    icon: Icon(Icons.offline_bolt, size: 110)
+                  ),
+                ),
               ),
             ),
             Flexible(
@@ -158,7 +148,7 @@ class HomeButton extends StatelessWidget {
         ),
       ),
       onTap: () => {
-        log("Sup"),
+        Navigator.pushNamed(context, '/portfolio'),
       },
     );
   }
@@ -183,7 +173,7 @@ class TotalValueState extends State<TotalValue> {
       builder: (context, state) {
         if (state is StartupLoadedState) {
           log("Loaded");
-          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
         } else if (state is StartupInitialState) {
           log("Initial");
           return Container();
@@ -192,7 +182,7 @@ class TotalValueState extends State<TotalValue> {
           return loadingTemplateWidget();
         } else if (state is StartupTotalValueState) {
           log("TotalValueState");
-          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
         } else if (state is StartupErrorState) {
           log("Error");
           return errorTemplateWidget("Error: " + state.errorMessage);
@@ -222,62 +212,20 @@ class CoinTickerState extends State<CoinTicker> {
       builder: (context, state) {
         if (state is StartupLoadedState) {
           log("Loaded");
-          return Column(
-            children: <Widget> [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            
+          return Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("BNB:  \$" + state.bnbSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("XRP:  \$" + state.xrpSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("DOGE:  \$" + state.dogeSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("ADA:  \$" + state.adaSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("DOT:  \$" + state.dotSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("UNI:  \$" + state.uniSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-            ]
+                  Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+                  Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+                ]
+              )
+            ),
+            
           );
         } else if (state is StartupInitialState) {
           log("Initial");
@@ -287,62 +235,18 @@ class CoinTickerState extends State<CoinTicker> {
           return loadingTemplateWidget();
         } else if (state is StartupTotalValueState) {
           log("TotalValueState");
-          return Column(
-            children: <Widget> [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("BNB:  \$" + state.bnbSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("XRP:  \$" + state.xrpSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("DOGE:  \$" + state.dogeSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("ADA:  \$" + state.adaSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Text("DOT:  \$" + state.dotSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Text("UNI:  \$" + state.uniSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                ],
-              ),
-            ]
+                  Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+                  Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+                ]
+              )
+            ),
           );
         } else if (state is StartupErrorState) {
           log("Error");
@@ -351,6 +255,68 @@ class CoinTickerState extends State<CoinTicker> {
           return Text("Else", style: TextStyle(color: Colors.black, fontSize: 32));
         }
       }
+    );
+  }
+}
+
+class LivePreviewMode extends StatefulWidget {
+
+  @override
+  LivePreviewModeState createState() => LivePreviewModeState();
+}
+
+class LivePreviewModeState extends State<LivePreviewMode> {
+  bool toggle = true;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setState(() {
+        toggle = !toggle;
+      }),
+      child: Column(
+        children: <Widget> [
+          /// State Change - Live Mode / Preview Mode
+          if(toggle)...[
+            Stack(
+              alignment: FractionalOffset.center,
+              children: <Widget> [
+                Center(
+                  child: Container(
+                    width: displayWidth(context) * 0.30,
+                    child: Center(
+                      child: Text("Live mode", style: TextStyle(color: Colors.black))
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: displayWidth(context) * 0.65,
+                  child: Icon(Icons.online_prediction, color: Colors.green, size: 20)
+                ),
+              ]
+            ),
+            Icon(Icons.toggle_on, color: Colors.black, size: 46)
+          ] else...[
+            Stack(
+              alignment: FractionalOffset.center,
+              children: <Widget> [
+                Center(
+                  child: Container(
+                    width: displayWidth(context) * 0.30,
+                    child: Center(
+                      child: Text("Preview mode", style: TextStyle(color: Colors.black))
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: displayWidth(context) * 0.65,
+                  child: Icon(Icons.online_prediction, color: Colors.orange[300], size: 20)
+                ),
+              ]
+            ),
+            Icon(Icons.toggle_off, color: Colors.grey, size: 46)
+          ]
+        ]
+      )
     );
   }
 }
