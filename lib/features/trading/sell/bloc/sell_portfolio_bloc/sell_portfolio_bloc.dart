@@ -103,7 +103,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                     // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                     debugPrint("Running totalValue is $totalValue");
                     /// 25th
-                    coinsToSave[v.coin] = result['cummulativeQuoteQty'];
+                    coinsToSave[v.coin] = double.parse(result['cummulativeQuoteQty']);
                     if(tradeSuccessful == false) {
                       tradeSuccessful = true;
                     }

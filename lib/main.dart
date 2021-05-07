@@ -10,6 +10,7 @@ import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_por
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_1.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_2.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_3.dart';
+import 'package:coinsnap/features/trading/sell/pages/transaction_log.dart';
 import 'package:coinsnap/features/trading/sell/repos/binance_sell_coin.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/initial_page.dart';
@@ -198,6 +199,7 @@ class MyApp extends StatelessWidget {
           '/modalsuccess': (context) => ModalSuccess(),
           '/modalfailure': (context) => ModalFailure(),
           '/portfolio': (context) => Portfolio(),
+          '/selllog': (context) => SellLog(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),

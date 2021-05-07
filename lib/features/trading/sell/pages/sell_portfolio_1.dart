@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
@@ -220,123 +221,9 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         ),
                       ),
                       Flexible(
-                        flex: 2,
+                        flex: 12,
                         fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: BlocConsumer<StartupBloc, StartupState>(
-                            listener: (context, state) {
-                              if (state is StartupErrorState) {
-                                debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is StartupLoadedState) {
-                                totalValueEstimated = state.totalValue * _value / 100;
-                                return Column(
-                                  children: <Widget> [
-                                    Text("You are selling:"),
-                                    SizedBox(height: 20),
-                                    Text((_value).toStringAsFixed(1) + "% of your portfolio", style: TextStyle(color: Colors.white))
-                                  ],
-                                );
-                              } else if (state is StartupErrorState) {
-                                /// 26th
-                                return Text(state.errorMessage);
-                              } else if (state is StartupLoadingState) {
-                                log("Startup Loading");
-                                return loadingTemplateWidget();
-                              } else {
-                                return loadingTemplateWidget();
-                              }
-                            }
-                          )
-                        )
-                      ),
-                      Flexible(
-                        flex: 2,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SfSliderTheme(
-                            data: SfSliderThemeData(
-                              tooltipBackgroundColor: Colors.red[500],
-                            ),
-                            child: SfSlider(
-                              min: 0.0,
-                              max: 100.0,
-                              value: _value,
-                              interval: 100,
-                              showTicks: false,
-                              showLabels: false,
-                              enableTooltip: true,
-                              onChanged: (dynamic value) {
-                                setState(() {
-                                  _value = value;
-                                });
-                              }
-                            ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 3,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: <Widget> [
-                              SizedBox(height: 20),
-                              Text("Estimated Fees", style: TextStyle(color: Colors.grey)),
-                              SizedBox(height: 5),
-                              Text("\$" + (totalValueEstimated/1000).toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                            ]
-                          )
-                        )
-                      ),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ),
-                      SizedBox(height: 10),
-                      Flexible(
-                        flex: 3,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: displayHeight(context) * 0.03),
-                            child: Container( /// ### Review Order button
-                              height: displayHeight(context) * 0.055,
-                              width: displayWidth(context) * 0.35,
-                                child: InkWell(
-                                  splashColor: Colors.red,
-                                  highlightColor: Colors.red,
-                                  hoverColor: Colors.red,
-                                  focusColor: Colors.red,
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Color(0xFFF4C025),
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Review Order", style: TextStyle(color: Colors.black))
-                                    ),
-                                  ),
-                                  onTap: () => {
-                                    Navigator.pushNamed(context, '/sellportfolio2', arguments: {'value': _value, 'symbol': dropdownValue, 'preview': preview}),
-                                    // Navigator.pushNamed(context, '/hometest'),
-                                    
-                                  },
-                                // ),
-                                // elevation: 2,
-                              ),
-                            ),
-                          ),
-                        )
+                        child: PercentSelection(preview, dropdownValue),
                       ),
                       Flexible(
                         flex: 2,
@@ -377,5 +264,169 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
       return 'USDT';
     break;
     }
+  }
+}
+
+class PercentSelection extends StatefulWidget {
+  final bool preview;
+  final String dropdownValue;
+  PercentSelection(this.preview, this.dropdownValue);
+
+  @override
+  PercentSelectionState createState() => PercentSelectionState();
+}
+
+class PercentSelectionState extends State<PercentSelection> {
+  TextEditingController textField = TextEditingController();
+  double _value = 0.0;
+  double totalValueEstimated = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget> [
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.center,
+            child: BlocConsumer<StartupBloc, StartupState>(
+              listener: (context, state) {
+                if (state is StartupErrorState) {
+                  debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+                }
+              },
+              builder: (context, state) {
+                if (state is StartupLoadedState) {
+                  totalValueEstimated = state.totalValue * _value / 100;
+                  return Column(
+                    children: <Widget> [
+                      Text("You are selling:"),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget> [
+                          Container(
+                            height: 20,
+                            width: 55,
+                            child: TextFormField(
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                              controller: textField,
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              onEditingComplete: () {
+                                setState(() {
+                                  _value = double.parse(textField.text);
+                                });
+                              }
+                            ),
+                          ),
+                          Text("% of your portfolio", style: TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    ],
+                  );
+                } else if (state is StartupErrorState) {
+                  /// 26th
+                  return Text(state.errorMessage);
+                } else if (state is StartupLoadingState) {
+                  log("Startup Loading");
+                  return loadingTemplateWidget();
+                } else {
+                  return loadingTemplateWidget();
+                }
+              }
+            )
+          )
+        ),
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.center,
+            child: SfSliderTheme(
+              data: SfSliderThemeData(
+                tooltipBackgroundColor: Colors.red[500],
+              ),
+              child: SfSlider(
+                min: 0.0,
+                max: 100.0,
+                value: _value,
+                interval: 100,
+                stepSize: 1,
+                showTicks: false,
+                showLabels: false,
+                enableTooltip: true,
+                onChanged: (dynamic value) {
+                  setState(() {
+                    _value = value;
+                    textField.text = _value.toStringAsFixed(1);
+                  });
+                }
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: <Widget> [
+                SizedBox(height: 20),
+                Text("Estimated Fees", style: TextStyle(color: Colors.grey)),
+                SizedBox(height: 5),
+                Text("\$" + (totalValueEstimated/1000).toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              ]
+            )
+          )
+        ),
+        Flexible(
+          flex: 1,
+          fit: FlexFit.tight,
+          child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(height: 10),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.03),
+              child: Container( /// ### Review Order button
+                height: displayHeight(context) * 0.055,
+                width: displayWidth(context) * 0.35,
+                  child: InkWell(
+                    splashColor: Colors.red,
+                    highlightColor: Colors.red,
+                    hoverColor: Colors.red,
+                    focusColor: Colors.red,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFF4C025),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("Review Order", style: TextStyle(color: Colors.black))
+                      ),
+                    ),
+                    onTap: () => {
+                      Navigator.pushNamed(context, '/sellportfolio2', arguments: {'value': _value, 'symbol': widget.dropdownValue, 'preview': widget.preview}),
+                      // Navigator.pushNamed(context, '/hometest'),
+                      
+                    },
+                  // ),
+                  // elevation: 2,
+                ),
+              ),
+            ),
+          )
+        ),
+      ],
+    );
   }
 }

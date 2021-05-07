@@ -14,13 +14,13 @@ import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SellPortfolioPage2 extends StatefulWidget {
+class SellLog extends StatefulWidget {
 
   @override
-  SellPortfolioPage2State createState() => SellPortfolioPage2State();
+  SellLogState createState() => SellLogState();
 }
 
-class SellPortfolioPage2State extends State<SellPortfolioPage2> {
+class SellLogState extends State<SellLog> {
   final _scrollController = ScrollController();
   int coinCount = 0;
   double coinTotalValue = 0.0;
@@ -36,16 +36,22 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
   List<String> coinsToRemove = [];
   List<String> binanceList = [];
 
+  List<String> key = [];
+
   @override
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 
     if (arguments == null) {
       debugPrint("Arguments is null");
+      log("Argument is null");
     } else {
       preview = arguments['preview'];
       symbol = arguments['symbol'];
       coinsToSave = arguments['coinsToSave'];
+
+      key = coinsToSave.keys.toList();
+      log(coinsToSave.toString());
       log("Target symbol is " + symbol);
       log("Percentage to sell is " + percentageValue.toString());
     }
@@ -182,6 +188,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                   ),
                                   SliverList(
                                     delegate: SliverChildBuilderDelegate((context, index) {
+                                      String text = coinsToSave[key[index]].toStringAsFixed(2);
                                       // double tmp = state.binanceGetPricesMap[binanceListToSell.data[coin] + 'USDT'];
                                       // if (tmp != null) {
                                         // double pmt = tmp * (coinListReceived[index].free * percentageValue);
@@ -205,44 +212,46 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                       // if (tmp != null) {
                                         // double pmt = (state.binanceGetAllModel[index].totalUsdValue * percentageValue);
                                         // if(pmt > 10) {
-                                          return Padding(
-                                            padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                            child: Row(
-                                              children: <Widget> [
-                                                Flexible(
-                                                  flex: 1,
-                                                  fit: FlexFit.tight,
-                                                  child: Container(),
-                                                ),
-                                                Flexible(
-                                                  flex: 3,
-                                                  fit: FlexFit.tight,
-                                                  // child: Text(state.binanceGetAllModel[index].name.toString()),
-                                                  child: Container(),
-                                                ),
-                                                Flexible(
-                                                  flex: 3,
-                                                  fit: FlexFit.tight,
-                                                  child: Align(
-                                                    alignment: Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                      child: Builder(
-                                                        builder: (context) {
-                                                          // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
-                                                          return Text("\$" + (binanceModel[index].totalUsdValue * percentageValue).toStringAsFixed(2));
-                                                          // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
-                                                          // return condition ? Text("\$" + 
-                                                            // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
-                                                            // : Text("No USDT Pair");
-                                                        }
+                                          if(key[index] != (symbol + "TOTAL")) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                              child: Row(
+                                                children: <Widget> [
+                                                  Flexible(
+                                                    flex: 1,
+                                                    fit: FlexFit.tight,
+                                                    child: Container(),
+                                                  ),
+                                                  Flexible(
+                                                    flex: 3,
+                                                    fit: FlexFit.tight,
+                                                    child: Text(key[index].toString()),
+                                                    // child: Container(),
+                                                  ),
+                                                  Flexible(
+                                                    flex: 3,
+                                                    fit: FlexFit.tight,
+                                                    child: Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                                        child: Builder(
+                                                          builder: (context) {
+                                                            // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
+                                                            return Text("\$" + text);
+                                                            // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
+                                                            // return condition ? Text("\$" + 
+                                                              // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                                              // : Text("No USDT Pair");
+                                                          }
+                                                        ),
                                                       ),
-                                                    ),
+                                                    )
                                                   )
-                                                )
-                                              ]
-                                            ),
-                                          );
+                                                ]
+                                              ),
+                                            );
+                                          }
                                       //   } else {
                                       //     // coinsToRemove.add(binanceKeys[index]);
                                       //     return Container();
@@ -251,7 +260,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                       //   return Container();
                                       // }
                                     },
-                                    childCount: (binanceModel.length),
+                                    childCount: (key.length),
                                     ),
                                   ),
                                   // SliverList(
@@ -317,7 +326,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                             //   }
                                             // });
                                             // return Text("\$" + coinTotalValue.toStringAsFixed(2));
-                                            child: Text("\$" + coinTotalValue.toStringAsFixed(2)),
+                                            child: Text("\$" + coinsToSave[symbol + "TOTAL"].toStringAsFixed(2)),
                                           // }
                                         // )
                                       )
@@ -325,59 +334,6 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                   )
                                 ]
                               )
-                            ),
-                          ),
-                          Flexible(
-                            flex: 3,
-                            fit: FlexFit.tight,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Column(
-                                children: <Widget> [
-                                  ValueListenableBuilder(
-                                    valueListenable: totalValueChange,
-                                    builder: (BuildContext context, double coinTotalValue, Widget child) {
-                                      return Text("Selling \$" + coinTotalValue.toStringAsFixed(2) + " into USDT (estimated)", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
-                                    }
-                                  ),
-                                  SizedBox(height: 30),
-                                  Text("Binance Trade Rules:", style: TextStyle(color: Colors.white)),
-                                  SizedBox(height: 10),
-                                  Text("Values under \$10 cannot be sold.", style: TextStyle(color: Colors.white)),
-                                ]
-                              )
-                            )
-                          ),
-                          Flexible(
-                            flex: 2,
-                            fit: FlexFit.tight,
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container( /// ### Sell button
-                                height: displayHeight(context) * 0.055,
-                                width: displayWidth(context) * 0.35,
-                                  child: InkWell(
-                                    splashColor: Colors.red,
-                                    highlightColor: Colors.red,
-                                    hoverColor: Colors.red,
-                                    focusColor: Colors.red,
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Color(0xFFF4C025),
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Text("Sell", style: TextStyle(color: Colors.black))
-                                      ),
-                                    ),
-                                    onTap: () => {
-                                      BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: percentageValue, coinTicker: symbol, coinsToRemove: coinsToRemove, preview: preview)),
-                                      Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol, 'preview': preview})
-                                    },
-                                ),
-                              ),
                             ),
                           ),
                           Flexible(
@@ -402,12 +358,15 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                       ),
                                       child: Align(
                                         alignment: Alignment.center,
-                                        child: Text("Edit", style: TextStyle(color: Colors.white))
+                                        child: Text("Done", style: TextStyle(color: Colors.white))
                                       ),
                                     ),
-                                    onTap: () => {
-                                      BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
-                                      Navigator.pop(context),
+                                    onTap: () {
+                                      BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+                                      int count = 0;
+                                      Navigator.popUntil(context, (route) {
+                                          return count++ == 3;
+                                      });
                                     },
                                 ),
                               ),

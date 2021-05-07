@@ -187,7 +187,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                               child: TextButton(
                                 child: Text("See transaction log", style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold)),
                                 onPressed: () => {
-                                  Navigator.pushNamed(context, '/selllog', arguments: {'coinsToSave': state.coinsToSave}),
+                                  Navigator.pushReplacementNamed(context, '/selllog', arguments: {'coinsToSave': state.coinsToSave, 'preview': preview, 'symbol': symbol}),
                                 },
                               ),
                             )
