@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_state.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
 import 'package:coinsnap/modules/utils/colors_helper.dart';
@@ -24,6 +24,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
   int dropdownIndex = 0;
   double _value = 50.0;
   double totalValueEstimated = 0.0;
+  bool preview = true;
 
   /// We will add 'ETH' back in when we have worked out
   /// Trade bridging - many coins don't have an ETH pair
@@ -32,6 +33,13 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+
+    if (arguments == null) {
+      debugPrint("Arguments is null");
+    } else {
+      preview = arguments['preview'];
+    }
     return WillPopScope(
       /// This Section Prevents User-Swipe from going back
       /// Important for slider - if user swipes all the way to the left, then right,
@@ -51,44 +59,76 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
           width: displayWidth(context),
           child: Column(
             children: <Widget> [
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Row(
-                    children: <Widget> [
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            child: Icon(Icons.arrow_back, color: Colors.white),
-                            onTap: () => {
-                              Navigator.pop(context),
-                              setState(() {})
-                            },
-                          )
+              if(preview)...[
+                Container(
+                  height: 50,
+                  width: displayWidth(context),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF36343E),
+                    // borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[600],
+                    ),
+                    child: Row(
+                      children: <Widget> [
+                        Flexible(
+                          flex: 4,
+                          fit: FlexFit.tight,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("PREVIEW MODE", style: TextStyle(color: Colors.white)),
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        flex: 4,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text("Selling Coins", style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Container(),
-                      )
-                    ]
+                      ]
+                    )
                   )
-                )
-              ),
+                ),
+              ] else...[
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40),
+                    child: Row(
+                      children: <Widget> [
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              child: Icon(Icons.arrow_back, color: Colors.white),
+                              onTap: () => {
+                                Navigator.pop(context),
+                                setState(() {})
+                              },
+                            )
+                          ),
+                        ),
+                        Flexible(
+                          flex: 4,
+                          fit: FlexFit.tight,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("Selling Coins", style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Container(),
+                        )
+                      ]
+                    )
+                  )
+                ),
+              ],
               Flexible(
                 flex: 13,
                 fit: FlexFit.tight,
@@ -96,7 +136,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                   width: displayWidth(context),
                   decoration: BoxDecoration(
                     color: Color(0xFF36343E),
-                    borderRadius: BorderRadius.all(Radius.circular(10))
+                    // borderRadius: BorderRadius.all(Radius.circular(10))
                   ),
                   child: Column(
                     children: <Widget> [
@@ -287,7 +327,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                     ),
                                   ),
                                   onTap: () => {
-                                    Navigator.pushNamed(context, '/sellportfolio2', arguments: {'value': _value, 'symbol': dropdownValue}),
+                                    Navigator.pushNamed(context, '/sellportfolio2', arguments: {'value': _value, 'symbol': dropdownValue, 'preview': preview}),
                                     // Navigator.pushNamed(context, '/hometest'),
                                     
                                   },
@@ -305,7 +345,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                           padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
                           child: TextButton(
                             onPressed: () => {
-                              Navigator.pushReplacementNamed(context, '/buyportfolio')
+                              Navigator.pushReplacementNamed(context, '/buyportfolio', arguments: {'preview': preview})
                             },
                             child: Text("Buy Order"),
                           ),

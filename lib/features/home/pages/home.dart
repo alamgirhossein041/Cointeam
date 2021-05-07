@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_event.dart';
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_state.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
+import 'package:coinsnap/modules/app_load/repos/binance_time_sync.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,14 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  BinanceTimeSyncRepositoryImpl helloWorld;
+  
   @override
   void initState() { 
     super.initState();
     BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+    helloWorld = BinanceTimeSyncRepositoryImpl();
+    helloWorld.getBinanceTimeSyncLatest();
   }
 
   @override
@@ -27,14 +32,14 @@ class HomeState extends State<Home> {
       body: Container(
         child: Column(
           children: <Widget> [
-            SizedBox(height: 60),
+            SizedBox(height: 40),
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
               child: CoinTicker(),
             ),
             Flexible(
-              flex: 2,
+              flex: 4,
               fit: FlexFit.tight,
               child: Column(
                 children: <Widget> [
@@ -55,30 +60,12 @@ class HomeState extends State<Home> {
               height: displayHeight(context) * 0.05
             ),
             Flexible(
-              flex: 2,
+              flex: 10,
               fit: FlexFit.tight,
-              child: LivePreviewMode(),
+              child: PanicButton(),
             ),
             Flexible(
-              flex: 3,
-              fit: FlexFit.tight,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  width: 110, /// this helps align IconButton properly
-                  height: 110,
-                  child: IconButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () => {
-                      Navigator.pushNamed(context, '/sellportfolio')
-                    },
-                    icon: Icon(Icons.offline_bolt, size: 110)
-                  ),
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 5,
+              flex: 10,
               fit: FlexFit.tight,
               child: Column(
                 children: <Widget> [
@@ -180,9 +167,9 @@ class TotalValueState extends State<TotalValue> {
         } else if (state is StartupLoadingState) {
           log("Loading");
           return loadingTemplateWidget();
-        } else if (state is StartupTotalValueState) {
-          log("TotalValueState");
-          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
+        // } else if (state is StartupTotalValueState) {
+        //   log("TotalValueState");
+        //   return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
         } else if (state is StartupErrorState) {
           log("Error");
           return errorTemplateWidget("Error: " + state.errorMessage);
@@ -213,19 +200,24 @@ class CoinTickerState extends State<CoinTicker> {
         if (state is StartupLoadedState) {
           log("Loaded");
             
-          return Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget> [
-                  Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                ]
-              )
-            ),
+          // return Align(
+          //   alignment: Alignment.topRight,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(right: 20),
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: <Widget> [
+          //         Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+          //         Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+          //       ]
+          //     )
+          //   ),
             
+          // );
+          return Row(
+            children: <Widget> [
+              AnimatedTicker(btcSpecial: state.btcSpecial, ethSpecial: state.ethSpecial),
+            ]
           );
         } else if (state is StartupInitialState) {
           log("Initial");
@@ -233,21 +225,21 @@ class CoinTickerState extends State<CoinTicker> {
         } else if (state is StartupLoadingState) {
           log("Loading");
           return loadingTemplateWidget();
-        } else if (state is StartupTotalValueState) {
-          log("TotalValueState");
-          return Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget> [
-                  Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                  Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-                ]
-              )
-            ),
-          );
+        // } else if (state is StartupTotalValueState) {
+        //   log("TotalValueState");
+        //   return Align(
+        //     alignment: Alignment.topRight,
+        //     child: Padding(
+        //       padding: EdgeInsets.only(right: 20),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: <Widget> [
+        //           Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+        //           Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
+        //         ]
+        //       )
+        //     ),
+        //   );
         } else if (state is StartupErrorState) {
           log("Error");
           return errorTemplateWidget("Error: " + state.errorMessage);
@@ -259,64 +251,113 @@ class CoinTickerState extends State<CoinTicker> {
   }
 }
 
-class LivePreviewMode extends StatefulWidget {
+class PanicButton extends StatefulWidget {
 
   @override
-  LivePreviewModeState createState() => LivePreviewModeState();
+  PanicButtonState createState() => PanicButtonState();
 }
 
-class LivePreviewModeState extends State<LivePreviewMode> {
-  bool toggle = true;
+class PanicButtonState extends State<PanicButton> {
+  bool isLive = false;
+  
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => setState(() {
-        toggle = !toggle;
-      }),
-      child: Column(
-        children: <Widget> [
-          /// State Change - Live Mode / Preview Mode
-          if(toggle)...[
-            Stack(
-              alignment: FractionalOffset.center,
+    return Column(
+      children: <Widget> [
+        Flexible(
+          flex: 2,
+          fit: FlexFit.tight,
+          child: GestureDetector(
+            onTap: () => setState(() {
+              isLive = !isLive;
+            }),
+            child: Column(
               children: <Widget> [
-                Center(
-                  child: Container(
-                    width: displayWidth(context) * 0.30,
-                    child: Center(
-                      child: Text("Live mode", style: TextStyle(color: Colors.black))
-                    ),
+                /// State Change - Live Mode / isLive Mode
+                if(!isLive)...[
+                  Stack(
+                    alignment: FractionalOffset.center,
+                    children: <Widget> [
+                      Center(
+                        child: Container(
+                          width: displayWidth(context) * 0.30,
+                          child: Center(
+                            child: Text("Live mode", style: TextStyle(color: Colors.black))
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: displayWidth(context) * 0.65,
+                        child: Icon(Icons.online_prediction, color: Colors.green, size: 20)
+                      ),
+                    ]
                   ),
-                ),
-                Positioned(
-                  left: displayWidth(context) * 0.65,
-                  child: Icon(Icons.online_prediction, color: Colors.green, size: 20)
-                ),
-              ]
-            ),
-            Icon(Icons.toggle_on, color: Colors.black, size: 46)
-          ] else...[
-            Stack(
-              alignment: FractionalOffset.center,
-              children: <Widget> [
-                Center(
-                  child: Container(
-                    width: displayWidth(context) * 0.30,
-                    child: Center(
-                      child: Text("Preview mode", style: TextStyle(color: Colors.black))
-                    ),
+                  Icon(Icons.toggle_on, color: Colors.black, size: 46)
+                ] else...[
+                  Stack(
+                    alignment: FractionalOffset.center,
+                    children: <Widget> [
+                      Center(
+                        child: Container(
+                          width: displayWidth(context) * 0.30,
+                          child: Center(
+                            child: Text("Preview mode", style: TextStyle(color: Colors.black))
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: displayWidth(context) * 0.65,
+                        child: Icon(Icons.online_prediction, color: Colors.orange[300], size: 20)
+                      ),
+                    ]
                   ),
-                ),
-                Positioned(
-                  left: displayWidth(context) * 0.65,
-                  child: Icon(Icons.online_prediction, color: Colors.orange[300], size: 20)
-                ),
+                  Icon(Icons.toggle_off, color: Colors.grey, size: 46)
+                ]
               ]
+            )
+          ),
+        ),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: 110, /// this helps align IconButton properly
+              height: 110,
+              child: IconButton(
+                padding: EdgeInsets.all(0),
+                onPressed: () => {
+                  log(isLive.toString()),
+                  BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
+                  Navigator.pushNamed(context, '/sellportfolio', arguments: {'preview': isLive})
+                },
+                icon: Icon(Icons.offline_bolt, size: 110)
+              ),
             ),
-            Icon(Icons.toggle_off, color: Colors.grey, size: 46)
-          ]
-        ]
-      )
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AnimatedTicker extends StatefulWidget {
+  final double btcSpecial;
+  final double ethSpecial;
+  AnimatedTicker({this.btcSpecial, this.ethSpecial});
+
+  @override
+  AnimatedTickerState createState() => AnimatedTickerState();
+}
+
+class AnimatedTickerState extends State<AnimatedTicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      fit: FlexFit.tight,
+      child: Text("BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0), style: TextStyle(color: Colors.black, fontSize: 14))
     );
   }
 }

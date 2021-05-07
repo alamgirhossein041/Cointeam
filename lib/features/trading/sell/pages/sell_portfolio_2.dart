@@ -1,13 +1,14 @@
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_state.dart';
-import 'package:coinsnap/modules/portfolio/models/exchanges/binance_get_portfolio.dart';
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
+import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
+import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/modules/portfolio/models/exchanges/ftx_get_balance.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
+// import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
+// import 'package:coinsnap/modules/trading/portfolio/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,9 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
   ValueNotifier<double> totalValueChange = ValueNotifier(0.0);
   String symbol = '';
   double percentageValue = 0.0;
+  bool preview = true;
 
-  BinancePortfolioModel binanceModel;
+  List<BinanceGetAllModel> binanceModel;
   FtxGetBalanceModel ftxModel;
 
   List<String> coinsToRemove = [];
@@ -40,6 +42,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
     if (arguments == null) {
       debugPrint("Arguments is null");
     } else {
+      preview = arguments['preview'];
       symbol = arguments['symbol'];
       percentageValue = arguments['value'] / 100;
       log("Target symbol is " + symbol);
@@ -54,19 +57,51 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
         width: displayWidth(context),
         child: Column(
           children: <Widget> [
+            if(preview)...[
+              Container(
+                height: 50,
+                width: displayWidth(context),
+                decoration: BoxDecoration(
+                  color: Color(0xFF36343E),
+                  // borderRadius: BorderRadius.all(Radius.circular(10))
+                ),
+              ),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[600],
+                  ),
+                  child: Row(
+                    children: <Widget> [
+                      Flexible(
+                        flex: 4,
+                        fit: FlexFit.tight,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text("PREVIEW MODE", style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ]
+                  )
+                )
+              ),
+            ] else...[
+              Flexible(
+                flex: 1,
+                fit: FlexFit.tight,
+                child: Container(
+                )
+              ),
+            ],
             Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Container(
-              )
-            ),
-            Flexible(
-              flex: 12,
+              flex: 13,
               fit: FlexFit.tight,
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFF36343E),
-                  borderRadius: BorderRadius.all(Radius.circular(10))
+                  // borderRadius: BorderRadius.all(Radius.circular(10))
                 ),
                 child: Column(
                   children: <Widget> [
@@ -93,13 +128,13 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                         builder: (context, state) {
                           if (state is StartupLoadedState) {
                             log(binanceModel.toString());
-                            binanceModel = state.binancePortfolioModel;
-                            log(binanceModel.data.toString());
-                            binanceModel.data.remove(symbol);
-                            ftxModel = state.ftxPortfolioModel;
-                            ftxModel.data.remove(symbol);
-                            var binanceKeys = binanceModel.data.keys.toList();
-                            var ftxKeys = ftxModel.data.keys.toList();
+                            binanceModel = state.binanceGetAllModel;
+                            log(binanceModel.toString());
+                            // binanceModel.data.remove(symbol);
+                            // ftxModel = state.ftxPortfolioModel;
+                            // ftxModel.data.remove(symbol);
+                            // var binanceKeys = binanceModel.data.keys.toList();
+                            // var ftxKeys = ftxModel.data.keys.toList();
 
                             return Column(
                               children: <Widget> [
@@ -156,22 +191,24 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                             // if (tmp != null) {
                                               // double pmt = tmp * (coinListReceived[index].free * percentageValue);
                                               // if (pmt > 10) {
-                                            double tmp = 0.0;
-                                            double pmt = 0.0;
+                                            // double tmp = 0.0;
+                                            // double pmt = 0.0;
                                             
                                             // String tickerIndex = '';
                                             // tmp = state.binanceGetPricesMap[binanceList[index] + symbol];
-                                            tmp = binanceModel?.data[binanceKeys[index]]?.totalUsdValue;
-                                              if(binanceKeys[index] == 'USDT') {
-                                                tmp = 1.0;
-                                              }
+                                            // tmp = binanceModel?.data[binanceKeys[index]]?.totalUsdValue;
+                                            //   if(binanceKeys[index] == 'USDT') {
+                                            //     tmp = 1.0;
+                                            //   }
 
-                                              if(tmp != null) {
-                                              pmt = tmp * binanceModel.data[binanceKeys[index]]?.free * percentageValue;
-                                              // pmt = tmp * percentageValue;
-                                              log(pmt.toString());
-                                              
-                                              debugPrint("Print PMT Line");
+                                            //   if(tmp != null) {
+                                            //   pmt = tmp * binanceModel.data[binanceKeys[index]]?.free * percentageValue;
+                                            //   // pmt = tmp * percentageValue;
+                                            //   log(pmt.toString());
+                                            double tmp = state.binanceGetAllModel[index].free;
+                                            log(tmp.toString());
+                                            if (tmp != null) {
+                                              double pmt = (state.binanceGetAllModel[index].totalUsdValue * percentageValue);
                                               if(pmt > 10) {
                                                 return Padding(
                                                   padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
@@ -183,10 +220,10 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                         child: GestureDetector(
                                                           child: Icon(Icons.close),
                                                           onTap: () => {
-                                                            // coinListReceived.removeWhere((item) => item.coin == coinListReceived[index].coin)
-                                                            coinsToRemove.add(binanceKeys[index]),
-                                                            binanceModel.data.remove(binanceKeys[index]),
-                                                            binanceKeys.removeAt(index),
+                                                            binanceModel.removeWhere((item) => item.coin == binanceModel[index].coin),
+                                                            coinsToRemove.add(binanceModel[index].coin),
+                                                            // binanceModel.data.remove(binanceKeys[index]),
+                                                            // binanceKeys.removeAt(index),
                                                             setState(() {}),
                                                             /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
                                                           },
@@ -195,7 +232,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                       Flexible(
                                                         flex: 3,
                                                         fit: FlexFit.tight,
-                                                        child: Text(binanceKeys[index]),
+                                                        child: Text(state.binanceGetAllModel[index].name.toString()),
                                                       ),
                                                       Flexible(
                                                         flex: 3,
@@ -206,7 +243,8 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                             padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
                                                             child: Builder(
                                                               builder: (context) {
-                                                                return Text("\$" + binanceModel.data[binanceKeys[index]].totalUsdValue.toStringAsFixed(2));
+                                                                // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
+                                                                return Text("\$" + (binanceModel[index].totalUsdValue * percentageValue).toStringAsFixed(2));
                                                                 // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
                                                                 // return condition ? Text("\$" + 
                                                                   // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
@@ -220,23 +258,23 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                   ),
                                                 );
                                               } else {
-                                                coinsToRemove.add(binanceKeys[index]);
+                                                // coinsToRemove.add(binanceKeys[index]);
                                                 return Container();
                                               }
                                             } else {
                                               return Container();
                                             }
                                           },
-                                          childCount: (binanceKeys.length),
+                                          childCount: (binanceModel.length),
                                           ),
                                         ),
-                                        SliverList(
-                                          delegate: SliverChildBuilderDelegate((context, index) {
+                                        // SliverList(
+                                        //   delegate: SliverChildBuilderDelegate((context, index) {
                                           
-                                          },
-                                          childCount: (ftxKeys.length),
-                                          ),
-                                        ),
+                                        //   },
+                                        //   childCount: (ftxKeys.length),
+                                        //   ),
+                                        // ),
                                       ]
                                     ),
                                   ),
@@ -349,8 +387,8 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                             ),
                                           ),
                                           onTap: () => {
-                                            BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: percentageValue, coinTicker: symbol, coinsToRemove: coinsToRemove)),
-                                            Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol})
+                                            BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: percentageValue, coinTicker: symbol, coinsToRemove: coinsToRemove, preview: preview)),
+                                            Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol, 'preview': preview})
                                           },
                                       ),
                                     ),
@@ -382,6 +420,7 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                             ),
                                           ),
                                           onTap: () => {
+                                            BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
                                             Navigator.pop(context),
                                           },
                                       ),

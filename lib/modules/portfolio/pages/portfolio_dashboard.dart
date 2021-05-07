@@ -180,7 +180,7 @@ class DashboardState extends State<Dashboard> {
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {
                                     // return NewCardListTile(coinListData: state.coinListData, state.coinListData, state.totalValue);
-                                    return NewCardListTile(coinListData: state.coinListData, coinBalancesMap: state.coinBalancesMap, totalValue: state.totalValue, index: index, portfolioMap: state.portfolioMap);
+                                    return NewCardListTile(coinListData: state.coinListData, coinBalancesMap: state.coinBalancesMap, totalValue: state.totalValue, index: index);
                                       // child: Text("Hello World", style: TextStyle(color: Colors.white, fontSize: 20)));
                                     },
                                     childCount: state.coinListData.data.length,

@@ -1,9 +1,16 @@
+import 'package:coinsnap/features/data/binance_price/repos/binance_exchange_info.dart';
+import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/features/data/binance_price/repos/binance_get_prices.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/home/pages/home.dart';
 import 'package:coinsnap/features/portfolio/pages/portfolio.dart';
+import 'package:coinsnap/features/portfolio/repos/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/features/trading/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_1.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_2.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_3.dart';
+import 'package:coinsnap/features/trading/sell/repos/binance_sell_coin.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/initial_page.dart';
 import 'package:coinsnap/modules/app_load/repos/coingecko_list_250.dart';
@@ -14,14 +21,10 @@ import 'package:coinsnap/modules/chart/bloc/portfolio/binance_get_chart_bloc.dar
 import 'package:coinsnap/modules/chart/repos/binance_chart.dart';
 import 'package:coinsnap/modules/coin/pages/coin_add.dart';
 import 'package:coinsnap/modules/coin/pages/coin_view.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/modules/portfolio/repos/exchanges/binance_get_portfolio.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/modules/data/global_stats/coingecko/bloc/gecko_global_stats_bloc.dart';
 import 'package:coinsnap/modules/data/global_stats/coingecko/repos/gecko_global_stats.dart';
 import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_bloc.dart';
 import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_coinmarketcap_stats_repo.dart';
-import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/modules/portfolio/repos/exchanges/ftx_get_balance.dart';
@@ -34,13 +37,10 @@ import 'package:coinsnap/modules/onboarding/pages/welcome_screen_3.dart';
 import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/portfolio/bloc/coinmarketcap_list_data_bloc/list_total_value_bloc.dart';
 import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
-import 'package:coinsnap/modules/portfolio/repos/coinmarketcap_coin_data.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_1.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_2.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/pages/buy_portfolio_3.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_3_text.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_4_check.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_4_check_ftx.dart';
@@ -81,11 +81,12 @@ class MyApp extends StatelessWidget {
     
     return MultiBlocProvider(
       providers: [
-        BlocProvider<GetTotalValueBloc>(
-          create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        ),
+        // BlocProvider<GetTotalValueBloc>(
+        //   create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+        // ),
         BlocProvider<StartupBloc>(
-          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
+          // create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
+          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
         // BlocProvider<GetPriceInfoBloc>(
         //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
@@ -108,9 +109,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<BinanceGetIndividualChartBloc> (
           create: (context) => BinanceGetIndividualChartBloc(binanceGetChartRepository: BinanceGetChartRepositoryImpl()),
         ),
-        BlocProvider<ListTotalValueBloc> (
-          create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
-        ),
+        // BlocProvider<ListTotalValueBloc> (
+        //   create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
+        // ),
         BlocProvider<Top100TotalValueBloc> (
           create: (context) => Top100TotalValueBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
         ),

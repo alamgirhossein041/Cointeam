@@ -20,8 +20,9 @@ class SellPortfolioLoadingState extends SellPortfolioState {
 class SellPortfolioLoadedState extends SellPortfolioState {
 
   final double totalValue;
+  final Map<String, dynamic> coinsToSave;
 
-  SellPortfolioLoadedState({@required this.totalValue});
+  SellPortfolioLoadedState({@required this.totalValue, this.coinsToSave});
 
   /// THIS IS THE MAIN ONE
   
