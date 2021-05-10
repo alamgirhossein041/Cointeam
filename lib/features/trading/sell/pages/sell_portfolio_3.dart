@@ -183,7 +183,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                       onTap: () => {
                                         count = 0,
                                         Navigator.popUntil(context, (route) {
-                                            return count++ == 3;
+                                            return count++ == 2;
                                         })
                                         // BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: percentageValue, coinTicker: symbol)),
                                         // Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol})
