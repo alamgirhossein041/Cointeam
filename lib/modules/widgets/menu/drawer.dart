@@ -424,4 +424,43 @@ class DrawerMenuState extends State<DrawerMenu> {
     feedbackTextController.dispose();
     super.dispose();
   }
+
+  // helper widgets
+  
+  /// Menu item with GA event.
+  /// Label appears as [name].
+  /// GA value for name is [eventName], and for its parameters, [pName] : [pVal].
+  /// Specify the path to navigate via [navPath].
+  menuItemGA(String name, String eventName, String pName, String pVal, String navPath) {
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+      title: Text(
+        '$name',
+        style: TextStyle(color: Colors.white, fontSize:18),
+      ),
+      onTap: () {
+        analytics.logEvent(
+          name: "$eventName",
+          parameters: {"$pName": "$pVal"}
+        );
+        Navigator.pushReplacementNamed(context, '$navPath');
+      },  
+    );
+  }
+
+
+  /// Menu item without GA event.
+  /// Give the menu item a [name], and a [navPath] to navigate to.
+  menuItem(String name, String navPath) {
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(30,10,0,0),
+      title: Text(
+        '$name',
+        style: TextStyle(color: Colors.white, fontSize:18),
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, '$navPath');
+      },  
+    );
+  }
 }
