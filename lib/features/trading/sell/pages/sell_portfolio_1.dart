@@ -10,6 +10,7 @@ import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -54,191 +55,283 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            color: Color(0xFF0E0F18),
+            color: Color(0xFF2197F2),
           ),
           height: displayHeight(context),
           width: displayWidth(context),
           child: Column(
             children: <Widget> [
-              if(preview)...[
-                Container(
-                  height: 50,
-                  width: displayWidth(context),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF36343E),
-                    // borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                ),
-                Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                    ),
-                    child: Row(
-                      children: <Widget> [
-                        Flexible(
-                          flex: 4,
-                          fit: FlexFit.tight,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("PREVIEW MODE", style: TextStyle(color: Colors.white)),
-                          ),
-                        ),
-                      ]
-                    )
-                  )
-                ),
-              ] else...[
-                Flexible(
-                  flex: 2,
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 40),
-                    child: Row(
-                      children: <Widget> [
-                        Flexible(
-                          flex: 1,
-                          fit: FlexFit.tight,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: GestureDetector(
-                              child: Icon(Icons.arrow_back, color: Colors.white),
-                              onTap: () => {
-                                Navigator.pop(context),
-                                setState(() {})
-                              },
-                            )
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          fit: FlexFit.tight,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("Selling Coins", style: TextStyle(color: Colors.white)),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 1,
-                          fit: FlexFit.tight,
-                          child: Container(),
-                        )
-                      ]
-                    )
-                  )
-                ),
-              ],
+              // if(preview)...[
+              //   Container(
+              //     height: 50,
+              //     width: displayWidth(context),
+              //     decoration: BoxDecoration(
+              //       color: Color(0xFF36343E),
+              //       // borderRadius: BorderRadius.all(Radius.circular(10))
+              //     ),
+              //   ),
+              //   Flexible(
+              //     flex: 2,
+              //     fit: FlexFit.tight,
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: Colors.grey[600],
+              //       ),
+              //       child: Row(
+              //         children: <Widget> [
+              //           Flexible(
+              //             flex: 4,
+              //             fit: FlexFit.tight,
+              //             child: Align(
+              //               alignment: Alignment.center,
+              //               child: Text("PREVIEW MODE", style: TextStyle(color: Colors.white)),
+              //             ),
+              //           ),
+              //         ]
+              //       )
+              //     )
+              //   ),
+              // ] else...[
               Flexible(
-                flex: 13,
+                flex: 2,
                 fit: FlexFit.tight,
-                child: Container(
-                  width: displayWidth(context),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF36343E),
-                    // borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: Column(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 35),
+                  child: Row(
                     children: <Widget> [
                       Flexible(
                         flex: 1,
                         fit: FlexFit.tight,
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(30,20,0,0),
-                            child: Text("Market Order", style: TextStyle(color: Colors.white))
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            child: Icon(Icons.arrow_back, color: Colors.white),
+                            onTap: () => {
+                              Navigator.pop(context),
+                              setState(() {})
+                            },
                           )
-                        )
+                        ),
                       ),
                       Flexible(
-                        flex: 2,
+                        flex: 4,
                         fit: FlexFit.tight,
-                        child: Row(
-                          children: <Widget> [
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text("Portfolio Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
-                              ),
-                            ),
-                            // Flexible(
-                            //   flex: 1,
-                            //   fit: FlexFit.tight,
-                            //   child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
-                            // ),
-                          ]
-                        )
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text("Sell Portfolio", style: TextStyle(color: Colors.white)),
+                        ),
                       ),
                       Flexible(
                         flex: 1,
                         fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text("Targets all coins in your portfolio", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        )
-                      ),
-                      Flexible(
-                        flex: 2,
-                        fit: FlexFit.tight,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            children: <Widget> [
-                              Text("You will receive:", style: TextStyle(color: Colors.grey)),
-                              DropdownButton<String>(
-                                dropdownColor: uniColor,
-                                value: buildDropdownValue(dropdownIndex),
-                                icon: Icon(Icons.arrow_drop_down, color: Colors.white),
-                                iconSize: 24,
-                                elevation: 16,
-                                style: Theme.of(context).textTheme.bodyText2,
-                                underline: Container(
-                                  height: 2,
-                                  padding: EdgeInsets.only(right: 40),
-                                  color: Colors.yellow,
-                                ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue;
-                                    dropdownIndex = targetCoins.indexOf(newValue);
-                                    // imageIndex = targetCoins.indexOf(newValue);
-                                  });
-                                  // widget.callback(imageIndex);
-                                },
-                                items: targetCoins.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 12,
-                        fit: FlexFit.tight,
-                        child: PercentSelection(preview, dropdownValue),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        fit: FlexFit.tight,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: displayHeight(context) * 0.015),
-                          child: TextButton(
-                            onPressed: () => {
-                              Navigator.pushReplacementNamed(context, '/buyportfolio', arguments: {'preview': preview})
-                            },
-                            child: Text("Buy Order"),
-                          ),
-                        )
+                        child: Container(),
                       )
-                    ],
+                    ]
+                  )
+                )
+              ),
+              // ],
+              ChangeNotifierProvider(
+                create: (context) => ValueState(),
+                child: Flexible(
+                  flex: 18,
+                  fit: FlexFit.tight,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: displayWidth(context) * 0.97,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                      ),
+                      child: Column(
+                        children: <Widget> [
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: Container()
+                          ),
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(40,20,0,0),
+                                child: Text("Sell", style: TextStyle(color: Colors.black))
+                              )
+                            )
+                          ),
+                          // ),
+                          // Flexible(
+                          //   flex: 2,
+                          //   fit: FlexFit.tight,
+                          //   child: Row(
+                          //     children: <Widget> [
+                          //       Flexible(
+                          //         flex: 1,
+                          //         fit: FlexFit.tight,
+                          //         child: Align(
+                          //           alignment: Alignment.center,
+                          //           child: Text("Portfolio Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
+                          //         ),
+                          //       ),
+                          //       // Flexible(
+                          //       //   flex: 1,
+                          //       //   fit: FlexFit.tight,
+                          //       //   child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
+                          //       // ),
+                          //     ]
+                          //   )
+                          // ),
+                          Flexible(
+                            flex: 2,
+                            fit: FlexFit.tight,
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: BlocConsumer<StartupBloc, StartupState>(
+                                listener: (context, state) {
+                                  if (state is StartupErrorState) {
+                                    debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is StartupLoadedState) {
+                                    return Row(
+                                      // mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget> [
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(35,10,0,0),
+                                          child: Consumer<ValueState>(
+                                            builder: (context, valueState, child) {
+                                              return Text("\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+                                            }
+                                          )
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(5,17,0,0),
+                                          child: Text("/ \$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Color(0x660B2940), fontSize: 18)),
+                                        ),
+                                      ]
+                                    );
+                                  } else if (state is StartupErrorState) {
+                                    return Text("An Error has occurred: " + state.errorMessage, style: TextStyle(color: Colors.black));
+                                  } else {
+                                    return loadingTemplateWidget();
+                                  }
+                                }
+                              )
+                            )
+                          ),
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(35,10,0,0),
+                                child: Text("To Target Coin", style: TextStyle(color: Colors.black)),
+                              )
+                            )
+                          ),
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(55,0,0,0),
+                                child: DropdownButton<String>(
+                                  dropdownColor: Colors.white,
+                                  value: buildDropdownValue(dropdownIndex),
+                                  icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  // style: Theme.of(context).textTheme.bodyText2,
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  underline: Container(
+                                    height: 1,
+                                    padding: EdgeInsets.only(right: 40),
+                                    color: Colors.black,
+                                  ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                      dropdownIndex = targetCoins.indexOf(newValue);
+                                      // imageIndex = targetCoins.indexOf(newValue);
+                                    });
+                                    // widget.callback(imageIndex);
+                                  },
+                                  items: targetCoins.map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                )
+                              )
+                            )
+                          ),
+                          // Flexible(
+                          //   flex: 2,
+                          //   fit: FlexFit.tight,
+                          //   child: Align(
+                          //     alignment: Alignment.center,
+                          //     child: Column(
+                          //       children: <Widget> [
+                          //         Text("You will receive:", style: TextStyle(color: Colors.grey)),
+                          //         DropdownButton<String>(
+                          //           dropdownColor: uniColor,
+                          //           value: buildDropdownValue(dropdownIndex),
+                          //           icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                          //           iconSize: 24,
+                          //           elevation: 16,
+                          //           style: Theme.of(context).textTheme.bodyText2,
+                          //           underline: Container(
+                          //             height: 2,
+                          //             padding: EdgeInsets.only(right: 40),
+                          //             color: Colors.yellow,
+                          //           ),
+                          //           onChanged: (String newValue) {
+                          //             setState(() {
+                          //               dropdownValue = newValue;
+                          //               dropdownIndex = targetCoins.indexOf(newValue);
+                          //               // imageIndex = targetCoins.indexOf(newValue);
+                          //             });
+                          //             // widget.callback(imageIndex);
+                          //           },
+                          //           items: targetCoins.map<DropdownMenuItem<String>>((String value) {
+                          //             return DropdownMenuItem<String>(
+                          //               value: value,
+                          //               child: Text(value),
+                          //             );
+                          //           }).toList(),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          Flexible(
+                            flex: 12,
+                            fit: FlexFit.tight,
+                            child: PercentSelection(preview, dropdownValue),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            fit: FlexFit.tight,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.04),
+                              child: TextButton(
+                                onPressed: () => {
+                                  Navigator.pushReplacementNamed(context, '/buyportfolio', arguments: {'preview': preview})
+                                },
+                                child: Text("Buy Order", style: TextStyle(color: Colors.orange)),
+                              ),
+                            )
+                          )
+                        ],
+                      )
+                    )
                   )
                 )
               )
@@ -267,6 +360,17 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
   }
 }
 
+class ValueState extends ChangeNotifier {
+  double value = 0.0;
+  double totalValueEstimated = 0.0;
+  TextEditingController textField = TextEditingController();
+
+  void valueChange(double _value) {
+    value = _value;
+    notifyListeners();
+  }
+}
+
 class PercentSelection extends StatefulWidget {
   final bool preview;
   final String dropdownValue;
@@ -285,109 +389,318 @@ class PercentSelectionState extends State<PercentSelection> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget> [
+        // Flexible(
+        //   flex: 3,
+        //   fit: FlexFit.tight,
+        //   child: Align(
+        //     alignment: Alignment.center,
+        //     child: BlocConsumer<StartupBloc, StartupState>(
+        //       listener: (context, state) {
+        //         if (state is StartupErrorState) {
+        //           debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+        //         }
+        //       },
+        //       builder: (context, state) {
+        //         if (state is StartupLoadedState) {
+        //           totalValueEstimated = state.totalValue * _value / 100;
+        //           return Column(
+        //             children: <Widget> [
+        //               // Text("You are selling:"),
+        //               // SizedBox(height: 20),
+        //               Row(
+        //                 mainAxisAlignment: MainAxisAlignment.center,
+        //                 children: <Widget> [
+        //                   Container(
+        //                     height: 20,
+        //                     width: 55,
+        //                     child: TextFormField(
+        //                       style: TextStyle(color: Colors.white),
+        //                       textAlign: TextAlign.center,
+        //                       controller: textField,
+        //                       keyboardType: TextInputType.numberWithOptions(decimal: true),
+        //                       onEditingComplete: () {
+        //                         setState(() {
+        //                           _value = double.parse(textField.text);
+        //                         });
+        //                       }
+        //                     ),
+        //                   ),
+        //                   // Text("% of your portfolio", style: TextStyle(color: Colors.white))
+        //                 ],
+        //               ),
+        //             ],
+        //           );
+        //         } else if (state is StartupErrorState) {
+        //           /// 26th
+        //           return Text(state.errorMessage);
+        //         } else if (state is StartupLoadingState) {
+        //           log("Startup Loading");
+        //           return loadingTemplateWidget();
+        //         } else {
+        //           return loadingTemplateWidget();
+        //         }
+        //       }
+        //     )
+        //   )
+        // ),
         Flexible(
-          flex: 3,
+          flex: 2,
           fit: FlexFit.tight,
           child: Align(
-            alignment: Alignment.center,
-            child: BlocConsumer<StartupBloc, StartupState>(
-              listener: (context, state) {
-                if (state is StartupErrorState) {
-                  debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
-                }
-              },
-              builder: (context, state) {
-                if (state is StartupLoadedState) {
-                  totalValueEstimated = state.totalValue * _value / 100;
-                  return Column(
-                    children: <Widget> [
-                      Text("You are selling:"),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget> [
-                          Container(
-                            height: 20,
-                            width: 55,
-                            child: TextFormField(
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                              controller: textField,
-                              keyboardType: TextInputType.numberWithOptions(decimal: true),
-                              onEditingComplete: () {
-                                setState(() {
-                                  _value = double.parse(textField.text);
-                                });
-                              }
-                            ),
-                          ),
-                          Text("% of your portfolio", style: TextStyle(color: Colors.white))
-                        ],
-                      ),
-                    ],
-                  );
-                } else if (state is StartupErrorState) {
-                  /// 26th
-                  return Text(state.errorMessage);
-                } else if (state is StartupLoadingState) {
-                  log("Startup Loading");
-                  return loadingTemplateWidget();
-                } else {
-                  return loadingTemplateWidget();
-                }
-              }
-            )
-          )
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(40,0,0,0),
+              child: Text("Slide to adjust", style: TextStyle(color: Color(0X800B2940), fontSize: 14)),
+            ),
+          ),
         ),
         Flexible(
           flex: 2,
           fit: FlexFit.tight,
           child: Align(
-            alignment: Alignment.center,
-            child: SfSliderTheme(
-              data: SfSliderThemeData(
-                tooltipBackgroundColor: Colors.red[500],
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20,0,20,0),
+              child: SfSliderTheme(
+                data: SfSliderThemeData(
+                  activeTrackColor: Color(0XFF0B2940),
+                  inactiveTrackColor: Color(0XFF0B2940),
+                  tooltipBackgroundColor: Color(0XFF0B2940),
+                  thumbColor: Color(0XFF0B2940),
+                  activeTrackHeight: 3,
+                  inactiveTrackHeight: 1,
+                ),
+                child: SfSlider(
+                  min: 0.0,
+                  max: 100.0,
+                  value: _value,
+                  interval: 100,
+                  stepSize: 1,
+                  showTicks: false,
+                  showLabels: false,
+                  enableTooltip: true,
+                  onChanged: (dynamic value) {
+                    // final valueState = ValueState();
+                    Provider.of<ValueState>(context, listen: false).valueChange(value);
+                    setState(() {
+                      _value = value;
+                      textField.text = _value.toStringAsFixed(1);
+                    });
+                  }
+                ),
               ),
-              child: SfSlider(
-                min: 0.0,
-                max: 100.0,
-                value: _value,
-                interval: 100,
-                stepSize: 1,
-                showTicks: false,
-                showLabels: false,
-                enableTooltip: true,
-                onChanged: (dynamic value) {
-                  setState(() {
-                    _value = value;
-                    textField.text = _value.toStringAsFixed(1);
-                  });
-                }
+            ),
+          ),
+        ),
+        // Flexible(
+        //   flex: 3,
+        //   fit: FlexFit.tight,
+        //   child: Align(
+        //     alignment: Alignment.center,
+        //     child: Column(
+        //       children: <Widget> [
+        //         SizedBox(height: 20),
+        //         Text("Estimated Fees", style: TextStyle(color: Colors.grey)),
+        //         SizedBox(height: 5),
+        //         Text("\$" + (totalValueEstimated/1000).toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        //       ]
+        //     )
+        //   )
+        // ),
+        Flexible(
+          flex: 3,
+          fit: FlexFit.tight,
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(right: 45),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget> [
+                  Container(
+                    height: 20,
+                    width: 55,
+                    child: TextFormField(
+                      style: TextStyle(color: Colors.black),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                        )
+                      ),
+                      controller: textField,
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      onEditingComplete: () {
+                        if (double.parse(textField.text) >= 0 && double.parse(textField.text) <= 100) {
+                          Provider.of<ValueState>(context, listen: false).valueChange(double.parse(textField.text));
+                          setState(() {
+                            _value = double.parse(textField.text);
+                          });
+                        } else {
+                          setState(() {
+                            textField.text = _value.toStringAsFixed(1);
+                          });
+                        }
+                      }
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text("%", style: TextStyle(color: Colors.black, fontSize: 18)),
+                  ),
+                ]
               ),
             ),
           ),
         ),
         Flexible(
-          flex: 3,
+          flex: 4,
           fit: FlexFit.tight,
-          child: Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget> [
-                SizedBox(height: 20),
-                Text("Estimated Fees", style: TextStyle(color: Colors.grey)),
-                SizedBox(height: 5),
-                Text("\$" + (totalValueEstimated/1000).toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-              ]
-            )
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget> [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget> [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(35,0,0,0),
+                    child: Text("FTX Total", style: TextStyle(color: Colors.black, fontSize: 14)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0,0,35,0),
+                    child: BlocConsumer<StartupBloc, StartupState>(
+                      listener: (context, state) {
+                        if (state is StartupErrorState) {
+                          debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is StartupLoadedState) {
+                          return Consumer<ValueState>(
+                            builder: (context, valueState, child) {
+                              return RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  
+                                  children: <TextSpan> [
+                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2)),
+                                    TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
+                                  ]
+                                )
+                              );
+                            }
+                          );
+                        } else if (state is StartupErrorState) {
+                          return Text("An Error occured: " + state.errorMessage);
+                        } else {
+                          return loadingTemplateWidget(20, 2);
+                        }
+                      }
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget> [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(35,0,0,0),
+                    child: Text("Binance Total", style: TextStyle(color: Colors.black, fontSize: 14)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0,0,35,0),
+                    child: BlocConsumer<StartupBloc, StartupState>(
+                      listener: (context, state) {
+                        if (state is StartupErrorState) {
+                          debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is StartupLoadedState) {
+                          return Consumer<ValueState>(
+                            builder: (context, valueState, child) {
+                              return RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  
+                                  children: <TextSpan> [
+                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2)),
+                                    TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
+                                  ]
+                                )
+                              );
+                            }
+                          );
+                        } else if (state is StartupErrorState) {
+                          return Text("An Error occured: " + state.errorMessage);
+                        } else {
+                          return loadingTemplateWidget(20, 2);
+                        }
+                      }
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget> [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(35,0,0,0),
+                    child: Text("Estimated Fees", style: TextStyle(color: Colors.black, fontSize: 14)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0,0,35,0),
+                    child: BlocConsumer<StartupBloc, StartupState>(
+                      listener: (context, state) {
+                        if (state is StartupErrorState) {
+                          debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is StartupLoadedState) {
+                          return Consumer<ValueState>(
+                            builder: (context, valueState, child) {
+                              return RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  
+                                  children: <TextSpan> [
+                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100000).toStringAsFixed(2)),
+                                    TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
+                                  ]
+                                )
+                              );
+                            }
+                          );
+                        } else if (state is StartupErrorState) {
+                          return Text("An Error occured: " + state.errorMessage);
+                        } else {
+                          return loadingTemplateWidget(20, 2);
+                        }
+                      }
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 25),
+            ]
           )
+          // child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         ),
-        Flexible(
-          flex: 1,
-          fit: FlexFit.tight,
-          child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        ),
-        SizedBox(height: 10),
         Flexible(
           flex: 3,
           fit: FlexFit.tight,
@@ -396,22 +709,18 @@ class PercentSelectionState extends State<PercentSelection> {
             child: Padding(
               padding: EdgeInsets.only(bottom: displayHeight(context) * 0.03),
               child: Container( /// ### Review Order button
-                height: displayHeight(context) * 0.055,
-                width: displayWidth(context) * 0.35,
+                height: displayHeight(context) * 0.065,
+                width: displayWidth(context) * 0.825,
                   child: InkWell(
-                    splashColor: Colors.red,
-                    highlightColor: Colors.red,
-                    hoverColor: Colors.red,
-                    focusColor: Colors.red,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(40),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Color(0xFFF4C025),
+                        borderRadius: BorderRadius.circular(40),
+                        color: Color(0xFF2197F2),
                       ),
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text("Review Order", style: TextStyle(color: Colors.black))
+                        child: Text("Review Order", style: TextStyle(color: Colors.white))
                       ),
                     ),
                     onTap: () => {

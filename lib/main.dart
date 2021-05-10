@@ -138,7 +138,8 @@ class MyApp extends StatelessWidget {
           // brightness: Brightness.dark
           // Default colours
           // accentColor: Color(0xff8270FF),
-          accentColor: Colors.deepPurpleAccent,
+          // accentColor: Color(0xFF2197F2),
+          accentColor: Colors.orange[300],
         
           // Default font family
           fontFamily: 'Roboto',
