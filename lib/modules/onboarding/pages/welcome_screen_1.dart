@@ -140,7 +140,8 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                     child: Column(
                       children: <Widget> [
                         Text("Get started", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
-                        Text("(Binance only)", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 25),
+                        Text("Featuring Binance and FTX", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       ]
                     ),
                   ),
@@ -188,7 +189,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                                 ),
                               ),
                               onTap: () => {
-                                Navigator.pushReplacementNamed(context, '/second')
+                                Navigator.pushReplacementNamed(context, '/linkapiselect')
                               },
                             // ),
                             // elevation: 2,
@@ -225,7 +226,7 @@ class FirstState extends State<First> with TickerProviderStateMixin{
                               ),
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text("I DON'T HAVE BINANCE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
+                                child: Text("NO BINANCE / FTX", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
                               ),
                             ),
                             onTap: () => {

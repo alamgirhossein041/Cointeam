@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/trading/models/get_portfolio.dart';
+import 'package:coinsnap/modules/portfolio/models/local/get_portfolio.dart';
 import 'package:localstorage/localstorage.dart';
 
 abstract class IGetPortfolioRepository {

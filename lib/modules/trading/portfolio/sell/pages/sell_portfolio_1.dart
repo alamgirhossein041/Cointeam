@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:coinsnap/modules/data/startup/startup_bloc/startup_bloc.dart';
+import 'package:coinsnap/modules/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
 import 'package:coinsnap/modules/utils/colors_helper.dart';
@@ -73,7 +77,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text("Selling Binance Portfolio", style: TextStyle(color: Colors.white)),
+                          child: Text("Selling Coins", style: TextStyle(color: Colors.white)),
                         ),
                       ),
                       Flexible(
@@ -116,15 +120,15 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                               flex: 1,
                               fit: FlexFit.tight,
                               child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text("Cross", style: TextStyle(fontSize: 24, color: Colors.grey[400])),
+                                alignment: Alignment.center,
+                                child: Text("Portfolio Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
                               ),
                             ),
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
-                            ),
+                            // Flexible(
+                            //   flex: 1,
+                            //   fit: FlexFit.tight,
+                            //   child: Text(" Sell", style: TextStyle(fontSize: 24, color: Colors.green[300])),
+                            // ),
                           ]
                         )
                       ),
@@ -180,15 +184,15 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                         fit: FlexFit.tight,
                         child: Align(
                           alignment: Alignment.center,
-                          child: BlocConsumer<GetTotalValueBloc, GetTotalValueState>(
+                          child: BlocConsumer<StartupBloc, StartupState>(
                             listener: (context, state) {
-                              if (state is GetTotalValueErrorState) {
-                                debugPrint("An error occurred in sell_portfolio.dart - GetTotalValueErrorState");
+                              if (state is StartupErrorState) {
+                                debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
                               }
                             },
                             builder: (context, state) {
-                              if (state is GetTotalValueLoadedState) {
-                                totalValueEstimated = state.totalValue * state.btcSpecial * _value / 100;
+                              if (state is StartupLoadedState) {
+                                totalValueEstimated = state.totalValue * _value / 100;
                                 return Column(
                                   children: <Widget> [
                                     Text("You are selling:"),
@@ -196,9 +200,12 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                     Text((_value).toStringAsFixed(1) + "% of your portfolio", style: TextStyle(color: Colors.white))
                                   ],
                                 );
-                              } else if (state is GetTotalValueErrorState) {
+                              } else if (state is StartupErrorState) {
                                 /// 26th
                                 return Text(state.errorMessage);
+                              } else if (state is StartupLoadingState) {
+                                log("Startup Loading");
+                                return loadingTemplateWidget();
                               } else {
                                 return loadingTemplateWidget();
                               }

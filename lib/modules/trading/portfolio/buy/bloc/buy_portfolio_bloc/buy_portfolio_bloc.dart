@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/binance_price/models/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_portfolio.dart';
-import 'package:coinsnap/modules/trading/models/get_portfolio.dart';
+import 'package:coinsnap/features/data/binance_price/models/binance_exchange_info.dart';
+import 'package:coinsnap/features/data/binance_price/repos/binance_exchange_info.dart';
+import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/features/trading/buy/repos/binance_buy_coin.dart';
+import 'package:coinsnap/features/trading/sell/repos/binance_sell_coin.dart';
+import 'package:coinsnap/modules/portfolio/models/local/get_portfolio.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
 import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 

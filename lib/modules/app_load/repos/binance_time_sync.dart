@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:coinsnap/modules/utils/global_library.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -27,7 +28,7 @@ class BinanceTimeSyncRepositoryImpl implements IBinanceTimeSyncRepository {
       var string = json.decode(response.body);
 
       globals.binanceTimestampModifier = dateTime - string['serverTime'].toInt() - timeTaken;
-      debugPrint("Global = " + globals.binanceTimestampModifier.toString());
+      log("Global = " + globals.binanceTimestampModifier.toString());
       
 
       return;

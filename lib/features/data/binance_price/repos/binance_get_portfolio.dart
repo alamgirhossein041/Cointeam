@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:coinsnap/modules/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -50,9 +50,10 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
       /// Remove coins from list that are empty
       var toRemove = [];
       binanceGetAllModel.forEach((v) {
-        if(v.name == null) {
-          toRemove.add(v);
-        }
+          if(v.name == null) {
+            log(v.coin.toString());
+            toRemove.add(v);
+          }
       });
       binanceGetAllModel.removeWhere((i) => toRemove.contains(i));
       return binanceGetAllModel; /// Distill down response here https://www.youtube.com/watch?v=27EP04T824Y 13:25
@@ -81,6 +82,7 @@ class BinanceGetAllRepositoryImpl implements IBinanceGetAllRepository {
         var toRemove = [];
         binanceGetAllModel.forEach((v) {
           if(v.name == null) {
+            log(v.coin.toString());
             toRemove.add(v);
           }
         });

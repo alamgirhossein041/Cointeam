@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_bloc.dart';
 import 'package:coinsnap/modules/app_load/bloc/coingecko_list_250_bloc/coingecko_list_250_event.dart';
@@ -383,9 +384,17 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                         scrollDirection: Axis.horizontal,
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10,10,0,0),
+                        child: Text("My Portfolios", style: TextStyle(color: Colors.white, fontSize: 16)),
+                      ),
+                    ), /// 28th
                     Container(
                       child: FutureBuilder(
-                        future: readStorage("binance"),
+                        // future: readStorage("binance"),
+                        future: readStorage("portfolio"),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
@@ -400,8 +409,37 @@ class NoApiCategoryListState extends State<NoApiCategoryList> {
                                   name: "check_portfolio",
                                   parameters: {"clickedFrom": "home"}
                                 );
-                                return BinanceTileBlurb(); /// 19th
+                                // log(json.decode(snapshot.data).toString());
+                                // log(json.decode(snapshot.data)['ftx'].toString());
+                                var data = json.decode(snapshot.data);
+                                log(data.toString());
+                                
+                                return Container(
+                                  height: 200,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: <Widget> [
+                                      if(data['binance'] != null)... [
+                                        BinanceTileBlurb(),
+                                      ],
+                                      if(data['ftx'] != null)... [
+                                        PortfolioBlurb(),
+                                      ],
+                                      if(data['portfolios'] != null)... [
+                                        for(int j = 0; data['portfolios'].length > j; j++)
+                                        // for(int i = 0; 5 > i; i++)
+                                        PortfolioBlurb(),
+                                      ]
+                                    ]
+                                  ),
+                                );
+
+                                /// Get storage "portfolio" - map of portfolios
+                                // return BinanceTileBlurb();
                               } else {
+                                /// 28th
+                                Map<String, dynamic> portfolios = {"binance": true, "ftx": false, "portfolio": {"1": true, "2": true}};
+                                writeStorage("portfolio", json.encode(portfolios));
                                 return AddPortfolioBlurb();
                               }
                             } else {
@@ -429,6 +467,8 @@ class TileDefi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: displayHeight(context) * 0.240,
+      width: displayWidth(context) * 0.4,
       child: InkWell(
         /// ### Clickable Card ### ///
         child: Container(
@@ -457,7 +497,7 @@ class TileDefi extends StatelessWidget {
                     ),
                     child: Container(
                       height: displayHeight(context) * 0.240,
-                      width: displayWidth(context) * 0.385,
+                      width: displayWidth(context) * 0.4,
                       decoration: BoxDecoration(
                         color: Color(0xFF191B31),
                         borderRadius: BorderRadius.circular(20),
@@ -521,6 +561,7 @@ class TileTop100 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: displayWidth(context) * 0.4,
       child: InkWell(
         /// ### Clickable Card ### ///
         child: Container(
@@ -552,7 +593,7 @@ class TileTop100 extends StatelessWidget {
                     ),
                     child: Container(
                       height: displayHeight(context) * 0.240,
-                      width: displayWidth(context) * 0.385,
+                      width: displayWidth(context) * 0.4,
                       decoration: BoxDecoration(
                         color: Color(0xFF191B31),
                         borderRadius: BorderRadius.circular(20),
@@ -640,7 +681,7 @@ class TileDex extends StatelessWidget {
               ),
               child: Container(
                 height: displayHeight(context) * 0.240,
-                width: displayWidth(context) * 0.385,
+                width: displayWidth(context) * 0.4,
                 // padding: EdgetInsets.fromLTRB()
                 decoration: BoxDecoration(
                   color: Color(0xFF191B31),
@@ -846,7 +887,8 @@ class PanicActionButton extends StatelessWidget {
               ),
             ),
             onTap: () => {
-              BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
+              // BlocProvider.of<GetTotalValueBloc>(context).add(FetchGetTotalValueEvent()),
+              // BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
               Navigator.pushNamed(context, '/sellportfolio')
             },
           ),
@@ -886,114 +928,181 @@ class BinanceTileBlurb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<StartupBloc, StartupState>(
-      listener: (context, state) {
-        if (state is StartupErrorState) {
-          return errorTemplateWidget("Dashboard Error in GetCoinList Data");
-        }
-      },
-      builder: (context, state) {
-        if (state is StartupLoadedState) {
-          return Container(
+    return Container(
+      height: displayHeight(context) * 0.225,
+      width: displayWidth(context) * 0.4,
+      child: Expanded(
+        child: InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+              color: appBlack,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+                // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
+                Navigator.pushReplacementNamed(context, '/viewportfolio');
+              },
+              child: Column(
+                children: <Widget> [
+                  Expanded(
+                    flex: 1,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Container(
+                        height: displayHeight(context) * 0.225,
+                        width: displayWidth(context) * 0.4,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF191B31),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        /// ### Card content starts here ### ///
+                        child: Column(
+                          children: <Widget> [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10,0,0,0),
+                                child: Row(
+                                  children: <Widget> [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Icon(CryptoFontIcons.DASH, color: Colors.orange),
+                                    ),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text("My Binance", style: TextStyle(color: Colors.white))
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: <Widget> [
+                                  Text("Total Value:", style: TextStyle(color: Colors.white)),
+                                  BlocConsumer<StartupBloc, StartupState>(
+                                    listener: (context, state) {
+                                      if (state is StartupErrorState) {
+                                        return errorTemplateWidget("Dashboard Error in GetCoinList Data");
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      if (state is StartupLoadedState) {
+                                        return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.blue));
+                                      } else if (state is StartupInitialState) {
+                                        log("Initial");
+                                        return Container();
+                                      } else if (state is StartupLoadingState) {
+                                        log("Loading");
+                                        return loadingTemplateWidget();
+                                      } else if (state is StartupErrorState) {
+                                        log("Error");
+                                        return errorTemplateWidget("Error: " + state.errorMessage);
+                                      } else {
+                                        log("Else");
+                                        return Container();
+                                      }
+                                    }
+                                  )
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      )
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        ),
+      ),
+    );
+  }
+}
+
+class PortfolioBlurb extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: displayHeight(context) * 0.225,
+      width: displayWidth(context) * 0.4,
+      child: InkWell(
+        child: Container(
+          decoration: BoxDecoration(
+            color: appBlack,
+          ),
+          child: GestureDetector(
+            onTap: () {
+              // BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+              // Navigator.pushReplacementNamed(context, '/viewportfolio');
+              log("Portfolio Blurbl Clicked"); ///28th
+            },
             child: Column(
               children: <Widget> [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10,10,0,0),
-                    child: Text("My Portfolios", style: TextStyle(color: Colors.white, fontSize: 16)),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
-                ),
-                Container(
-                  height: displayHeight(context) * 0.225,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget> [
-                      InkWell(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: appBlack,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
-                              // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
-                              Navigator.pushReplacementNamed(context, '/viewportfolio');
-                            },
-                            child: Column(
+                  child: Container(
+                    height: displayHeight(context) * 0.225,
+                    width: displayWidth(context) * 0.4,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF191B31),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    /// ### Card content starts here ### ///
+                    child: Column(
+                      children: <Widget> [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10,0,0,0),
+                            child: Row(
                               children: <Widget> [
                                 Expanded(
-                                  flex: 1,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    ),
-                                    child: Container(
-                                      height: displayHeight(context) * 0.240,
-                                      width: displayWidth(context) * 0.385,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFF191B31),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      /// ### Card content starts here ### ///
-                                      child: Column(
-                                        children: <Widget> [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Padding(
-                                              padding: EdgeInsets.fromLTRB(10,0,0,0),
-                                              child: Row(
-                                                children: <Widget> [
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Icon(CryptoFontIcons.DASH, color: Colors.orange),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 7,
-                                                    child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Text("My Binance", style: TextStyle(color: Colors.white))
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                              children: <Widget> [
-                                                Text("Total Value:", style: TextStyle(color: Colors.white)),
-                                                Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.blue)),
-                                              ]
-                                            )
-                                          )
-                                        ]
-                                      )
-                                    )
-                                  )
-                                )
-                              ]
-                            )
+                                  flex: 3,
+                                  child: Icon(CryptoFontIcons.DASH, color: Colors.orange),
+                                ),
+                                Expanded(
+                                  flex: 7,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Portfolio 1", style: TextStyle(color: Colors.white))
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: <Widget> [
+                              Text("Total Value:", style: TextStyle(color: Colors.white)),
+                              // Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.blue)),
+                              Text("\$9999.99"),
+                            ]
                           )
                         )
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else if (state is StartupInitialState) {
-          return Container();
-        } else if (state is StartupLoadingState) {
-          return loadingTemplateWidget();
-        } else if (state is StartupErrorState) {
-          return errorTemplateWidget("Error: " + state.errorMessage);
-        } else {
-          return Container();
-        }
-      }
+                      ]
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        )
+      ),
     );
   }
 }
@@ -1032,7 +1141,7 @@ class AddPortfolioBlurb extends StatelessWidget {
                     ),
                     child: Container(
                       height: displayHeight(context) * 0.240,
-                      width: displayWidth(context) * 0.385,
+                      width: displayWidth(context) * 0.4,
                       decoration: BoxDecoration(
                         color: Color(0xFF191B31),
                         borderRadius: BorderRadius.circular(20),

@@ -191,7 +191,7 @@ class _CoinPageState extends State<CoinPage> {
                 ),
               ),
               Expanded(
-                flex: 8,
+                flex: 10,
                 child: Builder(
                   builder: (BuildContext buildcontext) {
                     BlocProvider.of<BinanceGetIndividualChartBloc>(context).add(FetchBinanceGetIndividualChartEvent(binanceCoin: coinListData.symbol, binancePrice: coinListData.quote.uSD.price, timeSelection: ''));
@@ -199,70 +199,70 @@ class _CoinPageState extends State<CoinPage> {
                   }
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      /// ### Buy button ### ///
-                      Container(
-                        height: displayHeight(context) * 0.055,
-                        width: displayWidth(context) * 0.35,
-                          child: InkWell(
-                            splashColor: Colors.red,
-                            highlightColor: Colors.red,
-                            hoverColor: Colors.red,
-                            focusColor: Colors.red,
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Color(0xFF2B3139),
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text("Buy", style: TextStyle(color: Colors.white))
-                              ),
-                            ),
-                            onTap: () => {
-                              // Navigator.pushNamed(context, '/hometest'),
-                            },
-                          // ),
-                          // elevation: 2,
-                        ),
-                      ),
-                      /// ### Sell Button ### ///
-                      Container(
-                        height: displayHeight(context) * 0.055,
-                        width: displayWidth(context) * 0.35,
-                        child: InkWell(
-                          splashColor: Color(0xFF2B3139),
-                          highlightColor: Color(0xFF2B3139),
-                          hoverColor: Color(0xFF2B3139),
-                          focusColor: Color(0xFF2B3139),
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Color(0xFF2B3139),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text("Sell", style: TextStyle(color: Colors.white))
-                            ),
-                          ),
-                          onTap: () => {
-                            // Navigator.pushNamed(context, '/hometest'),
+              // Expanded(
+              //   flex: 2,
+              //   child: Align(
+              //     alignment: Alignment.bottomCenter,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         /// ### Buy button ### ///
+              //         Container(
+              //           height: displayHeight(context) * 0.055,
+              //           width: displayWidth(context) * 0.35,
+              //             child: InkWell(
+              //               splashColor: Colors.red,
+              //               highlightColor: Colors.red,
+              //               hoverColor: Colors.red,
+              //               focusColor: Colors.red,
+              //               borderRadius: BorderRadius.circular(20),
+              //               child: Container(
+              //                 decoration: BoxDecoration(
+              //                   borderRadius: BorderRadius.circular(20),
+              //                   color: Color(0xFF2B3139),
+              //                 ),
+              //                 child: Align(
+              //                   alignment: Alignment.center,
+              //                   child: Text("Buy", style: TextStyle(color: Colors.white))
+              //                 ),
+              //               ),
+              //               onTap: () => {
+              //                 // Navigator.pushNamed(context, '/hometest'),
+              //               },
+              //             // ),
+              //             // elevation: 2,
+              //           ),
+              //         ),
+              //         /// ### Sell Button ### ///
+              //         Container(
+              //           height: displayHeight(context) * 0.055,
+              //           width: displayWidth(context) * 0.35,
+              //           child: InkWell(
+              //             splashColor: Color(0xFF2B3139),
+              //             highlightColor: Color(0xFF2B3139),
+              //             hoverColor: Color(0xFF2B3139),
+              //             focusColor: Color(0xFF2B3139),
+              //             borderRadius: BorderRadius.circular(20),
+              //             child: Container(
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(20),
+              //                 color: Color(0xFF2B3139),
+              //               ),
+              //               child: Align(
+              //                 alignment: Alignment.center,
+              //                 child: Text("Sell", style: TextStyle(color: Colors.white))
+              //               ),
+              //             ),
+              //             onTap: () => {
+              //               // Navigator.pushNamed(context, '/hometest'),
                             
-                          },
-                        ),
-                      ),
-                    ]
-                  ),
-                ),
-              ),
+              //             },
+              //           ),
+              //         ),
+              //       ]
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 1,
                 child: Align(

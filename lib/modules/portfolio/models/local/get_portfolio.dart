@@ -4,8 +4,8 @@ class GetPortfolioModel {
   GetPortfolioModel({this.data});
 
   GetPortfolioModel.fromJson(json) {
-      json.forEach((k,v) {
-        data[k] = v;
-      });
+    json.forEach((k,v) {
+      data[k] = v;
+    });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:coinsnap/modules/services/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:coinsnap/modules/utils/global_library.dart' as globals;
 import 'package:flutter/scheduler.dart';
 
 class InitialPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
     debugPrint("INITIALPAGE");
+    globals.binanceTimestampModifier = 0;
     // BlocProvider.of<GlobalCoinmarketcapStatsBloc>(context).add(FetchGlobalCoinmarketcapStatsEvent());
     // BlocProvider.of<GetCoinListBloc>(context).add(FetchGetCoinListEvent());
     // BlocProvider.of<CoingeckoList250Bloc>(context).add(FetchCoingeckoList250Event());

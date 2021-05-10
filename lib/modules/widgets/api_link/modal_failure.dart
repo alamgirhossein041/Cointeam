@@ -37,7 +37,7 @@ class ModalFailure extends StatelessWidget {
                 flex: 1,
                 // fit: FlexFit.tight,
                 child: Text(
-                  "Binance Failed",
+                  "API Link Failed",
                   style: Theme.of(context).textTheme.headline1
                 ),
               ),
@@ -53,10 +53,12 @@ class ModalFailure extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 50),
               Flexible(
                 flex: 1,
                 // fit: FlexFit.tight,
-                child: Center(
+                child: Align(
+                  alignment: Alignment.topCenter,
                   child: Text(
                     "Try again later.",
                     style: Theme.of(context).textTheme.bodyText2,
@@ -69,10 +71,13 @@ class ModalFailure extends StatelessWidget {
                 // fit: FlexFit.tight,
                 child: Center(
                   child: TextButton(
-                    onPressed: () => {
+                    onPressed: () {
                       // writeStorage("welcome", "true"),
                       // future: readStorage("welcome"),
-                      Navigator.popUntil(context, ModalRoute.withName('/linkapitext'))
+                      int count = 0;
+                      Navigator.popUntil(context, (route) {
+                          return count++ == 2;
+                      });
                     },
                     child: Text("Go back"),
                   ),
