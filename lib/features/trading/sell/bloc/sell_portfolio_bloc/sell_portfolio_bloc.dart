@@ -20,6 +20,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
 
   double totalValue = 0.0;
+  double quantity = 0.0;
   double pctToSell = 1.0;
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
@@ -27,6 +28,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   // int i = 0;
   bool tradeSuccessful = false;
   bool preview = true;
+  Map<String, dynamic> coinDataStructure = {};
 
   Map<String, dynamic> coinsToSave = {};
 
@@ -104,6 +106,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                     debugPrint("Running totalValue is $totalValue");
                     /// 25th
                     coinsToSave[v.coin] = double.parse(result['cummulativeQuoteQty']);
+                    coinDataStructure["time"] = result['executedQty'];
                     if(tradeSuccessful == false) {
                       tradeSuccessful = true;
                     }
@@ -120,8 +123,20 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         }
         log(totalValue.toString());
         debugPrint(totalValue.toString());
-        coinsToSave[coinTicker + "TOTAL"] = totalValue;
-        await localStorage.setItem("portfolio", coinsToSave);
+        // coinsToSave[coinTicker + "TOTAL"] = totalValue;
+        coinDataStructure["coins"] = coinsToSave;
+        coinDataStructure["currency"] = coinTicker;
+        coinDataStructure["total"] = totalValue;
+
+        var tmp = await localStorage.getItem("portfolio");
+        if(tmp == null) {
+          List helloWorld = [];
+          helloWorld.add(coinDataStructure);
+          await localStorage.setItem("portfolio", helloWorld);
+        } else {
+          tmp.add(coinDataStructure);
+          await localStorage.setItem("portfolio", tmp);
+        }
         if(tradeSuccessful == true) {
           analytics.logEvent(
             name: "sell_portfolio",
