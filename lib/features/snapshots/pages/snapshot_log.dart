@@ -30,12 +30,6 @@ class SellLogState extends State<SellLog> {
   bool preview = true;
   Map<String, dynamic> coinsToSave = {};
 
-  List<BinanceGetAllModel> binanceModel;
-  FtxGetBalanceModel ftxModel;
-
-  List<String> coinsToRemove = [];
-  List<String> binanceList = [];
-
   List<String> key = [];
 
   @override

@@ -5,6 +5,7 @@ import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/home/pages/home.dart';
 import 'package:coinsnap/features/portfolio/pages/portfolio.dart';
 import 'package:coinsnap/features/portfolio/repos/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/features/snapshots/pages/snapshot_list.dart';
 import 'package:coinsnap/features/trading/buy/repos/binance_buy_coin.dart';
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/features/trading/sell/pages/sell_portfolio_1.dart';
@@ -139,7 +140,8 @@ class MyApp extends StatelessWidget {
           // Default colours
           // accentColor: Color(0xff8270FF),
           // accentColor: Color(0xFF2197F2),
-          accentColor: Colors.orange[300],
+          // accentColor: Colors.orange[300],
+          accentColor: Color(0xFFFF25CB9D),
         
           // Default font family
           fontFamily: 'Roboto',
@@ -216,6 +218,7 @@ class MyApp extends StatelessWidget {
           '/modalfailure': (context) => ModalFailure(),
           '/portfolio': (context) => Portfolio(),
           '/selllog': (context) => SellLog(),
+          '/snapshots': (context) => SnapshotList(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),

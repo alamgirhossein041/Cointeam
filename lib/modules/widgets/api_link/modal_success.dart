@@ -1,6 +1,6 @@
 import 'package:coinsnap/modules/home/pages/home.dart';
 import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// End screen for Modal when action was successful
