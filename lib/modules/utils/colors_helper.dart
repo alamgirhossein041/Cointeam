@@ -36,15 +36,19 @@ const bgGrad2 = Color(0xFF18171A);
 /// Light - Primary
 /// Uses:
 /// - Light text on dark background
-/// - Light theme background colour
+/// - Light theme background
 const lightPrimary = Color(0xFFF6F8F9);
 
-// Blue - Primary
+/// Blue - Primary
+/// Uses:
+/// - Main app background
+/// - Primary button
+/// - Accent
 const bluePrimary = Color(0xFF2197F2);
 
 /// Dark - Primary
 /// Uses:
 /// - Dark text on light background
-/// - Dark theme background colour
-/// - Outlined button border colour
+/// - Dark theme background
+/// - Outlined button border
 const darkPrimary = Color(0xFF0B2940);
