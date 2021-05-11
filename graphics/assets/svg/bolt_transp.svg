@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="89.636" height="161.68" viewBox="0 0 89.636 161.68">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#c21edb"/>
+      <stop offset="0.604" stop-color="#0575ff"/>
+      <stop offset="1" stop-color="#0ae6ff"/>
+    </linearGradient>
+  </defs>
+  <g id="bolt-white-18dp" opacity="0.05">
+    <path id="bolt-white-18dp-2" data-name="bolt-white-18dp" d="M42.825,164.68H33.861L42.825,101.8H11.452c-5.2,0-5.109-2.874-3.406-5.928s.448-.719.627-1.078Q26.018,64.079,60.753,3h8.964L60.753,65.876H92.126c4.392,0,5.02,2.964,4.213,4.581L95.712,71.8Q42.736,164.635,42.825,164.68Z" transform="translate(-7.004 -3)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
