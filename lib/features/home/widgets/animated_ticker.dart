@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:coinsnap/modules/utils/colors_helper.dart';
 
 class AnimatedTicker extends StatefulWidget {
   final double btcSpecial;
@@ -15,7 +16,9 @@ class AnimatedTickerState extends State<AnimatedTicker> {
     return Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: Text("BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0), style: TextStyle(color: Colors.black, fontSize: 14))
+      child: Text(
+        "BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0), 
+        style: Theme.of(context).primaryTextTheme.subtitle1)
     );
   }
 }

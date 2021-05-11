@@ -30,6 +30,7 @@ import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_co
 import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
 import 'package:coinsnap/modules/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/modules/portfolio/repos/exchanges/ftx_get_balance.dart';
+import 'package:coinsnap/modules/utils/colors_helper.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
 import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_select.dart';
@@ -156,6 +157,10 @@ class MyApp extends StatelessWidget {
             bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
             bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
 
+          ),
+
+          primaryTextTheme: TextTheme(
+            subtitle1: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: primaryLight, letterSpacing: 0.5),
           ),
 
           // Appbar theme

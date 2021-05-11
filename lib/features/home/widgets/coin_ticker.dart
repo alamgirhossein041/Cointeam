@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/modules/utils/colors_helper.dart';
 import '../widgets/animated_ticker.dart';
 
 import 'dart:developer';
@@ -68,7 +69,17 @@ class CoinTickerState extends State<CoinTicker> {
         //   );
         } else if (state is StartupErrorState) {
           log("Error");
-          return errorTemplateWidget("Error: " + state.errorMessage);
+          // return errorTemplateWidget("Error: " + state.errorMessage);
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+            child: Row(
+              children: <Widget> [
+                Icon(Icons.preview_outlined, color: primaryLight, size: 20),
+                SizedBox(width: 8),
+                AnimatedTicker(btcSpecial: 123456.12, ethSpecial: 12.1234),
+              ],
+            )
+          );
         } else {
           return Text("Else", style: TextStyle(color: Colors.black, fontSize: 32));
         }

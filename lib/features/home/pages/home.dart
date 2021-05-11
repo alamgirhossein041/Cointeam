@@ -35,76 +35,84 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightPrimary,
-      body: Container(
-        child: Column(
-          children: <Widget> [
-            SizedBox(height: 40),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: CoinTicker(),
+      backgroundColor: primaryBlue,
+      body: Stack(
+        children: <Widget> [
+          CoinTicker(),
+
+          Container(
+          margin: EdgeInsets.only(top: 34, left: 5, right: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
             ),
-            Flexible(
-              flex: 4,
-              fit: FlexFit.tight,
-              child: Stack(
-                children: <Widget> [
-                  Center(
-                    child: Text(
-                      "Total Value", style: TextStyle(fontSize: 28, color: Colors.black)
-                    )
-                  ),
-                  Center(
-                /// Total Value Bloc
-                // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
-                    child: TotalValue(),
-                  ),
-                ]
-              )
-            ),
-            SizedBox(
-              height: displayHeight(context) * 0.05
-            ),
-            Flexible(
-              flex: 10,
-              fit: FlexFit.tight,
-              child: PanicButton(),
-            ),
-            Flexible(
-              flex: 10,
-              fit: FlexFit.tight,
-              child: Column(
-                children: <Widget> [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
-                    ]
-                  ),
-                  SizedBox(height: displayHeight(context) * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
-                    ]
-                  ),
-                  SizedBox(height: displayHeight(context) * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
-                    ]
-                  ),
-                ]
-              )
-            ),
-            CardHolderSVG(),
-          ]
-        )
+            color: primaryLight,
+          ),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: 40),
+              Flexible(
+                flex: 4,
+                fit: FlexFit.tight,
+                child: Stack(
+                  children: <Widget> [
+                    Center(
+                      child: Text(
+                        "Total Value", style: TextStyle(fontSize: 28, color: primaryDark)
+                      )
+                    ),
+                    Center(
+                      /// Total Value Bloc
+                      // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
+                      child: TotalValue(),
+                    ),
+                    CardHolderSVG(),
+                  ]
+                )
+              ),
+              SizedBox(
+                height: displayHeight(context) * 0.05
+              ),
+              Flexible(
+                flex: 10,
+                fit: FlexFit.tight,
+                child: PanicButton(),
+              ),
+              Flexible(
+                flex: 10,
+                fit: FlexFit.tight,
+                child: Column(
+                  children: <Widget> [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget> [
+                        HomeButton(),
+                        HomeButton(),
+                      ]
+                    ),
+                    SizedBox(height: displayHeight(context) * 0.02),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget> [
+                        HomeButton(),
+                        HomeButton(),
+                      ]
+                    ),
+                    SizedBox(height: displayHeight(context) * 0.02),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget> [
+                        HomeButton(),
+                        HomeButton(),
+                      ]
+                    ),
+                  ]
+                )
+              ),
+            ]
+          )
+        ),]
       )
     );
   }
