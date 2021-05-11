@@ -876,10 +876,10 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
       )
     );
   }
-  changevaluenotifiervalue(double _value) async {
+  // changevaluenotifiervalue(double _value) async {
 
-    await Future.delayed(Duration(microseconds: 1));
-    totalValueChange.value += _value;
-    coinTotalValue = totalValueChange.value;
-  }
+  //   await Future.delayed(Duration(microseconds: 1));
+  //   totalValueChange.value += _value;
+  //   coinTotalValue = totalValueChange.value;
+  // }
 }

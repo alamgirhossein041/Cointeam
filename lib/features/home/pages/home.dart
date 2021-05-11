@@ -8,6 +8,7 @@ import 'package:coinsnap/modules/utils/sizes_helper.dart';
 import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
 
 class Home extends StatefulWidget {
 
@@ -135,9 +136,12 @@ class HomeButton extends StatelessWidget {
           child: Text("Hello", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
         ),
       ),
-      onTap: () => {
-        Navigator.pushNamed(context, '/portfolio'),
-      },
+      onTap: () async {
+        // Navigator.pushNamed(context, '/portfolio'),
+        // final LocalStorage localStorage = LocalStorage("coinstreetapp");
+        // var result = await localStorage.getItem("portfolio");
+        // log(result.toString());
+        Navigator.pushNamed(context, '/snapshots');},
     );
   }
 }
