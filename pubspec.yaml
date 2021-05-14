@@ -66,6 +66,13 @@ flutter:
   # assets:
   # - graphics/icons/crypto/bitcoin_white_2.png
   fonts:
+  - family: Bahnschrift
+    fonts:
+    - asset: fonts/Bahnschrift.ttf
+    # used to test font loading
+  - family: Forestion
+    fonts:
+    - asset: fonts/Forestion.ttf
   - family:  IconCustom
     fonts:
     - asset: fonts/IconCustom.ttf

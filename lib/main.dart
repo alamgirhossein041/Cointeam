@@ -142,26 +142,23 @@ class MyApp extends StatelessWidget {
           // accentColor: Color(0xff8270FF),
           // accentColor: Color(0xFF2197F2),
           // accentColor: Colors.orange[300],
-          accentColor: Color(0xFFFF25CB9D),
+          // accentColor: Color(0xFFFF25CB9D),
         
           // Default font family
-          fontFamily: 'Roboto',
-
-          highlightColor: Colors.deepPurpleAccent.withAlpha(10),
+          fontFamily: 'Bahnschrift',
 
           // Default textTheme
           textTheme: TextTheme(
-            headline1: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: Colors.white),
-            headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.normal, color: Colors.white),
-            headline3: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
-            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25, height: 1.8),
-            bodyText2: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white, letterSpacing: 0.25),
+            headline1: TextStyle(fontSize: 34, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            bodyText1: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            subtitle1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
 
           ),
 
-          primaryTextTheme: TextTheme(
-            subtitle1: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: primaryLight, letterSpacing: 0.5),
-          ),
+          // primaryTextTheme: TextTheme(
+            // subtitle1: TextStyle(fontFamily: 'Forestion', fontSize: 12, fontWeight: FontWeight.w800, color: primaryLight, letterSpacing: 0.5),
+          // ),
 
           // Appbar theme
           appBarTheme: AppBarTheme(
@@ -172,26 +169,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
 
-          // Scaffold background colour
-          scaffoldBackgroundColor: Colors.transparent,
-
-          // Popup menu theme
-          popupMenuTheme: PopupMenuThemeData(
-            color: Color(0xFF101010),
-          ),
-          
-          // Default button theme
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(primary: Colors.deepPurple[200])
-          ),
-
-          // Divider theme
-          dividerTheme: DividerThemeData(
-            space: 30,
-            color: Colors.white12,
-            indent: 10,
-            endIndent: 10,
-          ),
         ),
         initialRoute: '/home',
         routes: {
