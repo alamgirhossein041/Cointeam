@@ -150,9 +150,9 @@ class MyApp extends StatelessWidget {
           // Default textTheme
           textTheme: TextTheme(
             headline1: TextStyle(fontSize: 34, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            bodyText1: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            subtitle1: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
+            bodyText1: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            subtitle1: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
 
           ),
 

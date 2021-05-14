@@ -17,7 +17,7 @@ class AnimatedTickerState extends State<AnimatedTicker> {
       fit: FlexFit.tight,
       child: Text(
         "BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0),
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.subtitle1,
       ),
     );
   }

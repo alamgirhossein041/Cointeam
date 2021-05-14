@@ -12,8 +12,6 @@ final ThemeData CompanyThemeData = new ThemeData(
   primarySwatch: CompanyColors.blue,
   primaryColor: CompanyColors.blue,
   primaryColorBrightness: Brightness.light,
-
-  fontFamily: 'Bahnschrift',
 );
 
 

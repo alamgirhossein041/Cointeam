@@ -66,9 +66,20 @@ flutter:
   # assets:
   # - graphics/icons/crypto/bitcoin_white_2.png
   fonts:
-  - family: Bahnschrift
+  - family: Bahnschrift Static
     fonts:
-    - asset: fonts/Bahnschrift.ttf
+    - asset: fonts/BahnschriftStatic-Regular.ttf
+      weight: 400
+    - asset: fonts/BahnschriftStatic-Light.ttf
+      weight: 200
+    - asset: fonts/BahnschriftStatic-SemiLight.ttf
+      weight: 300
+    - asset: fonts/BahnschriftStatic-SemiBold.ttf
+      weight: 500
+    - asset: fonts/BahnschriftStatic-Bold.ttf
+      weight: 600
+
+    
     # used to test font loading
   - family: Forestion
     fonts:
