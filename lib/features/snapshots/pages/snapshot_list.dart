@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
+import 'dart:developer';
 
 class SnapshotList extends StatefulWidget {
 
@@ -15,12 +14,10 @@ class SnapshotList extends StatefulWidget {
 class SnapshotListState extends State<SnapshotList> {
   final _scrollController = ScrollController();
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
-  // var helloWorld;
 
   @override
   void initState() { 
     super.initState();
-    // helloWorld = getStorage();
   }
   
   @override
@@ -112,27 +109,66 @@ class SnapshotListState extends State<SnapshotList> {
                                         controller: _scrollController,
                                         slivers: <Widget> [
                                           // SliverToBoxAdapter(
+                                          SliverToBoxAdapter(
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(0,0,0,30),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: <Widget> [
+                                                    Text("Date", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                                    SizedBox(width: 20),
+                                                    Icon(Icons.swap_vert),
+                                                    SizedBox(width: 20),
+                                                  ]
+                                                )
+                                              ),
+                                            )
+                                          ),
                                           SliverList(
                                             delegate: SliverChildBuilderDelegate((context, index) {
                                               return GestureDetector(
+                                                behavior: HitTestBehavior.opaque,
+                                                onTap: () => {
+                                                  log("Hi"),
+                                                  Navigator.pushNamed(context, '/snapshotlog', arguments: {'coinDataStructure': snapshot.data[index]})
+                                                },
                                                 child: Padding(
                                                   padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
                                                   child: Row(
                                                     children: <Widget> [
+                                                      // Flexible(
+                                                      //   flex: 1,
+                                                      //   fit: FlexFit.tight,
+                                                      //   child: Container(),
+                                                      // ),
+                                                      Container(width: 40),
                                                       Flexible(
                                                         flex: 1,
-                                                        fit: FlexFit.tight,
-                                                        child: Container(),
-                                                      ),
-                                                      Flexible(
-                                                        flex: 3,
                                                         fit: FlexFit.tight,
                                                         child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
                                                       ),
                                                       Flexible(
                                                         flex: 3,
                                                         fit: FlexFit.tight,
-                                                        child: Text("Date: 10 May 2021", style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
+                                                        // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                        child: Container(),
+                                                      ),
+                                                      Flexible(
+                                                        flex: 3,
+                                                        fit: FlexFit.tight,
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(right: 30),
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: <Widget> [
+                                                              Text(DateFormat("dd MMM yyyy").format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index]['timestamp'])), style: TextStyle(color: Color(0xFF0B2940), fontSize: 14)),
+                                                              SizedBox(height: 5),
+                                                              Text(DateFormat("h:mm a").format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index]['timestamp'])), style: TextStyle(color: Color(0x800B2940), fontSize: 13)),
+                                                            ]
+                                                          )
+                                                        ),
                                                       ),
                                                     ]
                                                   ),
@@ -151,7 +187,7 @@ class SnapshotListState extends State<SnapshotList> {
                             );
                           } else {
                             log(snapshot.toString());
-                            return errorTemplateWidget("An error has occured");
+                            return errorTemplateWidget("You have no transaction snapshots.");
                           }
                         } else {
                           log("Something");

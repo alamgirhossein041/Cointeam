@@ -6,8 +6,8 @@ import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
-import 'package:coinsnap/features/portfolio/models/coinmarketcap_coin_data.dart';
-import 'package:coinsnap/features/portfolio/repos/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/features/data/coinmarketcap/models/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/features/data/coinmarketcap/repos/coinmarketcap_coin_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:localstorage/localstorage.dart';
@@ -18,6 +18,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
   final BinanceGetAllRepositoryImpl binanceGetAllRepository;
   final CardCoinmarketcapCoinListRepositoryImpl coinmarketcapListQuoteRepository;
   final BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
+
+
+  /// switch data from coinmarketcap to coingecko
+  /// save coingecko data into a model including HTML images
+
 
   @override
   Stream<StartupState> mapEventToState(StartupEvent event) async* {
@@ -33,7 +38,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     double usdSpecial = 0.0;
     double btcQuantity = 0.0;
     double totalValue = 0.0;
-        
+
     if (event is FetchStartupEvent) {
       yield StartupLoadingState();
       try{
@@ -133,7 +138,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       /// GetCoinListTotalValue logic
       try {
         CardCoinmarketcapListModel coinListData = await coinmarketcapListQuoteRepository.getCoinMarketCapCoinList(coinList);
-        
+
         for(var coin in coinListData.data) {
           if(coin.symbol == 'BTC') {
             btcSpecial = coin.quote.uSD.price;
@@ -153,7 +158,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             totalValue += coinBalancesMap['AUD'];
           }
         }
-        
+
         coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
 
         yield StartupLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap,

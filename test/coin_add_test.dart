@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
+// import 'package:coinsnap/modules/portfolio/pages/portfolio_dashboard.dart';
 /// user flow 1: preloaded list of coins from coingecko
 /// 1. User opens app
 /// 2. User clicks on portfolio
@@ -55,7 +55,7 @@ void main() {
     binding.window.devicePixelRatioTestValue = 1.0;
     
     // var mediaQuery = buildTestableWidget(Dashboard());
-    await tester.pumpWidget(Dashboard());
+    // await tester.pumpWidget(Dashboard());
     expect(find.byIcon(Icons.menu), findsOneWidget);
     expect(find.byIcon(Icons.add), findsOneWidget);
     expect(find.byIcon(Icons.arrow_back), findsNothing);

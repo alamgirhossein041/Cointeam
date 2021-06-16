@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/data/global_stats/coingecko/models/gecko_global_stats.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class GeckoGlobalStatsState extends Equatable {}

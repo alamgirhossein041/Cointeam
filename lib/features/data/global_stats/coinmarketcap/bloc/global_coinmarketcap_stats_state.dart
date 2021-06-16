@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/data/global_stats/coinmarketcap/models/global_coinmarketcap_stats_model.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

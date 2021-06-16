@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
-import 'package:coinsnap/modules/app_load/repos/binance_time_sync.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/utils/time_sync/repos/binance_time_sync.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';
@@ -30,71 +30,113 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF2197F2),
+        ),
+        height: displayHeight(context),
+        width: displayWidth(context),
         child: Column(
           children: <Widget> [
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             Flexible(
               flex: 1,
               fit: FlexFit.tight,
-              child: CoinTicker(),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10,10,0,0),
+                child: CoinTicker(),
+              ),
             ),
             Flexible(
-              flex: 4,
+              flex: 20,
               fit: FlexFit.tight,
-              child: Column(
-                children: <Widget> [
-                  Center(
-                    child: Text(
-                      "Total Value", style: TextStyle(fontSize: 28, color: Colors.black)
-                    )
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: displayWidth(context) * 0.97,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(30))
                   ),
-                  Center(
-                /// Total Value Bloc
-                // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
-                    child: TotalValue(),
-                  ),
-                ]
-              )
-            ),
-            SizedBox(
-              height: displayHeight(context) * 0.05
-            ),
-            Flexible(
-              flex: 10,
-              fit: FlexFit.tight,
-              child: PanicButton(),
-            ),
-            Flexible(
-              flex: 10,
-              fit: FlexFit.tight,
-              child: Column(
-                children: <Widget> [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
+                      Flexible(
+                        flex: 4,
+                        fit: FlexFit.tight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget> [
+                            Flexible(
+                              flex: 1,
+                              fit: FlexFit.tight,
+                              child: Container(),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              fit: FlexFit.tight,
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(40,0,0,10),
+                                  child: Text(
+                                    "Balance", style: TextStyle(fontSize: 16, color: Colors.black)
+                                  )
+                                ),
+                              )
+                            ),
+                            Flexible(
+                              flex: 2,
+                              fit: FlexFit.tight,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(25,0,0,0),
+                                child: TotalValue(),
+                              ),
+                            ),
+                          ]
+                        )
+                      ),
+                      SizedBox(
+                        height: displayHeight(context) * 0.05
+                      ),
+                      Flexible(
+                        flex: 10,
+                        fit: FlexFit.tight,
+                        child: PanicButton(),
+                      ),
+                      Flexible(
+                        flex: 10,
+                        fit: FlexFit.tight,
+                        child: Column(
+                          children: <Widget> [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget> [
+                                HomeButton(),
+                                HomeButton(),
+                              ]
+                            ),
+                            SizedBox(height: displayHeight(context) * 0.02),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget> [
+                                HomeButton(),
+                                HomeButton(),
+                              ]
+                            ),
+                            SizedBox(height: displayHeight(context) * 0.02),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget> [
+                                HomeButton(),
+                                HomeButton(),
+                              ]
+                            ),
+                          ]
+                        )
+                      )
                     ]
-                  ),
-                  SizedBox(height: displayHeight(context) * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
-                    ]
-                  ),
-                  SizedBox(height: displayHeight(context) * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget> [
-                      HomeButton(),
-                      HomeButton(),
-                    ]
-                  ),
-                ]
+                  )
+                )
               )
             )
           ]
@@ -165,7 +207,7 @@ class TotalValueState extends State<TotalValue> {
       builder: (context, state) {
         if (state is StartupLoadedState) {
           log("Loaded");
-          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
+          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
         } else if (state is StartupInitialState) {
           log("Initial");
           return Container();
@@ -362,7 +404,7 @@ class AnimatedTickerState extends State<AnimatedTicker> {
     return Flexible(
       flex: 1,
       fit: FlexFit.tight,
-      child: Text("BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0), style: TextStyle(color: Colors.black, fontSize: 14))
+      child: Text("BTC  \$" + widget.btcSpecial.toStringAsFixed(0) + "       ETH  \$" + widget.ethSpecial.toStringAsFixed(0), style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold))
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/global_stats/coingecko/models/gecko_global_stats.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:http/http.dart' as http;
 
 abstract class IGeckoGlobalStatsRepo {

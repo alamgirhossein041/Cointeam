@@ -1,23 +1,23 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:coinsnap/modules/utils/global_library.dart' as globals;
-
+import 'package:coinsnap/features/utils/global_library.dart' as globals;
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:developer';
 
 abstract class IBinanceSellCoinRepository {
-  Future binanceSellCoin(String sellTicker, double quantity);
+  Future binanceSellCoin(String sellTicker, double quantity, [int _basePrecision]);
 }
 
 class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
   @override
-    binanceSellCoin(String sellTicker, double quantity) async {
+  binanceSellCoin(String sellTicker, double quantity, [int _basePrecision]) async {
+    int basePrecision = 8;
+    if(_basePrecision != null) {
+      basePrecision = _basePrecision;
+    }
     String _binanceUrl = 'api.binance.com';
-
-    /// ##### Temporary API Key load-ins ###### 
-    /// ##### TODO: Add Key storage implementation ###### 
 
     final secureStorage = FlutterSecureStorage();
 
@@ -27,7 +27,7 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
     /// ##### Start API Request ######
     /// Build our signature and HMAC hash for Binance
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
+    String signatureBuilder = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(basePrecision);
     debugPrint(signatureBuilder);
     var sapiHmac = utf8.encode(sapi);
     var signatureBuilderHmac = utf8.encode(signatureBuilder);
@@ -53,7 +53,7 @@ class BinanceSellCoinRepositoryImpl implements IBinanceSellCoinRepository {
       debugPrint("Response Code = " + response.statusCode.toString());
       debugPrint("Response data = " + response.body.toString());
       timestamp = ((DateTime.now().millisecondsSinceEpoch) - globals.binanceTimestampModifier).toString();
-      String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(8);
+      String signatureBuilder2 = 'timestamp=$timestamp&recvWindow=8000&symbol=' + sellTicker + '&side=SELL&type=MARKET&quantity=' + quantity.toStringAsFixed(basePrecision);
       var signatureBuilderHmac2 = utf8.encode(signatureBuilder2);
       var digest2 = hmac256.convert(signatureBuilderHmac2);
       String requestUrl2 = 'https://' + _binanceUrl + '/api/v3/order?' + signatureBuilder2 + '&signature=$digest2';

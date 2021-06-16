@@ -1,11 +1,10 @@
-import 'dart:developer';
-
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
+import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:developer';
 
 class BuyPortfolioPage3 extends StatefulWidget {
 
@@ -21,15 +20,6 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
 
   @override
   Widget build(BuildContext context) {
-    // final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-
-    // if (arguments == null) {
-    //   debugPrint("Arguments is null in BuyPage3");
-    // } else {
-    //   symbol = arguments['symbol'];
-    //   percentageValue = arguments['value'];
-    // }
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -97,7 +87,6 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
                             fit: FlexFit.tight,
                             child: Align(
                               alignment: Alignment.center,
-                              // child: Text("You sold " + (percentageValue*100).toString() + "% of your portfolio", style: TextStyle(color: Colors.white))
                               child: Text("You have received:", style: TextStyle(color: Colors.white)),
                             )
                           ),
@@ -147,13 +136,7 @@ class BuyPortfolioPage3State extends State<BuyPortfolioPage3> {
                                             Navigator.popUntil(context, (route) {
                                                 return count++ == 3;
                                             })
-                                            // BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(value: percentageValue, coinTicker: symbol)),
-                                            // Navigator.pushNamed(context, '/Buyportfolio3', arguments: {'value': percentageValue, 'symbol': symbol})
-                                            // Navigator.pushNamed(context, '/hometest'),
-                                            
                                           },
-                                        // ),
-                                        // elevation: 2,
                                       ),
                                     ),
                                   ),

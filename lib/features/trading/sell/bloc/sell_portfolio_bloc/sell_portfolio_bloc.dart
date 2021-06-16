@@ -1,21 +1,13 @@
-import 'dart:developer';
-
-import 'package:coinsnap/features/data/binance_price/models/binance_exchange_info.dart';
-import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
-import 'package:coinsnap/features/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
-import 'package:coinsnap/features/trading/buy/repos/binance_buy_coin.dart';
-import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_event.dart';
-import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_state.dart';
-import 'package:coinsnap/features/trading/sell/repos/binance_sell_coin.dart';
-import 'package:coinsnap/modules/services/firebase_analytics.dart';
+import 'package:coinsnap/features/data/binance_price/binance_price.dart';
+import 'package:coinsnap/features/services/firebase_analytics.dart';
+import 'package:coinsnap/features/trading/trading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'dart:developer';
 
 class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
-  
-  // SellPortfolioBloc({this.binanceSellCoinRepository, this.binanceGetAllRepository, this.binanceExchangeInfoRepository, this.ftxGetBalanceRepository, this.ftxExchangeInfoRepository, this.ftxSellCoinRepository}) : super(SellPortfolioInitialState());
+
   SellPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository,
   this.binanceGetAllRepository, this.binanceExchangeInfoRepository}) : super(SellPortfolioInitialState());
 
@@ -25,22 +17,18 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   String coinTicker = "BTC";
   List<String> coinsToRemove = [];
   double divisor = 1.0;
-  // int i = 0;
   bool tradeSuccessful = false;
   bool preview = true;
+  int basePrecision = 8;
   Map<String, dynamic> coinDataStructure = {};
 
   Map<String, dynamic> coinsToSave = {};
 
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
-  // FtxSellCoinRepositoryImpl ftxSellCoinRepository;
-  // FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
-  // FtxExchangeInfoRepositoryImpl ftxExchangeInfoRepository;
   BinanceSellCoinRepositoryImpl binanceSellCoinRepository;
   BinanceBuyCoinRepositoryImpl binanceBuyCoinRepository;
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
-  // BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
 
   @override
   Stream<SellPortfolioState> mapEventToState(SellPortfolioEvent event) async* {
@@ -50,9 +38,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       coinTicker = "BTC";
       coinsToRemove = [];
       divisor = 1.0;
-      // int i = 0;
       tradeSuccessful = false;
-
       coinsToSave = {};
       pctToSell = event.value;
       coinTicker = event.coinTicker;
@@ -63,70 +49,84 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       try {
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
-        Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
+        Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
         if(!preview) {
           await Future.forEach(binanceGetAllModel, (v) async {
             debugPrint("8th April - Test 3");
             if(v.coin == coinTicker) {
               debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
-              // i++;
             } else {
               try {
                 var result;
                 if(v.coin == 'USDT') {
-                  divisor = double.parse(binanceSymbols[coinTicker + v.coin][2].stepSize);
+                  divisor = double.parse(binanceSymbols[coinTicker + v.coin].filters[2].stepSize);
                 } else {
-                  divisor = double.parse(binanceSymbols[v.coin + coinTicker][2].stepSize);
+                  divisor = double.parse(binanceSymbols[v.coin + coinTicker].filters[2].stepSize);
+                  basePrecision = binanceSymbols[v.coin + coinTicker].baseAssetPrecision;
                 }
                 var tmp = v.free * pctToSell;
                 var zeroTarget = tmp % divisor;
                 tmp -= zeroTarget;
                 if (tmp >= divisor) {
-                  debugPrint('Coin: ' + v.coin);
-                  debugPrint('Coin Qty to sell: ' + v.free.toString());
-                  debugPrint('Divisor(stepSize): ' + divisor.toString());
-                  debugPrint('Post-Modulo: ' + zeroTarget.toString()); 
-                  debugPrint('To Sell: ' + tmp.toString());
-                  debugPrint("\n\nSelling to ticker: " + coinTicker);
-                  debugPrint('\n\n');
+                  log('Coin: ' + v.coin);
+                  log('Coin Qty to sell: ' + v.free.toString());
+                  log('Divisor(stepSize): ' + divisor.toString());
+                  log('Post-Modulo: ' + zeroTarget.toString()); 
+                  log('To Sell: ' + tmp.toString());
+                  log("\n\nSelling to ticker: " + coinTicker);
+                  log('\n\n');
+                  double quantityTmp;
+                  double valueTmp;
                   if(v.coin == 'USDT') {
                     debugPrint("########");
                     result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
                     log("Pretending to sell");
+                    quantityTmp = double.parse(result['cummulativeQuoteQty']);
+                    valueTmp = double.parse(result['executedQty']);
                   } else {
-                    result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp);
+                    log("Uh hello");
+                    result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp, basePrecision);
                     log("Pretending to sell 2");
+                    quantityTmp = double.parse(result['executedQty']);
+                    valueTmp = double.parse(result['cummulativeQuoteQty']);
+                    log("????????");
+                    log("quantity of " + v.coin + " is " + quantityTmp.toString());
+                    log("value of " + v.coin + " is " + valueTmp.toString());
                   }
                   debugPrint(result['code'].toString());
                   if(result['code'] == null) {
                     totalValue += double.parse(result['cummulativeQuoteQty']);
                     debugPrint("What's wrong now?");
-                    // toFirestore[coins.coin] = double.parse(result['cummulativeQuoteQty']);
                     debugPrint("Running totalValue is $totalValue");
                     /// 25th
-                    coinsToSave[v.coin] = double.parse(result['cummulativeQuoteQty']);
-                    coinDataStructure["time"] = result['executedQty'];
+                    Map<String, dynamic> coinData = {};
+                    coinData["quantity"] = quantityTmp;
+                    coinData["value"] = valueTmp;
+                    coinsToSave[v.coin] = coinData;
+                    log(v.coin);
+                    log(coinsToSave[v.coin].toString());
+                    log(coinsToSave.toString());
                     if(tradeSuccessful == false) {
                       tradeSuccessful = true;
                     }
                   }
                 }
-                // i++;
               } catch (e) {
                 debugPrint(e.toString());
                 debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
-                // i++;
               }
             }
           });
         }
         log(totalValue.toString());
         debugPrint(totalValue.toString());
-        // coinsToSave[coinTicker + "TOTAL"] = totalValue;
+        log(coinsToSave.toString());
         coinDataStructure["coins"] = coinsToSave;
+        log(coinDataStructure["coins"].toString());
         coinDataStructure["currency"] = coinTicker;
         coinDataStructure["total"] = totalValue;
+        coinDataStructure["timestamp"] = DateTime.now().millisecondsSinceEpoch;
 
         var tmp = await localStorage.getItem("portfolio");
         if(tmp == null) {
@@ -143,24 +143,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
             parameters: {"totalValue": totalValue}
           );
         }
-
-        /// ### This is where we would add to database?? ### ///
-
-        // debugPrint("pushed to firestore");
-        // debugPrint("error1");
-
-        // FtxExchangeInfoModel ftxExchangeInfoModel = await ftxExchangeInfoRepository.getFtxExchangeInfo();
-        // debugPrint("error2");
-
-        // FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
-        // debugPrint("error3");
-
-        // Map ftxSymbols = Map.fromIterable(ftxExchangeInfoModel.result, key: (e) => e.name, value: (e) => e.sizeIncrement); /// we need more than just a key and value so maybe change this from Map to something else
-        // debugPrint("error4");
-
-
-
-
+        log(coinDataStructure.toString());
+        
 /// ### Uncomment below for FTX integration (check bugs) ###
         // for (var coins in ftxGetBalanceModel.result) {
         //   debugPrint("error5");
@@ -206,7 +190,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
 
 /// ### Uncomment above for ftx integration ### ///
 
-        yield SellPortfolioLoadedState(totalValue: totalValue, coinsToSave: coinsToSave);
+        yield SellPortfolioLoadedState(totalValue: totalValue, coinDataStructure: coinDataStructure);
       } catch (e) {
         debugPrint("wallah");
         debugPrint(e.toString());
