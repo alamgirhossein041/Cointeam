@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
-import 'package:coinsnap/modules/utils/colors_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
 import '../widgets/animated_ticker.dart';
 
 import 'dart:developer';

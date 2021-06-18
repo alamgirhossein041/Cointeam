@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

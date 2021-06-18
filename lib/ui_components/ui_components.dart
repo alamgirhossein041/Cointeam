@@ -1,4 +1,4 @@
-import 'package:coinsnap/modules/utils/colors_helper.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
 
 /// Main card margin style.

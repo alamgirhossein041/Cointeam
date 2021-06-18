@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 
 class HomeButton extends StatelessWidget {
 

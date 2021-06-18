@@ -9,7 +9,7 @@ import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:coinsnap/modules/utils/colors_helper.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
 import '../../../ui_components/ui_components.dart';
 
 // Widgets
