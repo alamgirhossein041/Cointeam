@@ -6,14 +6,12 @@ abstract class BuyPortfolioState extends Equatable {}
 class BuyPortfolioInitialState extends BuyPortfolioState {
 
   @override
-  /// TODO: stuff
   List<Object> get props => [];
 }
 
 class BuyPortfolioLoadingState extends BuyPortfolioState {
 
   @override
-  /// TODO: stuff
   List<Object> get props => [];
 }
 
@@ -22,12 +20,8 @@ class BuyPortfolioLoadedState extends BuyPortfolioState {
   final double totalValue;
 
   BuyPortfolioLoadedState({@required this.totalValue});
-  // BuyPortfolioLoadedState()
-
-  /// THIS IS THE MAIN ONE
   
   @override
-  /// TODO: stuff
   List<Object> get props => null;
 }
 
@@ -38,6 +32,5 @@ class BuyPortfolioErrorState extends BuyPortfolioState {
   BuyPortfolioErrorState({@required this.errorMessage});
 
   @override
-  /// TODO: stuff
   List<Object> get props => null;
 }

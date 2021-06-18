@@ -1,15 +1,13 @@
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
-import 'package:coinsnap/modules/utils/colors_helper.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/data/total_tradeable_value/total_tradeable_value.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class BuyPortfolioScreen extends StatefulWidget {
-
 
   @override
   BuyPortfolioScreenState createState() => BuyPortfolioScreenState();
@@ -19,12 +17,9 @@ class BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
 
   String dropdownValue = 'USDT';
   int dropdownIndex = 0;
-
   double _value = 50.0;
   double totalValueEstimated = 0.0;
-
   String totalValueEstimatedString = '';
-
   List<String> baseCoins = ['USDT', 'BTC'];
 
   @override
@@ -335,7 +330,6 @@ class BuyPortfolioScreenState extends State<BuyPortfolioScreen> {
     //   // ETH
     //   return 'ETH';
     default:
-      // default is USDT lel
       return 'USDT';
     break;
     }

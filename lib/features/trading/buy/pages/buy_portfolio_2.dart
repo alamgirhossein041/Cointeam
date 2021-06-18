@@ -1,8 +1,8 @@
-import 'package:coinsnap/modules/portfolio/models/local/get_portfolio.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
-import 'package:coinsnap/modules/portfolio/repos/local/get_portfolio.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
+import 'package:coinsnap/features/data/portfolio/user_data/model/get_portfolio.dart';
+import 'package:coinsnap/features/data/portfolio/user_data/repo/get_portfolio.dart';
+import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
+import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';
@@ -34,13 +34,8 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
       debugPrint("Total Buy Quote is " + totalBuyQuote.toString());
     }
 
-    /// ### TODO: Maybe replace "portfolio" with an actual string variable
-    /// ### -- GetPortfolioImpl takes a string and uses that to get portfolio from LocalStorage
-    /// 
-    /// IF NULL
-    /// 
     GetPortfolioModel portfolioDataMap = primePortfolio.getPortfolio("portfolio");
-    /// TODO: delete index
+
     int devindex = 0;
     portfolioDataMap.data.forEach((k,v) => {
       debugPrint(devindex.toString()),
@@ -144,38 +139,6 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                             return condition ? BuyPortfolio2Row(portfolioList[index], portfolioDataMap.data[portfolioList[index]])
                                               : Container();
                                             }
-                                        //   ),
-                                        //   Row(
-                                        //   children: <Widget> [
-                                        //     Flexible(
-                                        //       flex: 1,
-                                        //       fit: FlexFit.tight,
-                                        //       child: GestureDetector(
-                                        //         child: Icon(Icons.close),
-                                        //         onTap: () => {
-
-                                        //         }
-                                        //       )
-                                        //     ),
-                                        //     Flexible(
-                                        //       flex: 3,
-                                        //       fit: FlexFit.tight,
-                                        //       child: Text(portfolioList[index]),
-                                        //       // child: Container(),
-                                        //     ),
-                                        //     Flexible(
-                                        //       flex: 3,
-                                        //       fit: FlexFit.tight,
-                                        //       child: Align(
-                                        //         alignment: Alignment.centerRight,
-                                        //         child: Padding(
-                                        //           padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                        //           child: Text("\$" + portfolioDataMap.data[portfolioList[index]].toStringAsFixed(2)),
-                                        //         )
-                                        //       )
-                                        //     )
-                                        //     // )
-                                        //   ]
                                         )
                                       );
                                     },
@@ -210,7 +173,6 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     fit: FlexFit.tight,
                                     child: Align(
                                       alignment: Alignment.centerLeft,
-                                      // child: Text(coinCount.toString() + " coins", style: TextStyle(color: Colors.grey)),
                                       child: Container(),
                                     ),
                                   ),
@@ -221,25 +183,6 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                       alignment: Alignment.centerRight,
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 30),
-                                        // child: Text("\$" + coinTotalValue.toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                        // child: Text("\$" + (state.totalValue * state.btcSpecial / 1.1).toStringAsFixed(2)),
-                                        // child: Builder(
-                                        //   builder: (context) {
-                                        //     coinListReceived.forEach((v) {
-                                        //       var pmt = state.binanceGetPricesMap[v.coin + 'USDT'];
-                                        //       if(pmt != null) {
-                                        //         var tmp = pmt * (v.free) * percentageValue;
-                                        //         if (tmp > 10) {
-                                        //           coinTotalValue += tmp;
-                                        //           totalValueChange.value = coinTotalValue;
-                                        //         } else {
-                                        //           coinsToRemove.add(v.coin);
-                                        //         }
-                                        //       }
-                                        //     });
-                                        //     return Text("\$" + coinTotalValue.toStringAsFixed(2));
-                                        //   }
-                                        // )
                                         child: Builder(
                                           builder: (context) {
                                             final conditionUsd = portfolioDataMap.data['USDTTOTAL'] != null;
@@ -284,10 +227,6 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                               child: Container( /// ### Buy button
                                 height: displayHeight(context) * 0.055,
                                 width: displayWidth(context) * 0.35,
-                                // child: Card(
-                                //   shape: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.all(Radius.circular(20)),
-                                //   ),
                                 child: InkWell(
                                   splashColor: Colors.red,
                                   highlightColor: Colors.red,
@@ -310,8 +249,6 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     Navigator.pushNamed(context, '/buyportfolio3')
                                     /// 7th - we need to pass in something - like a list or a map or something
                                   },
-                                  // ),
-                                  // elevation: 2,
                                 ),
                               ),
                             ),
@@ -343,10 +280,7 @@ class BuyPortfolioPage2State extends State<BuyPortfolioPage2> {
                                     ),
                                     onTap: () => {
                                       Navigator.pop(context),
-                                      // Navigator.pushNamed(context, '/hometest'),
                                     },
-                                  // ),
-                                  // elevation: 2,
                                 ),
                               ),
                             ),

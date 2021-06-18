@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
+import 'package:coinsnap/features/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/features/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_event.dart';
 import 'package:coinsnap/features/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_get_prices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

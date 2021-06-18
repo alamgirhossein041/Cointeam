@@ -1,9 +1,6 @@
 import 'dart:developer';
 
-import 'package:coinsnap/modules/data/global_stats/coingecko/bloc/gecko_global_stats_event.dart';
-import 'package:coinsnap/modules/data/global_stats/coingecko/bloc/gecko_global_stats_state.dart';
-import 'package:coinsnap/modules/data/global_stats/coingecko/models/gecko_global_stats.dart';
-import 'package:coinsnap/modules/data/global_stats/coingecko/repos/gecko_global_stats.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
