@@ -51,49 +51,19 @@ class MyApp extends StatelessWidget {
     
     return MultiBlocProvider(
       providers: [
-        // BlocProvider<GetTotalValueBloc>(
-        //   create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        // ),
         BlocProvider<StartupBloc>(
-          // create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
           create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
-        // BlocProvider<GetPriceInfoBloc>(
-        //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        // ),
         BlocProvider<SellPortfolioBloc>(
           create: (context) => SellPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
-        // BlocProvider<CardCoinmarketcapCoinLatestBloc> (
-        //   create: (context) => CardCoinmarketcapCoinLatestBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
-        // ),
-        // BlocProvider<ListTotalValueBloc> (
-        //   create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
-        // ),
-        // BlocProvider<GetCoinListBloc> (
-        //   create: (context) => GetCoinListBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl()),
-        // ),
-        // BlocProvider<GetCoinListTotalValueBloc> (
-        //   create: (context) => GetCoinListTotalValueBloc(coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl()),
-        // ),
-        // BlocProvider<CoingeckoList250Bloc> (
-        //   create: (context) => CoingeckoList250Bloc(coingeckoList250Repository: CoingeckoList250RepositoryImpl()),
-        // ),
         BlocProvider<BuyPortfolioBloc> (
           create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
       ],
       child: MaterialApp(
-        // navigatorObservers: <NavigatorObserver>[
-          // observer
-        // ],
         theme: ThemeData(
-          // Default brightness
-          // brightness: Brightness.dark
-          // Default colours
-          // accentColor: Color(0xff8270FF),
-          // accentColor: Color(0xFF2197F2),
-          // accentColor: Colors.orange[300],
+          
           accentColor: Color(0xFFFF25CB9D),
         
           // Default font family
