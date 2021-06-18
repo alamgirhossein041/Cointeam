@@ -1,5 +1,6 @@
-import 'dart:developer';
+import 'package:flutter/material.dart';
 
+// Packages
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
@@ -8,7 +9,15 @@ import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
+import '../../../ui_components/ui_components.dart';
+
+// Widgets
+import '../widgets/card_holder.dart';
+import '../widgets/coin_ticker.dart';
+import '../widgets/panic_button.dart';
+import '../widgets/home_button.dart';
+import '../widgets/total_value.dart';
 
 class Home extends StatefulWidget {
 
@@ -29,362 +38,95 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFF2197F2),
-        ),
-        height: displayHeight(context),
-        width: displayWidth(context),
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: primaryBlue,
+        body: Stack(
           children: <Widget> [
-            SizedBox(height: 20),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10,10,0,0),
-                child: CoinTicker(),
-              ),
-            ),
-            Flexible(
-              flex: 20,
-              fit: FlexFit.tight,
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: displayWidth(context) * 0.97,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(30))
-                  ),
+            CoinTicker(),
+            Container(
+              margin: mainCardMargin(),
+              decoration: mainCardDecoration(),
+              child: Column(
+                children: <Widget> [
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 14),
+                      child: Text('Balance'),
+                    ),
+                  ]),
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 14),
+                      child: Text('\$12,345.67',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+                  ],
+                ),
+                // Flexible(
+                //   flex: 4,
+                //   fit: FlexFit.tight,
+                //   child: Stack(
+                //     children: <Widget> [
+                //       Center(
+                //         child: Text(
+                //           "Total Value", style: TextStyle(fontSize: 28, color: primaryDark)
+                //         )
+                //       ),
+                //       Center(
+                //         /// Total Value Bloc
+                //         // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
+                //         child: TotalValue(),
+                //       ),
+                //       CardHolderSVG(),
+                //     ]
+                //   )
+                // ),
+                SizedBox(
+                  height: displayHeight(context) * 0.05
+                ),
+                Flexible(
+                  flex: 10,
+                  fit: FlexFit.tight,
+                  child: PanicButton(),
+                ),
+                Flexible(
+                  flex: 10,
+                  fit: FlexFit.tight,
                   child: Column(
                     children: <Widget> [
-                      Flexible(
-                        flex: 4,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget> [
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: Container(),
-                            ),
-                            Flexible(
-                              flex: 2,
-                              fit: FlexFit.tight,
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(40,0,0,10),
-                                  child: Text(
-                                    "Balance", style: TextStyle(fontSize: 16, color: Colors.black)
-                                  )
-                                ),
-                              )
-                            ),
-                            Flexible(
-                              flex: 2,
-                              fit: FlexFit.tight,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(25,0,0,0),
-                                child: TotalValue(),
-                              ),
-                            ),
-                          ]
-                        )
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget> [
+                          HomeButton(),
+                          HomeButton(),
+                        ]
                       ),
-                      SizedBox(
-                        height: displayHeight(context) * 0.05
+                      SizedBox(height: displayHeight(context) * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget> [
+                          HomeButton(),
+                          HomeButton(),
+                        ]
                       ),
-                      Flexible(
-                        flex: 10,
-                        fit: FlexFit.tight,
-                        child: PanicButton(),
+                      SizedBox(height: displayHeight(context) * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget> [
+                          HomeButton(),
+                          HomeButton(),
+                        ]
                       ),
-                      Flexible(
-                        flex: 10,
-                        fit: FlexFit.tight,
-                        child: Column(
-                          children: <Widget> [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget> [
-                                HomeButton(),
-                                HomeButton(),
-                              ]
-                            ),
-                            SizedBox(height: displayHeight(context) * 0.02),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget> [
-                                HomeButton(),
-                                HomeButton(),
-                              ]
-                            ),
-                            SizedBox(height: displayHeight(context) * 0.02),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget> [
-                                HomeButton(),
-                                HomeButton(),
-                              ]
-                            ),
-                          ]
-                        )
-                      )
                     ]
                   )
-                )
-              )
-            )
-          ]
-        )
-      )
-    );
-  }
-}
-
-class HomeButton extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        height: displayHeight(context) * 0.05,
-        width: displayWidth(context) * 0.2,
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment(-1, 1),
-        //     end: Alignment(1, -1),
-        //     colors: [
-        //       Color(0xFF701EDB),
-        //       Color(0xFF0575FF),
-        //       Color(0xFF0AABFF)
-        //     ],
-        //     stops: [
-        //       0.0,
-        //       0.77,
-        //       1.0
-        //     ]
-        //   )
-        // ),
-        decoration: BoxDecoration(
-          color: Colors.grey
-        ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Text("Hello", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
-        ),
-      ),
-      onTap: () async {
-        // Navigator.pushNamed(context, '/portfolio'),
-        // final LocalStorage localStorage = LocalStorage("coinstreetapp");
-        // var result = await localStorage.getItem("portfolio");
-        // log(result.toString());
-        Navigator.pushNamed(context, '/snapshots');},
-    );
-  }
-}
-
-class TotalValue extends StatefulWidget {
-  TotalValue({Key key}) : super(key: key);
-
-  @override
-  TotalValueState createState() => TotalValueState();
-}
-
-class TotalValueState extends State<TotalValue> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<StartupBloc, StartupState>(
-      listener: (context, state) {
-        if (state is StartupErrorState) {
-          return errorTemplateWidget("Dashboard Error in GetCoinList Data");
-        }
-      },
-      builder: (context, state) {
-        if (state is StartupLoadedState) {
-          log("Loaded");
-          return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
-        } else if (state is StartupInitialState) {
-          log("Initial");
-          return Container();
-        } else if (state is StartupLoadingState) {
-          log("Loading");
-          return loadingTemplateWidget();
-        // } else if (state is StartupTotalValueState) {
-        //   log("TotalValueState");
-        //   return Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 28));
-        } else if (state is StartupErrorState) {
-          log("Error");
-          return errorTemplateWidget("Error: " + state.errorMessage);
-        } else {
-          return Text("Else", style: TextStyle(color: Colors.black, fontSize: 32));
-        }
-      }
-    );
-  }
-}
-
-class CoinTicker extends StatefulWidget {
-
-  @override
-  CoinTickerState createState() => CoinTickerState();
-}
-
-class CoinTickerState extends State<CoinTicker> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<StartupBloc, StartupState>(
-      listener: (context, state) {
-        if (state is StartupErrorState) {
-          return errorTemplateWidget("Dashboard Error in GetCoinList Data");
-        }
-      },
-      builder: (context, state) {
-        if (state is StartupLoadedState) {
-          log("Loaded");
-            
-          // return Align(
-          //   alignment: Alignment.topRight,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(right: 20),
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: <Widget> [
-          //         Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-          //         Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-          //       ]
-          //     )
-          //   ),
-            
-          // );
-          return Row(
-            children: <Widget> [
-              AnimatedTicker(btcSpecial: state.btcSpecial, ethSpecial: state.ethSpecial),
-            ]
-          );
-        } else if (state is StartupInitialState) {
-          log("Initial");
-          return Container();
-        } else if (state is StartupLoadingState) {
-          log("Loading");
-          return loadingTemplateWidget();
-        // } else if (state is StartupTotalValueState) {
-        //   log("TotalValueState");
-        //   return Align(
-        //     alignment: Alignment.topRight,
-        //     child: Padding(
-        //       padding: EdgeInsets.only(right: 20),
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: <Widget> [
-        //           Text("BTC:  \$" + state.btcSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-        //           Text("ETH:  \$" + state.ethSpecial.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 14)),
-        //         ]
-        //       )
-        //     ),
-        //   );
-        } else if (state is StartupErrorState) {
-          log("Error");
-          return errorTemplateWidget("Error: " + state.errorMessage);
-        } else {
-          return Text("Else", style: TextStyle(color: Colors.black, fontSize: 32));
-        }
-      }
-    );
-  }
-}
-
-class PanicButton extends StatefulWidget {
-
-  @override
-  PanicButtonState createState() => PanicButtonState();
-}
-
-class PanicButtonState extends State<PanicButton> {
-  bool isLive = false;
-  
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget> [
-        Flexible(
-          flex: 2,
-          fit: FlexFit.tight,
-          child: GestureDetector(
-            onTap: () => setState(() {
-              isLive = !isLive;
-            }),
-            child: Column(
-              children: <Widget> [
-                /// State Change - Live Mode / isLive Mode
-                if(!isLive)...[
-                  Stack(
-                    alignment: FractionalOffset.center,
-                    children: <Widget> [
-                      Center(
-                        child: Container(
-                          width: displayWidth(context) * 0.30,
-                          child: Center(
-                            child: Text("Live mode", style: TextStyle(color: Colors.black))
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: displayWidth(context) * 0.65,
-                        child: Icon(Icons.online_prediction, color: Colors.green, size: 20)
-                      ),
-                    ]
-                  ),
-                  Icon(Icons.toggle_on, color: Colors.black, size: 46)
-                ] else...[
-                  Stack(
-                    alignment: FractionalOffset.center,
-                    children: <Widget> [
-                      Center(
-                        child: Container(
-                          width: displayWidth(context) * 0.30,
-                          child: Center(
-                            child: Text("Preview mode", style: TextStyle(color: Colors.black))
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: displayWidth(context) * 0.65,
-                        child: Icon(Icons.online_prediction, color: Colors.orange[300], size: 20)
-                      ),
-                    ]
-                  ),
-                  Icon(Icons.toggle_off, color: Colors.grey, size: 46)
-                ]
+                ),
               ]
             )
-          ),
-        ),
-        Flexible(
-          flex: 3,
-          fit: FlexFit.tight,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: 110, /// this helps align IconButton properly
-              height: 110,
-              child: IconButton(
-                padding: EdgeInsets.all(0),
-                onPressed: () => {
-                  log(isLive.toString()),
-                  BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent()),
-                  Navigator.pushNamed(context, '/sellportfolio', arguments: {'preview': isLive})
-                },
-                icon: Icon(Icons.offline_bolt, size: 110)
-              ),
-            ),
-          ),
-        ),
-      ],
+          ),]
+        )
+      ),
     );
   }
 }
