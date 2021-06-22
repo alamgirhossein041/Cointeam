@@ -35,8 +35,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     String currency = 'USD';
     double btcSpecial = 0.0;
     double ethSpecial = 0.0;
-    double usdSpecial = 0.0;
-    double btcQuantity = 0.0;
+    double usdTotal = 0.0;
+    double btcTotal = 0.0;
     double totalValue = 0.0;
 
     if (event is FetchStartupEvent) {
@@ -70,6 +70,9 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
               coinList.add(coins.coin);
               coins.totalUsdValue = (coins.free + coins.locked) * binancePrices[coins.coin + 'USDT'];
               totalValue += coins.totalUsdValue;
+              if(coins.coin == 'BTC') {
+                btcTotal = coins.totalUsdValue;
+              }
             } else if(binancePrices[coins.coin + 'BTC'] != null) {
               coinList.add(coins.coin);
               coins.totalUsdValue = (coins.free + coins.locked) * (binancePrices[coins.coin + 'BTC'] * btcPrice);
@@ -78,6 +81,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
               coins.totalUsdValue = (coins.free + coins. locked);
               coinList.add(coins.coin);
               totalValue += coins.totalUsdValue;
+              usdTotal = coins.totalUsdValue;
             } else {
               coins.totalUsdValue = 0;
               log(coins.coin.toString() + " has no BTC or USDT pair");
@@ -162,7 +166,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
 
         yield StartupLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap,
-                                coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel);
+                                coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel,
+                                usdTotal: usdTotal, btcTotal: btcTotal);
 
       } catch (e) {
         debugPrint("The error is in startup_bloc.dart part 2");

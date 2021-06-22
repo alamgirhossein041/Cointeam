@@ -34,7 +34,7 @@ class HomeButton extends StatelessWidget {
         ),
       ),
       onTap: () => {
-        Navigator.pushNamed(context, '/portfolio'),
+        Navigator.pushNamed(context, '/snapshots'),
       },
     );
   }
