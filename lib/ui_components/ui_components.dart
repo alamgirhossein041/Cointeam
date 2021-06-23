@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 /// Main card margin style.
 EdgeInsets mainCardMargin() => EdgeInsets.only(top: 34, left: 5, right: 5);
 
+/// Main card padding
+EdgeInsets mainCardPadding() => EdgeInsets.symmetric(horizontal: 40, vertical: 45);
+
 /// Main background card decoration style.
 /// Light background, rounded top corners
 BoxDecoration mainCardDecoration() =>

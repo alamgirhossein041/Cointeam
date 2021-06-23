@@ -92,27 +92,39 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           // Default brightness
           // brightness: Brightness.dark
-          // Default colours
-          // accentColor: Color(0xff8270FF),
-          // accentColor: Color(0xFF2197F2),
-          // accentColor: Colors.orange[300],
-          // accentColor: Color(0xFFFF25CB9D),
-        
+
           // Default font family
           fontFamily: 'Bahnschrift',
 
           // Default textTheme
           textTheme: TextTheme(
-            headline1: TextStyle(fontSize: 34, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            bodyText1: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
-            subtitle1: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
+            // Headings
+            // 34 Light
+            headline1: TextStyle(fontSize: 34, fontWeight: FontWeight.w200, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 24 Light
+            headline2: TextStyle(fontSize: 24, fontWeight: FontWeight.w200, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 20 Regular
+            headline3: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 18 Regular
+            headline4: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 18 SemiLight
+            headline5: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 16 SemiLight
+            headline6: TextStyle(fontSize: 16, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+
+            // Body
+            // 14 Regular
+            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            // 14 SemiLight
+            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+
+            // Subtitle
+            // 12 Regular
+            subtitle1: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
+            // 12 Bold
+            subtitle2: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
 
           ),
-
-          // primaryTextTheme: TextTheme(
-            // subtitle1: TextStyle(fontFamily: 'Forestion', fontSize: 12, fontWeight: FontWeight.w800, color: primaryLight, letterSpacing: 0.5),
-          // ),
 
           // Appbar theme
           appBarTheme: AppBarTheme(

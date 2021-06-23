@@ -13,7 +13,6 @@ import 'package:coinsnap/features/utils/colors_helper.dart';
 import '../../../ui_components/ui_components.dart';
 
 // Widgets
-import '../widgets/card_holder.dart';
 import '../widgets/coin_ticker.dart';
 import '../widgets/panic_button.dart';
 import '../widgets/home_button.dart';
@@ -47,8 +46,12 @@ class HomeState extends State<Home> {
             Container(
               margin: mainCardMargin(),
               decoration: mainCardDecoration(),
+              padding: mainCardPadding(),
               child: Column(
                 children: <Widget> [
+                  Image(
+                    image: AssetImage('graphics/assets/svg/bolt_transp.svg'),
+                  ),
                   Row(children: [
                     Padding(
                       padding: EdgeInsets.only(bottom: 14),
@@ -79,7 +82,6 @@ class HomeState extends State<Home> {
                 //         // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
                 //         child: TotalValue(),
                 //       ),
-                //       CardHolderSVG(),
                 //     ]
                 //   )
                 // ),
