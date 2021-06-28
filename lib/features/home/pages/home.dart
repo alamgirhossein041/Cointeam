@@ -1,3 +1,4 @@
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:flutter/material.dart';
 
 // Packages
@@ -16,6 +17,7 @@ import '../../../ui_components/ui_components.dart';
 import '../widgets/coin_ticker.dart';
 import '../widgets/panic_button.dart';
 import '../widgets/home_button.dart';
+import '../widgets/market_button.dart';
 import '../widgets/total_value.dart';
 
 class Home extends StatefulWidget {
@@ -37,96 +39,102 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: primaryBlue,
-        body: Stack(
-          children: <Widget> [
-            CoinTicker(),
-            Container(
-              margin: mainCardMargin(),
-              decoration: mainCardDecoration(),
-              padding: mainCardPadding(),
-              child: Column(
-                children: <Widget> [
-                  Image(
-                    image: AssetImage('graphics/assets/svg/bolt_transp.svg'),
+    return Container(
+      color: primaryBlue,
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          backgroundColor: primaryBlue,
+          body: Stack(
+            children: <Widget> [
+              CoinTicker(),
+              Container(
+                margin: mainCardMargin(),
+                decoration: mainCardDecoration(),
+                padding: mainCardPadding(),
+                width: displayWidth(context),
+                child: Column(
+                  children: <Widget> [
+                    // Image(
+                    //   image: AssetImage('graphics/assets/svg/bolt_transp.svg'),
+                    // ),
+                    Row(children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 14),
+                        child: Text('Balance'),
+                      ),
+                    ]),
+                    Row(children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 14),
+                        child: Text('\$12,345.67',
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                      ),
+                    ],
                   ),
-                  Row(children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 14),
-                      child: Text('Balance'),
-                    ),
-                  ]),
-                  Row(children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 14),
-                      child: Text('\$12,345.67',
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                    ),
-                  ],
-                ),
-                // Flexible(
-                //   flex: 4,
-                //   fit: FlexFit.tight,
-                //   child: Stack(
-                //     children: <Widget> [
-                //       Center(
-                //         child: Text(
-                //           "Total Value", style: TextStyle(fontSize: 28, color: primaryDark)
-                //         )
-                //       ),
-                //       Center(
-                //         /// Total Value Bloc
-                //         // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
-                //         child: TotalValue(),
-                //       ),
-                //     ]
-                //   )
-                // ),
-                SizedBox(
-                  height: displayHeight(context) * 0.05
-                ),
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: PanicButton(),
-                ),
-                Flexible(
-                  flex: 10,
-                  fit: FlexFit.tight,
-                  child: Column(
-                    children: <Widget> [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          HomeButton(),
-                          HomeButton(),
-                        ]
-                      ),
-                      SizedBox(height: displayHeight(context) * 0.02),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          HomeButton(),
-                          HomeButton(),
-                        ]
-                      ),
-                      SizedBox(height: displayHeight(context) * 0.02),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget> [
-                          HomeButton(),
-                          HomeButton(),
-                        ]
-                      ),
-                    ]
-                  )
-                ),
-              ]
-            )
-          ),]
+                  // Flexible(
+                  //   flex: 4,
+                  //   fit: FlexFit.tight,
+                  //   child: Stack(
+                  //     children: <Widget> [
+                  //       Center(
+                  //         child: Text(
+                  //           "Total Value", style: TextStyle(fontSize: 28, color: primaryDark)
+                  //         )
+                  //       ),
+                  //       Center(
+                  //         /// Total Value Bloc
+                  //         // child: Text("\$14,141.51", style: TextStyle(fontSize: 34, color: Colors.black))
+                  //         child: TotalValue(),
+                  //       ),
+                  //     ]
+                  //   )
+                  // ),
+                  SizedBox(
+                    height: displayHeight(context) * 0.05
+                  ),
+                  Flexible(
+                    flex: 10,
+                    fit: FlexFit.tight,
+                    child: PanicButton(),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    fit: FlexFit.tight,
+                    child: Column(
+                      children: <Widget> [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget> [
+                            HomeButton(),
+                            HomeButton(),
+                          ]
+                        ),
+                        SizedBox(height: displayHeight(context) * 0.02),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget> [
+                            HomeButton(),
+                            HomeButton(),
+                          ]
+                        ),
+                        SizedBox(height: displayHeight(context) * 0.02),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget> [
+                            HomeButton(),
+                            MarketButton(),
+                          ]
+                        ),
+                      ]
+                    )
+                  ),
+                ]
+              )
+            ),
+          ]
+          )
         )
       ),
     );

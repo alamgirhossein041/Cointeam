@@ -1,7 +1,9 @@
 import 'package:coinsnap/features/data/binance_price/binance_price.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/home/pages/home.dart';
 import 'package:coinsnap/features/data/coinmarketcap/coinmarketcap.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
 import 'package:coinsnap/features/trading/trading.dart';
@@ -62,13 +64,22 @@ class MyApp extends StatelessWidget {
         BlocProvider<BuyPortfolioBloc> (
           create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
+        BlocProvider<GeckoGlobalStatsBloc>(
+          create: (context) => GeckoGlobalStatsBloc(geckoGlobalStatsRepo: GeckoGlobalStatsRepoImpl()),
+        ),
+        BlocProvider<CoingeckoListTop100Bloc>(
+          create: (context) => CoingeckoListTop100Bloc(coingeckoListTop100Repository: CoingeckoListTop100RepositoryImpl()),
+        ),
+        BlocProvider<CoingeckoListTrendingBloc>(
+          create: (context) => CoingeckoListTrendingBloc(coingeckoListTrendingRepository: CoingeckoListTrendingRepositoryImpl()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
           
           accentColor: Color(0xFFFF25CB9D),
         
-          // Default brightness
+          // Default brightness 
           // brightness: Brightness.dark
 
           // Default font family
@@ -139,6 +150,7 @@ class MyApp extends StatelessWidget {
           '/selllog': (context) => SellLog(),
           '/snapshots': (context) => SnapshotList(),
           '/snapshotlog': (context) => SnapshotLog(),
+          '/marketoverview': (context) => MarketOverview(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),
