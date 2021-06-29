@@ -31,24 +31,30 @@ const uniColor = Color(0xFF25365b);
 const bgGrad1 = Color(0xFF17171A);
 const bgGrad2 = Color(0xFF18171A);
 
-/// POST RENEWAL ///
+/// Primary ///
 
-/// Light - Primary
+/// Light
 /// Uses:
 /// - Light text on dark background
 /// - Light theme background
 const primaryLight = Color(0xFFF6F8F9);
 
-/// Blue - Primary
+/// Dark
+/// Uses:
+/// - Dark text on light background
+/// - Dark theme background
+/// - Outlined button border
+const primaryDark = Color(0xFF0B2940);
+
+/// Blue
 /// Uses:
 /// - Main app background
 /// - Primary button
 /// - Accent
 const primaryBlue = Color(0xFF2197F2);
 
-/// Dark - Primary
+/// Green
 /// Uses:
-/// - Dark text on light background
-/// - Dark theme background
-/// - Outlined button border
-const primaryDark = Color(0xFF0B2940);
+/// - Success
+/// - Same green as bolt
+const primaryGreen = Color(0xFF2EDFAE);
