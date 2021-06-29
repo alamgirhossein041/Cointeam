@@ -16,6 +16,7 @@ class PanicButton extends StatefulWidget {
 class PanicButtonState extends State<PanicButton> {
   @override
   Widget build(BuildContext context) {
+    // Solid green circle
     Widget _greenCircle = Container(
       width: 118.0,
       height: 118.0,
@@ -28,6 +29,11 @@ class PanicButtonState extends State<PanicButton> {
     Widget _boltButton = Container(
       width: 90,
       height: 90,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(color: primaryDark.withOpacity(0.25), blurRadius: 8, spreadRadius: 1)
+          ]),
       child: ElevatedButton(
         child: SvgPicture.asset('graphics/assets/svg/bolt_green.svg'),
         style: ElevatedButton.styleFrom(
@@ -105,11 +111,11 @@ class PanicButtonState extends State<PanicButton> {
       alignment: AlignmentDirectional.center,
       children: [
         _greenCircle,
-        _boltButton,
         _dottedCircle1,
         _dottedCircle2,
         _dottedCircle3,
         _dottedCircle4,
+        _boltButton,
       ],
     );
   }
