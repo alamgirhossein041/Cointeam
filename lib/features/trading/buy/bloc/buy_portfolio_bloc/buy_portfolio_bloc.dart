@@ -1,25 +1,16 @@
-import 'dart:developer';
-
-import 'package:coinsnap/modules/data/binance_price/models/binance_exchange_info.dart';
-import 'package:coinsnap/modules/data/binance_price/repos/binance_exchange_info.dart';
-import 'package:coinsnap/modules/portfolio/repos/exchanges/binance_get_portfolio.dart';
-import 'package:coinsnap/modules/portfolio/models/local/get_portfolio.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_event.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
-import 'package:coinsnap/modules/trading/portfolio/buy/repos/binance_buy_coin.dart';
-import 'package:coinsnap/modules/trading/portfolio/sell/repos/binance_sell_coin.dart';
+import 'package:coinsnap/features/data/portfolio/user_data/model/get_portfolio.dart';
+import 'package:coinsnap/features/data/binance_price/binance_price.dart';
+import 'package:coinsnap/features/trading/trading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   
   BuyPortfolioBloc({this.binanceBuyCoinRepository, this.binanceSellCoinRepository, this.binanceExchangeInfoRepository}) : super(BuyPortfolioInitialState());
 
-  // double totalValue = 0.0;
   double totalBuyQuote = 1.0;
-  // double pctToSell = 1.0;
   String coinTicker = "USDT";
-  // List<String> coinsToRemove = [];
   double divisor = 1.0;
   String originalCoinTicker = "";
   double totalValue = 0.0;
@@ -27,41 +18,25 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   List<String> portfolioList = [];
   GetPortfolioModel portfolioDataMap;
 
-  // Map<String, dynamic> coinsToSave = {};
-
-  // final LocalStorage localStorage = LocalStorage("coinstreetapp");
-
-  // FtxSellCoinRepositoryImpl ftxSellCoinRepository;
-  // FtxGetBalanceRepositoryImpl ftxGetBalanceRepository;
-  // FtxExchangeInfoRepositoryImpl ftxExchangeInfoRepository;
   BinanceSellCoinRepositoryImpl binanceSellCoinRepository;
   BinanceBuyCoinRepositoryImpl binanceBuyCoinRepository;
   BinanceGetAllRepositoryImpl binanceGetAllRepository;
   BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
 
-  // BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
-
   @override
   Stream<BuyPortfolioState> mapEventToState(BuyPortfolioEvent event) async* {
   
     if (event is FetchBuyPortfolioEvent) {
-      // pctToSell = event.value / 100;
       totalBuyQuote = event.totalBuyQuote;
       coinTicker = event.coinTicker;
-      // coinsToRemove = event.coinsToRemove;
       portfolioList = event.portfolioList;
       portfolioDataMap = event.portfolioDataMap;
       totalBuyQuote = event.totalBuyQuote;
 
       yield BuyPortfolioLoadingState();
       try {
-        // debugPrint("Our coinTicker is : " + coinTicker);
-
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e.filters);
-        /// binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
-        
-        /// if(portfolioList != null) {
         
         if(portfolioDataMap.data["USDTTOTAL"] != null) {
           originalCoinTicker = "USDTTOTAL";
@@ -77,15 +52,11 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
           } else {
             try {
               var result;
-              // if(v == 'USDT') {
-                // divisor = double.parse(binanceSymbols[coinTicker + coins.coin][2].stepSize);
-              // } else {
               divisor = double.parse(binanceSymbols[v + coinTicker][2].stepSize);
-              // }
+
               /// This is where we do the percentage calculation
-              ///
+              
               double buyQuantity = double.parse(portfolioDataMap.data[v]);
-              // var tmp = (buyQuantity * pctToSell);
               totalValue = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
               var zeroTarget = double.parse((totalValue % divisor).toStringAsFixed(6));
               totalValue -= zeroTarget;
@@ -114,16 +85,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
         });
     
 
-          /// ### This is where we would add to database?? ### ///
-
-        // FtxExchangeInfoModel ftxExchangeInfoModel = await ftxExchangeInfoRepository.getFtxExchangeInfo();
-        // debugPrint("error2");
-
-        // FtxGetBalanceModel ftxGetBalanceModel = await ftxGetBalanceRepository.getFtxGetBalance();
-        // debugPrint("error3");
-
-        // Map ftxSymbols = Map.fromIterable(ftxExchangeInfoModel.result, key: (e) => e.name, value: (e) => e.sizeIncrement); /// we need more than just a key and value so maybe change this from Map to something else
-        // debugPrint("error4");
+        /// ### This is where we would add to database?? ### ///
 
 /// ### Uncomment below for FTX integration (check bugs) ###
         // for (var coins in ftxGetBalanceModel.result) {

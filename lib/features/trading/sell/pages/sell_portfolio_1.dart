@@ -1,13 +1,6 @@
-import 'dart:developer';
-import 'dart:math' as math;
-
-import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
-import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_bloc.dart';
-import 'package:coinsnap/modules/data/total_tradeable_value/binance_total_value/bloc/binance_total_value_state.dart';
-import 'package:coinsnap/modules/utils/colors_helper.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/data/startup/startup.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +17,6 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
 
   String dropdownValue = 'USDT';
   int dropdownIndex = 0;
-  double _value = 50.0;
   double totalValueEstimated = 0.0;
   bool preview = true;
 
@@ -157,7 +149,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(40,20,0,0),
+                                padding: EdgeInsets.fromLTRB(40,0,0,0),
                                 child: Text("Sell", style: TextStyle(color: Colors.black))
                               )
                             )
@@ -204,7 +196,13 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                                           padding: EdgeInsets.fromLTRB(35,10,0,0),
                                           child: Consumer<ValueState>(
                                             builder: (context, valueState, child) {
-                                              return Text("\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+                                              if(dropdownValue == 'USDT') {
+                                                return Text("\$" + ((state.totalValue - state.usdTotal) * valueState.value / 100).toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+                                              } else if(dropdownValue == 'BTC') {
+                                                return Text("\$" + ((state.totalValue - state.btcTotal) * valueState.value / 100).toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 32));
+                                              } else {
+                                                return Text("ERROR");
+                                              }
                                             }
                                           )
                                         ),
@@ -272,45 +270,6 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                               )
                             )
                           ),
-                          // Flexible(
-                          //   flex: 2,
-                          //   fit: FlexFit.tight,
-                          //   child: Align(
-                          //     alignment: Alignment.center,
-                          //     child: Column(
-                          //       children: <Widget> [
-                          //         Text("You will receive:", style: TextStyle(color: Colors.grey)),
-                          //         DropdownButton<String>(
-                          //           dropdownColor: uniColor,
-                          //           value: buildDropdownValue(dropdownIndex),
-                          //           icon: Icon(Icons.arrow_drop_down, color: Colors.white),
-                          //           iconSize: 24,
-                          //           elevation: 16,
-                          //           style: Theme.of(context).textTheme.bodyText2,
-                          //           underline: Container(
-                          //             height: 2,
-                          //             padding: EdgeInsets.only(right: 40),
-                          //             color: Colors.yellow,
-                          //           ),
-                          //           onChanged: (String newValue) {
-                          //             setState(() {
-                          //               dropdownValue = newValue;
-                          //               dropdownIndex = targetCoins.indexOf(newValue);
-                          //               // imageIndex = targetCoins.indexOf(newValue);
-                          //             });
-                          //             // widget.callback(imageIndex);
-                          //           },
-                          //           items: targetCoins.map<DropdownMenuItem<String>>((String value) {
-                          //             return DropdownMenuItem<String>(
-                          //               value: value,
-                          //               child: Text(value),
-                          //             );
-                          //           }).toList(),
-                          //         )
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
                           Flexible(
                             flex: 12,
                             fit: FlexFit.tight,
@@ -389,60 +348,6 @@ class PercentSelectionState extends State<PercentSelection> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget> [
-        // Flexible(
-        //   flex: 3,
-        //   fit: FlexFit.tight,
-        //   child: Align(
-        //     alignment: Alignment.center,
-        //     child: BlocConsumer<StartupBloc, StartupState>(
-        //       listener: (context, state) {
-        //         if (state is StartupErrorState) {
-        //           debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
-        //         }
-        //       },
-        //       builder: (context, state) {
-        //         if (state is StartupLoadedState) {
-        //           totalValueEstimated = state.totalValue * _value / 100;
-        //           return Column(
-        //             children: <Widget> [
-        //               // Text("You are selling:"),
-        //               // SizedBox(height: 20),
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.center,
-        //                 children: <Widget> [
-        //                   Container(
-        //                     height: 20,
-        //                     width: 55,
-        //                     child: TextFormField(
-        //                       style: TextStyle(color: Colors.white),
-        //                       textAlign: TextAlign.center,
-        //                       controller: textField,
-        //                       keyboardType: TextInputType.numberWithOptions(decimal: true),
-        //                       onEditingComplete: () {
-        //                         setState(() {
-        //                           _value = double.parse(textField.text);
-        //                         });
-        //                       }
-        //                     ),
-        //                   ),
-        //                   // Text("% of your portfolio", style: TextStyle(color: Colors.white))
-        //                 ],
-        //               ),
-        //             ],
-        //           );
-        //         } else if (state is StartupErrorState) {
-        //           /// 26th
-        //           return Text(state.errorMessage);
-        //         } else if (state is StartupLoadingState) {
-        //           log("Startup Loading");
-        //           return loadingTemplateWidget();
-        //         } else {
-        //           return loadingTemplateWidget();
-        //         }
-        //       }
-        //     )
-        //   )
-        // ),
         Flexible(
           flex: 2,
           fit: FlexFit.tight,
@@ -480,7 +385,6 @@ class PercentSelectionState extends State<PercentSelection> {
                   showLabels: false,
                   enableTooltip: true,
                   onChanged: (dynamic value) {
-                    // final valueState = ValueState();
                     Provider.of<ValueState>(context, listen: false).valueChange(value);
                     setState(() {
                       _value = value;
@@ -492,21 +396,6 @@ class PercentSelectionState extends State<PercentSelection> {
             ),
           ),
         ),
-        // Flexible(
-        //   flex: 3,
-        //   fit: FlexFit.tight,
-        //   child: Align(
-        //     alignment: Alignment.center,
-        //     child: Column(
-        //       children: <Widget> [
-        //         SizedBox(height: 20),
-        //         Text("Estimated Fees", style: TextStyle(color: Colors.grey)),
-        //         SizedBox(height: 5),
-        //         Text("\$" + (totalValueEstimated/1000).toStringAsFixed(2), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        //       ]
-        //     )
-        //   )
-        // ),
         Flexible(
           flex: 3,
           fit: FlexFit.tight,
@@ -562,51 +451,51 @@ class PercentSelectionState extends State<PercentSelection> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget> [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget> [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(35,0,0,0),
-                    child: Text("FTX Total", style: TextStyle(color: Colors.black, fontSize: 14)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0,0,35,0),
-                    child: BlocConsumer<StartupBloc, StartupState>(
-                      listener: (context, state) {
-                        if (state is StartupErrorState) {
-                          debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is StartupLoadedState) {
-                          return Consumer<ValueState>(
-                            builder: (context, valueState, child) {
-                              return RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget> [
+              //     Padding(
+              //       padding: EdgeInsets.fromLTRB(35,0,0,0),
+              //       child: Text("FTX Total", style: TextStyle(color: Colors.black, fontSize: 14)),
+              //     ),
+              //     Padding(
+              //       padding: EdgeInsets.fromLTRB(0,0,35,0),
+              //       child: BlocConsumer<StartupBloc, StartupState>(
+              //         listener: (context, state) {
+              //           if (state is StartupErrorState) {
+              //             debugPrint("An error occurred in sell_portfolio.dart - StartupErrorState");
+              //           }
+              //         },
+              //         builder: (context, state) {
+              //           if (state is StartupLoadedState) {
+              //             return Consumer<ValueState>(
+              //               builder: (context, valueState, child) {
+              //                 return RichText(
+              //                   text: TextSpan(
+              //                     style: TextStyle(
+              //                       fontSize: 14,
+              //                       color: Colors.black,
+              //                     ),
                                   
-                                  children: <TextSpan> [
-                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2)),
-                                    TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
-                                  ]
-                                )
-                              );
-                            }
-                          );
-                        } else if (state is StartupErrorState) {
-                          return Text("An Error occured: " + state.errorMessage);
-                        } else {
-                          return loadingTemplateWidget(20, 2);
-                        }
-                      }
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 5),
+              //                     children: <TextSpan> [
+              //                       TextSpan(text: "\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2)),
+              //                       TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
+              //                     ]
+              //                   )
+              //                 );
+              //               }
+              //             );
+              //           } else if (state is StartupErrorState) {
+              //             return Text("An Error occured: " + state.errorMessage);
+              //           } else {
+              //             return loadingTemplateWidget(20, 2);
+              //           }
+              //         }
+              //       ),
+              //     )
+              //   ],
+              // ),
+              // SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget> [
@@ -634,7 +523,11 @@ class PercentSelectionState extends State<PercentSelection> {
                                   ),
                                   
                                   children: <TextSpan> [
-                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100).toStringAsFixed(2)),
+                                    if(widget.dropdownValue == 'USDT')...[
+                                      TextSpan(text: "\$" + ((state.totalValue - state.usdTotal) * valueState.value / 100).toStringAsFixed(2)),
+                                    ] else if(widget.dropdownValue == 'BTC')...[
+                                      TextSpan(text: "\$" + ((state.totalValue - state.btcTotal) * valueState.value / 100).toStringAsFixed(2)),
+                                    ],
                                     TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
                                   ]
                                 )
@@ -679,7 +572,11 @@ class PercentSelectionState extends State<PercentSelection> {
                                   ),
                                   
                                   children: <TextSpan> [
-                                    TextSpan(text: "\$" + (state.totalValue * valueState.value / 100000).toStringAsFixed(2)),
+                                    if(widget.dropdownValue == 'USDT')...[
+                                      TextSpan(text: "\$" + ((state.totalValue - state.usdTotal) * valueState.value / 100000).toStringAsFixed(2)),
+                                    ] else if(widget.dropdownValue == 'BTC')...[
+                                      TextSpan(text: "\$" + ((state.totalValue - state.btcTotal) * valueState.value / 100000).toStringAsFixed(2)),
+                                    ],
                                     TextSpan(text: "  Usdt", style: TextStyle(color: Color(0X660B2940)))
                                   ]
                                 )
@@ -696,10 +593,9 @@ class PercentSelectionState extends State<PercentSelection> {
                   )
                 ],
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 35),
             ]
           )
-          // child: Text("Your portfolio will be saved.", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         ),
         Flexible(
           flex: 3,

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:coinsnap/modules/utils/global_library.dart' as globals;
+import 'package:coinsnap/features/utils/global_library.dart' as globals;
 
 import 'package:flutter/material.dart';
 
@@ -15,15 +15,10 @@ class BinanceBuyCoinRepositoryImpl implements IBinanceBuyCoinRepository {
   @override
     binanceBuyCoin(String buyTicker, double quantity) async {
     String _binanceUrl = 'api.binance.com';
-
-    /// ##### Temporary API Key load-ins ###### 
-    /// ##### TODO: Add Key storage implementation ###### 
-
     final secureStorage = FlutterSecureStorage();
 
     String api = await secureStorage.read(key: 'binanceApi');
     String sapi = await secureStorage.read(key: 'binanceSapi');
-
 
     /// ##### Start API Request ######
     /// Build our signature and HMAC hash for Binance

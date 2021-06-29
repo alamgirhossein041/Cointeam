@@ -10,6 +10,5 @@ class FetchSellPortfolioEvent extends SellPortfolioEvent {
 
   FetchSellPortfolioEvent({this.value, this.coinTicker, this.coinsToRemove, this.preview});
   @override
-  /// TODO: stuff
   List<Object> get props => null;
 }

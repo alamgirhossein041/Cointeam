@@ -1,6 +1,6 @@
-import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_event.dart';
-import 'package:coinsnap/modules/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_state.dart';
-import 'package:coinsnap/modules/data/global_stats/coinmarketcap/repos/global_coinmarketcap_stats_repo.dart';
+import 'package:coinsnap/features/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_event.dart';
+import 'package:coinsnap/features/data/global_stats/coinmarketcap/bloc/global_coinmarketcap_stats_state.dart';
+import 'package:coinsnap/features/data/global_stats/coinmarketcap/repos/global_coinmarketcap_stats_repo.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';

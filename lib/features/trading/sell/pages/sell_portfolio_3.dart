@@ -1,7 +1,6 @@
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_state.dart';
-import 'package:coinsnap/modules/utils/sizes_helper.dart';
-import 'package:coinsnap/modules/widgets/templates/loading_screen.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,59 +141,60 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                         ),
                                         child: Column(
                                           children: <Widget> [
-                                            // Flexible(
-                                            //   flex: 1,
-                                            //   fit: FlexFit.tight,
-                                            //   child: Align(
-                                            //     alignment: Alignment.centerRight,
-                                            //     child: Padding(
-                                            //       padding: EdgeInsets.only(right: 30),
-                                            //       child: Icon(Icons.close, color: Colors.grey[400]),
-                                            //     ),
-                                            //   )
-                                            // ),
                                             Flexible(
                                               flex: 1,
                                               fit: FlexFit.tight,
                                               child: Align(
                                                 alignment: Alignment.bottomCenter,
-                                                // child: Icon(Icons.done, size: 60, color: Colors.black)
-                                                child: Text("You sold 78% of your portfolio", style: TextStyle(color: Colors.black)),
+                                                // child: Text("You sold 78% of your portfolio", style: TextStyle(color: Colors.black)),
+                                                child: Text("You sold " + (percentageValue * 100).toString() + "% of your portfolio", style: TextStyle(color: Colors.black, fontSize: 16)),
                                               ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Text("(Not including " + symbol + ")", style: TextStyle(color: Colors.black, fontSize: 16)),
+                                              )
                                             ),
                                             Flexible(
                                               flex: 1,
                                               fit: FlexFit.tight,
                                               child: Align(
-                                                alignment: Alignment.center,
+                                                alignment: Alignment.topCenter,
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  // mainAxisAlignment: MainAxisAlignment.end,
                                                   children: <Widget> [
-                                                    // SizedBox(height: 10),
-                                                    Text("\$5,124.02", style: TextStyle(color: Colors.black, fontSize: 24)),
+                                                    Text("You converted: ", style: TextStyle(color: Colors.black, fontSize: 18)),
+                                                    //Text("\$5,124.02", style: TextStyle(color: Colors.black, fontSize: 24)),
+                                                    Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 24)),
                                                     SizedBox(height: 10),
-                                                    Text("B\$0.84314307", style: TextStyle(color: Colors.black)),
+                                                    // Text("B\$0.84314307", style: TextStyle(color: Colors.black)),
+                                                    SizedBox(height: 10),
+                                                    /// 22nd
+                                                    /// Text(stuff)
                                                   ]
                                                 ),
                                               )
                                             ),
-                                            Flexible(
-                                              flex: 1,
-                                              fit: FlexFit.tight,
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                // child: Text("You sold " + (percentageValue*100).toString() + "% of your portfolio", style: TextStyle(color: Colors.white))
-                                                child: Text("You have received:", style: TextStyle(color: Colors.black)),
-                                              )
-                                            ),
-                                            Flexible(
-                                              flex: 1,
-                                              fit: FlexFit.tight,
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 30))
-                                              ),
-                                            ),
+                                            // Flexible(
+                                            //   flex: 1,
+                                            //   fit: FlexFit.tight,
+                                            //   child: Align(
+                                            //     alignment: Alignment.center,
+                                            //     child: Text("You have received:", style: TextStyle(color: Colors.black)),
+                                            //   )
+                                            // ),
+                                            // Flexible(
+                                            //   flex: 1,
+                                            //   fit: FlexFit.tight,
+                                            //   child: Align(
+                                            //     alignment: Alignment.center,
+                                            //     child: Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 30))
+                                            //   ),
+                                            // ),
                                             Flexible(
                                               flex: 2,
                                               fit: FlexFit.tight,
@@ -222,13 +222,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                                               return count++ == 3;
                                                           });
                                                         }),
-                                                        // BlocProvider.of<SellPortfolioBloc>(context).add(FetchSellPortfolioEvent(value: percentageValue, coinTicker: symbol)),
-                                                        // Navigator.pushNamed(context, '/sellportfolio3', arguments: {'value': percentageValue, 'symbol': symbol})
-                                                        // Navigator.pushNamed(context, '/hometest'),
-                                                        
                                                       },
-                                                    // ),
-                                                    // elevation: 2,
                                                   ),
                                                 ),
                                               ),
@@ -241,7 +235,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                                 child: TextButton(
                                                   child: Text("See transaction log", style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold)),
                                                   onPressed: () => {
-                                                    Navigator.pushReplacementNamed(context, '/selllog', arguments: {'coinsToSave': state.coinsToSave, 'preview': preview, 'symbol': symbol}),
+                                                    Navigator.pushReplacementNamed(context, '/selllog', arguments: {'coinDataStructure': state.coinDataStructure, 'preview': preview, 'symbol': symbol}),
                                                   },
                                                 ),
                                               )
