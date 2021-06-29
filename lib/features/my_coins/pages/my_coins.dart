@@ -162,7 +162,7 @@ class MyCoinsCustomTile extends StatelessWidget {
           //     children: <Widget> [
           //       Text(binanceGetAllModel.name, style: TextStyle(color: primaryDark)),
           //       // SizedBox(height: 2),
-          //       Text(binanceGetAllModel.coin, style: TextStyle(color: primaryDarkHalf))
+          //       Text(binanceGetAllModel.coin, style: TextStyle(color: primaryDark.withOpacity(0.5)))
           //     ]
           //   )
           // ),
@@ -176,7 +176,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                 children: <TextSpan> [
                   TextSpan(
                     text: binanceGetAllModel.coin,
-                    style: TextStyle(color: primaryDarkHalf)
+                    style: TextStyle(color: primaryDark.withOpacity(0.5))
                   )
                 ]
               )
@@ -209,7 +209,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                 children: <TextSpan> [
                   TextSpan(
                     text: (binanceGetAllModel.free + binanceGetAllModel.locked).toStringAsFixed(2),
-                    style: TextStyle(color: primaryDarkHalf)
+                    style: TextStyle(color: primaryDark.withOpacity(0.5))
                   )
                 ]
               ),
