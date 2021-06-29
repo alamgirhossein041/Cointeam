@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:coinsnap/features/data/portfolio/exchange/models/binance_get_portfolio.dart';
+import 'package:coinsnap/features/my_coins/models/binance_get_portfolio.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;

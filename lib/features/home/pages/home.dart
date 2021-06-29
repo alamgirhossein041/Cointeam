@@ -1,4 +1,6 @@
 import 'package:coinsnap/features/data/global_stats/global_stats.dart';
+import 'package:coinsnap/features/home/widgets/my_coins_button.dart';
+import 'package:coinsnap/features/my_coins/pages/my_coins.dart';
 import 'package:flutter/material.dart';
 
 // Packages
@@ -123,7 +125,7 @@ class HomeState extends State<Home> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget> [
-                            HomeButton(),
+                            MyCoinsButton(),
                             MarketButton(),
                           ]
                         ),

@@ -52,3 +52,10 @@ const primaryBlue = Color(0xFF2197F2);
 /// - Dark theme background
 /// - Outlined button border
 const primaryDark = Color(0xFF0B2940);
+
+/// Dark - Primary
+/// Uses:
+/// - Dark text on light background
+/// - Dark theme background
+/// - Outlined button border
+const primaryDarkHalf = Color(0x800B2940);

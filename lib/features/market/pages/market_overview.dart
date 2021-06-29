@@ -8,6 +8,7 @@ import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/number_formatter.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
+import 'package:coinsnap/features/widget_templates/title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/ui_components/ui_components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,7 @@ class MarketOverview extends StatelessWidget {
           backgroundColor: primaryBlue,
           body: Stack(
             children: <Widget> [
+              TitleBar(title: "Market Overview"),
               Container(
                 margin: mainCardMargin(),
                 decoration: mainCardDecoration(),
@@ -55,7 +57,8 @@ class MarketOverview extends StatelessWidget {
                     Flexible(
                       flex: 4,
                       fit: FlexFit.tight,
-                      child: Text("Hi")
+                      // child: Text("Hi")
+                      child: SizedBox(),
                     ),
                   ]
                 )

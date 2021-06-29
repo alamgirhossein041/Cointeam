@@ -27,7 +27,6 @@ class CoingeckoListTrendingRepositoryImpl implements ICoingeckoListTrendingRepos
       // debugPrint("Hello World");
       // List<CoingeckoListTrendingModel> coingeckoListTrendingModelList = json.decode(response.body).cast<Map<String, dynamic>>().map<CoingeckoListTrendingModel>((json) => CoingeckoListTrendingModel.fromJson(json)).toList();
       Map<String, dynamic> body = Map.from(json.decode(response.body));
-      log(body.toString());
       // BinanceExchangeInfoModel binanceExchangeInfoModel = BinanceExchangeInfoModel.fromJson(body['coins']);
       List<CoingeckoListTrendingModel> coingeckoListTrendingModelList = body['coins'].cast<Map<String, dynamic>>().map<CoingeckoListTrendingModel>((json) => CoingeckoListTrendingModel.fromJson(json)).toList();
       // Map<String, dynamic> coingeckoMap = {},

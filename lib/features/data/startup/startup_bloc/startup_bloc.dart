@@ -68,22 +68,30 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             log(coins.locked.toString());
             if(binancePrices[coins.coin + 'USDT'] != null) {
               coinList.add(coins.coin);
+              coins.usdValue = binancePrices[coins.coin + 'USDT'];
+              coins.btcValue = binancePrices[coins.coin + 'USDT'] / btcPrice;
               coins.totalUsdValue = (coins.free + coins.locked) * binancePrices[coins.coin + 'USDT'];
               totalValue += coins.totalUsdValue;
               if(coins.coin == 'BTC') {
                 btcTotal = coins.totalUsdValue;
+                coins.btcValue = 1;
+                coins.usdValue = btcPrice;
               }
             } else if(binancePrices[coins.coin + 'BTC'] != null) {
               coinList.add(coins.coin);
+              coins.btcValue = binancePrices[coins.coin + 'BTC'];
+              coins.usdValue = binancePrices[coins.coin + 'BTC'] * btcPrice;
               coins.totalUsdValue = (coins.free + coins.locked) * (binancePrices[coins.coin + 'BTC'] * btcPrice);
               totalValue += coins.totalUsdValue;
             } else if(coins.coin == 'USDT') {
               coins.totalUsdValue = (coins.free + coins. locked);
               coinList.add(coins.coin);
+              coins.usdValue = 1;
               totalValue += coins.totalUsdValue;
               usdTotal = coins.totalUsdValue;
             } else {
               coins.totalUsdValue = 0;
+              coins.usdValue = 0;
               log(coins.coin.toString() + " has no BTC or USDT pair");
             }
           }

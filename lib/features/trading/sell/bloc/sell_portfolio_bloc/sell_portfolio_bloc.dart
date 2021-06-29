@@ -43,7 +43,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       pctToSell = event.value;
       coinTicker = event.coinTicker;
       coinsToRemove = event.coinsToRemove;
-      preview = event.preview;
+      // preview = event.preview;
+      // log(preview.toString());
+      // log("HELLO");
       yield SellPortfolioLoadingState();
       
       try {
@@ -51,74 +53,73 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e);
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
-        if(!preview) {
-          await Future.forEach(binanceGetAllModel, (v) async {
-            debugPrint("8th April - Test 3");
-            if(v.coin == coinTicker) {
-              debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
-            } else {
-              try {
-                var result;
-                if(v.coin == 'USDT') {
-                  divisor = double.parse(binanceSymbols[coinTicker + v.coin].filters[2].stepSize);
-                } else {
-                  divisor = double.parse(binanceSymbols[v.coin + coinTicker].filters[2].stepSize);
-                  basePrecision = binanceSymbols[v.coin + coinTicker].baseAssetPrecision;
-                }
-                var tmp = v.free * pctToSell;
-                var zeroTarget = tmp % divisor;
-                tmp -= zeroTarget;
-                if (tmp >= divisor) {
-                  log('Coin: ' + v.coin);
-                  log('Coin Qty to sell: ' + v.free.toString());
-                  log('Divisor(stepSize): ' + divisor.toString());
-                  log('Post-Modulo: ' + zeroTarget.toString()); 
-                  log('To Sell: ' + tmp.toString());
-                  log("\n\nSelling to ticker: " + coinTicker);
-                  log('\n\n');
-                  double quantityTmp;
-                  double valueTmp;
-                  if(v.coin == 'USDT') {
-                    debugPrint("########");
-                    result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
-                    log("Pretending to sell");
-                    quantityTmp = double.parse(result['cummulativeQuoteQty']);
-                    valueTmp = double.parse(result['executedQty']);
-                  } else {
-                    log("Uh hello");
-                    result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp, basePrecision);
-                    log("Pretending to sell 2");
-                    quantityTmp = double.parse(result['executedQty']);
-                    valueTmp = double.parse(result['cummulativeQuoteQty']);
-                    log("????????");
-                    log("quantity of " + v.coin + " is " + quantityTmp.toString());
-                    log("value of " + v.coin + " is " + valueTmp.toString());
-                  }
-                  debugPrint(result['code'].toString());
-                  if(result['code'] == null) {
-                    totalValue += double.parse(result['cummulativeQuoteQty']);
-                    debugPrint("What's wrong now?");
-                    debugPrint("Running totalValue is $totalValue");
-                    /// 25th
-                    Map<String, dynamic> coinData = {};
-                    coinData["quantity"] = quantityTmp;
-                    coinData["value"] = valueTmp;
-                    coinsToSave[v.coin] = coinData;
-                    log(v.coin);
-                    log(coinsToSave[v.coin].toString());
-                    log(coinsToSave.toString());
-                    if(tradeSuccessful == false) {
-                      tradeSuccessful = true;
-                    }
-                  }
-                }
-              } catch (e) {
-                debugPrint(e.toString());
-                debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
+        await Future.forEach(binanceGetAllModel, (v) async {
+          log("Hi");
+          debugPrint("8th April - Test 3");
+          if(v.coin == coinTicker) {
+            debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
+          } else {
+            try {
+              var result;
+              if(v.coin == 'USDT') {
+                divisor = double.parse(binanceSymbols[coinTicker + v.coin].filters[2].stepSize);
+              } else {
+                divisor = double.parse(binanceSymbols[v.coin + coinTicker].filters[2].stepSize);
+                basePrecision = binanceSymbols[v.coin + coinTicker].baseAssetPrecision;
               }
+              var tmp = v.free * pctToSell;
+              var zeroTarget = tmp % divisor;
+              tmp -= zeroTarget;
+              if (tmp >= divisor) {
+                log('Coin: ' + v.coin);
+                log('Coin Qty to sell: ' + v.free.toString());
+                log('Divisor(stepSize): ' + divisor.toString());
+                log('Post-Modulo: ' + zeroTarget.toString()); 
+                log('To Sell: ' + tmp.toString());
+                log("\n\nSelling to ticker: " + coinTicker);
+                log('\n\n');
+                double quantityTmp;
+                double valueTmp;
+                if(v.coin == 'USDT') {
+                  debugPrint("########");
+                  result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
+                  log("Pretending to sell");
+                  quantityTmp = double.parse(result['cummulativeQuoteQty']);
+                  valueTmp = double.parse(result['executedQty']);
+                } else {
+                  log("Uh hello");
+                  result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp, basePrecision);
+                  log("Pretending to sell 2");
+                  quantityTmp = double.parse(result['executedQty']);
+                  valueTmp = double.parse(result['cummulativeQuoteQty']);
+                  log("????????");
+                  log("quantity of " + v.coin + " is " + quantityTmp.toString());
+                  log("value of " + v.coin + " is " + valueTmp.toString());
+                }
+                debugPrint(result['code'].toString());
+                if(result['code'] == null) {
+                  totalValue += double.parse(result['cummulativeQuoteQty']);
+                  debugPrint("What's wrong now?");
+                  debugPrint("Running totalValue is $totalValue");
+                  /// 25th
+                  Map<String, dynamic> coinData = {};
+                  coinData["quantity"] = quantityTmp;
+                  coinData["value"] = valueTmp;
+                  coinsToSave[v.coin] = coinData;
+                  log(v.coin);
+                  log(coinsToSave[v.coin].toString());
+                  log(coinsToSave.toString());
+                  if(tradeSuccessful == false) {
+                    tradeSuccessful = true;
+                  }
+                }
+              }
+            } catch (e) {
+              debugPrint(e.toString());
+              debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
             }
-          });
-        }
+          }
+        });
         log(totalValue.toString());
         debugPrint(totalValue.toString());
         log(coinsToSave.toString());
