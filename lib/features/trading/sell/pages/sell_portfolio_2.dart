@@ -231,7 +231,54 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                               log(tmp.toString());
                                               if (tmp != null) {
                                                 double pmt = (state.binanceGetAllModel[index].totalUsdValue * percentageValue);
-                                                if(pmt > 10) {
+                                                if(state.binanceGetAllModel[index].coin.toString() == symbol) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                                    child: Row(
+                                                      children: <Widget> [
+                                                        Flexible(
+                                                          flex: 1,
+                                                          fit: FlexFit.tight,
+                                                          child: Container(),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(state.binanceGetAllModel[index].coin.toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(numberFormatter(state.binanceGetAllModel[index].free * percentageValue), style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
+                                                          /// 21st June
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Padding(
+                                                              padding: EdgeInsets.only(right: 15),
+                                                              child: Text("N/A"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        GestureDetector(
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(right: 15),
+                                                            child: Icon(Icons.close, color: Color(0X660B2940), size: 18),
+                                                          ),
+                                                          onTap: () => {
+                                                            binanceModel.removeWhere((item) => item.coin == binanceModel[index].coin),
+                                                            coinsToRemove.add(binanceModel[index].coin),
+                                                            setState(() {}),
+                                                            /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
+                                                          },
+                                                        ), /// ### Todo: Icon
+                                                      ]
+                                                    ),
+                                                  );
+                                                } else if(pmt > 10) {
                                                   coinTotalValue += pmt;
                                                   totalValueChange.value = coinTotalValue;
                                                   return Padding(
@@ -251,7 +298,8 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                         Flexible(
                                                           flex: 3,
                                                           fit: FlexFit.tight,
-                                                          child: Text(numberFormatter(state.binanceGetAllModel[index].free), style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
+                                                          child: Text(numberFormatter(state.binanceGetAllModel[index].free * percentageValue), style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
+                                                          /// 21st June
                                                         ),
                                                         Flexible(
                                                           flex: 3,
@@ -334,14 +382,16 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                   child: Builder(
                                                     builder: (context) {
                                                       binanceModel.forEach((v) {
-                                                        var pmt = v.totalUsdValue;
-                                                        if(pmt != null && pmt > 0) {
-                                                          var tmp = pmt * percentageValue;
-                                                          if (tmp > 10) {
-                                                            coinTotalValue += tmp;
-                                                            totalValueChange.value = coinTotalValue;
-                                                          } else {
-                                                            coinsToRemove.add(v.coin);
+                                                        if(v.coin != symbol) {
+                                                          var pmt = v.totalUsdValue;
+                                                          if(pmt != null && pmt > 0) {
+                                                            var tmp = pmt * percentageValue;
+                                                            if (tmp > 10) {
+                                                              coinTotalValue += tmp;
+                                                              totalValueChange.value = coinTotalValue;
+                                                            } else {
+                                                              coinsToRemove.add(v.coin);
+                                                            }
                                                           }
                                                         }
                                                       });

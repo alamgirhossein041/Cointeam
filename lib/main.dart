@@ -1,7 +1,10 @@
 import 'package:coinsnap/features/data/binance_price/binance_price.dart';
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/home/pages/home.dart';
 import 'package:coinsnap/features/data/coinmarketcap/coinmarketcap.dart';
+import 'package:coinsnap/features/market/market.dart';
+import 'package:coinsnap/features/my_coins/pages/my_coins.dart';
 import 'package:coinsnap/features/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
 import 'package:coinsnap/features/trading/trading.dart';
@@ -53,44 +56,31 @@ class MyApp extends StatelessWidget {
     
     return MultiBlocProvider(
       providers: [
-        // BlocProvider<GetTotalValueBloc>(
-        //   create: (context) => GetTotalValueBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        // ),
         BlocProvider<StartupBloc>(
-          // create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(), ftxGetBalanceRepository: FtxGetBalanceRepositoryImpl()),
           create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
         ),
-        // BlocProvider<GetPriceInfoBloc>(
-        //   create: (context) => GetPriceInfoBloc(binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
-        // ),
         BlocProvider<SellPortfolioBloc>(
           create: (context) => SellPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
-        // BlocProvider<CardCoinmarketcapCoinLatestBloc> (
-        //   create: (context) => CardCoinmarketcapCoinLatestBloc(cardCoinmarketcapCoinLatestRepository: CardCoinmarketcapCoinLatestRepositoryImpl()),
-        // ),
-        // BlocProvider<ListTotalValueBloc> (
-        //   create: (context) => ListTotalValueBloc(listTotalValueRepository: CardCoinmarketcapCoinListRepositoryImpl()),
-        // ),
-        // BlocProvider<GetCoinListBloc> (
-        //   create: (context) => GetCoinListBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl()),
-        // ),
-        // BlocProvider<GetCoinListTotalValueBloc> (
-        //   create: (context) => GetCoinListTotalValueBloc(coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl()),
-        // ),
-        // BlocProvider<CoingeckoList250Bloc> (
-        //   create: (context) => CoingeckoList250Bloc(coingeckoList250Repository: CoingeckoList250RepositoryImpl()),
-        // ),
         BlocProvider<BuyPortfolioBloc> (
           create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
         ),
+        BlocProvider<GeckoGlobalStatsBloc>(
+          create: (context) => GeckoGlobalStatsBloc(geckoGlobalStatsRepo: GeckoGlobalStatsRepoImpl()),
+        ),
+        BlocProvider<CoingeckoListTop100Bloc>(
+          create: (context) => CoingeckoListTop100Bloc(coingeckoListTop100Repository: CoingeckoListTop100RepositoryImpl()),
+        ),
+        BlocProvider<CoingeckoListTrendingBloc>(
+          create: (context) => CoingeckoListTrendingBloc(coingeckoListTrendingRepository: CoingeckoListTrendingRepositoryImpl()),
+        ),
       ],
       child: MaterialApp(
-        // navigatorObservers: <NavigatorObserver>[
-          // observer
-        // ],
         theme: ThemeData(
-          // Default brightness
+          
+          accentColor: Color(0xFFFF25CB9D),
+        
+          // Default brightness 
           // brightness: Brightness.dark
 
           // Default font family
@@ -139,8 +129,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/home',
         routes: {
           '/buyportfolio': (context) => BuyPortfolioScreen(),
-          '/buyportfolio2': (context) => BuyPortfolioPage2(),
-          '/buyportfolio3': (context) => BuyPortfolioPage3 (),
+          // '/buyportfolio2': (context) => BuyPortfolioPage2(),
+          // '/buyportfolio3': (context) => BuyPortfolioPage3(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
           '/sellportfolio2': (context) => SellPortfolioPage2(),
           '/sellportfolio': (context) => SellPortfolioScreen(),
@@ -161,6 +151,8 @@ class MyApp extends StatelessWidget {
           '/selllog': (context) => SellLog(),
           '/snapshots': (context) => SnapshotList(),
           '/snapshotlog': (context) => SnapshotLog(),
+          '/marketoverview': (context) => MarketOverview(),
+          '/mycoins': (context) => MyCoins(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         }
       ),

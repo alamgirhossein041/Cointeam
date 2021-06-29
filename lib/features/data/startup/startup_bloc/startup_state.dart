@@ -35,13 +35,16 @@ class StartupLoadingState extends StartupState {
 
 class StartupLoadedState extends StartupState {
   StartupLoadedState({this.totalValue, this.coinListData, this.coinBalancesMap,
-                      this.coinList, this.btcSpecial, this.ethSpecial, this.binanceGetAllModel});
+                      this.coinList, this.btcSpecial, this.ethSpecial, this.binanceGetAllModel,
+                      this.usdTotal, this.btcTotal});
   final totalValue;
   final coinListData;
   final coinBalancesMap;
   final coinList;
   final btcSpecial;
   final ethSpecial;
+  final double usdTotal;
+  final double btcTotal;
   final List<BinanceGetAllModel> binanceGetAllModel;
 
   // StartupLoadedState({this.coinList, this.coinBalancesMap});

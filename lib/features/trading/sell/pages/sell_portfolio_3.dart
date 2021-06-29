@@ -146,40 +146,55 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                               fit: FlexFit.tight,
                                               child: Align(
                                                 alignment: Alignment.bottomCenter,
-                                                child: Text("You sold 78% of your portfolio", style: TextStyle(color: Colors.black)),
+                                                // child: Text("You sold 78% of your portfolio", style: TextStyle(color: Colors.black)),
+                                                child: Text("You sold " + (percentageValue * 100).toString() + "% of your portfolio", style: TextStyle(color: Colors.black, fontSize: 16)),
                                               ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Flexible(
+                                              flex: 1,
+                                              fit: FlexFit.tight,
+                                              child: Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Text("(Not including " + symbol + ")", style: TextStyle(color: Colors.black, fontSize: 16)),
+                                              )
                                             ),
                                             Flexible(
                                               flex: 1,
                                               fit: FlexFit.tight,
                                               child: Align(
-                                                alignment: Alignment.center,
+                                                alignment: Alignment.topCenter,
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  // mainAxisAlignment: MainAxisAlignment.end,
                                                   children: <Widget> [
-                                                    Text("\$5,124.02", style: TextStyle(color: Colors.black, fontSize: 24)),
+                                                    Text("You converted: ", style: TextStyle(color: Colors.black, fontSize: 18)),
+                                                    //Text("\$5,124.02", style: TextStyle(color: Colors.black, fontSize: 24)),
+                                                    Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 24)),
                                                     SizedBox(height: 10),
-                                                    Text("B\$0.84314307", style: TextStyle(color: Colors.black)),
+                                                    // Text("B\$0.84314307", style: TextStyle(color: Colors.black)),
+                                                    SizedBox(height: 10),
+                                                    /// 22nd
+                                                    /// Text(stuff)
                                                   ]
                                                 ),
                                               )
                                             ),
-                                            Flexible(
-                                              flex: 1,
-                                              fit: FlexFit.tight,
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text("You have received:", style: TextStyle(color: Colors.black)),
-                                              )
-                                            ),
-                                            Flexible(
-                                              flex: 1,
-                                              fit: FlexFit.tight,
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 30))
-                                              ),
-                                            ),
+                                            // Flexible(
+                                            //   flex: 1,
+                                            //   fit: FlexFit.tight,
+                                            //   child: Align(
+                                            //     alignment: Alignment.center,
+                                            //     child: Text("You have received:", style: TextStyle(color: Colors.black)),
+                                            //   )
+                                            // ),
+                                            // Flexible(
+                                            //   flex: 1,
+                                            //   fit: FlexFit.tight,
+                                            //   child: Align(
+                                            //     alignment: Alignment.center,
+                                            //     child: Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 30))
+                                            //   ),
+                                            // ),
                                             Flexible(
                                               flex: 2,
                                               fit: FlexFit.tight,
