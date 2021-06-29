@@ -176,7 +176,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                 children: <TextSpan> [
                   TextSpan(
                     text: binanceGetAllModel.coin,
-                    style: TextStyle(color: primaryDarkHalf)
+                    style: TextStyle(color: primaryDark.withOpacity(0.5))
                   )
                 ]
               )
@@ -209,7 +209,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                 children: <TextSpan> [
                   TextSpan(
                     text: (binanceGetAllModel.free + binanceGetAllModel.locked).toStringAsFixed(2),
-                    style: TextStyle(color: primaryDarkHalf)
+                    style: TextStyle(color: primaryDark.withOpacity(0.5))
                   )
                 ]
               ),
