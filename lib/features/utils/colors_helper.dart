@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Unified FAB colour
+const uniColor = Color(0xFF25365b);
+
 /// Primary ///
 
 /// Light
