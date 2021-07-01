@@ -16,7 +16,6 @@ const primaryLight = Color(0xFFF6F8F9);
 /// - Dark text on light background
 /// - Dark theme background
 /// - Outlined button border
-<<<<<<< HEAD
 const primaryDark = Color(0xFF0B2940);
 
 /// Blue
@@ -31,6 +30,3 @@ const primaryBlue = Color(0xFF2197F2);
 /// - Success
 /// - Same green as bolt
 const primaryGreen = Color(0xFF2EDFAE);
-=======
-const primaryDark = Color(0xFF0B2940);
->>>>>>> dev
