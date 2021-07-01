@@ -52,7 +52,7 @@ class HomeState extends State<Home> {
                       Expanded(
                         child: Container(
                           padding: mainCardPaddingHorizontal(),
-                          child: HomeDisplayInfo()
+                          child: HomeDisplayInfo(),
                           ),
                       ),
                     ],
