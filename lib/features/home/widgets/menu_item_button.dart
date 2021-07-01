@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 
 class MenuItemButton extends StatelessWidget {
-  const MenuItemButton({Key key, this.buttonText}) : super(key: key);
+  const MenuItemButton({Key key, this.buttonText, this.dir}) : super(key: key);
 
   final String buttonText;
+  final String dir;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class MenuItemButton extends StatelessWidget {
                 Text(buttonText, style: TextStyle(fontWeight: FontWeight.w500))),
       ),
       onTap: () => {
-        Navigator.pushNamed(context, '/portfolio'),
+        Navigator.pushNamed(context, dir),
       },
     );
   }

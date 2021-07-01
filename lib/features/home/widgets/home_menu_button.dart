@@ -1,4 +1,3 @@
-import 'package:coinsnap/features/home/widgets/menu_item_button.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +17,8 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
   void initState() {
     _animationController = AnimationController(
       vsync: this, // the SingleTickerProviderStateMixin
-      duration:
-          Duration(milliseconds: 500), // how long should the animation take to finish
+      duration: Duration(
+          milliseconds: 500), // how long should the animation take to finish
     );
     super.initState();
   }
@@ -30,52 +29,65 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
     super.dispose();
   }
 
+  _menuSwitch() {
+    _isOpen = !_isOpen;
+    _isOpen ? _animationController.forward() : _animationController.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget _menuItem(String s, String dir) {
+      return TextButton(
+        child: Text(s),
+        style: TextButton.styleFrom(
+          // padding: const EdgeInsets.all(2.0),
+          minimumSize: Size(2.0, 2.0),
+        ),
+        onPressed: () {
+          _menuSwitch();
+          Navigator.pushNamed(context, dir);
+        },
+      );
+    }
+
     Widget _menuItems = Container(
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Column(children: <Widget>[
-              MenuItemButton(buttonText: 'MARKET'),
-              MenuItemButton(buttonText: 'CHART'),
-              MenuItemButton(buttonText: 'BUY'),
+              Flexible(
+                flex: 1,
+                child: _menuItem('MARKET', '/marketoverview'),
+              ),
+              Flexible(
+                flex: 1,
+                child: _menuItem('CHART', '/chart'),
+              ),
+              Flexible(
+                flex: 1,
+                child: _menuItem('BUY', '/buyportfolio'),
+              ),
             ]),
             Column(children: <Widget>[
-              MenuItemButton(buttonText: 'MY COINS'),
-              MenuItemButton(buttonText: 'SNAPSHOTS'),
-              MenuItemButton(buttonText: 'SETTINGS'),
+              Flexible(
+                flex: 1,
+                child: _menuItem('MY COINS', '/mycoins'),
+              ),
+              Flexible(
+                flex: 1,
+                child: _menuItem('SNAPSHOTS', '/snapshots'),
+              ),
+              Flexible(
+                flex: 1,
+                child: _menuItem('SETTINGS', '/settings'),
+              ),
             ]),
           ]),
     );
 
-    Widget _menuIcon = Column(children: [
-      Icon(
-        Icons.menu,
-        color: primaryDark,
-        size: 24.0,
-        semanticLabel: 'menu',
-      ),
-      Text("MENU"),
-    ]);
-
-    Widget _closeMenuIcon = Column(
-      children: [
-        Icon(
-          Icons.close,
-          color: primaryDark,
-          size: 24.0,
-          semanticLabel: 'menu',
-        ),
-        SizedBox(
-          height: 20,
-        ),
-      ],
-    );
-
     Widget _animatedMenu = AnimatedIcon(
       size: 24,
-      color: Colors.blue,
+      color: primaryDark,
       icon: AnimatedIcons.menu_close,
       progress: _animationController,
     );
@@ -88,22 +100,37 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
           duration: Duration(milliseconds: 130),
           child: _menuItems,
         ),
+        GestureDetector(
+          onPanEnd: (details) {
+            setState(() {
+              _menuSwitch();
+            });
+          },
+        ),
         Positioned(
           bottom: 0,
           child: GestureDetector(
             onTap: () {
               setState(() {
-                _isOpen = !_isOpen;
-                _isOpen
-                    ? _animationController.forward()
-                    : _animationController.reverse();
+                _menuSwitch();
               });
             },
-            // child: AnimatedSwitcher(
-            //   duration: Duration(milliseconds: 130),
-            //   child: _isOpen ? _closeMenuIcon : _menuIcon,
-            // ),
-            child: _animatedMenu,
+            child: Column(
+              children: [
+                _animatedMenu,
+                _isOpen
+                    ? AnimatedOpacity(
+                        opacity: 0.0,
+                        duration: Duration(milliseconds: 200),
+                        child: Text("MENU"),
+                      )
+                    : AnimatedOpacity(
+                        opacity: 1.0,
+                        duration: Duration(milliseconds: 200),
+                        child: Text("MENU"),
+                      ),
+              ],
+            ),
           ),
         ),
       ],
