@@ -1,4 +1,5 @@
 import 'package:coinsnap/features/home/widgets/home_menu_button.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
 // Packages
@@ -39,19 +40,20 @@ class HomeState extends State<Home> {
     return SafeArea(
       child: Scaffold(
           backgroundColor: primaryBlue,
-          body: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              CoinTicker(),
-              Container(
+          body: Stack(overflow: Overflow.visible, children: <Widget>[
+            CoinTicker(),
+            Container(
                 margin: mainCardMargin(),
                 decoration: mainCardDecoration(),
-                padding: mainCardPadding(),
+                padding: mainCardPaddingVertical(),
                 child: Column(children: <Widget>[
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: HomeDisplayInfo(),
+                        child: Container(
+                          padding: mainCardPaddingHorizontal(),
+                          child: HomeDisplayInfo()
+                          ),
                       ),
                     ],
                   ),
@@ -63,13 +65,18 @@ class HomeState extends State<Home> {
                   Flexible(
                     flex: 1,
                     fit: FlexFit.tight,
-                    child: HomeMenuButton(),),
+                    child: Container(
+                      padding: mainCardPaddingHorizontal(),
+                      child: HomeMenuButton()
+                    ),
+                  ),
                 ])),
-              Positioned(
-                top: 80,
-                right: 40,
-                child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg', width: 65),
-              ),
+            Positioned(
+              top: 80,
+              right: 40,
+              child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg',
+                  width: 65),
+            ),
           ])),
     );
   }

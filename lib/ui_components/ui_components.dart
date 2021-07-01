@@ -6,6 +6,9 @@ EdgeInsets mainCardMargin() => EdgeInsets.only(top: 34, left: 5, right: 5);
 
 /// Main card padding
 EdgeInsets mainCardPadding() => EdgeInsets.symmetric(horizontal: 40, vertical: 45);
+EdgeInsets mainCardPaddingVertical() => EdgeInsets.symmetric(vertical: 45);
+EdgeInsets mainCardPaddingHorizontal() => EdgeInsets.symmetric(horizontal: 40);
+
 
 /// Main background card decoration style.
 /// Light background, rounded top corners

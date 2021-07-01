@@ -16,6 +16,11 @@ class PanicButton extends StatefulWidget {
 class PanicButtonState extends State<PanicButton> {
   @override
   Widget build(BuildContext context) {
+    Widget _horizontalBar = Container(
+      width: displayWidth(context),
+      height: 2,
+      color: primaryGreen,
+    );
     // Solid green circle
     Widget _greenCircle = Container(
       width: 118.0,
@@ -110,6 +115,7 @@ class PanicButtonState extends State<PanicButton> {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
+        _horizontalBar,
         _greenCircle,
         _dottedCircle1,
         _dottedCircle2,

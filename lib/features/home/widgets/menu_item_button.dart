@@ -15,7 +15,7 @@ class MenuItemButton extends StatelessWidget {
         child: Align(
             alignment: Alignment.center,
             child:
-                Text("Hello", style: TextStyle(fontWeight: FontWeight.w500))),
+                Text(buttonText, style: TextStyle(fontWeight: FontWeight.w500))),
       ),
       onTap: () => {
         Navigator.pushNamed(context, '/portfolio'),
