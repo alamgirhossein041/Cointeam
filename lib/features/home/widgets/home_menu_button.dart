@@ -17,7 +17,7 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
   void initState() {
     _animationController = AnimationController(
       vsync: this, // the SingleTickerProviderStateMixin
-      duration: Duration(
+      duration: const Duration(
           milliseconds: 500), // how long should the animation take to finish
     );
     super.initState();
@@ -29,76 +29,21 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
     super.dispose();
   }
 
-  _menuSwitch() {
+  // Switches menu state between open/closed
+  void _menuSwitch() {
     _isOpen = !_isOpen;
     _isOpen ? _animationController.forward() : _animationController.reverse();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget _menuItem(String s, String dir) {
-      return TextButton(
-        child: Text(s),
-        style: TextButton.styleFrom(
-          // padding: const EdgeInsets.all(2.0),
-          minimumSize: Size(2.0, 2.0),
-        ),
-        onPressed: () {
-          _menuSwitch();
-          Navigator.pushNamed(context, dir);
-        },
-      );
-    }
-
-    Widget _menuItems = Container(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: _menuItem('MARKET', '/marketoverview'),
-              ),
-              Flexible(
-                flex: 1,
-                child: _menuItem('CHART', '/chart'),
-              ),
-              Flexible(
-                flex: 1,
-                child: _menuItem('BUY', '/buyportfolio'),
-              ),
-            ]),
-            Column(children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: _menuItem('MY COINS', '/mycoins'),
-              ),
-              Flexible(
-                flex: 1,
-                child: _menuItem('SNAPSHOTS', '/snapshots'),
-              ),
-              Flexible(
-                flex: 1,
-                child: _menuItem('SETTINGS', '/settings'),
-              ),
-            ]),
-          ]),
-    );
-
-    Widget _animatedMenu = AnimatedIcon(
-      size: 24,
-      color: primaryDark,
-      icon: AnimatedIcons.menu_close,
-      progress: _animationController,
-    );
-
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
         AnimatedOpacity(
           opacity: _isOpen ? 1.0 : 0.0,
-          duration: Duration(milliseconds: 130),
-          child: _menuItems,
+          duration: const Duration(milliseconds: 130),
+          child: MenuList(callback: _menuSwitch),
         ),
         GestureDetector(
           onPanEnd: (details) {
@@ -117,23 +62,127 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
             },
             child: Column(
               children: [
-                _animatedMenu,
+                AnimatedIcon(
+                  size: 24,
+                  color: primaryDark,
+                  icon: AnimatedIcons.menu_close,
+                  progress: _animationController,
+                ),
                 _isOpen
                     ? AnimatedOpacity(
                         opacity: 0.0,
                         duration: Duration(milliseconds: 200),
-                        child: Text("MENU"),
+                        child: Text("MENU", style: Theme.of(context).textTheme.bodyText1,),
                       )
                     : AnimatedOpacity(
                         opacity: 1.0,
                         duration: Duration(milliseconds: 200),
-                        child: Text("MENU"),
+                        child: Text("MENU", style: Theme.of(context).textTheme.bodyText1,),
                       ),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+/// A single menu item with [label] and route [dir].
+/// On tap, runs the callback [onMenuTap] which closes the menu.
+class MenuItem extends StatelessWidget {
+  const MenuItem({Key key, this.label, this.dir, this.onMenuTap})
+      : super(key: key);
+
+  final String label;
+  final String dir;
+  final VoidCallback onMenuTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text(label),
+      style: TextButton.styleFrom(
+        primary: primaryDark,
+      ),
+      onPressed: () {
+        onMenuTap(); // close memu whenever a menu item is tapped
+        Navigator.pushNamed(context, dir);
+      },
+    );
+  }
+}
+
+/// The open view of the menu.
+/// [callback] is passed down to each [MenuItem].
+class MenuList extends StatelessWidget {
+  const MenuList({Key key, this.callback}) : super(key: key);
+  final VoidCallback callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'MARKET',
+                  dir: '/marketoverview',
+                  onMenuTap: callback,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'CHART',
+                  dir: '/chart',
+                  onMenuTap: callback,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'BUY',
+                  dir: '/buyportfolio',
+                  onMenuTap: callback,
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'MY COINS',
+                  dir: '/mycoins',
+                  onMenuTap: callback,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'SNAPSHOTS',
+                  dir: '/snapshots',
+                  onMenuTap: callback,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: MenuItem(
+                  label: 'SETTINGS',
+                  dir: '/settings',
+                  onMenuTap: callback,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
