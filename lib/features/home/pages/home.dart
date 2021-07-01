@@ -67,7 +67,7 @@ class HomeState extends State<Home> {
                     fit: FlexFit.tight,
                     child: Container(
                       padding: mainCardPaddingHorizontal(),
-                      child: HomeMenuButton()
+                      child: HomeMenuButton(),
                     ),
                   ),
                 ])),
