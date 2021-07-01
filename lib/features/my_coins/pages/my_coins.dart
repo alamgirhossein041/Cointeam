@@ -162,7 +162,7 @@ class MyCoinsCustomTile extends StatelessWidget {
           //     children: <Widget> [
           //       Text(binanceGetAllModel.name, style: TextStyle(color: primaryDark)),
           //       // SizedBox(height: 2),
-          //       Text(binanceGetAllModel.coin, style: TextStyle(color: primaryDarkHalf))
+          //       Text(binanceGetAllModel.coin, style: TextStyle(color: primaryDark.withOpacity(0.5)))
           //     ]
           //   )
           // ),
