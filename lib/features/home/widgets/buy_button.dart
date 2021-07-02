@@ -1,7 +1,10 @@
+// import 'package:coinsnap/features/data/global_stats/global_stats.dart';
+// import 'package:coinsnap/features/market/market.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeButton extends StatelessWidget {
+class BuyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +33,14 @@ class HomeButton extends StatelessWidget {
         ),
         child: Align(
           alignment: Alignment.center,
-          child: Text("Hello", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
+          child: Text("Buy", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500))
         ),
       ),
       onTap: () => {
-        Navigator.pushNamed(context, '/snapshots'),
+        // BlocProvider.of<GeckoGlobalStatsBloc>(context).add(GeckoGlobalStatsFetchEvent()),
+        // BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event()),
+        // BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent()),
+        Navigator.pushNamed(context, '/buyportfolio1'),
       },
     );
   }
