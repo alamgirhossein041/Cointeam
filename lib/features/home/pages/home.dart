@@ -47,21 +47,24 @@ class HomeState extends State<Home> {
       color: primaryBlue,
       child: SafeArea(
         child: Scaffold(
-            backgroundColor: primaryBlue,
-            body: Stack(overflow: Overflow.visible, children: <Widget>[
+          backgroundColor: primaryBlue,
+          body: Stack(
+            // overflow: Overflow.visible,
+            children: <Widget>[
               CoinTicker(),
               Container(
-                  margin: mainCardMargin(),
-                  decoration: mainCardDecoration(),
-                  padding: mainCardPaddingVertical(),
-                  child: Column(children: <Widget>[
+                margin: mainCardMargin(),
+                decoration: mainCardDecoration(),
+                padding: mainCardPaddingVertical(),
+                child: Column(
+                  children: <Widget>[
                     Row(
-                      children: <Widget>[
+                      children: <Widget> [
                         Expanded(
                           child: Container(
                             padding: mainCardPaddingHorizontal(),
                             child: HomeDisplayInfo(),
-                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -78,12 +81,16 @@ class HomeState extends State<Home> {
                         child: HomeMenuButton(),
                       ),
                     ),
-                  ])),
+                  ]
+                )
+              ),
               Positioned(
                 top: 80,
                 right: 40,
-                child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg',
-                    width: 65),
+                child: SvgPicture.asset(
+                  'graphics/assets/svg/bolt_transp.svg',
+                  width: 65
+                ),
               ),
             ],
           ),
@@ -106,16 +113,19 @@ class AnimatedTickerState extends State<AnimatedTicker> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        flex: 1,
-        fit: FlexFit.tight,
-        child: Text(
-            "BTC  \$" +
-                widget.btcSpecial.toStringAsFixed(0) +
-                "       ETH  \$" +
-                widget.ethSpecial.toStringAsFixed(0),
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold)));
+      flex: 1,
+      fit: FlexFit.tight,
+      child: Text(
+        "BTC  \$" +
+          widget.btcSpecial.toStringAsFixed(0) +
+          "       ETH  \$" +
+          widget.ethSpecial.toStringAsFixed(0),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
   }
 }
