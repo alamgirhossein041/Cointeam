@@ -18,7 +18,7 @@ class PanicButtonState extends State<PanicButton> {
   Widget build(BuildContext context) {
     Widget _horizontalBar = Container(
       width: displayWidth(context),
-      height: 2,
+      height: 4,
       color: primaryGreen,
     );
     // Solid green circle

@@ -70,6 +70,7 @@ class CoinTickerState extends State<CoinTicker> {
         } else if (state is StartupErrorState) {
           log("Error");
           // return errorTemplateWidget("Error: " + state.errorMessage);
+          
           return Container(
             margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
             child: Row(
