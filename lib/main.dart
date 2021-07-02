@@ -43,8 +43,8 @@ void main() async {
   /// ### Dev Phoenix (resets app state) ### ///
   runApp(
     // Phoenix(
-      // child: MyApp(),
-      MyApp(),
+    // child: MyApp(),
+    MyApp(),
     // ),
   );
 }
@@ -53,67 +53,152 @@ class MyApp extends StatelessWidget {
   // final FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
-    
     return MultiBlocProvider(
       providers: [
         BlocProvider<StartupBloc>(
-          create: (context) => StartupBloc(binanceGetAllRepository: BinanceGetAllRepositoryImpl(), coinmarketcapListQuoteRepository: CardCoinmarketcapCoinListRepositoryImpl(), binanceGetPricesRepository: BinanceGetPricesRepositoryImpl()),
+          create: (context) => StartupBloc(
+            binanceGetAllRepository: BinanceGetAllRepositoryImpl(),
+            coinmarketcapListQuoteRepository:
+                CardCoinmarketcapCoinListRepositoryImpl(),
+            binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(),
+          ),
         ),
         BlocProvider<SellPortfolioBloc>(
-          create: (context) => SellPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceGetAllRepository: BinanceGetAllRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+          create: (context) => SellPortfolioBloc(
+            binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(),
+            binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(),
+            binanceGetAllRepository: BinanceGetAllRepositoryImpl(),
+            binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl(),
+          ),
         ),
-        BlocProvider<BuyPortfolioBloc> (
-          create: (context) => BuyPortfolioBloc(binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(), binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(), binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl()),
+        BlocProvider<BuyPortfolioBloc>(
+          create: (context) => BuyPortfolioBloc(
+            binanceBuyCoinRepository: BinanceBuyCoinRepositoryImpl(),
+            binanceSellCoinRepository: BinanceSellCoinRepositoryImpl(),
+            binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl(),
+          ),
         ),
         BlocProvider<GeckoGlobalStatsBloc>(
-          create: (context) => GeckoGlobalStatsBloc(geckoGlobalStatsRepo: GeckoGlobalStatsRepoImpl()),
+          create: (context) => GeckoGlobalStatsBloc(
+            geckoGlobalStatsRepo: GeckoGlobalStatsRepoImpl(),
+          ),
         ),
         BlocProvider<CoingeckoListTop100Bloc>(
-          create: (context) => CoingeckoListTop100Bloc(coingeckoListTop100Repository: CoingeckoListTop100RepositoryImpl()),
+          create: (context) => CoingeckoListTop100Bloc(
+            coingeckoListTop100Repository: CoingeckoListTop100RepositoryImpl(),
+          ),
         ),
         BlocProvider<CoingeckoListTrendingBloc>(
-          create: (context) => CoingeckoListTrendingBloc(coingeckoListTrendingRepository: CoingeckoListTrendingRepositoryImpl()),
+          create: (context) => CoingeckoListTrendingBloc(
+            coingeckoListTrendingRepository:
+                CoingeckoListTrendingRepositoryImpl(),
+          ),
         ),
       ],
       child: MaterialApp(
         theme: ThemeData(
-          
           accentColor: Color(0xFFFF25CB9D),
-        
-          // Default brightness 
+
+          // Default brightness
           // brightness: Brightness.dark
 
           // Default font family
-          fontFamily: 'Bahnschrift',
+          fontFamily: 'Bahnschrift Static',
 
           // Default textTheme
           textTheme: TextTheme(
             // Headings
             // 34 Light
-            headline1: TextStyle(fontSize: 34, fontWeight: FontWeight.w200, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline1: TextStyle(
+              fontSize: 34,
+              fontWeight: FontWeight.w200,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+              shadows: [
+                Shadow(
+                  color: primaryDark.withOpacity(0.16),
+                  offset: Offset(0, 2),
+                  blurRadius: 3,
+                ),
+              ],
+            ),
             // 24 Light
-            headline2: TextStyle(fontSize: 24, fontWeight: FontWeight.w200, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline2: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w200,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 20 Regular
-            headline3: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline3: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 18 Regular
-            headline4: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline4: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 18 SemiLight
-            headline5: TextStyle(fontSize: 18, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline5: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w300,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 16 SemiLight
-            headline6: TextStyle(fontSize: 16, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            headline6: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
 
             // Body
             // 14 Regular
-            bodyText1: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            bodyText1: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 14 SemiLight
-            bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.w300, color: primaryDark, letterSpacing: 0.25, height: 1.8),
+            bodyText2: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+              color: primaryDark,
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
 
             // Subtitle
             // 12 Regular
-            subtitle1: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
+            subtitle1: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: primaryDark.withOpacity(0.5),
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
             // 12 Bold
-            subtitle2: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: primaryDark.withOpacity(0.5), letterSpacing: 0.25, height: 1.8),
-
+            subtitle2: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: primaryDark.withOpacity(0.5),
+              letterSpacing: 0.25,
+              height: 1.8,
+            ),
           ),
 
           // Appbar theme
@@ -124,7 +209,6 @@ class MyApp extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-
         ),
         initialRoute: '/home',
         routes: {
@@ -154,7 +238,7 @@ class MyApp extends StatelessWidget {
           '/marketoverview': (context) => MarketOverview(),
           '/mycoins': (context) => MyCoins(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
-        }
+        },
       ),
     );
   }
