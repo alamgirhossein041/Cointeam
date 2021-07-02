@@ -43,47 +43,52 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: primaryBlue,
-          body: Stack(overflow: Overflow.visible, children: <Widget>[
-            CoinTicker(),
-            Container(
-                margin: mainCardMargin(),
-                decoration: mainCardDecoration(),
-                padding: mainCardPaddingVertical(),
-                child: Column(children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding: mainCardPaddingHorizontal(),
-                          child: HomeDisplayInfo(),
-                          ),
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    flex: 2,
-                    fit: FlexFit.tight,
-                    child: PanicButton(),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: Container(
-                      padding: mainCardPaddingHorizontal(),
-                      child: HomeMenuButton(),
+    return Container(
+      color: primaryBlue,
+      child: SafeArea(
+        child: Scaffold(
+            backgroundColor: primaryBlue,
+            body: Stack(overflow: Overflow.visible, children: <Widget>[
+              CoinTicker(),
+              Container(
+                  margin: mainCardMargin(),
+                  decoration: mainCardDecoration(),
+                  padding: mainCardPaddingVertical(),
+                  child: Column(children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            padding: mainCardPaddingHorizontal(),
+                            child: HomeDisplayInfo(),
+                            ),
+                        ),
+                      ],
                     ),
-                  ),
-                ])),
-            Positioned(
-              top: 80,
-              right: 40,
-              child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg',
-                  width: 65),
-            ),
-          ])),
+                    Flexible(
+                      flex: 2,
+                      fit: FlexFit.tight,
+                      child: PanicButton(),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        padding: mainCardPaddingHorizontal(),
+                        child: HomeMenuButton(),
+                      ),
+                    ),
+                  ])),
+              Positioned(
+                top: 80,
+                right: 40,
+                child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg',
+                    width: 65),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
