@@ -1,4 +1,7 @@
+import 'package:coinsnap/features/utils/colors_helper.dart';
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 
 class AnimatedTicker extends StatefulWidget {
   final double btcSpecial;
@@ -12,12 +15,20 @@ class AnimatedTicker extends StatefulWidget {
 class AnimatedTickerState extends State<AnimatedTicker> {
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 1,
-      fit: FlexFit.tight,
-      child: Text(
-        "BTC:  \$" + widget.btcSpecial.toStringAsFixed(0) + "  |  ETH:  \$" + widget.ethSpecial.toStringAsFixed(0),
-        style: Theme.of(context).textTheme.subtitle1,
+    return Container(
+      width: displayWidth(context) - 50,
+      height: 22,
+      // child: Marquee(text: "aaaaaaaaaaaaaaaaaaaaaa", style: Theme.of(context).textTheme.caption),
+      child: Marquee(
+        velocity: 17.0,
+        blankSpace: 20.0,
+        text: "BTC:  \$" +
+            widget.btcSpecial.toStringAsFixed(2) +
+            "        " +
+            "ETH:  \$" +
+            widget.ethSpecial.toStringAsFixed(2),
+        style:
+            Theme.of(context).textTheme.subtitle2.copyWith(color: primaryLight),
       ),
     );
   }

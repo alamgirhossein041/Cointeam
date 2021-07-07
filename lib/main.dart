@@ -196,7 +196,7 @@ class MyApp extends StatelessWidget {
             subtitle2: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: primaryDark.withOpacity(0.5),
+              color: primaryDark,
               letterSpacing: 0.25,
               height: 1.4,
             ),
