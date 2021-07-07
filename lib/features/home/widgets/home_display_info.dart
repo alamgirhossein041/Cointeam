@@ -19,7 +19,7 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Flexible(
-            flex: 2,
+            flex: 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -40,21 +40,28 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
                     },
                     builder: (context, state) {
                       if (state is StartupLoadedState) {
-                        return Text('\$' + state.totalValue.toStringAsFixed(2),
-                            style: Theme.of(context).textTheme.headline1);
+                        return Text(
+                          '\$' + state.totalValue.toStringAsFixed(2),
+                          style: Theme.of(context).textTheme.headline1,
+                        );
                       } else if (state is StartupErrorState) {
-                        return Text("\$12,516.35", // placeholder text because it's not working rn
-                            style: Theme.of(context).textTheme.headline1);
-                            // Text("An error has occurred, Binance-related.",
-                            // style: Theme.of(context).textTheme.headline1);
+                        return Text(
+                          "\$12,516.35", // placeholder text because it's not working rn
+                          style: Theme.of(context).textTheme.headline1,
+                        );
+                        // Text("An error has occurred, Binance-related.",
+                        // style: Theme.of(context).textTheme.headline1);
                       } else {
-                        return Column(children: <Widget>[
-                          loadingTemplateWidget(),
-                          SizedBox(height: 10),
-                        ]);
+                        return Column(
+                          children: <Widget>[
+                            loadingTemplateWidget(),
+                            SizedBox(height: 10),
+                          ],
+                        );
                       }
                     },
                   ),
+
                   /// End bloc
                 ),
               ],
@@ -65,13 +72,13 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Flexible(
                   flex: 1,
                   fit: FlexFit.tight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       Flexible(
                         flex: 1,
                         child: Text('Total Market Cap'),
@@ -89,6 +96,7 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
                     ],
                   ),
                 ),
+                SizedBox(width: 50),
                 Flexible(
                   flex: 1,
                   fit: FlexFit.tight,

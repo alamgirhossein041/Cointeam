@@ -11,7 +11,7 @@ class DominanceWidget extends StatefulWidget {
 }
 
 class _DominanceWidgetState extends State<DominanceWidget> {
-  bool _isOpen = false;
+  bool _isOpen = true;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,10 @@ class _DominanceWidgetState extends State<DominanceWidget> {
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
             Text('Dominance'),
+            SizedBox(height: 10),
             _isOpen
                 ?
 
@@ -100,7 +101,7 @@ class _DominanceWidgetState extends State<DominanceWidget> {
                   )
                 : Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       Flexible(
                         flex: 1,
                         fit: FlexFit.loose,

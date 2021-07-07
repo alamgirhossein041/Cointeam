@@ -54,19 +54,19 @@ class HomeState extends State<Home> {
               child: Column(
                 children: <Widget>[
                   Flexible(
-                    flex: 1,
+                    flex: 3,
                     child: Container(
                       padding: mainCardPaddingHorizontal(),
                       child: HomeDisplayInfo(),
                     ),
                   ),
                   Flexible(
-                    flex: 2,
+                    flex: 4,
                     fit: FlexFit.tight,
                     child: PanicButton(),
                   ),
                   Flexible(
-                    flex: 1,
+                    flex: 3,
                     fit: FlexFit.tight,
                     child: Container(
                       padding: mainCardPaddingHorizontal(),
