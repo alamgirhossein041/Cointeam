@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w200,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
               shadows: [
                 Shadow(
                   color: primaryDark.withOpacity(0.16),
@@ -130,7 +130,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w200,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
             // 20 Regular
             headline3: TextStyle(
@@ -138,7 +138,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
             // 18 Regular
             headline4: TextStyle(
@@ -146,7 +146,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
             // 18 SemiLight
             headline5: TextStyle(
@@ -154,7 +154,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w300,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
             // 16 SemiLight
             headline6: TextStyle(
@@ -162,7 +162,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w300,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
 
             // Body
@@ -172,7 +172,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
             // 14 SemiLight
             bodyText2: TextStyle(
@@ -180,7 +180,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.6,
             ),
 
             // Subtitle
@@ -190,7 +190,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: primaryDark,
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.4,
             ),
             // 12 Bold
             subtitle2: TextStyle(
@@ -198,7 +198,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: primaryDark.withOpacity(0.5),
               letterSpacing: 0.25,
-              height: 1.8,
+              height: 1.4,
             ),
           ),
 
