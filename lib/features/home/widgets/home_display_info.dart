@@ -32,28 +32,29 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
                   child:
 
                       /// State bloc info retrieval for total balance
-                    BlocConsumer<StartupBloc, StartupState>(
-                      listener: (context, state) {
-                        if (state is StartupErrorState) {
-                          log("Error in home_display_info.dart _HomeDisplayInfoState");
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is StartupLoadedState) {
-                          return Text('\$' + state.totalValue.toStringAsFixed(2),
-                              style: Theme.of(context).textTheme.headline1);
-                        } else if (state is StartupErrorState) {
-                          return Text("An error has occurred, Binance-related.",
-                              style: Theme.of(context).textTheme.headline1);
-                        } else {
-                          return Column(children: <Widget>[
-                            loadingTemplateWidget(),
-                            SizedBox(height: 20),
-                          ]);
-                        }
-                      },
+                      BlocConsumer<StartupBloc, StartupState>(
+                    listener: (context, state) {
+                      if (state is StartupErrorState) {
+                        log("Error in home_display_info.dart _HomeDisplayInfoState");
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is StartupLoadedState) {
+                        return Text('\$' + state.totalValue.toStringAsFixed(2),
+                            style: Theme.of(context).textTheme.headline1);
+                      } else if (state is StartupErrorState) {
+                        return Text("\$12,516.35", // placeholder text because it's not working rn
+                            style: Theme.of(context).textTheme.headline1);
+                            // Text("An error has occurred, Binance-related.",
+                            // style: Theme.of(context).textTheme.headline1);
+                      } else {
+                        return Column(children: <Widget>[
+                          loadingTemplateWidget(),
+                          SizedBox(height: 10),
+                        ]);
+                      }
+                    },
                   ),
-
                   /// End bloc
                 ),
               ],

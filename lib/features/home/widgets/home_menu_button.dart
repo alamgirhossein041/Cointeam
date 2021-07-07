@@ -46,20 +46,12 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
           child: MenuList(callback: _menuSwitch),
         ),
         GestureDetector(
-          onPanEnd: (details) {
-            setState(() {
-              _menuSwitch();
-            });
-          },
+          onPanEnd: (details) => setState(() => _menuSwitch()),
         ),
         Positioned(
           bottom: 0,
           child: GestureDetector(
-            onTap: () {
-              setState(() {
-                _menuSwitch();
-              });
-            },
+            onTap: () => setState(() => _menuSwitch()),
             child: Column(
               children: [
                 AnimatedIcon(
@@ -72,12 +64,18 @@ class _HomeMenuButtonState extends State<HomeMenuButton>
                     ? AnimatedOpacity(
                         opacity: 0.0,
                         duration: Duration(milliseconds: 200),
-                        child: Text("MENU", style: Theme.of(context).textTheme.bodyText1,),
+                        child: Text(
+                          "MENU",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       )
                     : AnimatedOpacity(
                         opacity: 1.0,
                         duration: Duration(milliseconds: 200),
-                        child: Text("MENU", style: Theme.of(context).textTheme.bodyText1,),
+                        child: Text(
+                          "MENU",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
               ],
             ),
