@@ -1,6 +1,7 @@
 import 'package:coinsnap/features/data/global_stats/coingecko/bloc/gecko_global_stats_bloc.dart';
 import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/home/widgets/home_menu_button.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,8 @@ class HomeState extends State<Home> {
     super.initState();
     BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
     BlocProvider.of<GeckoGlobalStatsBloc>(context).add(GeckoGlobalStatsFetchEvent());
+    BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event());
+    BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent());
     helloWorld = BinanceTimeSyncRepositoryImpl();
     helloWorld.getBinanceTimeSyncLatest();
   }
