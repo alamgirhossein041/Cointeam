@@ -24,7 +24,6 @@ class _DominanceWidgetState extends State<DominanceWidget> {
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text('Dominance'),
             SizedBox(height: 6),
@@ -32,132 +31,150 @@ class _DominanceWidgetState extends State<DominanceWidget> {
                 ?
 
                 /// Bloc Coingecko info retrieval
-                BlocConsumer<GeckoGlobalStatsBloc, GeckoGlobalStatsState>(
-                    listener: (context, state) {
-                      if (state is GeckoGlobalStatsErrorState) {
-                        log("Error in dominance.dart _DominanceWidgetState");
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is GeckoGlobalStatsLoadedState) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              flex: 1,
-                              child: Row(
+                AnimatedSwitcher(
+                    duration: Duration(milliseconds: 100),
+                    child: BlocConsumer<GeckoGlobalStatsBloc,
+                        GeckoGlobalStatsState>(
+                      listener: (context, state) {
+                        if (state is GeckoGlobalStatsErrorState) {
+                          log("Error in dominance.dart _DominanceWidgetState");
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is GeckoGlobalStatsLoadedState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  SvgPicture.asset(
-                                    'graphics/assets/svg/btc_dominance.svg',
-                                    height: 13,
+                                  Flexible(
+                                    flex: 1,
+                                    child: Row(
+                                      children: <Widget>[
+                                        SvgPicture.asset(
+                                          'graphics/assets/svg/btc_dominance.svg',
+                                          height: 13,
+                                        ),
+                                        Text(
+                                          ' ' +
+                                              state.geckoGlobalStats
+                                                  .totalMarketCapPct['btc']
+                                                  .toStringAsFixed(0) +
+                                              '%',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    ' ' +
-                                        state.geckoGlobalStats
-                                            .totalMarketCapPct['btc']
-                                            .toStringAsFixed(0) +
-                                        '%',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                  Flexible(
+                                    flex: 1,
+                                    child: Row(
+                                      children: <Widget>[
+                                        SvgPicture.asset(
+                                          'graphics/assets/svg/eth_dominance.svg',
+                                          height: 13,
+                                        ),
+                                        Text(
+                                          ' ' +
+                                              state.geckoGlobalStats
+                                                  .totalMarketCapPct['eth']
+                                                  .toStringAsFixed(0) +
+                                              '%',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Row(
+                              SizedBox(height: 20),
+                            ],
+                          );
+                        } else if (state is GeckoGlobalStatsErrorState) {
+                          return Text(
+                              "An error has occured, CoinGecko-related.");
+                        } else {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                flex: 1,
+                                child: Row(
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      'graphics/assets/svg/btc_dominance.svg',
+                                      height: 13,
+                                    ),
+                                    SizedBox(width: 2),
+                                    loadingTemplateWidget(10, 2),
+                                  ],
+                                ),
+                              ),
+                              Row(
                                 children: <Widget>[
                                   SvgPicture.asset(
                                     'graphics/assets/svg/eth_dominance.svg',
                                     height: 13,
                                   ),
-                                  Text(
-                                    ' ' +
-                                        state.geckoGlobalStats
-                                            .totalMarketCapPct['eth']
-                                            .toStringAsFixed(0) +
-                                        '%',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      } else if (state is GeckoGlobalStatsErrorState) {
-                        return Text("An error has occured, CoinGecko-related.");
-                      } else {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              flex: 1,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    'BTC:  ',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
+                                  SizedBox(width: 2),
                                   loadingTemplateWidget(10, 2),
                                 ],
                               ),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  'ETH:  ',
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                                loadingTemplateWidget(10, 2),
-                              ],
-                            ),
-                          ],
-                        );
-                      }
-                    },
+                            ],
+                          );
+                        }
+                      },
+                    ),
                   )
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.loose,
-                        child: Row(
-                          children: <Widget>[
-                            SvgPicture.asset(
-                              'graphics/assets/svg/btc_dominance.svg',
-                              height: 13,
-                            ),
-                            Text(
-                              ' \$12,435.65',
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.loose,
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 1),
-                              child: SvgPicture.asset(
-                                'graphics/assets/svg/eth_dominance.svg',
+                : AnimatedSwitcher(
+                    duration: Duration(milliseconds: 100),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.loose,
+                          child: Row(
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                'graphics/assets/svg/btc_dominance.svg',
                                 height: 13,
                               ),
-                            ),
-                            Text(
-                              ' \$3,519.03',
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
-                          ],
+                              Text(
+                                ' \$12,435.65',
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+                        SizedBox(height: 4),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.loose,
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 1),
+                                child: SvgPicture.asset(
+                                  'graphics/assets/svg/eth_dominance.svg',
+                                  height: 13,
+                                ),
+                              ),
+                              Text(
+                                ' \$3,519.03',
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
           ],
         ),
