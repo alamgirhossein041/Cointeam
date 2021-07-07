@@ -49,8 +49,8 @@ class HomeState extends State<Home> {
         child: Scaffold(
           backgroundColor: primaryBlue,
           body: Stack(
-            // overflow: Overflow.visible,
-            children: <Widget>[
+            overflow: Overflow.visible,
+            children: <Widget> [
               CoinTicker(),
               Container(
                 margin: mainCardMargin(),

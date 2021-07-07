@@ -155,7 +155,7 @@ class MenuList extends StatelessWidget {
                 flex: 1,
                 child: MenuItem(
                   label: 'BUY',
-                  dir: '/buyportfolio',
+                  dir: '/buyportfolio1',
                   onMenuTap: callback,
                 ),
               ),
