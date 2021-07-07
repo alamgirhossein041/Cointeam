@@ -1,5 +1,8 @@
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeMenuButton extends StatefulWidget {
   HomeMenuButton({Key key}) : super(key: key);
@@ -132,7 +135,12 @@ class MenuList extends StatelessWidget {
                 child: MenuItem(
                   label: 'MARKET',
                   dir: '/marketoverview',
-                  onMenuTap: callback,
+                  onMenuTap: () => {
+                    // BlocProvider.of<GeckoGlobalStatsBloc>(context).add(GeckoGlobalStatsFetchEvent()),
+                    // BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event()),
+                    // BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent()),
+                    callback,
+                  }
                 ),
               ),
               Flexible(
@@ -147,7 +155,7 @@ class MenuList extends StatelessWidget {
                 flex: 1,
                 child: MenuItem(
                   label: 'BUY',
-                  dir: '/buyportfolio',
+                  dir: '/buyportfolio1',
                   onMenuTap: callback,
                 ),
               ),

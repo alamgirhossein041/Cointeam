@@ -1,6 +1,7 @@
 import 'package:coinsnap/features/data/global_stats/coingecko/bloc/gecko_global_stats_bloc.dart';
 import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/home/widgets/home_menu_button.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -34,53 +35,67 @@ class HomeState extends State<Home> {
     super.initState();
     BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
     BlocProvider.of<GeckoGlobalStatsBloc>(context).add(GeckoGlobalStatsFetchEvent());
+    BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event());
+    BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent());
     helloWorld = BinanceTimeSyncRepositoryImpl();
     helloWorld.getBinanceTimeSyncLatest();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Container(
+      color: primaryBlue,
+      child: SafeArea(
+        child: Scaffold(
           backgroundColor: primaryBlue,
-          body: Stack(overflow: Overflow.visible, children: <Widget>[
-            CoinTicker(),
-            Container(
+          body: Stack(
+            overflow: Overflow.visible,
+            children: <Widget> [
+              CoinTicker(),
+              Container(
                 margin: mainCardMargin(),
                 decoration: mainCardDecoration(),
                 padding: mainCardPaddingVertical(),
-                child: Column(children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding: mainCardPaddingHorizontal(),
-                          child: HomeDisplayInfo(),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget> [
+                        Expanded(
+                          child: Container(
+                            padding: mainCardPaddingHorizontal(),
+                            child: HomeDisplayInfo(),
                           ),
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    flex: 2,
-                    fit: FlexFit.tight,
-                    child: PanicButton(),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: Container(
-                      padding: mainCardPaddingHorizontal(),
-                      child: HomeMenuButton(),
+                        ),
+                      ],
                     ),
-                  ),
-                ])),
-            Positioned(
-              top: 80,
-              right: 40,
-              child: SvgPicture.asset('graphics/assets/svg/bolt_transp.svg',
-                  width: 65),
-            ),
-          ])),
+                    Flexible(
+                      flex: 2,
+                      fit: FlexFit.tight,
+                      child: PanicButton(),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        padding: mainCardPaddingHorizontal(),
+                        child: HomeMenuButton(),
+                      ),
+                    ),
+                  ]
+                )
+              ),
+              Positioned(
+                top: 80,
+                right: 40,
+                child: SvgPicture.asset(
+                  'graphics/assets/svg/bolt_transp.svg',
+                  width: 65
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -98,16 +113,19 @@ class AnimatedTickerState extends State<AnimatedTicker> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        flex: 1,
-        fit: FlexFit.tight,
-        child: Text(
-            "BTC  \$" +
-                widget.btcSpecial.toStringAsFixed(0) +
-                "       ETH  \$" +
-                widget.ethSpecial.toStringAsFixed(0),
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold)));
+      flex: 1,
+      fit: FlexFit.tight,
+      child: Text(
+        "BTC  \$" +
+          widget.btcSpecial.toStringAsFixed(0) +
+          "       ETH  \$" +
+          widget.ethSpecial.toStringAsFixed(0),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold
+        )
+      )
+    );
   }
 }

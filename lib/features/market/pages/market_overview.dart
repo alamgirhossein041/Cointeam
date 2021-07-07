@@ -117,11 +117,11 @@ class MarketOverviewDominance extends StatelessWidget {
           builder: (context, state) {
             if (state is GeckoGlobalStatsLoadedState) {
               return Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  Text(state.geckoGlobalStats.totalMarketCapPct['btc'].toStringAsFixed(1) + "%"),
+                  Text('BTC: ' + state.geckoGlobalStats.totalMarketCapPct['btc'].toStringAsFixed(1) + "%"),
                   SizedBox(width: 35),
-                  Text(state.geckoGlobalStats.totalMarketCapPct['eth'].toStringAsFixed(1) + "%")
+                  Text('ETH: ' + state.geckoGlobalStats.totalMarketCapPct['eth'].toStringAsFixed(1) + "%")
                 ],
               );
             } else if (state is GeckoGlobalStatsErrorState) {
