@@ -90,8 +90,8 @@ class PanicButtonState extends State<PanicButton> {
   Widget build(BuildContext context) {
     Widget _horizontalBar = Container(
       width: displayWidth(context),
-      height: 4,
-      color: primaryGreen,
+      height: 2,
+      color: primaryGreen.withOpacity(0.3),
     );
 
     // The actual button being pressed. Has the bolt icon.
