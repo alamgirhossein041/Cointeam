@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/data/portfolio/user_data/model/get_portfolio.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
+import 'package:coinsnap/features/trading/trading.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
@@ -8,7 +10,6 @@ import 'package:coinsnap/features/widget_templates/title_bar.dart';
 import 'package:coinsnap/ui_components/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class BuyPortfolioScreenThree extends StatefulWidget {
   BuyPortfolioScreenThree({Key key}) : super(key: key);
@@ -31,6 +32,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
     }
     if(coinDataStructure['coins'] != null) {
       keyString = coinDataStructure['coins'].keys.toList();
+      keyString.forEach((v) => log(v));
     }
     
     return Container(
@@ -82,6 +84,8 @@ class BuyPortfolioReviewLog extends StatefulWidget {
 
 class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
   final _scrollController = ScrollController();
+  double usdTempQuote = 0.0;
+  GetPortfolioModel buySnapshotData;
 
   @override
   Widget build(BuildContext context) {
@@ -291,6 +295,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                     },
                                     builder: (context, state) {
                                       if (state is StartupLoadedState) {
+                                        usdTempQuote = state.usdTotal;
                                         return Text('\$' + state.usdTotal.toStringAsFixed(2));
                                       } else if (state is StartupErrorState) {
                                         return Text("An Error has occurred in Binance");
@@ -488,12 +493,13 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                             ),
                           ),
                           onTap: () => {
-                            Navigator.pop(context),
-                          },
+                            buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
+                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: usdTempQuote, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
+                          }
+                        )
                       ),
                     ),
                   ),
-                ),
                 // Flexible(
                 //   flex: 1,
                 //   fit: FlexFit.tight,
