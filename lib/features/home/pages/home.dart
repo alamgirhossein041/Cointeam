@@ -43,59 +43,6 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return Container(
-      color: primaryBlue,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: primaryBlue,
-          body: Stack(
-            overflow: Overflow.visible,
-            children: <Widget> [
-              CoinTicker(),
-              Container(
-                margin: mainCardMargin(),
-                decoration: mainCardDecoration(),
-                padding: mainCardPaddingVertical(),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget> [
-                        Expanded(
-                          child: Container(
-                            padding: mainCardPaddingHorizontal(),
-                            child: HomeDisplayInfo(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Flexible(
-                      flex: 2,
-                      fit: FlexFit.tight,
-                      child: PanicButton(),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        padding: mainCardPaddingHorizontal(),
-                        child: HomeMenuButton(),
-                      ),
-                    ),
-                  ]
-                )
-              ),
-              Positioned(
-                top: 80,
-                right: 40,
-                child: SvgPicture.asset(
-                  'graphics/assets/svg/bolt_transp.svg',
-                  width: 65
-                ),
-              ),
-            ],
-          ),
-=======
     return SafeArea(
       child: Scaffold(
         backgroundColor: primaryBlue,
@@ -141,7 +88,6 @@ class HomeState extends State<Home> {
               ),
             ),
           ],
->>>>>>> 3bb103b6539ba3ed45c1aa7c0698907f0036ce2b
         ),
       ),
     );
@@ -165,17 +111,6 @@ class AnimatedTickerState extends State<AnimatedTicker> {
       fit: FlexFit.tight,
       child: Text(
         "BTC  \$" +
-<<<<<<< HEAD
-          widget.btcSpecial.toStringAsFixed(0) +
-          "       ETH  \$" +
-          widget.ethSpecial.toStringAsFixed(0),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.bold
-        )
-      )
-=======
             widget.btcSpecial.toStringAsFixed(0) +
             "       ETH  \$" +
             widget.ethSpecial.toStringAsFixed(0),
@@ -185,7 +120,6 @@ class AnimatedTickerState extends State<AnimatedTicker> {
           fontWeight: FontWeight.bold,
         ),
       ),
->>>>>>> 3bb103b6539ba3ed45c1aa7c0698907f0036ce2b
     );
   }
 }

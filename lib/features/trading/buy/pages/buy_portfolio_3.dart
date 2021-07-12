@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/data/portfolio/user_data/model/get_portfolio.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/trading/trading.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
@@ -83,6 +84,7 @@ class BuyPortfolioReviewLog extends StatefulWidget {
 class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
   final _scrollController = ScrollController();
   double usdTempQuote = 0.0;
+  GetPortfolioModel buySnapshotData;
 
   @override
   Widget build(BuildContext context) {
@@ -490,7 +492,8 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                             ),
                           ),
                           onTap: () => {
-                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: usdTempQuote, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: widget.coinDat)), /// TODO: update temporary 7th July
+                            buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
+                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: usdTempQuote, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
                           }
                         )
                       ),
