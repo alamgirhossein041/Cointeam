@@ -32,6 +32,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
     }
     if(coinDataStructure['coins'] != null) {
       keyString = coinDataStructure['coins'].keys.toList();
+      keyString.forEach((v) => log(v));
     }
     
     return Container(

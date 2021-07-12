@@ -56,8 +56,15 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
 
               /// This is where we do the percentage calculation
               
-              double buyQuantity = double.parse(portfolioDataMap.data[v]);
-              totalValue = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
+              // log(portfolioDataMap.data['coins'][v].toString());
+              
+              double buyQuantity = portfolioDataMap.data['coins'][v]['value'];
+              double totalOriginalUsd = portfolioDataMap.data['total'];
+              String buySymbol = portfolioDataMap.data['currency'];
+              double currentPercentage = buyQuantity/totalOriginalUsd;
+              
+              // totalValue = (totalBuyQuote * buyQuantity / portfolioDataMap.data[originalCoinTicker]);
+              totalValue = (totalBuyQuote * currentPercentage);
               var zeroTarget = double.parse((totalValue % divisor).toStringAsFixed(6));
               totalValue -= zeroTarget;
               if (totalValue >= divisor && totalValue > 10) {
