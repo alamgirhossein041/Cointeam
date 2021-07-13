@@ -1,12 +1,17 @@
+import 'dart:convert';
+
+import 'package:coinsnap/features/snapshots/widgets/snapshot_list_item.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
+import 'package:coinsnap/ui_components/ui_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'dart:developer';
 
 class SnapshotList extends StatefulWidget {
-
   @override
   SnapshotListState createState() => SnapshotListState();
 }
@@ -15,14 +20,30 @@ class SnapshotListState extends State<SnapshotList> {
   final _scrollController = ScrollController();
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
+  List _items = [];
+
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response =
+        await rootBundle.loadString('assets/snapshot_dummydata.json');
+    final data = await json.decode(response);
+    setState(() {
+      _items = data;
+    });
+  }
+
   @override
-  void initState() { 
+  void initState() {
+    readJson();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Snapshots'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF2197F2),
@@ -30,60 +51,16 @@ class SnapshotListState extends State<SnapshotList> {
         height: displayHeight(context),
         width: displayWidth(context),
         child: Column(
-          children: <Widget> [
-            
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35),
-                child: Row(
-                  children: <Widget> [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          child: Icon(Icons.arrow_back, color: Colors.white),
-                          onTap: () => {
-                            // SchedulerBinding.instance.addPostFrameCallback((_) {
-                              Navigator.pop(context),
-                              // Navigator.pushNamed(context, '/home'),
-                              // setState(() {});
-                            // }),
-                          },
-                        )
-                      ),
-                    ),
-                    Flexible(
-                      flex: 4,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("Snapshots", style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(),
-                    )
-                  ]
-                )
-              )
-            ),
+          children: <Widget>[
             Flexible(
               flex: 18,
               fit: FlexFit.tight,
               child: Align(
                 alignment: Alignment.center,
                 child: Container(
-                  width: displayWidth(context) * 0.97,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
+                  margin: mainCardMargin(),
+                  decoration: mainCardDecoration(),
+                  padding: snapshotCardPadding(),
                   child: FutureBuilder(
                     future: getStorage(),
                     builder: (context, snapshot) {
@@ -92,122 +69,170 @@ class SnapshotListState extends State<SnapshotList> {
                         case ConnectionState.waiting:
                           return CircularProgressIndicator();
                         default:
-                        if (!snapshot.hasError) {
-                          if(snapshot.data != null) {
-                            return Column(
-                              children: <Widget> [
-                                Flexible(
-                                  flex: 10,
-                                  fit: FlexFit.tight,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: displayHeight(context) * 0.035),
+                          if (!snapshot.hasError) {
+                            if (snapshot.data != null) {
+                              return Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Text(
+                                            "Date",
+                                            style: TextStyle(
+                                              color: Color(0x800B2940),
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          Icon(Icons.swap_vert),
+                                          SizedBox(width: 20),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
                                     child: Scrollbar(
                                       controller: _scrollController,
                                       isAlwaysShown: true,
                                       thickness: 5,
+                                      radius: Radius.circular(3),
                                       child: CustomScrollView(
                                         controller: _scrollController,
-                                        slivers: <Widget> [
-                                          // SliverToBoxAdapter(
-                                          SliverToBoxAdapter(
-                                            child: Padding(
-                                              padding: EdgeInsets.fromLTRB(0,0,0,30),
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: <Widget> [
-                                                    Text("Date", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
-                                                    SizedBox(width: 20),
-                                                    Icon(Icons.swap_vert),
-                                                    SizedBox(width: 20),
-                                                  ]
-                                                )
-                                              ),
-                                            )
-                                          ),
+                                        slivers: <Widget>[
                                           SliverList(
-                                            delegate: SliverChildBuilderDelegate((context, index) {
-                                              return GestureDetector(
-                                                behavior: HitTestBehavior.opaque,
-                                                onTap: () => {
-                                                  log("Hi"),
-                                                  Navigator.pushNamed(context, '/snapshotlog', arguments: {'coinDataStructure': snapshot.data[index]})
-                                                },
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                                  child: Row(
-                                                    children: <Widget> [
-                                                      // Flexible(
-                                                      //   flex: 1,
-                                                      //   fit: FlexFit.tight,
-                                                      //   child: Container(),
-                                                      // ),
-                                                      Container(width: 40),
-                                                      Flexible(
-                                                        flex: 1,
-                                                        fit: FlexFit.tight,
-                                                        child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
-                                                      ),
-                                                      Flexible(
-                                                        flex: 3,
-                                                        fit: FlexFit.tight,
-                                                        // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
-                                                        child: Container(),
-                                                      ),
-                                                      Flexible(
-                                                        flex: 3,
-                                                        fit: FlexFit.tight,
-                                                        child: Padding(
-                                                          padding: EdgeInsets.only(right: 30),
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                                            children: <Widget> [
-                                                              Text(DateFormat("dd MMM yyyy").format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index]['timestamp'])), style: TextStyle(color: Color(0xFF0B2940), fontSize: 14)),
-                                                              SizedBox(height: 5),
-                                                              Text(DateFormat("h:mm a").format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index]['timestamp'])), style: TextStyle(color: Color(0x800B2940), fontSize: 13)),
-                                                            ]
-                                                          )
-                                                        ),
-                                                      ),
-                                                    ]
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            childCount: (snapshot.data.length),
+                                            delegate:
+                                                SliverChildBuilderDelegate(
+                                              (context, index) {
+                                                return GestureDetector(
+                                                  behavior:
+                                                      HitTestBehavior.opaque,
+                                                  onTap: () => {
+                                                    log("Hi"),
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      '/snapshotlog',
+                                                      arguments: {
+                                                        'coinDataStructure':
+                                                            snapshot.data[index]
+                                                      },
+                                                    )
+                                                  },
+                                                  child: SnapshotListItem(
+                                                    id: (index + 1),
+                                                    coinData: snapshot.data[index],
+                                                  )
+                                                  // child: Padding(
+                                                  //   padding: EdgeInsets.only(
+                                                  //       bottom: displayHeight(
+                                                  //               context) *
+                                                  //           0.035),
+                                                  //   child: Row(
+                                                  //     children: <Widget>[
+                                                  //       Container(width: 40),
+                                                  //       Flexible(
+                                                  //         flex: 1,
+                                                  //         fit: FlexFit.tight,
+                                                  //         child: Text(
+                                                  //           "#" +
+                                                  //               (index + 1)
+                                                  //                   .toString(),
+                                                  //           style: TextStyle(
+                                                  //             color: primaryDark,
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //       Flexible(
+                                                  //         flex: 3,
+                                                  //         fit: FlexFit.tight,
+                                                  //         // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                  //         child: Container(),
+                                                  //       ),
+                                                  //       Flexible(
+                                                  //         flex: 3,
+                                                  //         fit: FlexFit.tight,
+                                                  //         child: Padding(
+                                                  //           padding:
+                                                  //               EdgeInsets.only(
+                                                  //                   right: 30),
+                                                  //           child: Column(
+                                                  //             crossAxisAlignment:
+                                                  //                 CrossAxisAlignment
+                                                  //                     .end,
+                                                  //             children: <
+                                                  //                 Widget>[
+                                                  //               Text(
+                                                  //                   DateFormat(
+                                                  //                           "dd MMM yyyy")
+                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                  //                           'timestamp'])),
+                                                  //                   style: TextStyle(
+                                                  //                       color: Color(
+                                                  //                           0xFF0B2940),
+                                                  //                       fontSize:
+                                                  //                           14)),
+                                                  //               SizedBox(
+                                                  //                   height: 5),
+                                                  //               Text(
+                                                  //                   DateFormat(
+                                                  //                           "h:mm a")
+                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                  //                           'timestamp'])),
+                                                  //                   style: TextStyle(
+                                                  //                       color: Color(
+                                                  //                           0x800B2940),
+                                                  //                       fontSize:
+                                                  //                           13)),
+                                                  //             ],
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                );
+                                              },
+                                              childCount:
+                                                  (snapshot.data.length),
                                             ),
                                           ),
-                                        ]
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ),
-                              ]
-                            );
+                                ],
+                              );
+                            } else {
+                              log(snapshot.toString());
+                              return errorTemplateWidget(
+                                  "You have no transaction snapshots.");
+                            }
                           } else {
-                            log(snapshot.toString());
-                            return errorTemplateWidget("You have no transaction snapshots.");
+                            log("Something");
+                            return errorTemplateWidget("Help");
                           }
-                        } else {
-                          log("Something");
-                          return errorTemplateWidget("Help");
-                        }
                       }
-                    }
+                    },
                   ),
-                )
-              )
+                ),
+              ),
             )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
+
   Future getStorage() async {
     var ready = await localStorage.ready;
+    // await localStorage.setItem("portfolio", customVariableHere);
     var value = localStorage.getItem("portfolio");
     log(value.toString());
-    return value;
+    // return value;
+    return _items;
   }
 }

@@ -18,7 +18,6 @@ class AnimatedTickerState extends State<AnimatedTicker> {
     return Container(
       width: displayWidth(context) - 50,
       height: 22,
-      // child: Marquee(text: "aaaaaaaaaaaaaaaaaaaaaa", style: Theme.of(context).textTheme.caption),
       child: Marquee(
         velocity: 17.0,
         blankSpace: 20.0,

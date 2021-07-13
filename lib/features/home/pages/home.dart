@@ -2,7 +2,6 @@ import 'package:coinsnap/features/data/global_stats/coingecko/bloc/gecko_global_
 import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/home/widgets/home_menu_button.dart';
 import 'package:coinsnap/features/market/market.dart';
-import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
 // Packages
@@ -51,7 +50,7 @@ class HomeState extends State<Home> {
           children: <Widget>[
             CoinTicker(),
             Container(
-              margin: mainCardMargin(),
+              margin: mainCardMarginHome(),
               decoration: mainCardDecoration(),
               padding: mainCardPaddingVertical(),
               child: Column(

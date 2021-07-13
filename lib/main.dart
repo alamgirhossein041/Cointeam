@@ -99,7 +99,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          accentColor: Color(0xFFFF25CB9D),
+          primaryColor: primaryBlue,
+          accentColor: primaryBlue,
 
           // Default brightness
           // brightness: Brightness.dark
@@ -205,11 +206,20 @@ class MyApp extends StatelessWidget {
 
           // Appbar theme
           appBarTheme: AppBarTheme(
-            color: Colors.transparent,
+            color: primaryBlue,
+            elevation: 0,
+            iconTheme: IconThemeData(color: primaryLight),
             actionsIconTheme: IconThemeData(
               size: 24,
-              color: Colors.white,
+              color: primaryLight,
             ),
+          ),
+
+          // Set default app trandition as no animation, default is fade up.
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: SimpleFadeTransitionsBuilder(),
+            },
           ),
         ),
         initialRoute: '/home',
@@ -246,5 +256,18 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+// Disable page transition animation
+class SimpleFadeTransitionsBuilder extends PageTransitionsBuilder {
+  @override
+  Widget buildTransitions<T>(
+      PageRoute<T> route,
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    return child;
   }
 }
