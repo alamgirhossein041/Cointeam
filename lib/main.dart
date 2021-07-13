@@ -6,6 +6,7 @@ import 'package:coinsnap/features/data/coinmarketcap/coinmarketcap.dart';
 import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/my_coins/pages/my_coins.dart';
 import 'package:coinsnap/features/onboarding/pages/welcome_screen_1.dart';
+import 'package:coinsnap/features/settings/pages/settings.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
 import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_0.dart';
 import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_02.dart';
@@ -252,6 +253,7 @@ class MyApp extends StatelessWidget {
           '/snapshotlog': (context) => SnapshotLog(),
           '/marketoverview': (context) => MarketOverview(),
           '/mycoins': (context) => MyCoins(),
+          '/settings': (context) => SettingsScreen(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         },
       ),
