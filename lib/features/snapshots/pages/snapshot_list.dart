@@ -29,6 +29,7 @@ class SnapshotListState extends State<SnapshotList> {
     final data = await json.decode(response);
     setState(() {
       _items = data;
+      log(_items.toString());
     });
   }
 
@@ -213,7 +214,7 @@ class SnapshotListState extends State<SnapshotList> {
                             }
                           } else {
                             log("Something");
-                            return errorTemplateWidget("Help");
+                            return errorTemplateWidget("An error has occurred in snapshot_list.dart  SnapshotList");
                           }
                       }
                     },
