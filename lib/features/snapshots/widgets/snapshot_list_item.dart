@@ -11,7 +11,7 @@ class SnapshotListItem extends StatelessWidget {
   //parse json coin data
   _getKeys() {
   var keys = coinData['coins'].keys.toList();
-  keys.forEach((v) => log(v));
+  // keys.forEach((v) => log(v));
   }
 
   @override

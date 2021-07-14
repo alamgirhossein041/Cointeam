@@ -21,21 +21,9 @@ class SnapshotListState extends State<SnapshotList> {
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
   List _items = [];
-
-  // Fetch content from the json file
-  // Future<void> readJson() async {
-  //   final String response =
-  //       await rootBundle.loadString('assets/snapshot_dummydata.json');
-  //   final data = await json.decode(response);
-  //   setState(() {
-  //     _items = data;
-  //     log(_items.toString());
-  //   });
-  // }
-
   @override
+
   void initState() {
-    // readJson();
     super.initState();
   }
 
