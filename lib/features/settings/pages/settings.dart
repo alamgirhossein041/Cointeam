@@ -18,6 +18,9 @@ class SettingsScreen extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
+          appBar: AppBar(
+            title: Text('Settings'),
+          ),
           backgroundColor: primaryBlue,
           body: Stack(
             children: <Widget> [

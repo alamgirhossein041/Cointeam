@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SnapshotListItem extends StatelessWidget {
   const SnapshotListItem({Key key, this.id, this.coinData})
@@ -9,9 +10,9 @@ class SnapshotListItem extends StatelessWidget {
   final Map<String, dynamic> coinData;
 
   //parse json coin data
-  _getKeys() {
-  var keys = coinData['coins'].keys.toList();
-  keys.forEach((v) => log(v));
+  List _getKeys() {
+    return coinData['coins'].keys.toList();
+  // keys.forEach((v) => log(v));
   }
 
   @override
@@ -26,13 +27,14 @@ class SnapshotListItem extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 3,
-                // child: _SnapshotCoinList(coinList: coins),
+                child: _SnapshotCoinIconsList(coinList: _getKeys()),
               ),
               Expanded(
                 flex: 1,
                 child: Column(
                   children: [
                     // Text(date),
+                    Text(DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(coinData['timestamp']))),
                     // Text(time),
                   ],
                 ),
@@ -45,8 +47,8 @@ class SnapshotListItem extends StatelessWidget {
   }
 }
 
-class _SnapshotCoinList extends StatelessWidget {
-  const _SnapshotCoinList({Key key, this.coinList}) : super(key: key);
+class _SnapshotCoinIconsList extends StatelessWidget {
+  const _SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
   final List coinList;
 
   @override
