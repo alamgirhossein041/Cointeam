@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 
 class SettingsTile extends StatelessWidget {
   final String tileText;
+  final Function onClick;
+
   SettingsTile({
     Key key,
-    this.tileText
+    @required this.tileText,
+    this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Text(tileText),
+      onTap: onClick,
     );
   }
 }
