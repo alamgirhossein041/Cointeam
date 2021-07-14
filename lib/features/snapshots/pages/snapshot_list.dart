@@ -22,7 +22,6 @@ class SnapshotListState extends State<SnapshotList> {
 
   List _items = [];
   @override
-
   void initState() {
     super.initState();
   }
@@ -98,92 +97,94 @@ class SnapshotListState extends State<SnapshotList> {
                                                 SliverChildBuilderDelegate(
                                               (context, index) {
                                                 return GestureDetector(
-                                                  behavior:
-                                                      HitTestBehavior.opaque,
-                                                  onTap: () => {
-                                                    log("Hi"),
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      '/snapshotlog',
-                                                      arguments: {
-                                                        'coinDataStructure':
-                                                            snapshot.data[index]
-                                                      },
+                                                    behavior:
+                                                        HitTestBehavior.opaque,
+                                                    onTap: () => {
+                                                          log("Hi"),
+                                                          Navigator.pushNamed(
+                                                            context,
+                                                            '/snapshotlog',
+                                                            arguments: {
+                                                              'coinDataStructure':
+                                                                  snapshot.data[
+                                                                      index]
+                                                            },
+                                                          )
+                                                        },
+                                                    child: SnapshotListItem(
+                                                      id: (index + 1),
+                                                      coinData:
+                                                          snapshot.data[index],
                                                     )
-                                                  },
-                                                  child: SnapshotListItem(
-                                                    id: (index + 1),
-                                                    coinData: snapshot.data[index],
-                                                  )
-                                                  // child: Padding(
-                                                  //   padding: EdgeInsets.only(
-                                                  //       bottom: displayHeight(
-                                                  //               context) *
-                                                  //           0.035),
-                                                  //   child: Row(
-                                                  //     children: <Widget>[
-                                                  //       Container(width: 40),
-                                                  //       Flexible(
-                                                  //         flex: 1,
-                                                  //         fit: FlexFit.tight,
-                                                  //         child: Text(
-                                                  //           "#" +
-                                                  //               (index + 1)
-                                                  //                   .toString(),
-                                                  //           style: TextStyle(
-                                                  //             color: primaryDark,
-                                                  //           ),
-                                                  //         ),
-                                                  //       ),
-                                                  //       Flexible(
-                                                  //         flex: 3,
-                                                  //         fit: FlexFit.tight,
-                                                  //         // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
-                                                  //         child: Container(),
-                                                  //       ),
-                                                  //       Flexible(
-                                                  //         flex: 3,
-                                                  //         fit: FlexFit.tight,
-                                                  //         child: Padding(
-                                                  //           padding:
-                                                  //               EdgeInsets.only(
-                                                  //                   right: 30),
-                                                  //           child: Column(
-                                                  //             crossAxisAlignment:
-                                                  //                 CrossAxisAlignment
-                                                  //                     .end,
-                                                  //             children: <
-                                                  //                 Widget>[
-                                                  //               Text(
-                                                  //                   DateFormat(
-                                                  //                           "dd MMM yyyy")
-                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
-                                                  //                           'timestamp'])),
-                                                  //                   style: TextStyle(
-                                                  //                       color: Color(
-                                                  //                           0xFF0B2940),
-                                                  //                       fontSize:
-                                                  //                           14)),
-                                                  //               SizedBox(
-                                                  //                   height: 5),
-                                                  //               Text(
-                                                  //                   DateFormat(
-                                                  //                           "h:mm a")
-                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
-                                                  //                           'timestamp'])),
-                                                  //                   style: TextStyle(
-                                                  //                       color: Color(
-                                                  //                           0x800B2940),
-                                                  //                       fontSize:
-                                                  //                           13)),
-                                                  //             ],
-                                                  //           ),
-                                                  //         ),
-                                                  //       ),
-                                                  //     ],
-                                                  //   ),
-                                                  // ),
-                                                );
+                                                    // child: Padding(
+                                                    //   padding: EdgeInsets.only(
+                                                    //       bottom: displayHeight(
+                                                    //               context) *
+                                                    //           0.035),
+                                                    //   child: Row(
+                                                    //     children: <Widget>[
+                                                    //       Container(width: 40),
+                                                    //       Flexible(
+                                                    //         flex: 1,
+                                                    //         fit: FlexFit.tight,
+                                                    //         child: Text(
+                                                    //           "#" +
+                                                    //               (index + 1)
+                                                    //                   .toString(),
+                                                    //           style: TextStyle(
+                                                    //             color: primaryDark,
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //       Flexible(
+                                                    //         flex: 3,
+                                                    //         fit: FlexFit.tight,
+                                                    //         // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                    //         child: Container(),
+                                                    //       ),
+                                                    //       Flexible(
+                                                    //         flex: 3,
+                                                    //         fit: FlexFit.tight,
+                                                    //         child: Padding(
+                                                    //           padding:
+                                                    //               EdgeInsets.only(
+                                                    //                   right: 30),
+                                                    //           child: Column(
+                                                    //             crossAxisAlignment:
+                                                    //                 CrossAxisAlignment
+                                                    //                     .end,
+                                                    //             children: <
+                                                    //                 Widget>[
+                                                    //               Text(
+                                                    //                   DateFormat(
+                                                    //                           "dd MMM yyyy")
+                                                    //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                    //                           'timestamp']')),'
+                                                    //                   style: TextStyle(
+                                                    //                       color: Color(
+                                                    //                           0xFF0B2940),
+                                                    //                       fontSize:
+                                                    //                           14)),
+                                                    //               SizedBox(
+                                                    //                   height: 5),
+                                                    //               Text(
+                                                    //                   DateFormat(
+                                                    //                           "h:mm a")
+                                                    //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                    //                           'timestamp']')),'
+                                                    //                   style: TextStyle(
+                                                    //                       color: Color(
+                                                    //                           0x800B2940),
+                                                    //                       fontSize:
+                                                    //                           13)),
+                                                    //             ],
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                    );
                                               },
                                               childCount:
                                                   (snapshot.data.length),
@@ -202,7 +203,8 @@ class SnapshotListState extends State<SnapshotList> {
                             }
                           } else {
                             log("Something");
-                            return errorTemplateWidget("An error has occurred in snapshot_list.dart  SnapshotList");
+                            return errorTemplateWidget(
+                                "An error has occurred in snapshot_list.dart  SnapshotList");
                           }
                       }
                     },
@@ -220,8 +222,15 @@ class SnapshotListState extends State<SnapshotList> {
     var ready = await localStorage.ready;
     // await localStorage.setItem("portfolio", customVariableHere);
     var value = localStorage.getItem("portfolio");
+    // log(value[0]['coins'].values.elementAt(1).toString());
+    log(dummyMap[0]['coins'].values.elementAt(1).toString());
+    // log(dummyMap.toString());
+    print(dummyMap.runtimeType);
+
     log(value.toString());
-    return value;
-    // return _items;
+    print(value.runtimeType);
+    // return value;
+
+    return dummyMap;
   }
 }
