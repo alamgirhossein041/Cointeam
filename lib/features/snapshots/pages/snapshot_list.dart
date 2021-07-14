@@ -1,5 +1,6 @@
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
+import 'package:coinsnap/ui_components/ui_components.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
@@ -23,6 +24,9 @@ class SnapshotListState extends State<SnapshotList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Snapshots'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF2197F2),
@@ -33,57 +37,14 @@ class SnapshotListState extends State<SnapshotList> {
           children: <Widget> [
             
             Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35),
-                child: Row(
-                  children: <Widget> [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          child: Icon(Icons.arrow_back, color: Colors.white),
-                          onTap: () => {
-                            // SchedulerBinding.instance.addPostFrameCallback((_) {
-                              Navigator.pop(context),
-                              // Navigator.pushNamed(context, '/home'),
-                              // setState(() {});
-                            // }),
-                          },
-                        )
-                      ),
-                    ),
-                    Flexible(
-                      flex: 4,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("Snapshots", style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(),
-                    )
-                  ]
-                )
-              )
-            ),
-            Flexible(
               flex: 18,
               fit: FlexFit.tight,
               child: Align(
                 alignment: Alignment.center,
                 child: Container(
-                  width: displayWidth(context) * 0.97,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
+                  margin: mainCardMargin(),
+                  decoration: mainCardDecoration(),
+                  padding: snapshotCardPadding(),
                   child: FutureBuilder(
                     future: getStorage(),
                     builder: (context, snapshot) {
