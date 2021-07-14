@@ -23,10 +23,13 @@ class SnapshotLogState extends State<SnapshotLog> {
     } else {
       coinDataStructure = arguments['coinDataStructure'];
     }
-    if(coinDataStructure['coins'] != null) {
+    if(coinDataStructure['coins'] != null && coinDataStructure['coins'].length > 0) {
       key = coinDataStructure['coins'].keys.toList();
     }
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Transaction Log'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF2197F2),
@@ -35,44 +38,6 @@ class SnapshotLogState extends State<SnapshotLog> {
         width: displayWidth(context),
         child: Column(
           children: <Widget> [
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35),
-                child: Row(
-                  children: <Widget> [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          child: Icon(Icons.arrow_back, color: Colors.white),
-                          onTap: () => {
-                            Navigator.pop(context),
-                          },
-                        )
-                      ),
-                    ),
-                    Flexible(
-                      flex: 4,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("Transaction Log", style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(),
-                    )
-                  ]
-                )
-              )
-            ),
             Flexible(
               flex: 18,
               fit: FlexFit.tight,
@@ -120,6 +85,9 @@ class SnapshotLogState extends State<SnapshotLog> {
                               alignment: Alignment.topCenter,
                               child: Text("-----------------------------------------------", style: TextStyle(color: Color(0x330B2940)))
                             ),
+
+                            key.isEmpty ? 
+                            Text('There are no coins in this snapshot.') :
                             Container(height: 20),
                             Flexible(
                               flex: 6,
