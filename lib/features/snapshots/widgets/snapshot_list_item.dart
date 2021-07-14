@@ -65,6 +65,7 @@ class _SnapshotCoinIconsList extends StatelessWidget {
   Widget build(BuildContext context) {
     int _length = coinList.length;
 
+    // Display maximum of 3 coin icons. Number of remaining coins is displayed as a 4th coin.
     if (_length < 1) {
       return Text('No coins are in this snapshot.');
     } else if (_length == 1) {
@@ -76,9 +77,12 @@ class _SnapshotCoinIconsList extends StatelessWidget {
         ],
       );
     } else {
+      // > 3 coins
+      int remaining = _length - 3;
       return Row(
         children: <Text>[
           for (var i = 0; i < 3; i++) Text(coinList[i]),
+          Text('+$remaining'),
         ],
       );
     }

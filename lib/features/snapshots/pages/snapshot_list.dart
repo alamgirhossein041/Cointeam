@@ -305,7 +305,10 @@ class SnapshotListState extends State<SnapshotList> {
           "ETH": {"quantity": 0.24144, "value": 505.1793984},
           "MATIC": {"quantity": 449.0, "value": 505.352027},
           "BTC": {"quantity": 0.014669, "value": 503.78523806},
-          "AUD": {"quantity": 659.2, "value": 498.0256}
+          "AUD": {"quantity": 659.2, "value": 498.0256},
+          "SHIB": {"quantity": 659.2, "value": 498.0256},
+          "LIFEMOON": {"quantity": 659.2, "value": 498.0256},
+          "DOGE": {"quantity": 659.2, "value": 498.0256},
         },
         "currency": "USDT",
         "total": 2012.34226346,
@@ -331,14 +334,7 @@ class SnapshotListState extends State<SnapshotList> {
     // await localStorage.setItem("portfolio", customVariableHere);
     var value = localStorage.getItem("portfolio");
     // log(value[0]['coins'].values.elementAt(1).toString());
-    log(dummyMap[0]['coins'].values.elementAt(1).toString());
-    // log(dummyMap.toString());
-    print(dummyMap.runtimeType);
-
-    log(value.toString());
-    print(value.runtimeType);
     // return value;
-
     return dummyMap;
   }
 }

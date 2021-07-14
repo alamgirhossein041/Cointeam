@@ -88,7 +88,7 @@ class SnapshotLogState extends State<SnapshotLog> {
 
                             key.isEmpty ? 
                             Text('There are no coins in this snapshot.') :
-                            Container(height: 20),
+                            
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
@@ -104,41 +104,45 @@ class SnapshotLogState extends State<SnapshotLog> {
                                         padding: EdgeInsets.fromLTRB(0,0,0,30),
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: Row(
-                                            children: <Widget> [
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
-                                                  // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                                  child: Container(),
-                                                ),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  // child: Padding(
-                                                  //   padding: EdgeInsets.only(left: 20),
-                                                    child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
-                                                  // ),
-                                                ),
-                                                // child: Container(),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Align(
-                                                  alignment: Alignment.centerRight,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Container(height: 20),
+                                              Row(
+                                              children: <Widget> [
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
                                                   child: Padding(
-                                                    padding: EdgeInsets.only(right: 40),
-                                                    child: Text(coinDataStructure['currency'], style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                                    padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
+                                                    // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                                                    child: Container(),
                                                   ),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: Align(
+                                                    alignment: Alignment.center,
+                                                    // child: Padding(
+                                                    //   padding: EdgeInsets.only(left: 20),
+                                                      child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                                    // ),
+                                                  ),
+                                                  // child: Container(),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: Align(
+                                                    alignment: Alignment.centerRight,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(right: 40),
+                                                      child: Text(coinDataStructure['currency'], style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                                    ),
+                                                  )
                                                 )
-                                              )
-                                            ]
+                                              ]
+                                            ),],
                                           )
                                         ),
                                       )
