@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:coinsnap/features/settings/widgets/settings_tile.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/title_bar.dart';
 import 'package:coinsnap/ui_components/ui_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key key}) : super(key: key);
@@ -38,7 +41,31 @@ class SettingsScreen extends StatelessWidget {
                           SettingsTile(tileText: "Link FTX API (coming soon"),
                           SettingsTile(tileText: "Link Coinbase API (coming soon"),
                           SizedBox(height: 10),
-                          SettingsTile(tileText: "DEVTOOL: Load in Andrew's API")
+                          SettingsTile(tileText: "DEVTOOL: Load in Andrew's API", onClick: () async {
+                            final secureStorage = FlutterSecureStorage();
+                            String api = await secureStorage.read(key: "binanceApi");
+                            if(api != null) {
+                              debugPrint("There is already an API Key saved!");
+                              log("There is already an API Key saved!");
+                            } else {
+                              debugPrint("No Binance API Detected... Adding...");
+                              log("No Binance API Detected... Adding...");
+                              secureStorage.write(key: "binanceApi", value: "tKmm9Fyu2xPqNrfXFBnQ1UVaUduffkvLqMKH5wJD64JDO3kjRyqqqHOrTDRp1D6m");
+                              secureStorage.write(key: "binanceSapi", value: "OHEjGXTHu0gOIpmkUOHiVBkNBq8jshmikXD3UMmSd7EkjS6898SlViv5A0LW1T4f");
+                              return null;
+                            }
+                          }),
+                          SettingsTile(tileText: "DEVTOOL: Remove existing API", onClick: () async {
+                            final secureStorage = FlutterSecureStorage();
+                            String api = await secureStorage.read(key: "binanceApi");
+                            if(api == null) {
+                              log("There is no API key.");
+                            } else {
+                              secureStorage.delete(key: "binanceApi");
+                              secureStorage.delete(key: "binanceSapi");
+                              log("API key deleted.");
+                            }
+                          })
                         ]
                       )
                     ),
