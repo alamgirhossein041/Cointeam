@@ -57,6 +57,7 @@ class SnapshotListItem extends StatelessWidget {
   }
 }
 
+/// Displays the list of icons in [coinList].
 class _SnapshotCoinIconsList extends StatelessWidget {
   const _SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
   final List coinList;
@@ -80,11 +81,39 @@ class _SnapshotCoinIconsList extends StatelessWidget {
       // > 3 coins
       int remaining = _length - 3;
       return Row(
-        children: <Text>[
+        children: <Widget>[
           for (var i = 0; i < 3; i++) Text(coinList[i]),
-          Text('+$remaining'),
+          RemainingCoinIcon(count: remaining),
         ],
       );
     }
+  }
+}
+
+/// Circle icon that displays the remaining [count] of coins.
+class RemainingCoinIcon extends StatelessWidget {
+  const RemainingCoinIcon({Key key, this.count}) : super(key: key);
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+            border: Border.all(color: primaryBlue),
+            shape: BoxShape.circle,
+          ),
+        ),
+        Text(
+          '+$count',
+          style: Theme.of(context).textTheme.subtitle1.copyWith(color: primaryDark.withOpacity(0.6)),
+        ),
+      ],
+    );
   }
 }
