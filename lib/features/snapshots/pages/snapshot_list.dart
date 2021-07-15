@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coinsnap/features/snapshots/widgets/snapshot_list_item.dart';
+import 'package:coinsnap/features/snapshots/widgets/snapshot_list_tile.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
