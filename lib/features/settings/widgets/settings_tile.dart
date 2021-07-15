@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class SettingsTile extends StatelessWidget {
   final String text;
@@ -13,46 +17,76 @@ class SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Padding(
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: displayWidth(context),
         padding: EdgeInsets.symmetric(vertical: 20.0),
-        child: Text(text),
+        child: Text(text, style: TextStyle(color: Colors.black)),
       ),
-      onTap: onClick,
+      onTap: onClick
     );
   }
 }
 
 
-class SettingsTileToggle extends StatefulWidget {
+class SettingsTileCurrency extends StatefulWidget {
   final String text;
-  final Function toggle;
-  SettingsTileToggle({
+  // final Function onClick;
+  SettingsTileCurrency({
     Key key,
     this.text,
-    @required this.toggle,
+    // @required this.onClick,
   }) : super(key: key);
 
   @override
-  SettingsTileToggleState createState() => SettingsTileToggleState();
+  SettingsTileCurrencyState createState() => SettingsTileCurrencyState();
 }
 
-class SettingsTileToggleState extends State<SettingsTileToggle> {
+class SettingsTileCurrencyState extends State<SettingsTileCurrency> {
+  String currency = '';
+
+  @override
+  void initState() {
+    final storage = LocalStorage("settings");
+    storage.ready.then((_) {
+      setState(() {currency = storage.getItem("currency") ?? 'USD';});
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Padding(
+      behavior: HitTestBehavior.opaque,
+      child: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0),
+        width: displayWidth(context),
         // child: Container(
         //   width: double.infinity,
           child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget> [
             Text(widget.text),
-            Text("USD")
+            Text(currency),
           ]
         // ),
         )
-      )
+      ),
+      onTap: () => _currencyToggleHelper()
     );
+  }
+  _currencyToggleHelper() {
+    final storage = LocalStorage("settings");
+    storage.ready.then((_) {currency = storage.getItem("currency") ?? 'USD';});
+    if(currency == 'USD') {
+      storage.setItem("currency", 'AUD');
+      setState(() {
+        currency = 'AUD';
+      });
+    } else if (currency == 'AUD') {
+      storage.setItem("currency", 'USD');
+      setState(() {
+        currency = 'USD';
+      });
+    }
   }
 }
