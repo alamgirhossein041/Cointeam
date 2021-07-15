@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +25,7 @@ class SnapshotListItem extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 3,
-            child: _SnapshotCoinIconsList(coinList: _getKeys()),
+            child: SnapshotCoinIconsList(coinList: _getKeys()),
           ),
           Expanded(
             flex: 1,
@@ -58,8 +59,8 @@ class SnapshotListItem extends StatelessWidget {
 }
 
 /// Displays the list of icons in [coinList].
-class _SnapshotCoinIconsList extends StatelessWidget {
-  const _SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
+class SnapshotCoinIconsList extends StatelessWidget {
+  const SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
   final List coinList;
 
   @override
@@ -69,12 +70,11 @@ class _SnapshotCoinIconsList extends StatelessWidget {
     // Display maximum of 3 coin icons. Number of remaining coins is displayed as a 4th coin.
     if (_length < 1) {
       return Text('No coins are in this snapshot.');
-    } else if (_length == 1) {
-      return Text(coinList[0]);
     } else if (_length <= 3) {
       return Row(
-        children: <Text>[
-          for (var i in coinList) Text(i),
+        children: <Widget>[
+          // for (var i in coinList) Text(i),
+          for (var i in coinList) buildIcon(i)
         ],
       );
     } else {
@@ -82,12 +82,19 @@ class _SnapshotCoinIconsList extends StatelessWidget {
       int remaining = _length - 3;
       return Row(
         children: <Widget>[
-          for (var i = 0; i < 3; i++) Text(coinList[i]),
+          for (var i = 0; i < 3; i++) buildIcon(coinList[i]),
           RemainingCoinIcon(count: remaining),
         ],
       );
     }
   }
+
+  buildIcon(String symbol) => CircleAvatar(
+    radius: 17.5,
+        backgroundImage: CachedNetworkImageProvider(
+          'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+        ),
+      );
 }
 
 /// Circle icon that displays the remaining [count] of coins.
@@ -102,8 +109,8 @@ class RemainingCoinIcon extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         Container(
-          width: 35,
-          height: 35,
+          width: 35.0,
+          height: 35.0,
           decoration: BoxDecoration(
             border: Border.all(color: primaryBlue),
             shape: BoxShape.circle,
@@ -111,7 +118,10 @@ class RemainingCoinIcon extends StatelessWidget {
         ),
         Text(
           '+$count',
-          style: Theme.of(context).textTheme.subtitle1.copyWith(color: primaryDark.withOpacity(0.6)),
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1
+              .copyWith(color: primaryDark.withOpacity(0.6)),
         ),
       ],
     );
