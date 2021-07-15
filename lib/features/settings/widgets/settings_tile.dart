@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class SettingsTile extends StatelessWidget {
-  final String tileText;
+  final String text;
   final Function onClick;
 
   SettingsTile({
     Key key,
-    @required this.tileText,
+    @required this.text,
     this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Text(tileText),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: Text(text),
+      ),
       onTap: onClick,
     );
   }
@@ -21,10 +24,12 @@ class SettingsTile extends StatelessWidget {
 
 
 class SettingsTileToggle extends StatefulWidget {
-  final String tileText;
+  final String text;
+  final Function toggle;
   SettingsTileToggle({
     Key key,
-    this.tileText
+    this.text,
+    @required this.toggle,
   }) : super(key: key);
 
   @override
@@ -36,13 +41,13 @@ class SettingsTileToggleState extends State<SettingsTileToggle> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.0),
+        padding: EdgeInsets.symmetric(vertical: 20.0),
         // child: Container(
         //   width: double.infinity,
           child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget> [
-            Text(widget.tileText),
+            Text(widget.text),
             Text("USD")
           ]
         // ),

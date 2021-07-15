@@ -20,7 +20,7 @@ class SnapshotListState extends State<SnapshotList> {
   final _scrollController = ScrollController();
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
-  List _items = [];
+  // List _items = [];
 
   // Fetch content from the json file
   // Future<void> readJson() async {
@@ -47,7 +47,7 @@ class SnapshotListState extends State<SnapshotList> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFF2197F2),
+          color: primaryBlue,
         ),
         height: displayHeight(context),
         width: displayWidth(context),
@@ -72,6 +72,7 @@ class SnapshotListState extends State<SnapshotList> {
                         default:
                           if (!snapshot.hasError) {
                             if (snapshot.data != null) {
+                              log("There are " + snapshot.data.length.toString() + " snapshots");
                               return Column(
                                 children: <Widget>[
                                   Padding(
@@ -123,78 +124,78 @@ class SnapshotListState extends State<SnapshotList> {
                                                       },
                                                     )
                                                   },
-                                                  child: SnapshotListItem(
-                                                    id: (index + 1),
-                                                    coinData: snapshot.data[index],
-                                                  )
-                                                  // child: Padding(
-                                                  //   padding: EdgeInsets.only(
-                                                  //       bottom: displayHeight(
-                                                  //               context) *
-                                                  //           0.035),
-                                                  //   child: Row(
-                                                  //     children: <Widget>[
-                                                  //       Container(width: 40),
-                                                  //       Flexible(
-                                                  //         flex: 1,
-                                                  //         fit: FlexFit.tight,
-                                                  //         child: Text(
-                                                  //           "#" +
-                                                  //               (index + 1)
-                                                  //                   .toString(),
-                                                  //           style: TextStyle(
-                                                  //             color: primaryDark,
-                                                  //           ),
-                                                  //         ),
-                                                  //       ),
-                                                  //       Flexible(
-                                                  //         flex: 3,
-                                                  //         fit: FlexFit.tight,
-                                                  //         // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
-                                                  //         child: Container(),
-                                                  //       ),
-                                                  //       Flexible(
-                                                  //         flex: 3,
-                                                  //         fit: FlexFit.tight,
-                                                  //         child: Padding(
-                                                  //           padding:
-                                                  //               EdgeInsets.only(
-                                                  //                   right: 30),
-                                                  //           child: Column(
-                                                  //             crossAxisAlignment:
-                                                  //                 CrossAxisAlignment
-                                                  //                     .end,
-                                                  //             children: <
-                                                  //                 Widget>[
-                                                  //               Text(
-                                                  //                   DateFormat(
-                                                  //                           "dd MMM yyyy")
-                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
-                                                  //                           'timestamp'])),
-                                                  //                   style: TextStyle(
-                                                  //                       color: Color(
-                                                  //                           0xFF0B2940),
-                                                  //                       fontSize:
-                                                  //                           14)),
-                                                  //               SizedBox(
-                                                  //                   height: 5),
-                                                  //               Text(
-                                                  //                   DateFormat(
-                                                  //                           "h:mm a")
-                                                  //                       .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
-                                                  //                           'timestamp'])),
-                                                  //                   style: TextStyle(
-                                                  //                       color: Color(
-                                                  //                           0x800B2940),
-                                                  //                       fontSize:
-                                                  //                           13)),
-                                                  //             ],
-                                                  //           ),
-                                                  //         ),
-                                                  //       ),
-                                                  //     ],
-                                                  //   ),
-                                                  // ),
+                                                  // child: SnapshotListItem(
+                                                  //   id: (index + 1),
+                                                  //   coinData: snapshot.data[index],
+                                                  // )
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: displayHeight(
+                                                                context) *
+                                                            0.035),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Container(width: 40),
+                                                        Flexible(
+                                                          flex: 1,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(
+                                                            "#" +
+                                                                (index + 1)
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                              color: primaryDark,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          // child: Text("#" + (index + 1).toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                          child: Container(),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    right: 30),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                    DateFormat(
+                                                                            "dd MMM yyyy")
+                                                                        .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                                            'timestamp'])),
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0xFF0B2940),
+                                                                        fontSize:
+                                                                            14)),
+                                                                SizedBox(
+                                                                    height: 5),
+                                                                Text(
+                                                                    DateFormat(
+                                                                            "h:mm a")
+                                                                        .format(DateTime.fromMillisecondsSinceEpoch(snapshot.data[index][
+                                                                            'timestamp'])),
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0x800B2940),
+                                                                        fontSize:
+                                                                            13)),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 );
                                               },
                                               childCount:
@@ -233,7 +234,7 @@ class SnapshotListState extends State<SnapshotList> {
     // await localStorage.setItem("portfolio", customVariableHere);
     var value = localStorage.getItem("portfolio");
     log(value.toString());
-    // return value;
-    return _items;
+    return value;
+    // return _items;
   }
 }
