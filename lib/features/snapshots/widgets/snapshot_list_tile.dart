@@ -5,8 +5,8 @@ import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SnapshotListItem extends StatelessWidget {
-  const SnapshotListItem({Key key, this.id, this.coinData}) : super(key: key);
+class SnapshotListTile extends StatelessWidget {
+  const SnapshotListTile({Key key, this.id, this.coinData}) : super(key: key);
   final int id;
   final Map<String, dynamic> coinData;
 

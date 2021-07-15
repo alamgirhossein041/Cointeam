@@ -111,7 +111,7 @@ class SnapshotListState extends State<SnapshotList> {
                                                             },
                                                           )
                                                         },
-                                                    child: SnapshotListItem(
+                                                    child: SnapshotListTile(
                                                       id: (index + 1),
                                                       coinData:
                                                           snapshot.data[index],
