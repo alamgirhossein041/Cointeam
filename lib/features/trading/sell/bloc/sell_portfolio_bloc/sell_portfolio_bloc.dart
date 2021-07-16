@@ -81,6 +81,9 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 double quantityTmp;
                 double valueTmp;
                 if(v.coin == 'USDT') {
+                  // When trading BTC and USDT together, 
+                  // whether you're selling BTC into USDT, or selling USDT into BTC
+                  // it's always gonna be BTCUSDT, and never USDTBTC. 
                   debugPrint("########");
                   result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
                   log("Pretending to sell");
@@ -98,7 +101,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 }
                 debugPrint(result['code'].toString());
                 if(result['code'] == null) {
-                  totalValue += double.parse(result['cummulativeQuoteQty']);
+                  totalValue += valueTmp;
                   debugPrint("What's wrong now?");
                   debugPrint("Running totalValue is $totalValue");
                   /// 25th
