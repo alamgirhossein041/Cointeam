@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/settings/widgets/settings_currency_toggle.dart';
 import 'package:coinsnap/features/settings/widgets/settings_section.dart';
+import 'package:coinsnap/features/settings/widgets/settings_theme_toggle.dart';
 import 'package:coinsnap/features/settings/widgets/settings_tile.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
@@ -32,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
                 decoration: mainCardDecoration(),
                 padding: mainCardPadding(),
                 width: displayWidth(context),
-                child: NEWWIDGET(),
+                child: SettingsWidget(),
                 // child: Column(
                 //   children: <Widget> [
                 //     SizedBox(height: 50),
@@ -212,8 +214,8 @@ class SettingsScreen extends StatelessWidget {
 // }
 
 
-class NEWWIDGET extends StatelessWidget {
-  NEWWIDGET({Key key}) : super(key: key);
+class SettingsWidget extends StatelessWidget {
+  SettingsWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -225,15 +227,36 @@ class NEWWIDGET extends StatelessWidget {
             items: <Widget> [
               SettingsTile(text: 'Link Binance API', onClick: () => _loadDevToolApi(true)),
               SettingsTile(text: 'Link FTX API', onClick: () => _loadDevToolApi(false))
-              
             ]
           ),
           SettingsSection(
             title: "General",
             items: <Widget> [
               // for now the app will toggle between USD and AUD
-              SettingsTileCurrency(text: 'Currency')
-            ])
+              SettingsCurrencyToggle()
+            ]
+          ),
+          SettingsSection(
+            title: "System",
+            items: <Widget> [
+              SettingsThemeToggle()
+              
+              /// TODO 16th July: STUFF
+              /// Theme (toggle)
+              /// Bug Report (non-functional... i guess we could add an api)
+              /// Feedback (same shit)
+            ]
+          ),
+          SettingsSection(
+            title: "DEVTOOLS",
+            items: <Widget> [
+              /// TODO 16th July: STUFF
+              /// Load API
+              /// Unload API
+              /// Load Dummy Data
+              /// Unload Dummy Data
+            ]
+          )
         ]
       )
     );
