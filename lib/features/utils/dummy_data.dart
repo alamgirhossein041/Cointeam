@@ -1,3 +1,4 @@
+// Parsed coin data strcuture from within app
 List<dynamic> dummyCoinList = [
   {
     "coins": {
@@ -92,4 +93,104 @@ List<dynamic> dummyCoinList = [
     "timestamp": 1624958729880
   },
   {"coins": {}, "currency": "USDT", "total": 0.0, "timestamp": 1625625851453}
+];
+
+// Raw API response from Binance when selling snapshot, each item is a coin
+List<dynamic> rawBinanceResp = [
+  {
+    "symbol": "BTCUSDT",
+    "orderId": 6844163234,
+    "orderListId": -1,
+    "clientOrderId": "aTPWeZgsIhKbORcmIaYAoX",
+    "transactTime": 1626408953867,
+    "price": 0.00000000,
+    "origQty": 0.00160900,
+    "executedQty": 0.00160900,
+    "cummulativeQuoteQty": 51.41475832,
+    "status": "FILLED",
+    "timeInForce": "GTC",
+    "type": "MARKET",
+    "side": "SELL",
+    "fills": [
+      {
+        "price": 31954.48000000,
+        "qty": 0.00160900,
+        "commission": 0.00011979,
+        "commissionAsset": "BNB",
+        "tradeId": 957295326
+      }
+    ]
+  },
+  {
+    "symbol": "ETHUSDT",
+    "orderId": 5028727986,
+    "orderListId": -1,
+    "clientOrderId": "vMm12uPfNwhag4Dn4PwcJg",
+    "transactTime": 1626408953168,
+    "price": 0.00000000,
+    "origQty": 0.02669000,
+    "executedQty": 0.02669000,
+    "cummulativeQuoteQty": 52.08206530,
+    "status": "FILLED",
+    "timeInForce": "GTC",
+    "type": "MARKET",
+    "side": "SELL",
+    "fills": [
+      {
+        "price": 1951.37000000,
+        "qty": 0.02669000,
+        "commission": 0.00012134,
+        "commissionAsset": "BNB",
+        "tradeId": 520183962
+      }
+    ]
+  },
+  {
+    "symbol": "BNBUSDT",
+    "orderId": 2669150724,
+    "orderListId": -1,
+    "clientOrderId": "XwVvhMZAahdmXmNzyvscEJ",
+    "transactTime": 1626408952727,
+    "price": 0.00000000,
+    "origQty": 0.03570000,
+    "executedQty": 0.03570000,
+    "cummulativeQuoteQty": 11.48040600,
+    "status": "FILLED",
+    "timeInForce": "GTC",
+    "type": "MARKET",
+    "side": "SELL",
+    "fills": [
+      {
+        "price": 321.58000000,
+        "qty": 0.03570000,
+        "commission": 0.00002674,
+        "commissionAsset": "BNB",
+        "tradeId": 359546298
+      }
+    ]
+  },
+  {
+    "symbol": "MATICUSDT",
+    "orderId": 822158153,
+    "orderListId": -1,
+    "clientOrderId": "ijPu8D4SakTbYDne0iw7oH",
+    "transactTime": 1626408953500,
+    "price": 0.00000000,
+    "origQty": 57.80000000,
+    "executedQty": 57.80000000,
+    "cummulativeQuoteQty": 51.57494000,
+    "status": "FILLED",
+    "timeInForce": "GTC",
+    "type": "MARKET",
+    "side": "SELL",
+    "fills": [
+      {
+        "price": 0.89230000,
+        "qty": 57.80000000,
+        "commission": 0.00012016,
+        "commissionAsset": "BNB",
+        "tradeId": 123032431
+      }
+    ]
+  },
 ];
