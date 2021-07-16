@@ -35,7 +35,7 @@ class SnapshotListState extends State<SnapshotList> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFF2197F2),
+          color: primaryBlue,
         ),
         // height: displayHeight(context),
         // width: displayWidth(context),
@@ -60,6 +60,7 @@ class SnapshotListState extends State<SnapshotList> {
                         default:
                           if (!snapshot.hasError) {
                             if (snapshot.data != null) {
+                              log("There are " + snapshot.data.length.toString() + " snapshots");
                               return Column(
                                 children: <Widget>[
                                   Padding(
