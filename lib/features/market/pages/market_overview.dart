@@ -22,6 +22,9 @@ class MarketOverview extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
+          appBar: AppBar(
+            title: Text('Market'),
+          ),
           backgroundColor: primaryBlue,
           body: Stack(
             children: <Widget> [

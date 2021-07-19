@@ -40,10 +40,15 @@ class CoinTickerState extends State<CoinTicker> {
           //   ),
 
           // );
-          return Row(children: <Widget>[
-            AnimatedTicker(
-                btcSpecial: state.btcSpecial, ethSpecial: state.ethSpecial),
-          ]);
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+            child: Row(children: <Widget>[
+              Icon(Icons.preview_outlined, color: primaryLight, size: 20),
+              SizedBox(width: 8),
+              AnimatedTicker(
+                  btcSpecial: state.btcSpecial, ethSpecial: state.ethSpecial),
+            ]),
+          );
         } else if (state is StartupInitialState) {
           log("Initial");
           return Container();
