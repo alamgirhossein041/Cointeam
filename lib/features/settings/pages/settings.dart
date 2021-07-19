@@ -239,7 +239,8 @@ class SettingsWidget extends StatelessWidget {
           SettingsSection(
             title: "System",
             items: <Widget> [
-              SettingsThemeToggle()
+              SettingsThemeToggle(),
+              SettingsTile(text: 'Feedback', onClick: () => Navigator.pushNamed(context, '/feedback')),
               
               /// TODO 16th July: STUFF
               /// Theme (toggle)
