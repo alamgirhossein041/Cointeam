@@ -1,53 +1,26 @@
+import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
 
 class SettingsTile extends StatelessWidget {
-  final String tileText;
+  final String text;
   final Function onClick;
 
   SettingsTile({
     Key key,
-    @required this.tileText,
+    @required this.text,
     this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Text(tileText),
-      onTap: onClick,
-    );
-  }
-}
-
-
-class SettingsTileToggle extends StatefulWidget {
-  final String tileText;
-  SettingsTileToggle({
-    Key key,
-    this.tileText
-  }) : super(key: key);
-
-  @override
-  SettingsTileToggleState createState() => SettingsTileToggleState();
-}
-
-class SettingsTileToggleState extends State<SettingsTileToggle> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.0),
-        // child: Container(
-        //   width: double.infinity,
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget> [
-            Text(widget.tileText),
-            Text("USD")
-          ]
-        // ),
-        )
-      )
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: displayWidth(context),
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: Text(text, style: TextStyle(color: Colors.black)),
+      ),
+      onTap: onClick
     );
   }
 }

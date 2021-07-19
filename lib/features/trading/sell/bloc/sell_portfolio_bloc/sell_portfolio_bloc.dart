@@ -115,6 +115,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 }
               }
             } catch (e) {
+              log(e.toString());
               debugPrint(e.toString());
               debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
             }
@@ -190,6 +191,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         // debugPrint("nothing is happening here?");
 
 /// ### Uncomment above for ftx integration ### ///
+log("14th July");
 
         yield SellPortfolioLoadedState(totalValue: totalValue, coinDataStructure: coinDataStructure);
       } catch (e) {
