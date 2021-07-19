@@ -95,8 +95,9 @@ List<dynamic> dummyCoinList = [
   {"coins": {}, "currency": "USDT", "total": 0.0, "timestamp": 1625625851453}
 ];
 
-// Raw API response from Binance when selling snapshot, each item is a coin
-List<dynamic> rawBinanceResp = [
+// Raw API response from Binance when selling snapshot, each item is a sold coin record.
+// This would be the result of one sold snapshot, containing multiple coins.
+List<dynamic> rawBinanceSoldResp = [
   {
     "symbol": "BTCUSDT",
     "orderId": 6844163234,
