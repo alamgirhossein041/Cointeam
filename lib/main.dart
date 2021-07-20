@@ -102,6 +102,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryBlue,
           accentColor: primaryBlue,
+          scaffoldBackgroundColor: primaryBlue,
 
           // Default brightness
           // brightness: Brightness.dark
