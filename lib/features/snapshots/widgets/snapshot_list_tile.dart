@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
@@ -10,22 +11,15 @@ class SnapshotListTile extends StatelessWidget {
   final int id;
   final Map<String, dynamic> coinData;
 
-  // list of coin symbols in this list item
-  List _getKeys() {
-    return coinData['coins'].keys.toList();
-    // keys.forEach((v) => log(v));
-  }
-
   @override
   Widget build(BuildContext context) {
-    _getKeys();
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
+      padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 15.0),
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 3,
-            child: SnapshotCoinIconsList(coinList: _getKeys()),
+            child: SnapshotCoinIconsList(coinList: _getCoinNames()),
           ),
           Expanded(
             flex: 1,
@@ -56,12 +50,21 @@ class SnapshotListTile extends StatelessWidget {
       ),
     );
   }
+
+  /// Iterate through the map of coins and return a list of their symbols
+  List<String> _getCoinNames() {
+    List<String> coinNames = [];
+    coinData['coins'].forEach((key, value) {
+      coinNames.add(key.toString());
+    });
+    return coinNames;
+  }
 }
 
 /// Displays the list of icons in [coinList].
 class SnapshotCoinIconsList extends StatelessWidget {
   const SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
-  final List coinList;
+  final List<String> coinList;
 
   @override
   Widget build(BuildContext context) {
@@ -72,29 +75,43 @@ class SnapshotCoinIconsList extends StatelessWidget {
       return Text('No coins are in this snapshot.');
     } else if (_length <= 3) {
       return Row(
-        children: <Widget>[
-          // for (var i in coinList) Text(i),
-          for (var i in coinList) buildIcon(i)
-        ],
+        children: <Widget>[for (var i in coinList) BuildIcon(coin: i)],
       );
     } else {
       // > 3 coins
       int remaining = _length - 3;
       return Row(
         children: <Widget>[
-          for (var i = 0; i < 3; i++) buildIcon(coinList[i]),
+          for (var i = 0; i < 3; i++) BuildIcon(coin: coinList[i]),
           RemainingCoinIcon(count: remaining),
         ],
       );
     }
   }
+}
 
-  buildIcon(String symbol) => CircleAvatar(
-    radius: 17.5,
+/// Returns the icon image for the given [coin]
+class BuildIcon extends StatelessWidget {
+  const BuildIcon({Key key, String coin}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // call api to get icon's name
+    Future<http.Response> fetchAlbum() {
+      return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(right: 14.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: 17.5,
         backgroundImage: CachedNetworkImageProvider(
           'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
         ),
-      );
+      ),
+    );
+  }
 }
 
 /// Circle icon that displays the remaining [count] of coins.

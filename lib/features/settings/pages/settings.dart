@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:coinsnap/features/settings/features/coingecko/models/coingecko_coin_model.dart';
+import 'package:coinsnap/features/settings/features/coingecko/repos/coingecko_coin_repo.dart';
 
 import 'package:coinsnap/features/settings/widgets/settings_currency_toggle.dart';
 import 'package:coinsnap/features/settings/widgets/settings_section.dart';
@@ -19,7 +21,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: primaryBlue,
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -246,8 +247,42 @@ class SettingsWidget extends StatelessWidget {
         /// Unload Dummy Data
         /// Parse Raw Binance API response and load into localstorage
         SettingsTile(
-            text: 'Parse Binance sold dummy data into Snapshot data',
-            onClick: () => _parseBinanceSoldDummyData())
+          text: 'Parse Binance sold dummy data into Snapshot data',
+          onClick: () => _parseBinanceSoldDummyData(),
+        ),
+        SettingsTile(
+          text: 'Call Coingecko API for all coins and save to localstorage',
+          onClick: () async {
+            bool i = await _getAllCoins();
+            i
+                ? showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Success'),
+                      content: const Text('Got all coins from coingecko and saved to localstorage.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Nice'),
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                        )
+                      ],
+                    ),
+                  )
+                : showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Failed'),
+                      content: const Text('Something went wrong lmao'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK THEN'),
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                        )
+                      ],
+                    ),
+                  );
+          },
+        ),
       ])
     ]));
   }
@@ -286,6 +321,13 @@ class SettingsWidget extends StatelessWidget {
       }
     }
   }
+}
+
+_getAllCoins() async {
+  // Call api using CoingeckoCoinRepo
+  CoingeckoCoinRepoImpl coinRepo = new CoingeckoCoinRepoImpl();
+  bool flag = await coinRepo.getCoins();
+  return flag;
 }
 
 /// Fetches pre-saved Binance snapshot sell data into our own snapshot data structure.
