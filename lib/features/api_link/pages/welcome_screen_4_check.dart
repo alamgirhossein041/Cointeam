@@ -83,21 +83,10 @@ class _CheckBinanceApiState extends State<CheckBinanceApi> {
       (_) {
         List<Map> coingeckoCoins = localStorage.getItem('coingeckoCoins');
 
-        // our own map of coingecko coins
-        Map<String, Map> parsedCoingeckoCoins = {};
-
-        // parse each element into the map
-        coingeckoCoins.forEach((v) {
-          parsedCoingeckoCoins[v['symbol']] = {
-            'id': v['id'],
-            'name': v['name']
-          };
-        });
-
-    //     Map<String, int> map = new Map.fromIterable(coingeckoCoins,
-    // key: (item) => item['id'],
-    // value: (item) => item);
-
+        // parse each element into our own map of coingecko coins
+        Map<String, Map> parsedCoingeckoCoins = Map.fromIterable(coingeckoCoins,
+        key: (item) => item['id'],
+        value: (item) => item);
 
         // save into localstorage
         localStorage.setItem('parsedCoingeckoCoins', parsedCoingeckoCoins);
