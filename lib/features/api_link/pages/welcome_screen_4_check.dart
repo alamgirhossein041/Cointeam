@@ -1,5 +1,5 @@
 import 'package:coinsnap/features/data/binance_api_check.dart';
-import 'package:coinsnap/features/settings/features/coingecko/repos/coingecko_coin_repo.dart';
+import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_repo.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
@@ -81,11 +81,11 @@ class _CheckBinanceApiState extends State<CheckBinanceApi> {
     LocalStorage localStorage = LocalStorage('coinstreetapp');
     await localStorage.ready.then(
       (_) {
-        List<Map> coingeckoCoins = localStorage.getItem('coingeckoCoins');
+        List<dynamic> coingeckoCoins = localStorage.getItem('coingeckoCoins');
 
         // parse each element into our own map of coingecko coins
         Map<String, Map> parsedCoingeckoCoins = Map.fromIterable(coingeckoCoins,
-        key: (item) => item['id'],
+        key: (item) => item['symbol'].toString(),
         value: (item) => item);
 
         // save into localstorage

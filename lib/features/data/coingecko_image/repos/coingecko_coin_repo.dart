@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
 
-import 'package:coinsnap/features/settings/features/coingecko/models/coingecko_coin_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 
@@ -8,6 +8,8 @@ abstract class CoingeckoCoinRepo {
   Future<bool> getCoins();
 }
 
+/// Calls the Coingecko API for all coins, and
+/// stores it into local storage as [coingeckoCoins], under [coinstreetapp].
 class CoingeckoCoinRepoImpl implements CoingeckoCoinRepo {
   @override
   Future<bool> getCoins() async {
@@ -27,7 +29,9 @@ class CoingeckoCoinRepoImpl implements CoingeckoCoinRepo {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to get coins from Coingecko');
+      // throw Exception('Failed to get coins from Coingecko');
+      log('failed to get coins from conigecko \n ${response.statusCode.toString()}');
+      return false;
     }
   }
 }

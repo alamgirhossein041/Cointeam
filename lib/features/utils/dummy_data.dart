@@ -2,7 +2,7 @@
 List<dynamic> dummyCoinList = [
   {
     "coins": {
-      "BNB": {"quantity": 95.2, "value": 12.569256},
+      "BNB": {"quantity": 95.2, "value": 12.569256, "name":"binance-coin", "exchange":"binance"},
       "NEO": {"quantity": 95.2, "value": 12.569256},
       "TRX": {"quantity": 95.2, "value": 12.569256}
     },
@@ -45,7 +45,7 @@ List<dynamic> dummyCoinList = [
   },
   {
     "coins": {
-      "XRP": {"quantity": 14.48, "value": 21.19872},
+      "XRP": {"quantity": 14.48, "value": 21.19872,},
       "SHIB": {"quantity": 772092.0, "value": 22.44471444}
     },
     "currency": "USDT",

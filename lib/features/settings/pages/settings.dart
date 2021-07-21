@@ -1,7 +1,6 @@
 import 'dart:developer';
-import 'package:coinsnap/features/settings/features/coingecko/models/coingecko_coin_model.dart';
-import 'package:coinsnap/features/settings/features/coingecko/repos/coingecko_coin_repo.dart';
 
+import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_repo.dart';
 import 'package:coinsnap/features/settings/widgets/settings_currency_toggle.dart';
 import 'package:coinsnap/features/settings/widgets/settings_section.dart';
 import 'package:coinsnap/features/settings/widgets/settings_theme_toggle.dart';
@@ -259,7 +258,8 @@ class SettingsWidget extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text('Success'),
-                      content: const Text('Got all coins from coingecko and saved to localstorage.'),
+                      content: const Text(
+                          'Got all coins from coingecko and saved to localstorage.'),
                       actions: <Widget>[
                         TextButton(
                           child: const Text('Nice'),
@@ -282,6 +282,10 @@ class SettingsWidget extends StatelessWidget {
                     ),
                   );
           },
+        ),
+        SettingsTile(
+          text: 'Parse Coingecko coins and store to localstorage',
+          onClick: () => _parseCoingeckoCoins(),
         ),
       ])
     ]));
@@ -323,11 +327,31 @@ class SettingsWidget extends StatelessWidget {
   }
 }
 
+/// Gets all Coingecko coins
 _getAllCoins() async {
   // Call api using CoingeckoCoinRepo
-  CoingeckoCoinRepoImpl coinRepo = new CoingeckoCoinRepoImpl();
+  CoingeckoCoinRepoImpl coinRepo = CoingeckoCoinRepoImpl();
   bool flag = await coinRepo.getCoins();
   return flag;
+}
+
+/// Parse the full list of coins from Coingecko into our own map
+/// with coin symbol as key, and other values as properties.
+/// Then it saves it into localstorage.
+void _parseCoingeckoCoins() async {
+  // assume we have the api response saved to localstorage
+  // get it from localstorage
+  LocalStorage localStorage = LocalStorage('coinstreetapp');
+  await localStorage.ready.then((_) {
+    List<dynamic> coingeckoCoins = localStorage.getItem('coingeckoCoins');
+
+    // parse each element into our own map of coingecko coins
+    Map<String, Map> parsedCoingeckoCoins = Map.fromIterable(coingeckoCoins,
+        key: (item) => item['symbol'].toString(), value: (item) => item);
+
+    // save into localstorage
+    localStorage.setItem('parsedCoingeckoCoins', parsedCoingeckoCoins);
+  });
 }
 
 /// Fetches pre-saved Binance snapshot sell data into our own snapshot data structure.

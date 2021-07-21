@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
 
 class SnapshotListTile extends StatelessWidget {
   const SnapshotListTile({Key key, this.id, this.coinData}) : super(key: key);
@@ -90,26 +91,56 @@ class SnapshotCoinIconsList extends StatelessWidget {
   }
 }
 
+
+
 /// Returns the icon image for the given [coin]
 class BuildIcon extends StatelessWidget {
   const BuildIcon({Key key, String coin}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
-    // call api to get icon's name
-    Future<http.Response> fetchAlbum() {
-      return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-    }
+  final LocalStorage localStorage = LocalStorage("coinstreetapp");
 
-    return Padding(
-      padding: EdgeInsets.only(right: 14.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 17.5,
-        backgroundImage: CachedNetworkImageProvider(
-          'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
-        ),
-      ),
+    // get localstorage of icons
+    // if it doesnt exist, 
+    // LocalStorage package will create a new localstorage instance with this key,
+    // then return it. So then, check if it contains the item "coinIcons",
+    // if it doesn't exist, create one with the default image.
+    List<dynamic> coinIcons = localStorage.getItem('coinIcons') ?? [{'coinstreetapp-placeholder-coin-icon':'placeholder-icon.jpg'}];
+
+    // when you sell a coin, add to a list of sold coin history 
+    // on app load, get this list of coins, get url 
+
+    // else get it
+    return FutureBuilder(
+      future: localStorage.ready,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Text("Couldn't get snapshot data.");
+          }
+          return Padding(
+            padding: EdgeInsets.only(right: 14.0),
+            child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 17.5,
+              backgroundImage: CachedNetworkImageProvider(
+                'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+              ),
+            ),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Column(
+            children: <Widget>[
+              Text('Waiting for icons to load..'),
+              CircularProgressIndicator(),
+            ],
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }
