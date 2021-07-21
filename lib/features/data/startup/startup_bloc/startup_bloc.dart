@@ -273,7 +273,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         Map<String, dynamic> missingCoinMap = await parseJsonFromAssets("assets/missing_coin_map.json");
         nullCoins.forEach((v) => {
           if(missingCoinMap[v] != null) {
-            
+            /// We are trying to create a map of coingecko id and its url
+
+            /// We need to make an API call using coingecko ID
+
+            /// (we are trying to get coingecko IDs)
           }
         });
       }
