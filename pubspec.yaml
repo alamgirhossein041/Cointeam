@@ -66,7 +66,7 @@ flutter:
     - graphics/assets/
     - graphics/assets/svg/
     - assets/snapshot_dummydata.json
-    - assets/missing_coin_list.json
+    - assets/missing_coin_map.json
   uses-material-design: true
   # assets:
   # - graphics/icons/crypto/bitcoin_white_2.png
