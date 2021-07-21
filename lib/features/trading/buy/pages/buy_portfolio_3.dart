@@ -57,7 +57,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
                     Flexible(
                       flex: 1,
                       fit: FlexFit.tight,
-                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString)
+                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString, toSpend: toSpend)
                     ),
                   ],
                 ),
@@ -76,10 +76,12 @@ class BuyPortfolioReviewLog extends StatefulWidget {
     Key key,
     @required this.keyString,
     @required this.coinDataStructure,
+    @required this.toSpend,
   }) : super(key: key);
   
   final Map<String, dynamic> coinDataStructure;
   final List<String> keyString;
+  final double toSpend;
 
   @override
   BuyPortfolioReviewLogState createState() => BuyPortfolioReviewLogState();
@@ -290,23 +292,24 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  child: BlocConsumer<StartupBloc, StartupState>(
-                                    listener: (context, state) {
-                                      if (state is StartupErrorState) {
-                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      if (state is StartupLoadedState) {
-                                        usdTempQuote = state.usdTotal;
-                                        return Text('\$' + state.usdTotal.toStringAsFixed(2));
-                                      } else if (state is StartupErrorState) {
-                                        return Text("An Error has occurred in Binance");
-                                      } else {
-                                        return loadingTemplateWidget();
-                                      }
-                                    }
-                                  )
+                                  // child: BlocConsumer<StartupBloc, StartupState>(
+                                  //   listener: (context, state) {
+                                  //     if (state is StartupErrorState) {
+                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                  //     }
+                                  //   },
+                                  //   builder: (context, state) {
+                                  //     if (state is StartupLoadedState) {
+                                  //       usdTempQuote = state.usdTotal;
+                                  //       return Text('\$' + state.usdTotal.toStringAsFixed(2));
+                                  //     } else if (state is StartupErrorState) {
+                                  //       return Text("An Error has occurred in Binance");
+                                  //     } else {
+                                  //       return loadingTemplateWidget();
+                                  //     }
+                                  //   }
+                                  // )
+                                  child: Text('\$' + widget.toSpend.toStringAsFixed(2))
                                 )
                               )
                             )
@@ -330,22 +333,23 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  child: BlocConsumer<StartupBloc, StartupState>(
-                                    listener: (context, state) {
-                                      if (state is StartupErrorState) {
-                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      if (state is StartupLoadedState) {
-                                        return Text('-\$' + state.usdTotal.toStringAsFixed(2));
-                                      } else if (state is StartupErrorState) {
-                                        return Text("An Error has occurred in Binance");
-                                      } else {
-                                        return loadingTemplateWidget();
-                                      }
-                                    }
-                                  )
+                                  // child: BlocConsumer<StartupBloc, StartupState>(
+                                  //   listener: (context, state) {
+                                  //     if (state is StartupErrorState) {
+                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                  //     }
+                                  //   },
+                                  //   builder: (context, state) {
+                                  //     if (state is StartupLoadedState) {
+                                  //       return Text('-\$' + state.usdTotal.toStringAsFixed(2));
+                                  //     } else if (state is StartupErrorState) {
+                                  //       return Text("An Error has occurred in Binance");
+                                  //     } else {
+                                  //       return loadingTemplateWidget();
+                                  //     }
+                                  //   }
+                                  // )
+                                  child: Text('\$' + widget.toSpend.toStringAsFixed(2))
                                 )
                               )
                             )
@@ -369,22 +373,23 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  child: BlocConsumer<StartupBloc, StartupState>(
-                                    listener: (context, state) {
-                                      if (state is StartupErrorState) {
-                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      if (state is StartupLoadedState) {
-                                        return Text('-\$' + (state.usdTotal * 0.001).toStringAsFixed(2));
-                                      } else if (state is StartupErrorState) {
-                                        return Text("An Error has occurred in Binance");
-                                      } else {
-                                        return loadingTemplateWidget();
-                                      }
-                                    }
-                                  )
+                                  // child: BlocConsumer<StartupBloc, StartupState>(
+                                  //   listener: (context, state) {
+                                  //     if (state is StartupErrorState) {
+                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                  //     }
+                                  //   },
+                                  //   builder: (context, state) {
+                                  //     if (state is StartupLoadedState) {
+                                  //       return Text('-\$' + (state.usdTotal * 0.001).toStringAsFixed(2));
+                                  //     } else if (state is StartupErrorState) {
+                                  //       return Text("An Error has occurred in Binance");
+                                  //     } else {
+                                  //       return loadingTemplateWidget();
+                                  //     }
+                                  //   }
+                                  // )
+                                  child: Text('\$' + (widget.toSpend * 0.001).toStringAsFixed(2))
                                 )
                               )
                             )
@@ -419,22 +424,23 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 alignment: Alignment.centerRight,
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
-                                  child: BlocConsumer<StartupBloc, StartupState>(
-                                    listener: (context, state) {
-                                      if (state is StartupErrorState) {
-                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      if (state is StartupLoadedState) {
-                                        return Text('\$' + state.usdTotal.toStringAsFixed(2), style: TextStyle(color: Colors.black));
-                                      } else if (state is StartupErrorState) {
-                                        return Text("An Error has occurred in Binance");
-                                      } else {
-                                        return loadingTemplateWidget();
-                                      }
-                                    }
-                                  )
+                                  // child: BlocConsumer<StartupBloc, StartupState>(
+                                  //   listener: (context, state) {
+                                  //     if (state is StartupErrorState) {
+                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                  //     }
+                                  //   },
+                                  //   builder: (context, state) {
+                                  //     if (state is StartupLoadedState) {
+                                  //       return Text('\$' + state.usdTotal.toStringAsFixed(2), style: TextStyle(color: Colors.black));
+                                  //     } else if (state is StartupErrorState) {
+                                  //       return Text("An Error has occurred in Binance");
+                                  //     } else {
+                                  //       return loadingTemplateWidget();
+                                  //     }
+                                  //   }
+                                  // )
+                                  child: Text('\$' + (widget.toSpend * 0.999).toStringAsFixed(2))
                                 )
                               )
                             )
@@ -497,7 +503,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                           ),
                           onTap: () => {
                             buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
-                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: usdTempQuote, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
+                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: widget.toSpend, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
                           }
                         )
                       ),
