@@ -234,7 +234,7 @@ await localStorage.ready;
     String coinSymbol = "";
     // else 
     // for each coin in the passed coin list, check if key exists in coinIcons map
-    coins.forEach((v) {
+    coins.forEach((v) async {
       
       // v.coin - compare that to keys of coinIcons
       // get the congecko id for it
@@ -242,6 +242,15 @@ await localStorage.ready;
       coinSymbol = v.coin.toLowerCase();
       // print("-----------a----------"+coingeckoCoins.toString());
       print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
+      
+      // if this result is null, look through our janky missing coins list :D
+      Map<String, dynamic> coin = coingeckoCoins[coinSymbol];
+      if (coin == null) {
+        String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
+        final jsonResult = json.decode(data);
+      }
+
+
       // search parsed coingecko list of all coins for this symbol and get its id
       // String coingeckoId = coingeckoCoins[v.coin]['id'];
 
