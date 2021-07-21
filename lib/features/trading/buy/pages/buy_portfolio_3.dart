@@ -21,6 +21,7 @@ class BuyPortfolioScreenThree extends StatefulWidget {
 class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
   Map<String, dynamic> coinDataStructure = {};
   List<String> keyString = [];
+  double toSpend = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
       log("Arguments is null in snapshot_log.dart");
     } else {
       coinDataStructure = arguments['coinDataStructure'];
+      toSpend = double.parse(arguments['toSpend']) ?? 0.0;
     }
     if(coinDataStructure['coins'] != null) {
       keyString = coinDataStructure['coins'].keys.toList();
@@ -40,6 +42,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
+          appBar: AppBar(title: Text('Buy from Snapshot')),
           backgroundColor: primaryBlue,
           body: Stack(
             children: <Widget> [

@@ -1,7 +1,11 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/data/startup/startup.dart';
+import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class BuyPortfolioScreenTwo extends StatefulWidget {
@@ -14,11 +18,11 @@ class BuyPortfolioScreenTwo extends StatefulWidget {
 class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
   final _scrollController = ScrollController();
   Map<String, dynamic> coinDataStructure = {};
-  List<String> key = [];
+  List<String> coinDataKey = [];
+  TextEditingController textField = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    log("hiiiiiii");
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
     if (arguments == null) {
       log("Arguments is null in snapshot_log.dart");
@@ -27,7 +31,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
       log(coinDataStructure.toString());
     }
     if(coinDataStructure['coins'] != null) {
-      key = coinDataStructure['coins'].keys.toList();
+      coinDataKey = coinDataStructure['coins'].keys.toList();
     }
     return Scaffold(
       body: Container(
@@ -142,7 +146,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                           child: Row(
                                             children: <Widget> [
                                               Flexible(
-                                                flex: 1,
+                                                flex: 3,
                                                 fit: FlexFit.tight,
                                                 child: Padding(
                                                   padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
@@ -151,10 +155,10 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                 ),
                                               ),
                                               Flexible(
-                                                flex: 1,
+                                                flex: 3,
                                                 fit: FlexFit.tight,
                                                 child: Align(
-                                                  alignment: Alignment.center,
+                                                  alignment: Alignment.centerLeft,
                                                   // child: Padding(
                                                   //   padding: EdgeInsets.only(left: 20),
                                                     child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
@@ -163,7 +167,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                 // child: Container(),
                                               ),
                                               Flexible(
-                                                flex: 1,
+                                                flex: 3,
                                                 fit: FlexFit.tight,
                                                 child: Align(
                                                   alignment: Alignment.centerRight,
@@ -180,9 +184,10 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                     ),
                                     SliverList(
                                       delegate: SliverChildBuilderDelegate((context, index) {
-                                        Map<String, dynamic> text = coinDataStructure['coins'][key[index]];
-                                            return Padding(
-                                              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                          return Container(
+                                            height: displayHeight(context) * 0.065,
+                                            // child: Padding(
+                                              // padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
                                               child: Row(
                                                 children: <Widget> [
                                                   Flexible(
@@ -191,9 +196,9 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                     child: Container(),
                                                   ),
                                                   Flexible(
-                                                    flex: 1,
+                                                    flex: 2,
                                                     fit: FlexFit.tight,
-                                                    child: Text(key[index].toString(), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                                    child: Text(coinDataKey[index].toString(), style: TextStyle(fontSize: 15, color: Colors.black)),
                                                     // child: Container(),
                                                   ),
                                                   Flexible(
@@ -203,10 +208,10 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                       padding: EdgeInsets.only(left: 10),
                                                       child: Align(
                                                       // alignment: Alignment.centerRight,
-                                                        alignment: Alignment.centerRight,
+                                                        alignment: Alignment.centerLeft,
                                                         // child: Padding(
                                                           // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                          child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
+                                                          child: Text(coinDataStructure['coins'][coinDataKey[index]]['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
                                                           // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
                                                           // child: Builder(
                                                           //   builder: (context) {
@@ -228,15 +233,31 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                       alignment: Alignment.centerRight,
                                                       child: Padding(
                                                         padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                        child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: <Widget> [
+                                                            // Flexible(
+                                                            //   fit: FlexFit.tight,
+                                                            //   flex: 1,
+                                                              Text("\$" + coinDataStructure['coins'][coinDataKey[index]]['value'].toStringAsFixed(2), style: TextStyle(fontSize: 14, color: Colors.black)),
+                                                            // ),
+                                                            // Flexible(
+                                                              // fit: FlexFit.tight,
+                                                              // flex: 1,
+                                                              Text((coinDataStructure['coins'][coinDataKey[index]]['value']/coinDataStructure['total'] * 100).toStringAsFixed(1) + "%", style: TextStyle(fontSize: 14, color: primaryBlue)),
+                                                            // ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ]
                                               ),
-                                            );
-                                      },
-                                      childCount: (key.length),
+                                            // ),
+                                          );
+                                        },
+                                        childCount: (coinDataKey.length),
                                       ),
                                     ),
                                   ]
@@ -248,43 +269,123 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                               child: Text("-----------------------------------------------", style: TextStyle(color: Color(0x330B2940)))
                             ),
                             Flexible(
-                              flex: 2,
+                              flex: 3,
                               fit: FlexFit.tight,
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Row(
+                                child: Column(
                                   children: <Widget> [
                                     Flexible(
-                                      flex: 1,
                                       fit: FlexFit.tight,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 30),
-                                        child: Text("TOTAL", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                                      )
-                                    ),
-                                    Flexible(
-                                      flex: 1,
-                                      fit: FlexFit.tight,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(),
+                                      flex: 2,
+                                      child: Row(
+                                        children: <Widget> [
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(left: 30),
+                                              child: Text("Available:", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                                            )
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(right: 30),
+                                                child: BlocBuilder<StartupBloc, StartupState>(
+                                                  builder: (context, state) {
+                                                    if (state is StartupLoadedState) {
+                                                      // return Text('\$' + state.usdTotal.toStringAsFixed(2));
+                                                      return TextFormField(
+                                                        style: TextStyle(color: Colors.black, fontSize: 16),
+                                                        textAlign: TextAlign.end,
+                                                        decoration: InputDecoration(
+                                                          enabledBorder: UnderlineInputBorder(
+                                                            borderSide: BorderSide(color: Colors.blue),
+                                                          ),
+                                                          border: UnderlineInputBorder(
+                                                            borderSide: BorderSide(color: Colors.blue),
+                                                          )
+                                                        ),
+                                                        controller: textField,
+                                                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                                      );
+                                                    } else if (state is StartupErrorState) {
+                                                      return Text("An Error has occurred in Binance");
+                                                    } else {
+                                                      return loadingTemplateWidget();
+                                                    }
+                                                  }
+                                                ),
+                                              ),
+                                            )
+                                          )
+                                        ]
                                       ),
                                     ),
                                     Flexible(
-                                      flex: 1,
                                       fit: FlexFit.tight,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(right: 30),
-                                              child: Text(coinDataStructure['currency'] + " " +  coinDataStructure['total'].toStringAsFixed(2), style: TextStyle(color: Colors.black)),
-                                        )
-                                      )
-                                    )
-                                  ]
-                                )
+                                      flex: 1,
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget> [
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(left: 30),
+                                              child: Text("To Spend:", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                                            )
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 1,
+                                            fit: FlexFit.tight,
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(right: 30),
+                                                    // child: Text(coinDataStructure['currency'] + " " +  coinDataStructure['total'].toStringAsFixed(2), style: TextStyle(color: Colors.black)),
+                                                // child: RichText(
+                                                //   text: TextSpan(
+                                                //     text: '\$' + coinDataStructure['total'].toStringAsFixed(2),
+                                                //     style: TextStyle(color: Colors.black),
+                                                //     children: <TextSpan> [
+                                                //       TextSpan(text: '\nstuff', style: TextStyle(color: Colors.black)),
+                                                //     ]
+                                                //   ),
+                                                // ),
+                                                child: Text('\$' + coinDataStructure['total'].toStringAsFixed(2) +
+                                                  '\n' + coinDataStructure['currency'])
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+                            //
                             Flexible(
                               flex: 2,
                               fit: FlexFit.tight,
@@ -307,7 +408,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                         ),
                                       ),
                                       onTap: () => {
-                                        Navigator.pushNamed(context, '/buyportfolio3', arguments: {'coinDataStructure': coinDataStructure})
+                                        Navigator.pushNamed(context, '/buyportfolio3', arguments: {'coinDataStructure': coinDataStructure, 'toSpend': textField.text})
                                       },
                                   ),
                                 ),
