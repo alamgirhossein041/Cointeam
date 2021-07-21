@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_prices.dart';
+import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_info_repo.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/features/data/coinmarketcap/models/coinmarketcap_coin_data.dart';
@@ -217,91 +218,111 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     // get the local storage list of coingecko coins in the portfolio here
     LocalStorage localStorage = LocalStorage("coinstreetapp");
     Map<String, dynamic> coingeckoCoins = {};
+    List<Map<String, dynamic>> coingeckoCoinsListOfMaps = [];
     Map coinIcons = {};
     List<String> nullCoins = [];
+    List<String> coinsForRepo = [];
     bool toParse = false;
     
     await localStorage.ready;
     // await localStorage.ready.then((_) {
       // what if these things don't exist, they return null
       // get stored list of parsed coingecko coins
-      coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
-      // get stored list of coin : icon url map
-      coinIcons = localStorage.getItem('coinIcons') ?? {};
-      print("coingecko coins length = "+coingeckoCoins.length.toString());
-      // log(coingeckoCoins.toString());
+    coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
+    // get stored list of coin : icon url map
+    coinIcons = localStorage.getItem('coinIcons') ?? {};
+    print("coingecko coins length = "+coingeckoCoins.length.toString());
+    // log(coingeckoCoins.toString());
 
-      // if coinicons is empty map
-      // iterate through portfolio coins and create this map and save to storage
-
-
-      String coinSymbol = "";
-      // else 
-      // for each coin in the passed coin list, check if key exists in coinIcons map
-      coins.forEach((v) async {
-        
-        // v.coin - compare that to keys of coinIcons
-        // get the congecko id for it
-        // get coin symbol
-        coinSymbol = v.coin.toLowerCase();
-        // print("-----------a----------"+coingeckoCoins.toString());
-        print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
-        
-        Map<String, dynamic> coin = coingeckoCoins[coinSymbol];
-        // if the coin is null, it wasn't found on the coingecko parsed list for some reason.
-        // add to the list of coins to be filled in.
-        if (coin == null) {
-          nullCoins.add(coinSymbol);
-          toParse = true;
-        } else {
-          // use this symbol to get the id to call the api with it
-
-        }
+    // if coinicons is empty map
+    // iterate through portfolio coins and create this map and save to storage
 
 
-        
-    // int pages = 1;
-    // if (coins.length > 250) {
-    //   pages = (coins.length / 250).ceil();
-    // }
+    String coinSymbol = "";
+    // else 
+    // for each coin in the passed coin list, check if key exists in coinIcons map
+    coins.forEach((v) async {
+      
+      // v.coin - compare that to keys of coinIcons
+      // get the congecko id for it
+      // get coin symbol
+      coinSymbol = v.coin.toLowerCase();
+      // print("-----------a----------"+coingeckoCoins.toString());
+      print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
+      
+      // Map<String, dynamic> coingeckoCoin = coingeckoCoins[coinSymbol];
 
-    // for (int i = 0; i < pages; i++) {
-
-    // }
-
-        // String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
-        // final jsonResult = json.decode(data);
-
-        // search parsed coingecko list of all coins for this symbol and get its id
-        // String coingeckoId = coingeckoCoins[v.coin]['id'];
-
-        // call the coingecko api id
-        
-        // get the image url and save to this map
-
-        // if a coin return as null
-        // check hardcoded list of maps
-        // this could contain fiat currency, delisted currencies? incorrect mappings etc.
-      });
-
-      // if there were any null coins, go through our list of missing coins map and fill it in.
-      if(toParse) {
-        Map<String, dynamic> missingCoinMap = await parseJsonFromAssets("assets/missing_coin_map.json");
-        nullCoins.forEach((v) => {
-          if(missingCoinMap[v] != null) {
-            /// We are trying to create a map of coingecko id and its url
-            
-
-            /// We need to make an API call using coingecko ID
-
-            /// (we are trying to get coingecko IDs)
-          }
-        });
+      // if the coin is null, it wasn't found on the coingecko parsed list for some reason.
+      // add to the list of coins to be filled in.
+      if (coingeckoCoins[coinSymbol] != null) {
+        coingeckoCoinsListOfMaps.add(coingeckoCoins[coinSymbol]);
+        coinsForRepo.add(coingeckoCoins[coinSymbol]['id']);
+      } else {
+        nullCoins.add(coinSymbol);
+        toParse = true;
+        // use this symbol to get the id to call the api with it
+        /// TODO: Move out of Startup_Bloc
+        /// 
+        /// 
+        /// 2. for the coins that ARE null, we need to fill it in from the missing_coins_list
+        /// 1. call our repo to get coin info FOR all the coingeckoCoins that are not null
+        /// 
+        /// 
+        /// 
       }
-    // });
-  // {
-  //   btc: url
-  //   eth: url
-  // }
+
+      // String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
+      // final jsonResult = json.decode(data);
+
+      // search parsed coingecko list of all coins for this symbol and get its id
+      // String coingeckoId = coingeckoCoins[v.coin]['id'];
+
+      // call the coingecko api id
+      
+      // get the image url and save to this map
+
+      // if a coin return as null
+      // check hardcoded list of maps
+      // this could contain fiat currency, delisted currencies? incorrect mappings etc.
+
+
+
+    });
+
+    // if there were any null coins, go through our list of missing coins map and fill it in.
+    if(toParse) {
+      Map<String, dynamic> missingCoinMap = await parseJsonFromAssets("assets/missing_coin_map.json");
+      nullCoins.forEach((v) => {
+        if(missingCoinMap[v] != null) {
+          coingeckoCoinsListOfMaps.add(missingCoinMap[v]),
+          coinsForRepo.add(missingCoinMap[v]['id'])
+          /// We are trying to create a map of coingecko id and its url
+          
+
+          /// We need to make an API call using coingecko ID
+
+          /// (we are trying to get coingecko IDs)
+        }
+      });
+    }
+
+    coingeckoCoinsListOfMaps.toSet().toList();
+    coinsForRepo.toSet().toList();
+    CoingeckoCoinInfoRepoImpl coinRepo = CoingeckoCoinInfoRepoImpl();
+    List<int> pages = [];
+    int listIterate = 0;
+    if (coingeckoCoinsListOfMaps.length > 250) {
+      listIterate = (coins.length / 250).ceil();
+    }
+
+    for(int i = 1; i <= listIterate; i++) {
+      pages.add(i);
+    }
+
+    Future.forEach(pages, (v) async {
+      coinRepo.getCoinInfo(coinsForRepo, v);
+      /// returns a model of blah
+      /// save model as a value in the 'id' key in our existing map
+    });
   }
 }
