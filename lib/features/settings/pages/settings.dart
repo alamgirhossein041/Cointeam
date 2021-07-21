@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_info_repo.dart';
 import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_repo.dart';
 import 'package:coinsnap/features/settings/widgets/settings_currency_toggle.dart';
 import 'package:coinsnap/features/settings/widgets/settings_section.dart';
@@ -287,6 +288,10 @@ class SettingsWidget extends StatelessWidget {
           text: 'Parse Coingecko coins and store to localstorage',
           onClick: () => _parseCoingeckoCoins(),
         ),
+        SettingsTile(
+          text: 'Call coingecko market repo',
+          onClick: () => _coingeckoMarketCoins(),
+        ),
       ])
     ]));
   }
@@ -325,6 +330,11 @@ class SettingsWidget extends StatelessWidget {
       }
     }
   }
+}
+
+_coingeckoMarketCoins() {
+  CoingeckoCoinInfoRepoImpl coinRepo = CoingeckoCoinInfoRepoImpl();
+  coinRepo.getCoinInfo(['bitcoin','ethereum','ripple'], 1);
 }
 
 /// Gets all Coingecko coins

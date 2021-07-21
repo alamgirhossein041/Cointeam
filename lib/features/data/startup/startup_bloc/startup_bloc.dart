@@ -247,21 +247,35 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         // print("-----------a----------"+coingeckoCoins.toString());
         print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
         
-        // if this result is null, look through our janky missing coins list :D
         Map<String, dynamic> coin = coingeckoCoins[coinSymbol];
+        // if the coin is null, it wasn't found on the coingecko parsed list for some reason.
+        // add to the list of coins to be filled in.
         if (coin == null) {
           nullCoins.add(coinSymbol);
           toParse = true;
-        }
-          // String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
-          // final jsonResult = json.decode(data);
+        } else {
+          // use this symbol to get the id to call the api with it
 
+        }
+
+
+        
+    // int pages = 1;
+    // if (coins.length > 250) {
+    //   pages = (coins.length / 250).ceil();
+    // }
+
+    // for (int i = 0; i < pages; i++) {
+
+    // }
+
+        // String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
+        // final jsonResult = json.decode(data);
 
         // search parsed coingecko list of all coins for this symbol and get its id
         // String coingeckoId = coingeckoCoins[v.coin]['id'];
 
         // call the coingecko api id
-        
         
         // get the image url and save to this map
 
@@ -269,11 +283,14 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         // check hardcoded list of maps
         // this could contain fiat currency, delisted currencies? incorrect mappings etc.
       });
+
+      // if there were any null coins, go through our list of missing coins map and fill it in.
       if(toParse) {
         Map<String, dynamic> missingCoinMap = await parseJsonFromAssets("assets/missing_coin_map.json");
         nullCoins.forEach((v) => {
           if(missingCoinMap[v] != null) {
             /// We are trying to create a map of coingecko id and its url
+            
 
             /// We need to make an API call using coingecko ID
 
