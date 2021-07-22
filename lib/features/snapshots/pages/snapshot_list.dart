@@ -162,7 +162,7 @@ class SnapshotListState extends State<SnapshotList> {
     // await localStorage.setItem("portfolio", customVariableHere);
     var value = localStorage.getItem("portfolio");
     // log(value[0]['coins'].values.elementAt(1).toString());
-    // return value;
-    return dummyCoinList;
+    return value;
+    // return dummyCoinList;
   }
 }
