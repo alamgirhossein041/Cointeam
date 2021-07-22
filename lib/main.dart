@@ -103,6 +103,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryBlue,
           accentColor: primaryBlue,
+          scaffoldBackgroundColor: primaryBlue,
 
           // Default brightness
           // brightness: Brightness.dark
@@ -173,7 +174,7 @@ class MyApp extends StatelessWidget {
             // 14 Regular
             bodyText1: TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w300,
               color: primaryDark,
               letterSpacing: 0.25,
               height: 1.6,
