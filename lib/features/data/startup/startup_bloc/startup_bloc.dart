@@ -10,6 +10,7 @@ import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/features/data/coinmarketcap/models/coinmarketcap_coin_data.dart';
 import 'package:coinsnap/features/data/coinmarketcap/repos/coinmarketcap_coin_data.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/local_json_parse.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,6 +34,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     yield StartupInitialState();
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<BinanceGetAllModel> binanceGetAllModel = [];
+    List<CoingeckoListTop100Model> coingeckoModelList = [];
     List<String> coinList = [];
     Map coinBalancesMap = {};
     Map binancePrices;
@@ -60,10 +62,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
         // goes through list of coins in the portfolio and gets matching coin image link
         // only do this if there are coins
-        if (binanceGetAllModel != null) {
-          _loadCoinIcons(binanceGetAllModel);
-        }
-
 
         // how to check if api is connected?
         
@@ -156,9 +154,9 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           // }
         // }
         binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
-        coinList.add('BTC');
-        coinList.add('ETH');
-        coinList = coinList.toSet().toList();
+        // coinList.add('BTC');
+        // coinList.add('ETH');
+        // coinList = coinList.toSet().toList();
       } catch (e) {
         debugPrint("The error is in startup_bloc.dart, part 1");
         debugPrint(e.toString());
@@ -167,36 +165,44 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         yield StartupErrorState(errorMessage : e.toString());
       }
 
+      /// 22nd july : coingeckomodellist stuff
+      
+      try {
+        if (binanceGetAllModel != null) {
+          coingeckoModelList = await _loadCoinIcons(binanceGetAllModel);
+        }
+
       /// GetCoinListTotalValue logic
       /// TODO: andrew remove unused code
-      try {
-        CardCoinmarketcapListModel coinListData = await coinmarketcapListQuoteRepository.getCoinMarketCapCoinList(coinList);
+      // try {
+      //   CardCoinmarketcapListModel coinListData = await coinmarketcapListQuoteRepository.getCoinMarketCapCoinList(coinList);
 
-        for(var coin in coinListData.data) {
-          if(coin.symbol == 'BTC') {
-            btcSpecial = coin.quote.uSD.price;
-          } else if(coin.symbol == 'ETH') {
-            ethSpecial = coin.quote.uSD.price;
-          }
-          if(coinBalancesMap[coin.symbol] == null) {
-            coinBalancesMap[coin.symbol] = 0.0;
-          }
-          totalValue += coinBalancesMap[coin.symbol] * coin.quote.uSD.price;
-        }
+      //   for(var coin in coinListData.data) {
+      //     if(coin.symbol == 'BTC') {
+      //       btcSpecial = coin.quote.uSD.price;
+      //     } else if(coin.symbol == 'ETH') {
+      //       ethSpecial = coin.quote.uSD.price;
+      //     }
+      //     if(coinBalancesMap[coin.symbol] == null) {
+      //       coinBalancesMap[coin.symbol] = 0.0;
+      //     }
+      //     totalValue += coinBalancesMap[coin.symbol] * coin.quote.uSD.price;
+      //   }
 
-        if(coinBalancesMap['AUD'] != null) {
-          if(currency == 'USD') {
-            totalValue += coinBalancesMap['AUD'] * binancePrices['AUDUSDT'];
-          } else if(currency == 'AUD') {
-            totalValue += coinBalancesMap['AUD'];
-          }
-        }
+      //   /// fiat currency check
+      //   if(coinBalancesMap['AUD'] != null) {
+      //     if(currency == 'USD') {
+      //       totalValue += coinBalancesMap['AUD'] * binancePrices['AUDUSDT'];
+      //     } else if(currency == 'AUD') {
+      //       totalValue += coinBalancesMap['AUD'];
+      //     }
+      //   }
 
-        coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
-
-        yield StartupLoadedState(totalValue: totalValue, coinListData: coinListData, coinBalancesMap: coinBalancesMap,
+        // coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
+        // btcSpecial = 
+        yield StartupLoadedState(totalValue: totalValue, coinBalancesMap: coinBalancesMap,
                                 coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel,
-                                usdTotal: usdTotal, btcTotal: btcTotal);
+                                usdTotal: usdTotal, btcTotal: btcTotal, coingeckoModelList: coingeckoModelList);
 
       } catch (e) {
         debugPrint("The error is in startup_bloc.dart part 2");
@@ -214,7 +220,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
   // if not get it
 
   /// Goes through the given list of [coins] and assigns its icon image link to it
-  void _loadCoinIcons(List coins) async {
+  Future<List<CoingeckoListTop100Model>> _loadCoinIcons(List coins) async {
     // get the local storage list of coingecko coins in the portfolio here
     LocalStorage localStorage = LocalStorage("coinstreetapp");
     Map<String, dynamic> coingeckoCoins = {};
@@ -222,6 +228,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     Map coinIcons = {};
     List<String> nullCoins = [];
     List<String> coinsForRepo = [];
+    List<CoingeckoListTop100Model> coingeckoModelList = [];
     bool toParse = false;
     
     await localStorage.ready;
@@ -307,8 +314,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     }
 
     coingeckoCoinsListOfMaps.toSet().toList();
+    // coinsForRepo
     coinsForRepo.toSet().toList();
     CoingeckoCoinInfoRepoImpl coinRepo = CoingeckoCoinInfoRepoImpl();
+
+    /// Pagination
     List<int> pages = [];
     int listIterate = 0;
     if (coingeckoCoinsListOfMaps.length > 250) {
@@ -319,10 +329,13 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       pages.add(i);
     }
 
-    Future.forEach(pages, (v) async {
-      coinRepo.getCoinInfo(coinsForRepo, v);
+    await Future.forEach(pages, (v) async {
+      coingeckoModelList.addAll(await coinRepo.getCoinInfo(coinsForRepo, v));
       /// returns a model of blah
       /// save model as a value in the 'id' key in our existing map
     });
+
+    return coingeckoModelList;
+
   }
 }

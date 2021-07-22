@@ -48,7 +48,7 @@ class SnapshotListState extends State<SnapshotList> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
                       case ConnectionState.waiting:
-                        return CircularProgressIndicator();
+                        return loadingTemplateWidget(1);
                       default:
                         if (!snapshot.hasError) {
                           if (snapshot.data != null) {
@@ -115,8 +115,9 @@ class SnapshotListState extends State<SnapshotList> {
                             );
                           } else {
                             log(snapshot.toString());
-                            return errorTemplateWidget(
-                                "You have no transaction snapshots.");
+                            // return errorTemplateWidget(
+                            //     "You have no transaction snapshots.");
+                            return Container();
                           }
                         } else {
                           log("Something");
