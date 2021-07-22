@@ -35,8 +35,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<BinanceGetAllModel> binanceGetAllModel = [];
     List<CoingeckoListTop100Model> coingeckoModelList = [];
+    Map<String, dynamic> coingeckoModelMap = {};
     List<String> coinList = [];
-    Map coinBalancesMap = {};
     Map binancePrices;
     String currency = 'USD';
     double btcSpecial = 0.0;
@@ -166,10 +166,12 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       }
 
       /// 22nd july : coingeckomodellist stuff
-      
+      log('binancegetallmodel = ' + binanceGetAllModel.toString());
       try {
         if (binanceGetAllModel != null) {
-          coingeckoModelList = await _loadCoinIcons(binanceGetAllModel);
+          Map<String, dynamic> arguments = await _loadCoinIcons(binanceGetAllModel);
+          coingeckoModelList = arguments['list'];
+          coingeckoModelMap = arguments['map'];
         }
 
       /// GetCoinListTotalValue logic
@@ -200,10 +202,10 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
         // coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         // btcSpecial = 
-        yield StartupLoadedState(totalValue: totalValue, coinBalancesMap: coinBalancesMap,
+        yield StartupLoadedState(totalValue: totalValue, coingeckoModelMap: coingeckoModelMap,
                                 coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel,
                                 usdTotal: usdTotal, btcTotal: btcTotal, coingeckoModelList: coingeckoModelList);
-
+    
       } catch (e) {
         debugPrint("The error is in startup_bloc.dart part 2");
         debugPrint(e.toString());
@@ -220,7 +222,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
   // if not get it
 
   /// Goes through the given list of [coins] and assigns its icon image link to it
-  Future<List<CoingeckoListTop100Model>> _loadCoinIcons(List coins) async {
+  Future<Map<String, dynamic>> _loadCoinIcons(List coins) async {
     // get the local storage list of coingecko coins in the portfolio here
     LocalStorage localStorage = LocalStorage("coinstreetapp");
     Map<String, dynamic> coingeckoCoins = {};
@@ -229,9 +231,10 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     List<String> nullCoins = [];
     List<String> coinsForRepo = [];
     List<CoingeckoListTop100Model> coingeckoModelList = [];
+    Map<String, dynamic> arguments = {};
     bool toParse = false;
     
-    await localStorage.ready;
+    var ready = await localStorage.ready;
     // await localStorage.ready.then((_) {
       // what if these things don't exist, they return null
       // get stored list of parsed coingecko coins
@@ -243,8 +246,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
     // if coinicons is empty map
     // iterate through portfolio coins and create this map and save to storage
-
-
     String coinSymbol = "";
     // else 
     // for each coin in the passed coin list, check if key exists in coinIcons map
@@ -254,7 +255,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // get the congecko id for it
       // get coin symbol
       coinSymbol = v.coin.toLowerCase();
-      // print("-----------a----------"+coingeckoCoins.toString());
+      print("-----------a----------"+coingeckoCoins.toString());
       // print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
       
       // Map<String, dynamic> coingeckoCoin = coingeckoCoins[coinSymbol];
@@ -329,13 +330,28 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       pages.add(i);
     }
 
+
     await Future.forEach(pages, (v) async {
+      log("future --------");
+
       coingeckoModelList.addAll(await coinRepo.getCoinInfo(coinsForRepo, v));
+      log("coingeckomodellist result = " + coingeckoModelList.toString());
+
       /// returns a model of blah
       /// save model as a value in the 'id' key in our existing map
     });
 
-    return coingeckoModelList;
+    Map<String, dynamic> coingeckoModelMap = {};
+    coingeckoModelList.forEach((v) { 
+      log("loop trough coingecko --------");
+      coingeckoModelMap[v.symbol] = v;
+      log("*-*-*-*-*-*-");
+    });
+
+    arguments['map'] = coingeckoModelMap ?? {};
+    arguments['list'] = coingeckoModelList ?? [];
+
+    return arguments;
 
   }
 }

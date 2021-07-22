@@ -121,15 +121,17 @@ class MyCoinsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: displayHeight(context),
-        width: displayWidth(context) * 0.95,
-        child: ListView.builder(
-            itemCount: binanceGetAllModelList.length,
-            itemExtent: 80,
-            itemBuilder: (context, index) {
-              return MyCoinsCustomTile(
-                  binanceGetAllModel: binanceGetAllModelList[index]);
-            }));
+      height: displayHeight(context),
+      width: displayWidth(context) * 0.95,
+      child: ListView.builder(
+        itemCount: binanceGetAllModelList.length,
+        itemExtent: 80,
+        itemBuilder: (context, index) {
+          return MyCoinsCustomTile(
+              binanceGetAllModel: binanceGetAllModelList[index]);
+        },
+      ),
+    );
   }
 }
 
@@ -174,7 +176,7 @@ class MyCoinsCustomTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text('\$${binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
-            Text('+99.99%'), // TODO: fix this hard coded value
+            Text('+9999.99%'), // TODO: fix this hard coded value
           ],
         ),
       ),
@@ -196,7 +198,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                       style: TextStyle(color: primaryDark.withOpacity(0.5)))
                 ]),
           )),
-        ]
+    ]
         // ),
         );
   }

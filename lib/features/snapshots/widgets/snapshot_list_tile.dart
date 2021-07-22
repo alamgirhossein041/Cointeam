@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,10 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 
+/// [id] is used to display the order number of snapshot.
+/// [coinMap] is a map of all of the coingecko coin models from the startup bloc.
 class SnapshotListTile extends StatelessWidget {
-  const SnapshotListTile({Key key, this.id, this.coinData}) : super(key: key);
+  const SnapshotListTile({Key key, this.id, this.coinData, this.coinMap}) : super(key: key);
   final int id;
   final Map<String, dynamic> coinData;
+  final Map<String, dynamic> coinMap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +23,10 @@ class SnapshotListTile extends StatelessWidget {
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 15.0),
       child: Row(
         children: <Widget>[
+          Text('#${id.toString()}'),
           Expanded(
             flex: 3,
-            child: SnapshotCoinIconsList(coinList: _getCoinNames()),
+            child: SnapshotCoinIconsList(coinList: _getCoinNames(), coinMap: coinMap),
           ),
           Expanded(
             flex: 1,
@@ -64,8 +70,11 @@ class SnapshotListTile extends StatelessWidget {
 
 /// Displays the list of icons in [coinList].
 class SnapshotCoinIconsList extends StatelessWidget {
-  const SnapshotCoinIconsList({Key key, this.coinList}) : super(key: key);
+
+  const SnapshotCoinIconsList({Key key, this.coinList, this.coinMap}) : super(key: key);
   final List<String> coinList;
+  final Map<String, dynamic> coinMap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +84,17 @@ class SnapshotCoinIconsList extends StatelessWidget {
     if (_length < 1) {
       return Text('No coins are in this snapshot.');
     } else if (_length <= 3) {
+      log('coinmap = ' + coinMap.toString());
       return Row(
-        children: <Widget>[for (var i in coinList) BuildIcon(coin: i)],
+        // i = 'BTC'
+        children: <Widget>[for (var i in coinList) BuildIcon(coin: coinMap[i])],
       );
     } else {
       // > 3 coins
       int remaining = _length - 3;
       return Row(
         children: <Widget>[
-          for (var i = 0; i < 3; i++) BuildIcon(coin: coinList[i]),
+          for (var i = 0; i < 3; i++) BuildIcon(coin: coinMap[coinList[i]]),
           RemainingCoinIcon(count: remaining),
         ],
       );
@@ -91,12 +102,11 @@ class SnapshotCoinIconsList extends StatelessWidget {
   }
 }
 
-
-
 /// Returns the icon image for the given [coin]
 class BuildIcon extends StatelessWidget {
-  const BuildIcon({Key key, String coin}) : super(key: key);
-  
+  const BuildIcon({Key key, this.coin, }) : super(key: key);
+
+  final CoingeckoListTop100Model coin;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +123,10 @@ class BuildIcon extends StatelessWidget {
     // on app load, get this list of coins, get url 
 
     // else get it
+    
+    log(coin.image.toString());
+    log(coin.symbol.toString());
+
     return FutureBuilder(
       future: localStorage.ready,
       builder: (context, snapshot) {
@@ -126,8 +140,11 @@ class BuildIcon extends StatelessWidget {
               backgroundColor: Colors.transparent,
               radius: 17.5,
               backgroundImage: CachedNetworkImageProvider(
-                'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+                coin.image
               ),
+              // backgroundImage: CachedNetworkImageProvider(
+              //   'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+              // ),
             ),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
