@@ -171,6 +171,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         if (binanceGetAllModel != null) {
           Map<String, dynamic> arguments = await _loadCoinIcons(binanceGetAllModel);
           coingeckoModelList = arguments['list'];
+          log(coingeckoModelList.toString());
+          log(arguments['list'].toString());
           coingeckoModelMap = arguments['map'];
         }
 
@@ -222,7 +224,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
   // if not get it
 
   /// Goes through the given list of [coins] and assigns its icon image link to it
-  Future<Map<String, dynamic>> _loadCoinIcons(List coins) async {
+  Future<Map<String, dynamic>> _loadCoinIcons(List<BinanceGetAllModel> coins) async {
     // get the local storage list of coingecko coins in the portfolio here
     LocalStorage localStorage = LocalStorage("coinstreetapp");
     Map<String, dynamic> coingeckoCoins = {};
@@ -238,7 +240,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     // await localStorage.ready.then((_) {
       // what if these things don't exist, they return null
       // get stored list of parsed coingecko coins
-    coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
+    // coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
+    // coingeckoCoins = {};
     // get stored list of coin : icon url map
     coinIcons = localStorage.getItem('coinIcons') ?? {};
     // print("coingecko coins length = "+coingeckoCoins.length.toString());
@@ -262,22 +265,30 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
       // if the coin is null, it wasn't found on the coingecko parsed list for some reason.
       // add to the list of coins to be filled in.
-      if (coingeckoCoins[coinSymbol] != null) {
-        coingeckoCoinsListOfMaps.add(coingeckoCoins[coinSymbol]);
-        coinsForRepo.add(coingeckoCoins[coinSymbol]['id']);
-      } else {
-        nullCoins.add(coinSymbol);
-        toParse = true;
-        // use this symbol to get the id to call the api with it
-        /// TODO: Move out of Startup_Bloc
-        /// 
-        /// 
-        /// 2. for the coins that ARE null, we need to fill it in from the missing_coins_list
-        /// 1. call our repo to get coin info FOR all the coingeckoCoins that are not null
-        /// 
-        /// 
-        /// 
-      }
+
+      /// we have coins (binancegetallmodel)
+      /// we want to check if our ...
+      /// have we made our coingecko api call yet
+      
+      log(coinSymbol);
+      log(coingeckoCoins[coinSymbol].toString());
+
+      // if (coingeckoCoins[coinSymbol] != null) {
+      //   coingeckoCoinsListOfMaps.add(coingeckoCoins[coinSymbol]);
+      //   coinsForRepo.add(coingeckoCoins[coinSymbol]['id']);
+      // } else {
+      //   nullCoins.add(coinSymbol);
+      //   toParse = true;
+      //   // use this symbol to get the id to call the api with it
+      //   /// TODO: Move out of Startup_Bloc
+      //   /// 
+      //   /// 
+      //   /// 2. for the coins that ARE null, we need to fill it in from the missing_coins_list
+      //   /// 1. call our repo to get coin info FOR all the coingeckoCoins that are not null
+      //   /// 
+      //   /// 
+      //   /// 
+      // }
 
       // String data = await DefaultAssetBundle.of(context).loadString("assets/data.json");
       // final jsonResult = json.decode(data);
@@ -310,6 +321,8 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           /// We need to make an API call using coingecko ID
 
           /// (we are trying to get coingecko IDs)
+        } else {
+          coinsForRepo.add(coinSymbol)
         }
       });
     }
@@ -321,15 +334,18 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
     /// Pagination
     List<int> pages = [];
-    int listIterate = 0;
+    int listIterate = 1;
     if (coingeckoCoinsListOfMaps.length > 250) {
       listIterate = (coins.length / 250).ceil();
     }
+
+      log("listiterate = " + listIterate.toString());
 
     for(int i = 1; i <= listIterate; i++) {
       pages.add(i);
     }
 
+    log(pages.toString());
 
     await Future.forEach(pages, (v) async {
       log("future --------");
@@ -348,6 +364,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       log("*-*-*-*-*-*-");
     });
 
+    log(coingeckoModelMap.toString());
     arguments['map'] = coingeckoModelMap ?? {};
     arguments['list'] = coingeckoModelList ?? [];
 

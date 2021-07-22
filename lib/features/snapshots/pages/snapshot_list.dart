@@ -63,6 +63,7 @@ class SnapshotListState extends State<SnapshotList> {
                             }, builder: (context, state) {
                               if (state is StartupLoadedState) {
                                 log("state coinmap = " + state.coingeckoModelMap.toString());
+                                log("state coinlist = " + state.coingeckoModelList.toString());
                                 return Column(
                                   children: <Widget>[
                                     Padding(
