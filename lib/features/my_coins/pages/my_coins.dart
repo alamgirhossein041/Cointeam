@@ -24,29 +24,37 @@ class MyCoins extends StatelessWidget {
           appBar: AppBar(
             title: Text('My Coins'),
           ),
-          body: Scrollbar(
-            controller: _scrollController,
-            thickness: 5,
-            radius: Radius.circular(3),
-            child: Container(
-              margin: mainCardMargin(),
-              decoration: mainCardDecoration(),
-              padding: snapshotCardPadding(),
-              child: Column(
-                children: <Widget>[
-                  Row(
+          body: Container(
+            margin: mainCardMargin(),
+            decoration: mainCardDecoration(),
+            padding: scrollCardPadding(),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 14),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text("Price"),
+                      Text(
+                        "Price",
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              color: primaryDark.withOpacity(0.7),
+                            ),
+                      ),
                       SizedBox(width: 60.0),
-                      Text("Holdings"),
+                      Text(
+                        "Holdings",
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              color: primaryDark.withOpacity(0.7),
+                            ),
+                      ),
                     ],
                   ),
-                  Expanded(
-                    child: MyCoinsList(),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: MyCoinsList(),
+                ),
+              ],
             ),
           ),
         ),
@@ -60,27 +68,42 @@ class MyCoinsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Flexible(
-          flex: 1,
-          fit: FlexFit.tight,
-          child: BlocConsumer<StartupBloc, StartupState>(
-              listener: (context, state) {
-            if (state is StartupErrorState) {
-              debugPrint("An error occured in my_coins.dart MyCoinsList");
-              log("An error occured in my_coins.dart MyCoinsList");
-            }
-          }, builder: (context, state) {
-            if (state is StartupLoadedState) {
-              return MyCoinsListView(
-                  binanceGetAllModelList: state.binanceGetAllModel);
-            } else if (state is StartupErrorState) {
-              return Text("Binance data error");
-            } else {
-              return loadingTemplateWidget();
-            }
-          }))
-    ]);
+    final _scrollController = ScrollController();
+
+    return Scrollbar(
+      controller: _scrollController,
+      thickness: 5,
+      radius: Radius.circular(3),
+      child: Padding(
+        padding: EdgeInsets.only(right: 20),
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: BlocConsumer<StartupBloc, StartupState>(
+                listener: (context, state) {
+                  if (state is StartupErrorState) {
+                    debugPrint("An error occured in my_coins.dart MyCoinsList");
+                    log("An error occured in my_coins.dart MyCoinsList");
+                  }
+                },
+                builder: (context, state) {
+                  if (state is StartupLoadedState) {
+                    return MyCoinsListView(
+                        binanceGetAllModelList: state.binanceGetAllModel);
+                  } else if (state is StartupErrorState) {
+                    return Text("Binance data error");
+                  } else {
+                    return loadingTemplateWidget();
+                  }
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 

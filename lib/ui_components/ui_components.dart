@@ -12,7 +12,7 @@ EdgeInsets mainCardPaddingVertical() => EdgeInsets.symmetric(vertical: 45);
 EdgeInsets mainCardPaddingHorizontal() => EdgeInsets.symmetric(horizontal: 40);
 
 // Snapshot log card padding
-EdgeInsets snapshotCardPadding() => EdgeInsets.only(left: 20, right: 10, top: 45);
+EdgeInsets scrollCardPadding() => EdgeInsets.only(left: 20, right: 10, top: 45);
 
 
 /// Main background card decoration style.
