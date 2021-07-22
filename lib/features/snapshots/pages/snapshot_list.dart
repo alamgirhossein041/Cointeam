@@ -20,8 +20,8 @@ class SnapshotList extends StatefulWidget {
 class SnapshotListState extends State<SnapshotList> {
   final _scrollController = ScrollController();
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
-
   List _items = [];
+  
   @override
   void initState() {
     super.initState();
@@ -36,7 +36,7 @@ class SnapshotListState extends State<SnapshotList> {
       body: Container(
         margin: mainCardMargin(),
         decoration: mainCardDecoration(),
-        padding: snapshotCardPadding(),
+        padding: scrollCardPadding(),
         child: Column(
           children: <Widget>[
             Expanded(
