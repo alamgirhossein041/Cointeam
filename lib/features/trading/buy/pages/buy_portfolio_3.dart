@@ -161,22 +161,24 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: displayWidth(context) * 0.1),
                                       // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                      child: Text("12 coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                      // child: Text("12 coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                      child: Text(widget.keyString.length.toString() + " Coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
                                     ),
                                   ),
                                   Flexible(
                                     flex: 1,
                                     fit: FlexFit.tight,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      // child: Padding(
-                                      //   padding: EdgeInsets.only(left: 20),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(right: 20),
-                                          child: Text("%", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
-                                        ),
-                                      // ),
-                                    ),
+                                    child: Container()
+                                    // Align(
+                                    //   alignment: Alignment.centerRight,
+                                    //   // child: Padding(
+                                    //   //   padding: EdgeInsets.only(left: 20),
+                                    //     child: Padding(
+                                    //       padding: EdgeInsets.only(right: 20),
+                                    //       child: Text("%", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                    //     ),
+                                    //   // ),
+                                    // ),
                                     // child: Container(),
                                   ),
                                   Flexible(
@@ -186,7 +188,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                       alignment: Alignment.centerRight,
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 35),
-                                        child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                        child: Text("Value", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
                                       ),
                                     )
                                   )
@@ -216,28 +218,33 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                       Flexible(
                                         flex: 3,
                                         fit: FlexFit.tight,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Align(
-                                          // alignment: Alignment.centerRight,
-                                            alignment: Alignment.centerRight,
-                                            // child: Padding(
-                                              // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                              child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
-                                              // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
-                                              // child: Builder(
-                                              //   builder: (context) {
-                                              //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
-                                              //     return Text("\$" + text);
-                                              //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
-                                              //     // return condition ? Text("\$" + 
-                                              //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
-                                              //       // : Text("No USDT Pair");
-                                              //   }
-                                              // ),
-                                          ),
-                                        ),
+                                        child: Container(),
                                       ),
+                                      // Flexible(
+                                      //   flex: 3,
+                                      //   fit: FlexFit.tight,
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.only(left: 10),
+                                      //     child: Align(
+                                      //     // alignment: Alignment.centerRight,
+                                      //       alignment: Alignment.centerRight,
+                                      //       // child: Padding(
+                                      //         // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                      //         child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
+                                      //         // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
+                                      //         // child: Builder(
+                                      //         //   builder: (context) {
+                                      //         //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
+                                      //         //     return Text("\$" + text);
+                                      //         //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
+                                      //         //     // return condition ? Text("\$" + 
+                                      //         //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                      //         //       // : Text("No USDT Pair");
+                                      //         //   }
+                                      //         // ),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                       Flexible(
                                         flex: 3,
                                         fit: FlexFit.tight,
@@ -245,7 +252,8 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                           alignment: Alignment.centerRight,
                                           child: Padding(
                                             padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                            child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                            // child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                            child: Text('\$' + (widget.coinDataStructure['coins'][widget.keyString[index]]['value']/widget.coinDataStructure['total'] * widget.toSpend).toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
                                           ),
                                         ),
                                       ),

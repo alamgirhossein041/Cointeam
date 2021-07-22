@@ -126,7 +126,8 @@ class BuyFromSnapshotListState extends State<BuyFromSnapshotList> {
                                   return GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () => {
-                                      Navigator.pushNamed(context, '/buyportfolio2', arguments: {'coinDataStructure': snapshot.data[index]})
+                                      // log(snapshot.data[index].toString()),
+                                      Navigator.pushNamed(context, '/buyportfolio2', arguments: {'coinDataStructure': snapshot.data[index], 'index': index+1})
                                     },
                                     child: Padding(
                                       padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
