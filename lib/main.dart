@@ -103,6 +103,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryBlue,
           accentColor: primaryBlue,
+          highlightColor: Color(0xffccd5dc),
           scaffoldBackgroundColor: primaryBlue,
 
           colorScheme: ColorScheme(
