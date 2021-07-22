@@ -320,6 +320,18 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                         ),
                                                         controller: textField,
                                                         keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                                        onEditingComplete: () {
+                                                          if (double.parse(textField.text) > state.usdTotal) {
+                                                            
+                                                            // setState(() {
+                                                              textField.text = state.usdTotal.toString();
+                                                            // });
+                                                          // } else {
+                                                          //   setState(() {
+                                                          //     textField.text = _value.toStringAsFixed(1);
+                                                          //   });
+                                                          }
+                                                        }
                                                       );
                                                     } else if (state is StartupErrorState) {
                                                       return Text("An Error has occurred in Binance");
