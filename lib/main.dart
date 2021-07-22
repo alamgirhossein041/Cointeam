@@ -9,8 +9,8 @@ import 'package:coinsnap/features/onboarding/pages/welcome_screen_1.dart';
 import 'package:coinsnap/features/settings/features/feedback/pages/feedback.dart';
 import 'package:coinsnap/features/settings/pages/settings.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
-import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_0.dart';
-import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_02.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_1.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_2.dart';
 import 'package:coinsnap/features/trading/trading.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
@@ -246,7 +246,6 @@ class MyApp extends StatelessWidget {
           '/buyportfolio1': (context) => BuyPortfolioScreenOne(),
           '/buyportfolio2': (context) => BuyPortfolioScreenTwo(),
           '/buyportfolio3': (context) => BuyPortfolioScreenThree(),
-          '/buyportfolio': (context) => BuyPortfolioScreen(),
           // '/buyportfolio2': (context) => BuyPortfolioPage2(),
           // '/buyportfolio3': (context) => BuyPortfolioPage3(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
