@@ -240,12 +240,12 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     // await localStorage.ready.then((_) {
       // what if these things don't exist, they return null
       // get stored list of parsed coingecko coins
-    // coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
+    coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
     // coingeckoCoins = {};
     // get stored list of coin : icon url map
     coinIcons = localStorage.getItem('coinIcons') ?? {};
     // print("coingecko coins length = "+coingeckoCoins.length.toString());
-    // log(coingeckoCoins.toString());
+    log("parsed localstorage = " + coingeckoCoins.toString());
 
     // if coinicons is empty map
     // iterate through portfolio coins and create this map and save to storage
@@ -258,11 +258,17 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // get the congecko id for it
       // get coin symbol
       coinSymbol = v.coin.toLowerCase();
-      print("-----------a----------"+coingeckoCoins.toString());
+      // print("-----------a----------"+coingeckoCoins.toString());
+      if(coingeckoCoins[v.coin] != null) { /// Here we need to check for == null and then do the hard coded list missingcoins.json stuff
+        coinsForRepo.add(coingeckoCoins[v.coin]['id'].toLowerCase());
+      } else {
+        nullCoins.add(v.coin);
+        toParse = true;
+      }
       // print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
       
       // Map<String, dynamic> coingeckoCoin = coingeckoCoins[coinSymbol];
-
+      
       // if the coin is null, it wasn't found on the coingecko parsed list for some reason.
       // add to the list of coins to be filled in.
 
@@ -321,8 +327,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           /// We need to make an API call using coingecko ID
 
           /// (we are trying to get coingecko IDs)
-        } else {
-          coinsForRepo.add(coinSymbol)
         }
       });
     }
@@ -339,17 +343,18 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       listIterate = (coins.length / 250).ceil();
     }
 
-      log("listiterate = " + listIterate.toString());
+    log("listiterate = " + listIterate.toString());
 
     for(int i = 1; i <= listIterate; i++) {
       pages.add(i);
     }
 
     log(pages.toString());
+    log("coinsForRepo is: " + coinsForRepo.toString());
 
     await Future.forEach(pages, (v) async {
       log("future --------");
-
+      log("coinsForRepo is: " + coinsForRepo.toString());
       coingeckoModelList.addAll(await coinRepo.getCoinInfo(coinsForRepo, v));
       log("coingeckomodellist result = " + coingeckoModelList.toString());
 
