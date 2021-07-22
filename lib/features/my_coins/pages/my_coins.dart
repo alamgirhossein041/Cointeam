@@ -35,18 +35,23 @@ class MyCoins extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text(
-                        "Price",
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              color: primaryDark.withOpacity(0.7),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 50),
+                        child: Text(
+                          "Price",
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                color: primaryDark.withOpacity(0.7),
+                              ),
+                        ),
                       ),
-                      SizedBox(width: 60.0),
-                      Text(
-                        "Holdings",
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              color: primaryDark.withOpacity(0.7),
-                            ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Text(
+                          "Holdings",
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                                color: primaryDark.withOpacity(0.7),
+                              ),
+                        ),
                       ),
                     ],
                   ),
@@ -151,46 +156,28 @@ class MyCoinsCustomTile extends StatelessWidget {
             "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"),
       ),
       SizedBox(width: 15),
-      // Flexible(
-      //   flex: 2,
-      //   fit: FlexFit.tight,
-      //   child: Column(
-      //     children: <Widget> [
-      //       Text(binanceGetAllModel.name, style: TextStyle(color: primaryDark)),
-      //       // SizedBox(height: 2),
-      //       Text(binanceGetAllModel.coin, style: TextStyle(color: primaryDark.withOpacity(0.5)))
-      //     ]
-      //   )
-      // ),
       Flexible(
-          flex: 4,
-          fit: FlexFit.tight,
-          child: RichText(
-              text: TextSpan(
-                  text: binanceGetAllModel.name + '\n',
-                  style: TextStyle(color: primaryDark, height: 1.4),
-                  children: <TextSpan>[
-                TextSpan(
-                    text: binanceGetAllModel.coin,
-                    style: TextStyle(color: primaryDark.withOpacity(0.5)))
-              ]))),
+        flex: 4,
+        fit: FlexFit.tight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(binanceGetAllModel.name),
+            Text(binanceGetAllModel.coin),
+          ],
+        ),
+      ),
       Flexible(
-          flex: 4,
-          fit: FlexFit.tight,
-          child: RichText(
-            textAlign: TextAlign.end,
-            text: TextSpan(
-                text: '\$' +
-                    binanceGetAllModel.usdValue.toStringAsFixed(2) +
-                    '\n',
-                style: TextStyle(color: Colors.black, height: 1.4),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "+2.19%",
-                    style: TextStyle(color: Colors.pinkAccent[200]),
-                  )
-                ]),
-          )),
+        flex: 4,
+        fit: FlexFit.tight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Text('\$${binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
+            Text('+99.99%'), // TODO: fix this hard coded value
+          ],
+        ),
+      ),
       Flexible(
           flex: 5,
           fit: FlexFit.tight,
@@ -209,7 +196,7 @@ class MyCoinsCustomTile extends StatelessWidget {
                       style: TextStyle(color: primaryDark.withOpacity(0.5)))
                 ]),
           )),
-    ]
+        ]
         // ),
         );
   }

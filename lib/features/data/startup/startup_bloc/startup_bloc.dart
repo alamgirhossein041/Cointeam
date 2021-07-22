@@ -231,7 +231,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     coingeckoCoins = localStorage.getItem('parsedCoingeckoCoins') ?? {};
     // get stored list of coin : icon url map
     coinIcons = localStorage.getItem('coinIcons') ?? {};
-    print("coingecko coins length = "+coingeckoCoins.length.toString());
+    // print("coingecko coins length = "+coingeckoCoins.length.toString());
     // log(coingeckoCoins.toString());
 
     // if coinicons is empty map
@@ -248,7 +248,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // get coin symbol
       coinSymbol = v.coin.toLowerCase();
       // print("-----------a----------"+coingeckoCoins.toString());
-      print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
+      // print("coingecko coins[$coinSymbol] = "+coingeckoCoins[coinSymbol].toString());
       
       // Map<String, dynamic> coingeckoCoin = coingeckoCoins[coinSymbol];
 
