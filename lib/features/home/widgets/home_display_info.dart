@@ -18,54 +18,53 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
+          /// State bloc info retrieval for total balance
+          BlocConsumer<StartupBloc, StartupState>(
+            listener: (context, state) {
+              if (state is StartupErrorState) {
+                log("Error in home_display_info.dart _HomeDisplayInfoState");
+              }
+            },
+            builder: (context, state) {
+              if (state is StartupLoadedState) {
+                return Flexible(
                   flex: 1,
-                  child: Text('Balance'),
-                ),
-                Flexible(
-                  flex: 1,
-                  child:
-
-                      /// State bloc info retrieval for total balance
-                      BlocConsumer<StartupBloc, StartupState>(
-                    listener: (context, state) {
-                      if (state is StartupErrorState) {
-                        log("Error in home_display_info.dart _HomeDisplayInfoState");
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is StartupLoadedState) {
-                        return Text(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Text('Balance'),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Text(
                           '\$' + state.totalValue.toStringAsFixed(2),
                           style: Theme.of(context).textTheme.headline1,
-                        );
-                      } else if (state is StartupErrorState) {
-                        return Text(
-                          "\$12,516.35", // placeholder text because it's not working rn
-                          style: Theme.of(context).textTheme.headline1,
-                        );
-                        // Text("An error has occurred, Binance-related.",
-                        // style: Theme.of(context).textTheme.headline1);
-                      } else {
-                        return Column(
-                          children: <Widget>[
-                            loadingTemplateWidget(),
-                            SizedBox(height: 10),
-                          ],
-                        );
-                      }
-                    },
+                        ),
+                      ),
+                    ],
                   ),
-
-                  /// End bloc
-                ),
-              ],
-            ),
+                );
+              } else if (state is StartupErrorState) {
+                return Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Connect your API to get started.", // TODO: A button that takes user to API linking
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                );
+                // Text("An error has occurred, Binance-related.",
+                // style: Theme.of(context).textTheme.headline1);
+              } else {
+                return Column(
+                  children: <Widget>[
+                    loadingTemplateWidget(),
+                    SizedBox(height: 10),
+                  ],
+                );
+              }
+            },
           ),
           Flexible(
             flex: 1,

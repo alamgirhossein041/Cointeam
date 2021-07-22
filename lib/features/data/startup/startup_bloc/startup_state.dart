@@ -1,4 +1,5 @@
 import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -34,18 +35,19 @@ class StartupLoadingState extends StartupState {
 // }
 
 class StartupLoadedState extends StartupState {
-  StartupLoadedState({this.totalValue, this.coinListData, this.coinBalancesMap,
+  StartupLoadedState({this.totalValue, this.coinListData, this.coingeckoModelMap,
                       this.coinList, this.btcSpecial, this.ethSpecial, this.binanceGetAllModel,
-                      this.usdTotal, this.btcTotal});
+                      this.usdTotal, this.btcTotal, this.coingeckoModelList});
   final totalValue;
   final coinListData;
-  final coinBalancesMap;
+  final coingeckoModelMap;
   final coinList;
   final btcSpecial;
   final ethSpecial;
   final double usdTotal;
   final double btcTotal;
   final List<BinanceGetAllModel> binanceGetAllModel;
+  final List<CoingeckoListTop100Model> coingeckoModelList;
 
   // StartupLoadedState({this.coinList, this.coinBalancesMap});
 
