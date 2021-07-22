@@ -25,11 +25,7 @@ class SettingsScreen extends StatelessWidget {
         bottom: false,
         child: Scaffold(
           appBar: AppBar(
-<<<<<<< HEAD
-            title: Text("Settings")
-=======
             title: Text('Settings'),
->>>>>>> CA-211
           ),
           backgroundColor: primaryBlue,
           body: Stack(
