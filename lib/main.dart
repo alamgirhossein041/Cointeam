@@ -105,6 +105,21 @@ class MyApp extends StatelessWidget {
           accentColor: primaryBlue,
           scaffoldBackgroundColor: primaryBlue,
 
+          colorScheme: ColorScheme(
+              primary: primaryBlue,
+              primaryVariant: primaryBlue,
+              secondary: primaryBlue,
+              secondaryVariant: primaryBlue,
+              surface: primaryLight,
+              background: primaryLight,
+              error: primaryRed,
+              onPrimary: primaryDark,
+              onSecondary: primaryLight,
+              onSurface: primaryDark,
+              onBackground: primaryDark,
+              onError: primaryLight,
+              brightness: Brightness.light),
+          
           // Default brightness
           // brightness: Brightness.dark
 
