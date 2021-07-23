@@ -150,7 +150,7 @@ class BuildIcon extends StatelessWidget {
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Column(
             children: <Widget>[
-              Text('Waiting for icons to load..'),
+              Text('Loading..'),
               CircularProgressIndicator(),
             ],
           );

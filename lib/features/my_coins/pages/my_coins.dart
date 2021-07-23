@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
@@ -96,7 +97,8 @@ class MyCoinsList extends StatelessWidget {
                 builder: (context, state) {
                   if (state is StartupLoadedState) {
                     return MyCoinsListView(
-                        binanceGetAllModelList: state.binanceGetAllModel);
+                        binanceGetAllModelList: state.binanceGetAllModel,
+                        coingeckoModelMap: state.coingeckoModelMap);
                   } else if (state is StartupErrorState) {
                     return Text("Binance data error");
                   } else {
@@ -113,10 +115,14 @@ class MyCoinsList extends StatelessWidget {
 }
 
 class MyCoinsListView extends StatelessWidget {
-  const MyCoinsListView({Key key, @required this.binanceGetAllModelList})
-      : super(key: key);
+  const MyCoinsListView({
+    Key key,
+    @required this.binanceGetAllModelList,
+    @required this.coingeckoModelMap
+  }) : super(key: key);
 
   final List<BinanceGetAllModel> binanceGetAllModelList;
+  final Map<String, dynamic> coingeckoModelMap;
 
   @override
   Widget build(BuildContext context) {
@@ -128,21 +134,48 @@ class MyCoinsListView extends StatelessWidget {
         itemExtent: 80,
         itemBuilder: (context, index) {
           return MyCoinsCustomTile(
-              binanceGetAllModel: binanceGetAllModelList[index]);
+              binanceGetAllModel: binanceGetAllModelList[index],
+              coingeckoModel: coingeckoModelMap[binanceGetAllModelList[index].coin]);
         },
       ),
     );
   }
 }
 
-class MyCoinsCustomTile extends StatelessWidget {
-  const MyCoinsCustomTile({Key key, @required this.binanceGetAllModel})
-      : super(key: key);
+class MyCoinsCustomTile extends StatefulWidget {
+  const MyCoinsCustomTile({
+    Key key,
+    @required this.binanceGetAllModel,
+    @required this.coingeckoModel
+  }) : super(key: key);
 
   final BinanceGetAllModel binanceGetAllModel;
+  final CoingeckoListTop100Model coingeckoModel;
 
   @override
+  _MyCoinsCustomTileState createState() => _MyCoinsCustomTileState();
+}
+
+class _MyCoinsCustomTileState extends State<MyCoinsCustomTile> {
+  CoingeckoListTop100Model dummyCoingeckoModel;
+
+  @override
+  void initState() { 
+    super.initState();
+    if(widget.coingeckoModel == null) {
+      dummyCoingeckoModel = CoingeckoListTop100Model(
+        image: "https://assets.coingecko.com/coins/images/17030/small/binance-coin-bnb-logo.png",
+        name: widget.binanceGetAllModel.name,
+        symbol: widget.binanceGetAllModel.coin,
+      );
+    } else {
+      dummyCoingeckoModel = widget.coingeckoModel;
+    }
+  }
+  @override
   Widget build(BuildContext context) {
+    // log(widget.coingeckoModel.toString());
+    // log(widget.coingeckoModel.image);
     // log(binanceGetAllModel.coin);
     // log(binanceGetAllModel.name);
     // log(binanceGetAllModel.totalUsdValue.toString());
@@ -150,12 +183,18 @@ class MyCoinsCustomTile extends StatelessWidget {
     // log(binanceGetAllModel.locked.toString());
     // return Padding(
     //   padding: EdgeInsets.symmetric(vertical: 20),
-    return Row(children: <Widget>[
+    return Row(
+      children: <Widget>[
       Flexible(
         flex: 2,
         fit: FlexFit.tight,
         child: Image.network(
-            "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"),
+            // "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"),
+            // sadly the below nullable line doesn't work (it still compiles, just doesn't do what i want)
+            // possible solution is to set a model for coins that exist in portfolio but are not on coingecko
+            // like a dummy model - stuff like ETHUP
+            // coingeckoModel.image ?? "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880")
+            dummyCoingeckoModel.image)
       ),
       SizedBox(width: 15),
       Flexible(
@@ -164,8 +203,8 @@ class MyCoinsCustomTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(binanceGetAllModel.name),
-            Text(binanceGetAllModel.coin),
+            Text(dummyCoingeckoModel.name),
+            Text(dummyCoingeckoModel.symbol),
           ],
         ),
       ),
@@ -175,7 +214,7 @@ class MyCoinsCustomTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text('\$${binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
+            Text('\$${widget.binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
             Text('+9999.99%'), // TODO: fix this hard coded value
           ],
         ),
@@ -187,13 +226,13 @@ class MyCoinsCustomTile extends StatelessWidget {
             textAlign: TextAlign.end,
             text: TextSpan(
                 text: '\$' +
-                    binanceGetAllModel.totalUsdValue.toStringAsFixed(2) +
+                    widget.binanceGetAllModel.totalUsdValue.toStringAsFixed(2) +
                     '\n',
                 style: TextStyle(color: Colors.black, height: 1.4),
                 children: <TextSpan>[
                   TextSpan(
                       text:
-                          (binanceGetAllModel.free + binanceGetAllModel.locked)
+                          (widget.binanceGetAllModel.free + widget.binanceGetAllModel.locked)
                               .toStringAsFixed(2),
                       style: TextStyle(color: primaryDark.withOpacity(0.5)))
                 ]),
