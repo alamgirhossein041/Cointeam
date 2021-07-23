@@ -27,111 +27,75 @@ class _DominanceWidgetState extends State<DominanceWidget> {
           children: <Widget>[
             Text('Dominance'),
             SizedBox(height: 6),
-            _isOpen
+            BlocConsumer<GeckoGlobalStatsBloc, GeckoGlobalStatsState>(
+              listener: (context, state) {
+                if (state is GeckoGlobalStatsErrorState) {
+                  log("Error in dominance.dart _DominanceWidgetState");
+                }
+              },
+              builder: (context, state) {
+                if (state is GeckoGlobalStatsLoadedState) {
+                  return _isOpen
                 ?
 
                 /// Bloc Coingecko info retrieval
                 AnimatedSwitcher(
                     duration: Duration(milliseconds: 100),
-                    child: BlocConsumer<GeckoGlobalStatsBloc,
-                        GeckoGlobalStatsState>(
-                      listener: (context, state) {
-                        if (state is GeckoGlobalStatsErrorState) {
-                          log("Error in dominance.dart _DominanceWidgetState");
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state is GeckoGlobalStatsLoadedState) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              flex: 1,
+                              child: Row(
                                 children: <Widget>[
-                                  Flexible(
-                                    flex: 1,
-                                    child: Row(
-                                      children: <Widget>[
-                                        SvgPicture.asset(
-                                          'graphics/assets/svg/btc_dominance.svg',
-                                          height: 13,
-                                        ),
-                                        Text(
-                                          ' ' +
-                                              state.geckoGlobalStats
-                                                  .totalMarketCapPct['btc']
-                                                  .toStringAsFixed(0) +
-                                              '%',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ],
-                                    ),
+                                  SvgPicture.asset(
+                                    'graphics/assets/svg/btc_dominance.svg',
+                                    height: 13,
                                   ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: Row(
-                                      children: <Widget>[
-                                        SvgPicture.asset(
-                                          'graphics/assets/svg/eth_dominance.svg',
-                                          height: 13,
-                                        ),
-                                        Text(
-                                          ' ' +
-                                              state.geckoGlobalStats
-                                                  .totalMarketCapPct['eth']
-                                                  .toStringAsFixed(0) +
-                                              '%',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                      ],
-                                    ),
+                                  Text(
+                                    ' ' +
+                                        state.geckoGlobalStats
+                                            .totalMarketCapPct['btc']
+                                            .toStringAsFixed(0) +
+                                        '%',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1,
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20),
-                            ],
-                          );
-                        } else if (state is GeckoGlobalStatsErrorState) {
-                          return Text(
-                              "An error has occured, CoinGecko-related.");
-                        } else {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Flexible(
-                                flex: 1,
-                                child: Row(
-                                  children: <Widget>[
-                                    SvgPicture.asset(
-                                      'graphics/assets/svg/btc_dominance.svg',
-                                      height: 13,
-                                    ),
-                                    SizedBox(width: 2),
-                                    loadingTemplateWidget(10, 2),
-                                  ],
-                                ),
-                              ),
-                              Row(
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Row(
                                 children: <Widget>[
                                   SvgPicture.asset(
                                     'graphics/assets/svg/eth_dominance.svg',
                                     height: 13,
                                   ),
-                                  SizedBox(width: 2),
-                                  loadingTemplateWidget(10, 2),
+                                  Text(
+                                    ' ' +
+                                        state.geckoGlobalStats
+                                            .totalMarketCapPct['eth']
+                                            .toStringAsFixed(0) +
+                                        '%',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1,
+                                  ),
                                 ],
                               ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  )
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                )
                 : AnimatedSwitcher(
                     duration: Duration(milliseconds: 100),
                     child: Column(
@@ -175,7 +139,15 @@ class _DominanceWidgetState extends State<DominanceWidget> {
                         )
                       ],
                     ),
-                  ),
+                  );
+                } else if (state is GeckoGlobalStatsLoadingState) {
+                  return Container();
+                } else {
+                  return Text("Error");
+                }
+              }
+            )
+            
           ],
         ),
       ),
