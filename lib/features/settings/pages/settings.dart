@@ -232,8 +232,8 @@ class SettingsWidget extends StatelessWidget {
         SettingsCurrencyToggle()
       ]),
       SettingsSection(title: "System", items: <Widget>[
-        SettingsThemeToggle()
-
+        SettingsThemeToggle(),
+        SettingsTile(text: 'Feedback', onClick: () => Navigator.pushNamed(context, '/feedback')),
         /// TODO 16th July: STUFF
         /// Theme (toggle)
         /// Bug Report (non-functional... i guess we could add an api)
