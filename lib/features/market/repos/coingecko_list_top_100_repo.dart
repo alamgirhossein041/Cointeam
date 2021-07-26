@@ -28,7 +28,7 @@ class CoingeckoListTop100RepositoryImpl implements ICoingeckoListTop100Repositor
     String percentage = '1h, 24h, 7d';
     // String currency = await localStorageCurrency.getItem("currency");
     // String currency = 'AUD';
-    log(currency.toString());
+    log("right now" + currency.toString());
     // String currency = "AUD";
     String linkBuilder = '?vs_currency=' + currency + '&per_page=' + numberOfCoins + '&page=' + pagination + '&price_change_percentage=' + percentage;
 

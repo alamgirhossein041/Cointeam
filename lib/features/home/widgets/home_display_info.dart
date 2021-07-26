@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/home/widgets/dominance.dart';
+import 'package:coinsnap/features/utils/number_formatter.dart';
 import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localstorage/localstorage.dart';
 
 class HomeDisplayInfo extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class HomeDisplayInfo extends StatefulWidget {
 }
 
 class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,13 +88,37 @@ class _HomeDisplayInfoState extends State<HomeDisplayInfo> {
                       ),
                       Flexible(
                         flex: 1,
-                        child: Text(
-                          '\$2.1T',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3
-                              .copyWith(fontWeight: FontWeight.w300),
-                        ),
+                        child: BlocConsumer<GeckoGlobalStatsBloc, GeckoGlobalStatsState>(
+                          listener: (context, state) {
+                            if (state is GeckoGlobalStatsErrorState) {
+                              debugPrint("An error occured in market_overview.dart");
+                              log("An error occured in market_overview.dart");
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is GeckoGlobalStatsLoadedState) {
+                              return Text(numberFormatter(state.geckoGlobalStats.totalMarketCap[state.currency]).toString(),
+                                style: Theme.of(context).textTheme.headline3.copyWith(fontWeight: FontWeight.w300));
+                            } else if (state is GeckoGlobalStatsErrorState) {
+                              return Text("CoinGecko data error");
+                            } else {
+                              return loadingTemplateWidget();
+                            }
+                          }
+                        )
+                        
+                        
+                        
+                        
+
+                        
+                        // Text(
+                        //   '\$2.1T',
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .headline3
+                        //       .copyWith(fontWeight: FontWeight.w300),
+                        // ),
                       ),
                     ],
                   ),

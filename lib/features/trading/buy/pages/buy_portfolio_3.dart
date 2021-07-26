@@ -512,6 +512,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                           onTap: () => {
                             buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
                             BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: widget.toSpend, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
+                            Navigator.pushNamed(context, '/buyportfolio4')
                           }
                         )
                       ),

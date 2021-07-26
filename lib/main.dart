@@ -11,7 +11,10 @@ import 'package:coinsnap/features/settings/pages/settings.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
 import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_1.dart';
 import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_2.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_4.dart';
 import 'package:coinsnap/features/trading/trading.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
 // import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_select.dart';
@@ -42,7 +45,7 @@ void main() async {
   // debugDisablePhysicalShapeLayers = false;
   // debugDisableOpacityLayers = false;
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // runApp(MyApp());
   /// ### Dev Phoenix (resets app state) ### ///
   runApp(
@@ -57,6 +60,7 @@ class MyApp extends StatelessWidget {
   // final FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
+    // FirebaseCrashlytics.instance.crash();
     return MultiBlocProvider(
       providers: [
         BlocProvider<StartupBloc>(
@@ -246,6 +250,7 @@ class MyApp extends StatelessWidget {
           '/buyportfolio1': (context) => BuyPortfolioScreenOne(),
           '/buyportfolio2': (context) => BuyPortfolioScreenTwo(),
           '/buyportfolio3': (context) => BuyPortfolioScreenThree(),
+          '/buyportfolio4': (context) => BuyPortfolioScreenFour(),
           // '/buyportfolio2': (context) => BuyPortfolioPage2(),
           // '/buyportfolio3': (context) => BuyPortfolioPage3(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),

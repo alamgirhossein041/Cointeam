@@ -1,5 +1,9 @@
+import 'package:coinsnap/features/data/global_stats/global_stats.dart';
+import 'package:coinsnap/features/data/startup/startup.dart';
+import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localstorage/localstorage.dart';
 
 class SettingsCurrencyToggle extends StatefulWidget {
@@ -43,7 +47,13 @@ class SettingsCurrencyToggleState extends State<SettingsCurrencyToggle> {
   }
   _currencyToggleHelper() {
     final storage = LocalStorage("settings");
-    storage.ready.then((_) {currency = storage.getItem("currency") ?? 'USD';});
+    storage.ready.then((_) {
+      currency = storage.getItem("currency") ?? 'USD';
+      BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
+      BlocProvider.of<GeckoGlobalStatsBloc>(context).add(GeckoGlobalStatsFetchEvent());
+      BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event());
+      BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent());
+    });
     if(currency == 'USD') {
       storage.setItem("currency", 'AUD');
       setState(() {

@@ -31,6 +31,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
   @override
   Stream<StartupState> mapEventToState(StartupEvent event) async* {
+    log("Test0");
     yield StartupInitialState();
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<BinanceGetAllModel> binanceGetAllModel = [];
@@ -44,13 +45,20 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     double usdTotal = 0.0;
     double btcTotal = 0.0;
     double totalValue = 0.0;
+    log("Test1");
 
     if (event is FetchStartupEvent) {
+      log("Test2");
       yield StartupLoadingState();
+      log("Test3");
       try{
+        log("Test4");
         /// GetCoinList logic
         final LocalStorage storage = LocalStorage("settings");
+        await storage.ready;
         currency = await storage.getItem("currency");
+        log("currency is: " + currency.toString());
+        log("???");
         // String isBinanceTrading = await secureStorage.read(key: "binance");
 
         // List of coins in the portfolio from Binance
@@ -153,6 +161,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
           //   }
           // }
         // }
+        /// for now we will hard code AUD as a currency check
+        /// but in the future we can load in currency values using BinancePrices into each coinModel
+        if (currency == 'AUD') {
+          totalValue = totalValue / binancePrices['AUDUSDT'];
+        }
         binanceGetAllModel..sort((a, b) => b.totalUsdValue.compareTo(a.totalUsdValue));
         // coinList.add('BTC');
         // coinList.add('ETH');
@@ -204,7 +217,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
         // coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         // btcSpecial = 
-        yield StartupLoadedState(totalValue: totalValue, coingeckoModelMap: coingeckoModelMap,
+        yield StartupLoadedState(totalValue: totalValue, coingeckoModelMap: coingeckoModelMap, currency: currency,
                                 coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel,
                                 usdTotal: usdTotal, btcTotal: btcTotal, coingeckoModelList: coingeckoModelList);
     

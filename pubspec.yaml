@@ -56,13 +56,14 @@ dependencies:
   dotted_border: ^1.0.7
   marquee: ^1.7.0
   cached_network_image: ^2.5.1
+  firebase_crashlytics: ^0.4.0+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-  assets:
+  assets: 
     - graphics/assets/
     - graphics/assets/svg/
     - assets/snapshot_dummydata.json
