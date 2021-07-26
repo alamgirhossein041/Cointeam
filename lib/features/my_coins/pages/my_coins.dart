@@ -117,9 +117,11 @@ class MyCoinsList extends StatelessWidget {
 }
 
 class MyCoinsListView extends StatelessWidget {
-  const MyCoinsListView(
-      {Key key, @required this.binanceGetAllModelList, this.coingeckoModelMap})
-      : super(key: key);
+  const MyCoinsListView({
+    Key key,
+    @required this.binanceGetAllModelList,
+    @required this.coingeckoModelMap
+  }) : super(key: key);
 
   final List<BinanceGetAllModel> binanceGetAllModelList;
   final Map<String, dynamic> coingeckoModelMap;
@@ -135,26 +137,49 @@ class MyCoinsListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return MyCoinsCustomTile(
               binanceGetAllModel: binanceGetAllModelList[index],
-              coingeckoModel:
-                  coingeckoModelMap[binanceGetAllModelList[index].coin]);
+              coingeckoModel: coingeckoModelMap[binanceGetAllModelList[index].coin]);
         },
       ),
     );
   }
 }
 
-class MyCoinsCustomTile extends StatelessWidget {
-  const MyCoinsCustomTile(
-      {Key key, @required this.binanceGetAllModel, this.coingeckoModel})
-      : super(key: key);
+class MyCoinsCustomTile extends StatefulWidget {
+  const MyCoinsCustomTile({
+    Key key,
+    @required this.binanceGetAllModel,
+    @required this.coingeckoModel
+  }) : super(key: key);
 
   final BinanceGetAllModel binanceGetAllModel;
   final CoingeckoListTop100Model coingeckoModel;
 
   @override
+  _MyCoinsCustomTileState createState() => _MyCoinsCustomTileState();
+}
+
+/// Icon uses [CoingeckoListTop100Model] null check
+/// Rest of the data uses [binanceGetAllModel].
+class _MyCoinsCustomTileState extends State<MyCoinsCustomTile> {
+  // CoingeckoListTop100Model coingeckoModel;
+
+  // @override
+  // void initState() { 
+  //   super.initState();
+  //   if(widget.coingeckoModel == null) {
+  //     coingeckoModel = CoingeckoListTop100Model(
+  //       image: "https://assets.coingecko.com/coins/images/17030/small/binance-coin-bnb-logo.png",
+  //       name: widget.binanceGetAllModel.name,
+  //       symbol: widget.binanceGetAllModel.coin,
+  //     );
+  //   } else {
+  //     coingeckoModel = widget.coingeckoModel;
+  //   }
+  // }
+  @override
   Widget build(BuildContext context) {
     /// temp coin with dummy image when coingecko coin is null (i.e. not found when it was parsed alongside binance data)
-    CoingeckoListTop100Model c;
+    // CoingeckoListTop100Model c;
     // coingeckoModel ?? log('null coingecko coin, binance coin name is = ' + binanceGetAllModel.name);
     // log('my_coins: coingecko model name = '+coingeckoModel.name);
     // log(binanceGetAllModel.name);
@@ -165,27 +190,35 @@ class MyCoinsCustomTile extends StatelessWidget {
     //   padding: EdgeInsets.symmetric(vertical: 20),
 
     // placeholder image if no coingecko image is found
-    c = coingeckoModel ??
-        CoingeckoListTop100Model(
-            image:
-                'https://pics.me.me/thumb_2-mario-bros-question-mark-box-coin-candies-display-sour-54064620.png');
-    return Row(children: <Widget>[
+      
+      // Flexible(
+      //   flex: 2,
+      //   fit: FlexFit.tight,
+      //   child: coingeckoModel == null
+      //       ? SvgPicture.asset(
+      //           'graphics/assets/svg/missing_coin.svg',
+      //           height: 40,
+      //           width: 40,
+      //         )
+      //       : Image.network(
+      //           coingeckoModel.image,
+      //           height: 40,
+      //           width: 40,
+      //         ),
+
+        // child: coingeckoModel ?? Text(':(')  Image.network(coingeckoModel.image),
+    return Row(
+      children: <Widget>[
       Flexible(
         flex: 2,
         fit: FlexFit.tight,
-        child: coingeckoModel == null
-            ? SvgPicture.asset(
-                'graphics/assets/svg/missing_coin.svg',
-                height: 40,
-                width: 40,
-              )
-            : Image.network(
-                coingeckoModel.image,
-                height: 40,
-                width: 40,
-              ),
-
-        // child: coingeckoModel ?? Text(':(')  Image.network(coingeckoModel.image),
+        child: Image.network(
+            // "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880"),
+            // sadly the below nullable line doesn't work (it still compiles, just doesn't do what i want)
+            // possible solution is to set a model for coins that exist in portfolio but are not on coingecko
+            // like a dummy model - stuff like ETHUP
+            // coingeckoModel.image ?? "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880")
+            widget.coingeckoModel.image)
       ),
 
       //   child: Image.network(
@@ -204,7 +237,7 @@ class MyCoinsCustomTile extends StatelessWidget {
             // ),
             Flexible(
               child: Text(
-                binanceGetAllModel.name,
+                widget.binanceGetAllModel.name,
                 overflow: TextOverflow.fade,
                 softWrap: false,
                 // maxLines: 1,
@@ -213,7 +246,7 @@ class MyCoinsCustomTile extends StatelessWidget {
             // Just in case the coin symbol exceeds the unofficial 9 char limit
             FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(binanceGetAllModel.coin),
+              child: Text(widget.binanceGetAllModel.coin),
             ),
           ],
         ),
@@ -224,7 +257,7 @@ class MyCoinsCustomTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text('\$${binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
+            Text('\$${widget.binanceGetAllModel.usdValue.toStringAsFixed(2)}'),
             Text('+9999.99%'), // TODO: fix this hard coded value
           ],
         ),
@@ -249,10 +282,11 @@ class MyCoinsCustomTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Text>[
             Text(
-                '\$${(binanceGetAllModel.free + binanceGetAllModel.locked).toStringAsFixed(2)}'),
+                '\$${(widget.binanceGetAllModel.free + widget.binanceGetAllModel.locked).toStringAsFixed(2)}'),
             // Text('\$${binanceGetAllModel.totalUsdValue.toStringAsFixed(2)}'),
             // Text('\$${double.parse((binanceGetAllModel.totalUsdValue.toStringAsFixed(2))).toString()}'),
             // Text('\$${numberFormatter(double.parse(((binanceGetAllModel.free + binanceGetAllModel.locked).toStringAsFixed(2))))}'),
+            //widget.binanceGetAllModel.free + widget.binanceGetAllModel.locked).toStringAsFixed(2)
             // Text('\$${numberFormatter(126.02)}'),
             Text('${numberFormatter(165.14)}'),
           ],
