@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_bloc.dart';
 import 'package:coinsnap/features/trading/buy/bloc/buy_portfolio_bloc/buy_portfolio_state.dart';
@@ -18,9 +20,18 @@ class BuyPortfolioScreenFour extends StatefulWidget {
 }
 
 class _BuyPortfolioScreenFourState extends State<BuyPortfolioScreenFour> {
+  double toSpend = 0.0;
   double totalValue = 0.0;
+  double usdBalance = 0.0;
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    if (arguments == null) {
+      log("Arguments is null in buy_portfolio_4.dart");
+    } else {
+      toSpend = arguments['toSpend'] ?? 0.0;
+      usdBalance = arguments['usdBalance'] ?? 0.0;
+    }
     return Container(
       color: primaryBlue,
       child: SafeArea(
@@ -81,6 +92,7 @@ class _BuyPortfolioScreenFourState extends State<BuyPortfolioScreenFour> {
                                       flex: 15,
                                       fit: FlexFit.tight,
                                       child: Container(
+                                        padding: mainCardPaddingHorizontal(),
                                         // width: displayWidth(context) * 0.97,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
@@ -102,7 +114,7 @@ class _BuyPortfolioScreenFourState extends State<BuyPortfolioScreenFour> {
                                                       flex: 1,
                                                       fit: FlexFit.tight,
                                                       child: Align(
-                                                        alignment: Alignment.bottomCenter,
+                                                        alignment: Alignment.bottomLeft ,
                                                         // child: Text("You sold 78% of your portfolio", style: TextStyle(color: Colors.black)),
                                                         child: Text("Purchase summary", style: TextStyle(color: Colors.black, fontSize: 16)),
                                                       ),
@@ -116,21 +128,22 @@ class _BuyPortfolioScreenFourState extends State<BuyPortfolioScreenFour> {
                                                     //     child: Text("(Not including " + ")", style: TextStyle(color: Colors.black, fontSize: 16)),
                                                     //   )
                                                     // ),
+                                                    SizedBox(height: 25),
                                                     Flexible(
                                                       flex: 1,
                                                       fit: FlexFit.tight,
                                                       child: Align(
-                                                        alignment: Alignment.topCenter,
+                                                        alignment: Alignment.centerLeft,
                                                         child: Column(
                                                           // mainAxisAlignment: MainAxisAlignment.end,
                                                           children: <Widget> [
                                                             Row(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              // mainAxisAlignment: MainAxisAlignment.center,
                                                               children: <Widget> [
                                                                 Text("\$" + state.totalValue.toStringAsFixed(2), style: TextStyle(color: Colors.black, fontSize: 24)),
                                                                 Padding(
-                                                                  padding: EdgeInsets.only(top: 7),
-                                                                  child: Text(" USD", style: TextStyle(color: Colors.grey[300])),
+                                                                  padding: EdgeInsets.only(top: 10),
+                                                                  child: Text(" USD", style: TextStyle(color: Colors.grey[500])),
                                                                 ),
                                                               ]
                                                             ),
@@ -171,35 +184,39 @@ class _BuyPortfolioScreenFourState extends State<BuyPortfolioScreenFour> {
                                                         builder: (context, state) {
                                                           if (state is StartupLoadedState) {
                                                             return Column(
+                                                              mainAxisAlignment: MainAxisAlignment.end,
                                                               children: <Widget> [
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: <Widget> [
                                                                     Text("Opening USDT balance"),
-                                                                    Text("\$" + "USDTargumentcarriedover"),
+                                                                    Text("\$" + usdBalance.toStringAsFixed(2)),
                                                                   ]
                                                                 ),
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: <Widget> [
                                                                     Text("Cost"),
-                                                                    Text("- \$" + totalValue.toStringAsFixed(2)),
+                                                                    Text("- \$" + totalValue.toStringAsFixed(2)), 
                                                                   ]
                                                                 ),
-                                                                Row(
+                                                                Row(  
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: <Widget> [
                                                                     Text("Estimated Fees"),
                                                                     Text("- \$" + (totalValue/1000).toStringAsFixed(2)) /// TODO: Round up to $0.01 if evaluating to 0.00 after rounding
                                                                   ]
                                                                 ),
+                                                                SizedBox(height: 10),
+                                                                Divider(color: Colors.grey[500]),
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                   children: <Widget> [
-                                                                    Text("Balance"),
-                                                                    Text("= \$" + state.totalValue)
+                                                                    Text("USDT Remaining"),
+                                                                    Text("= \$" + (usdBalance - totalValue * 1.001).toStringAsFixed(2))
                                                                   ]
-                                                                )
+                                                                ),
+                                                                SizedBox(height: 100),
                                                               ]
                                                             );
                                                           } else if (state is StartupErrorState) {

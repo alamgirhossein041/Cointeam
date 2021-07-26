@@ -25,6 +25,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
   TextEditingController textField = TextEditingController();
   // textField.text = 0.00;
   int pageIndex = 0;
+  double usdBalance = 0.0;
 
   @override
   void initState() { 
@@ -371,6 +372,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                         child: BlocBuilder<StartupBloc, StartupState>(
                                                           builder: (context, state) {
                                                             if (state is StartupLoadedState) {
+                                                              usdBalance = state.usdTotal ?? 0.0;
                                                               // return Text('\$' + state.usdTotal.toStringAsFixed(2));
                                                               return TextFormField(
                                                                 style: TextStyle(color: Colors.black, fontSize: 16),
@@ -498,7 +500,7 @@ class BuyPortfolioScreenTwoState extends State<BuyPortfolioScreenTwo> {
                                                 ),
                                               ),
                                               onTap: () => {
-                                                Navigator.pushNamed(context, '/buyportfolio3', arguments: {'coinDataStructure': coinDataStructure, 'toSpend': textField.text})
+                                                Navigator.pushNamed(context, '/buyportfolio3', arguments: {'coinDataStructure': coinDataStructure, 'toSpend': textField.text, 'usdBalance': usdBalance})
                                               },
                                           ),
                                         ),

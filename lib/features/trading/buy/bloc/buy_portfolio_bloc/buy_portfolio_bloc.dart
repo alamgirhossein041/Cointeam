@@ -69,9 +69,9 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
               var zeroTarget = double.parse((totalValue % divisor).toStringAsFixed(6));
               totalValue -= zeroTarget;
               if (totalValue >= divisor && totalValue > 10) {
-                yieldValue += totalValue;
                 if(v == 'USDT') {
                   if(v != coinTicker) {
+                    yieldValue += totalValue;
                     log(coinTicker);
                     log(v);
                     log(totalValue.toString());
@@ -79,6 +79,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                     log(result.toString());
                   }
                 } else {
+                  yieldValue += totalValue;
                   log("else" + coinTicker);
                   log("else" + v);
                   log("else" + totalValue.toString());
