@@ -2,6 +2,7 @@ import 'package:coinsnap/features/data/global_stats/global_stats.dart';
 import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/utils/colors_helper.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_bloc.dart';
@@ -122,6 +123,7 @@ class PanicButtonState extends State<PanicButton> {
           BlocProvider.of<CoingeckoListTop100Bloc>(context).add(FetchCoingeckoListTop100Event()),
           BlocProvider.of<CoingeckoListTrendingBloc>(context).add(FetchCoingeckoListTrendingEvent()),
           Navigator.pushNamed(context, '/sellportfolio'),
+          // FirebaseCrashlytics.instance.crash()
         },
       ),
     );
