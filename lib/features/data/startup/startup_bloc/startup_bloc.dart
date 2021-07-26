@@ -31,7 +31,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
   @override
   Stream<StartupState> mapEventToState(StartupEvent event) async* {
-    log("Test0");
     yield StartupInitialState();
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<BinanceGetAllModel> binanceGetAllModel = [];
@@ -45,20 +44,14 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     double usdTotal = 0.0;
     double btcTotal = 0.0;
     double totalValue = 0.0;
-    log("Test1");
 
     if (event is FetchStartupEvent) {
-      log("Test2");
       yield StartupLoadingState();
-      log("Test3");
       try{
-        log("Test4");
         /// GetCoinList logic
         final LocalStorage storage = LocalStorage("settings");
         await storage.ready;
         currency = await storage.getItem("currency");
-        log("currency is: " + currency.toString());
-        log("???");
         // String isBinanceTrading = await secureStorage.read(key: "binance");
 
         // List of coins in the portfolio from Binance
@@ -86,12 +79,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
 
           var btcPrice = binancePrices['BTCUSDT'];
-          log(binanceGetAllModel[1].coin.toString());
           for(var coins in binanceGetAllModel) {
-            log(coins.toString());
-            log(coins.coin.toString());
-            log(coins.free.toString());
-            log(coins.locked.toString());
             if(binancePrices[coins.coin + 'USDT'] != null) {
               coinList.add(coins.coin);
               coins.usdValue = binancePrices[coins.coin + 'USDT'];
@@ -118,7 +106,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             } else {
               coins.totalUsdValue = 0;
               coins.usdValue = 0;
-              log(coins.coin.toString() + " has no BTC or USDT pair");
+              // log(coins.coin.toString() + " has no BTC or USDT pair");
             }
           }
           //   if(coins.coin == 'BTC') {
@@ -178,14 +166,10 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         yield StartupErrorState(errorMessage : e.toString());
       }
 
-      /// 22nd july : coingeckomodellist stuff
-      log('binancegetallmodel = ' + binanceGetAllModel.toString());
       try {
         if (binanceGetAllModel != null) {
           Map<String, dynamic> arguments = await _loadCoinIcons(binanceGetAllModel);
           coingeckoModelList = arguments['list'];
-          log(coingeckoModelList.toString());
-          log(arguments['list'].toString());
           coingeckoModelMap = arguments['map'];
         }
 
@@ -258,7 +242,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     // get stored list of coin : icon url map
     coinIcons = localStorage.getItem('coinIcons') ?? {};
     // print("coingecko coins length = "+coingeckoCoins.length.toString());
-    log("parsed localstorage = " + coingeckoCoins.toString());
 
     // if coinicons is empty map
     // iterate through portfolio coins and create this map and save to storage
@@ -288,9 +271,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       /// we have coins (binancegetallmodel)
       /// we want to check if our ...
       /// have we made our coingecko api call yet
-      
-      log(coinSymbol);
-      log(coingeckoCoins[coinSymbol].toString());
 
       // if (coingeckoCoins[coinSymbol] != null) {
       //   coingeckoCoinsListOfMaps.add(coingeckoCoins[coinSymbol]);
@@ -356,33 +336,21 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       listIterate = (coins.length / 250).ceil();
     }
 
-    log("listiterate = " + listIterate.toString());
-
     for(int i = 1; i <= listIterate; i++) {
       pages.add(i);
     }
 
-    log(pages.toString());
-    log("coinsForRepo is: " + coinsForRepo.toString());
-
     await Future.forEach(pages, (v) async {
-      log("future --------");
-      log("coinsForRepo is: " + coinsForRepo.toString());
       coingeckoModelList.addAll(await coinRepo.getCoinInfo(coinsForRepo, v));
-      log("coingeckomodellist result = " + coingeckoModelList.toString());
-
       /// returns a model of blah
       /// save model as a value in the 'id' key in our existing map
     });
 
     Map<String, dynamic> coingeckoModelMap = {};
     coingeckoModelList.forEach((v) { 
-      log("loop trough coingecko --------");
       coingeckoModelMap[v.symbol] = v;
-      log("*-*-*-*-*-*-");
     });
 
-    log(coingeckoModelMap.toString());
     arguments['map'] = coingeckoModelMap ?? {};
     arguments['list'] = coingeckoModelList ?? [];
 

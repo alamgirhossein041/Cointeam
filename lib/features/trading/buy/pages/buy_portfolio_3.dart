@@ -22,6 +22,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
   Map<String, dynamic> coinDataStructure = {};
   List<String> keyString = [];
   double toSpend = 0.0;
+  double usdBalance = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
     } else {
       coinDataStructure = arguments['coinDataStructure'];
       toSpend = double.parse(arguments['toSpend']) ?? 0.0;
+      usdBalance = arguments['usdBalance'] ?? 0.0;
     }
     if(coinDataStructure['coins'] != null) {
       keyString = coinDataStructure['coins'].keys.toList();
@@ -57,7 +59,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
                     Flexible(
                       flex: 1,
                       fit: FlexFit.tight,
-                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString, toSpend: toSpend)
+                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString, toSpend: toSpend, usdBalance: usdBalance)
                     ),
                   ],
                 ),
@@ -77,11 +79,13 @@ class BuyPortfolioReviewLog extends StatefulWidget {
     @required this.keyString,
     @required this.coinDataStructure,
     @required this.toSpend,
+    @required this.usdBalance,
   }) : super(key: key);
   
   final Map<String, dynamic> coinDataStructure;
   final List<String> keyString;
   final double toSpend;
+  final double usdBalance;
 
   @override
   BuyPortfolioReviewLogState createState() => BuyPortfolioReviewLogState();
@@ -317,7 +321,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                   //     }
                                   //   }
                                   // )
-                                  child: Text('\$' + widget.toSpend.toStringAsFixed(2))
+                                  child: Text('\$' + widget.usdBalance.toStringAsFixed(2))
                                 )
                               )
                             )
@@ -512,7 +516,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                           onTap: () => {
                             buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
                             BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: widget.toSpend, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
-                            Navigator.pushNamed(context, '/buyportfolio4')
+                            Navigator.pushNamed(context, '/buyportfolio4', arguments: {'usdBalance': widget.usdBalance})
                           }
                         )
                       ),
