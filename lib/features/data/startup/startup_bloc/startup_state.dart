@@ -37,7 +37,7 @@ class StartupLoadingState extends StartupState {
 class StartupLoadedState extends StartupState {
   StartupLoadedState({this.totalValue, this.coinListData, this.coingeckoModelMap, this.currency,
                       this.coinList, this.btcSpecial, this.ethSpecial, this.binanceGetAllModel,
-                      this.usdTotal, this.btcTotal, this.coingeckoModelList});
+                      this.usdTotal, this.btcTotal, this.coingeckoModelList, this.securitiesFilter});
   final totalValue;
   final coinListData;
   final coingeckoModelMap;
@@ -49,6 +49,7 @@ class StartupLoadedState extends StartupState {
   final double btcTotal;
   final List<BinanceGetAllModel> binanceGetAllModel;
   final List<CoingeckoListTop100Model> coingeckoModelList;
+  final List<String> securitiesFilter;
 
   // StartupLoadedState({this.coinList, this.coinBalancesMap});
 

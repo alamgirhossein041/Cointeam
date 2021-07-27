@@ -16,16 +16,16 @@ abstract class CoingeckoCoinInfoRepo {
 class CoingeckoCoinInfoRepoImpl implements CoingeckoCoinInfoRepo {
   @override
   Future<List<CoingeckoListTop100Model>> getCoinInfo(List<String> coins, int page) async {
-    print("-------------- getting coingecko coins");
+    // print("-------------- getting coingecko coins");
     String coinList = "";
     for (int i = 0; i < coins.length; i++) {
       coinList += coins[i];
-      log(coins[i]);
+      // log(coins[i]);
       if (i + 1 < coins.length) {
         coinList += ',';
       }
     }
-    log(coinList);
+    // log(coinList);
 
     final response = await http.get(Uri.parse(
         'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=$coinList&order=market_cap_desc&per_page=250&page=$page&sparkline=false'));
@@ -33,7 +33,7 @@ class CoingeckoCoinInfoRepoImpl implements CoingeckoCoinInfoRepo {
     log(response.statusCode.toString());
 
     if (response.statusCode == 200) {
-      log(response.body.toString());
+      // log(response.body.toString());
       // List<dynamic> coingeckoCoinModelList = json.decode(response.body) as List;
       List<CoingeckoListTop100Model> coingeckoCoinModelList = json
           .decode(response.body)
@@ -42,7 +42,7 @@ class CoingeckoCoinInfoRepoImpl implements CoingeckoCoinInfoRepo {
               (json) => CoingeckoListTop100Model.fromJson(json))
           .toList();
       // debugPrint(response.body);
-      log(coingeckoCoinModelList.toString());
+      // log(coingeckoCoinModelList.toString());
 
       return coingeckoCoinModelList;
     } else {

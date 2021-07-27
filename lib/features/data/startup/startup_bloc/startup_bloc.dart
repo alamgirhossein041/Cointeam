@@ -1,16 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:isolate';
 
+import 'package:coinsnap/features/data/binance_price/binance_price.dart';
+import 'package:coinsnap/features/data/binance_price/models/binance_exchange_info.dart';
 import 'package:coinsnap/features/data/binance_price/models/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_portfolio.dart';
 import 'package:coinsnap/features/data/binance_price/repos/binance_get_prices.dart';
 import 'package:coinsnap/features/data/coingecko_image/repos/coingecko_coin_info_repo.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_event.dart';
+import 'package:coinsnap/features/data/startup/startup_bloc/startup_isolate.dart';
 import 'package:coinsnap/features/data/startup/startup_bloc/startup_state.dart';
 import 'package:coinsnap/features/data/coinmarketcap/models/coinmarketcap_coin_data.dart';
 import 'package:coinsnap/features/data/coinmarketcap/repos/coinmarketcap_coin_data.dart';
 import 'package:coinsnap/features/market/market.dart';
+import 'package:coinsnap/features/utils/dummy_data.dart';
 import 'package:coinsnap/features/utils/local_json_parse.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,10 +24,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class StartupBloc extends Bloc<StartupEvent, StartupState> {
-  StartupBloc({this.binanceGetAllRepository, this.coinmarketcapListQuoteRepository, this.binanceGetPricesRepository}): super(StartupInitialState());
+  StartupBloc({this.binanceGetAllRepository, this.coinmarketcapListQuoteRepository, this.binanceGetPricesRepository, this.binanceExchangeInfoRepository}): super(StartupInitialState());
   final BinanceGetAllRepositoryImpl binanceGetAllRepository;
   final CardCoinmarketcapCoinListRepositoryImpl coinmarketcapListQuoteRepository;
   final BinanceGetPricesRepositoryImpl binanceGetPricesRepository;
+  final BinanceExchangeInfoRepositoryImpl binanceExchangeInfoRepository;
 
 
   /// switch data from coinmarketcap to coingecko
@@ -34,9 +40,11 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     yield StartupInitialState();
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     List<BinanceGetAllModel> binanceGetAllModel = [];
+    BinanceExchangeInfoModel binanceExchangeInfoModelNew;
     List<CoingeckoListTop100Model> coingeckoModelList = [];
     Map<String, dynamic> coingeckoModelMap = {};
     List<String> coinList = [];
+    List<String> securitiesFilter = [];
     Map binancePrices;
     String currency = 'USD';
     double btcSpecial = 0.0;
@@ -44,6 +52,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     double usdTotal = 0.0;
     double btcTotal = 0.0;
     double totalValue = 0.0;
+    // var receivePort = ReceivePort();
 
     if (event is FetchStartupEvent) {
       yield StartupLoadingState();
@@ -55,11 +64,80 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         // String isBinanceTrading = await secureStorage.read(key: "binance");
 
         // List of coins in the portfolio from Binance
-        List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo()]);
+        List responses = await Future.wait([binanceGetAllRepository.getBinanceGetAll(), binanceGetPricesRepository.getBinancePricesInfo(), binanceExchangeInfoRepository.getBinanceExchangeInfo()]);
         binancePrices = responses[1];
       
         // if responses[0] is null then assign empty list
         binanceGetAllModel = responses[0];
+        binanceExchangeInfoModelNew = responses[2];
+        bool shouldIterateBinanceExchange = false;
+
+        
+        /// retrieve from localStorage
+        var savedBinanceExchangeInfoModel = await storage.getItem("binanceExchangeInfoModel"); /// this should be a map?
+        if(savedBinanceExchangeInfoModel != null) {
+        // Map<String, dynamic> body = Map.from(json.decode(response.body));
+          BinanceExchangeInfoModel binanceExchangeInfoModelOld = BinanceExchangeInfoModel.fromJson(savedBinanceExchangeInfoModel); /// can merge this into one line with storage.getItem
+          /// compare the two models
+          /// 
+          if(binanceExchangeInfoModelOld.symbols != binanceExchangeInfoModelNew.symbols) {
+            log("binanceExchangeInfo has changed");
+            shouldIterateBinanceExchange = true;
+          } else {
+            log("binanceExchangeInfo has not changed");
+          }
+        }
+        
+        if(shouldIterateBinanceExchange) {
+          binanceExchangeInfoModelNew.symbols.forEach((v) {
+            bool toAdd = true;
+            v.permissions.forEach((w) {
+              if(w == "SPOT") {
+                toAdd = false;
+              }
+            });
+            if(toAdd == true) {
+              /// Adds coin to securitiesFilter List
+              securitiesFilter.add(v.baseAsset);
+            }
+          });
+          securitiesFilter.toSet().toList(); /// Removes duplicates, of which there will be many
+          await storage.setItem("securitiesFilter", securitiesFilter);
+        } else {
+          securitiesFilter = await storage.getItem("securitiesFilter") ?? [];
+        }
+
+        await storage.setItem("binanceExchangeInfoModel", binanceExchangeInfoModelNew.toJson());
+        
+        // List<String> comparisons = [];
+        // comparisons.add(comparisonOne);
+        // comparisons.add(comparisonTwo);
+
+        // // var receivePort = ReceivePort();
+        // var stopWatch = Stopwatch()..start();
+        // if(comparisonOne != comparisonTwo) {
+        //   print("true");
+
+        // }
+        // Isolate.spawn(startupIsolate, receivePort.sendPort);
+        // Stream receivePortStream = receivePort.asBroadcastStream();
+        // SendPort sendPort = await receivePortStream.first;
+        // receivePortStream.listen((message) {
+        //   if(message is bool) {
+        //     print("message from isolate is: " + message.toString());
+        //   }
+        // });
+        // sendPort.send(comparisons);
+        
+        // stopWatch.stop();
+        // log("Time taken: " + stopWatch.elapsedMicroseconds.toString());
+
+
+        
+        // /// save into localStorage
+        // await storage.setItem("binanceExchangeInfoModel", binanceExchangeInfoModel);
+
+
 
         // goes through list of coins in the portfolio and gets matching coin image link
         // only do this if there are coins
@@ -201,7 +279,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
         // coinListData.data..sort((a, b) => (b.quote.uSD.price * coinBalancesMap[b.symbol]).compareTo(a.quote.uSD.price * coinBalancesMap[a.symbol]));
         // btcSpecial = 
-        yield StartupLoadedState(totalValue: totalValue, coingeckoModelMap: coingeckoModelMap, currency: currency,
+        yield StartupLoadedState(totalValue: totalValue, coingeckoModelMap: coingeckoModelMap, currency: currency, securitiesFilter: securitiesFilter,
                                 coinList: coinList, btcSpecial: btcSpecial, ethSpecial: ethSpecial, binanceGetAllModel: binanceGetAllModel,
                                 usdTotal: usdTotal, btcTotal: btcTotal, coingeckoModelList: coingeckoModelList);
     
