@@ -1,4 +1,3 @@
-import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_bloc.dart';
 import 'package:coinsnap/features/trading/sell/bloc/sell_portfolio_bloc/sell_portfolio_state.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
@@ -94,7 +93,6 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                 builder: (context, state) {
                   if (state is SellPortfolioLoadedState) {
                     debugPrint("SellPortfolioLoadedState");
-                    BlocProvider.of<StartupBloc>(context).add(FetchStartupEvent());
                     return Align(
                       alignment: Alignment.center,
                       child: Container(
@@ -202,7 +200,7 @@ class SellPortfolioPage3State extends State<SellPortfolioPage3> {
                                               fit: FlexFit.tight,
                                               child: Align(
                                                 alignment: Alignment.center,
-                                                child: Container(
+                                                child: Container( /// ### Sell button
                                                   height: displayHeight(context) * 0.055,
                                                   width: displayWidth(context) * 0.35,
                                                     child: InkWell(

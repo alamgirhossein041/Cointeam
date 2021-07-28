@@ -20,9 +20,8 @@ class CoingeckoListTop100LoadingState extends CoingeckoListTop100State {
 class CoingeckoListTop100LoadedState extends CoingeckoListTop100State {
 
   final List<CoingeckoListTop100Model> coingeckoModelList;
-  final String coinTickerMarqueeText;
 
-  CoingeckoListTop100LoadedState({this.coingeckoModelList, this.coinTickerMarqueeText});
+  CoingeckoListTop100LoadedState({this.coingeckoModelList});
 
   @override
   /// TODO: implement props

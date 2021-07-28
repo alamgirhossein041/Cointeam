@@ -180,6 +180,8 @@ class LinkAPIFtxState extends State<LinkAPIFtx> {
                         ),
                       ),
                       onTap: () => {
+                        log("PublicAPI Length: " + _publicApiTextController.text.length.toString()),
+                        log("SecretAPI Length: " + _secretApiTextController.text.length.toString()),
                         // if(_publicApiTextController.)
                         if(_publicApiTextController.text.length != 40) {
                           if(_secretApiTextController.text.length != 40) {

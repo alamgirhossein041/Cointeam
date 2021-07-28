@@ -30,15 +30,3 @@ const primaryBlue = Color(0xFF2197F2);
 /// - Success
 /// - Same green as bolt
 const primaryGreen = Color(0xFF2EDFAE);
-
-/// Red
-/// Uses:
-/// - Error
-/// - Depreciating values
-const primaryRed = Color(0xFFF14F76);
-
-/// Yellow
-/// Uses:
-/// - Warning
-/// - Preview
-const primaryYellow = Color(0xFFFFC44E);

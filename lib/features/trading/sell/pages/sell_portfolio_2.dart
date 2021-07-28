@@ -225,72 +225,60 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                       child: CustomScrollView(
                                         controller: _scrollController,
                                         slivers: <Widget> [
-                                          /// SliverList with Delegate lets us build a list dyanmically through a list
-                                          /// Possible to refactor into listview.builder(?), SliverList is expensive
                                           SliverList(
                                             delegate: SliverChildBuilderDelegate((context, index) {
                                               double tmp = state.binanceGetAllModel[index].free;
                                               log(tmp.toString());
                                               if (tmp != null) {
                                                 double pmt = (state.binanceGetAllModel[index].totalUsdValue * percentageValue);
-                                                // if(state.binanceGetAllModel[index].coin.toString() == symbol) {
-                                                //   return Padding(
-                                                //     padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                                //     child: Row(
-                                                //       children: <Widget> [
-                                                //         Flexible(
-                                                //           flex: 1,
-                                                //           fit: FlexFit.tight,
-                                                //           child: Container(),
-                                                //         ),
-                                                //         Flexible(
-                                                //           flex: 3,
-                                                //           fit: FlexFit.tight,
-                                                //           child: Text(state.binanceGetAllModel[index].coin.toString(), style: TextStyle(color: Color(0XFF0B2940))),
-                                                //         ),
-                                                //         Flexible(
-                                                //           flex: 3,
-                                                //           fit: FlexFit.tight,
-                                                //           child: Text(numberFormatter(state.binanceGetAllModel[index].free * percentageValue), style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
-                                                //           /// 21st June
-                                                //         ),
-                                                //         Flexible(
-                                                //           flex: 3,
-                                                //           fit: FlexFit.tight,
-                                                //           child: Align(
-                                                //             alignment: Alignment.centerRight,
-                                                //             child: Padding(
-                                                //               padding: EdgeInsets.only(right: 15),
-                                                //               child: Text("N/A"),
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //         GestureDetector(
-                                                //           child: Padding(
-                                                //             padding: EdgeInsets.only(right: 15),
-                                                //             child: Icon(Icons.close, color: Color(0X660B2940), size: 18),
-                                                //           ),
-                                                //           onTap: () => {
-                                                //             binanceModel.removeWhere((item) => item.coin == binanceModel[index].coin),
-                                                //             coinsToRemove.add(binanceModel[index].coin),
-                                                //             setState(() {}),
-                                                //             /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
-                                                //           },
-                                                //         ), /// ### Todo: Icon
-                                                //       ]
-                                                //     ),
-                                                //   );
-                                                if (pmt <= 10) {
-                                                  coinsToRemove.add(binanceModel[index].coin);
-                                                  return Container();
-                                                } else if (state.binanceGetAllModel[index].coin.toString() == symbol) {
-                                                  // log("12312313");
-                                                  coinsToRemove.add(binanceModel[index].coin);
-                                                  return Container();
-                                                } else if (state.securitiesFilter.contains(binanceModel[index].coin)) {
-                                                  coinsToRemove.add(binanceModel[index].coin);
-                                                  return Container();
-                                                } else {
+                                                if(state.binanceGetAllModel[index].coin.toString() == symbol) {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                                    child: Row(
+                                                      children: <Widget> [
+                                                        Flexible(
+                                                          flex: 1,
+                                                          fit: FlexFit.tight,
+                                                          child: Container(),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(state.binanceGetAllModel[index].coin.toString(), style: TextStyle(color: Color(0XFF0B2940))),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(numberFormatter(state.binanceGetAllModel[index].free * percentageValue), style: TextStyle(color: Color(0XFF0B2940), fontSize: 15)),
+                                                          /// 21st June
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Padding(
+                                                              padding: EdgeInsets.only(right: 15),
+                                                              child: Text("N/A"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        GestureDetector(
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(right: 15),
+                                                            child: Icon(Icons.close, color: Color(0X660B2940), size: 18),
+                                                          ),
+                                                          onTap: () => {
+                                                            binanceModel.removeWhere((item) => item.coin == binanceModel[index].coin),
+                                                            coinsToRemove.add(binanceModel[index].coin),
+                                                            setState(() {}),
+                                                            /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
+                                                          },
+                                                        ), /// ### Todo: Icon
+                                                      ]
+                                                    ),
+                                                  );
+                                                } else if(pmt > 10) {
                                                   coinTotalValue += pmt;
                                                   totalValueChange.value = coinTotalValue;
                                                   return Padding(
@@ -334,9 +322,8 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                             child: Icon(Icons.close, color: Color(0X660B2940), size: 18),
                                                           ),
                                                           onTap: () => {
-                                                            coinsToRemove.add(binanceModel[index].coin),
                                                             binanceModel.removeWhere((item) => item.coin == binanceModel[index].coin),
-                                                            log("Popping off " + binanceModel[index].coin),
+                                                            coinsToRemove.add(binanceModel[index].coin),
                                                             setState(() {}),
                                                             /// ### Remove from state.coinListReceived??? Make a new lsit for it, then remove it, then setState refresh ### /// 
                                                           },
@@ -344,6 +331,8 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                       ]
                                                     ),
                                                   );
+                                                } else {
+                                                  return Container();
                                                 }
                                               } else {
                                                 return Container();

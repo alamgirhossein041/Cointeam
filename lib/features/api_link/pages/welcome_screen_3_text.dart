@@ -171,6 +171,8 @@ class LinkAPITextState extends State<LinkAPIText> {
                         ),
                       ),
                       onTap: () => {
+                        log("PublicAPI Length: " + _publicApiTextController.text.length.toString()),
+                        log("SecretAPI Length: " + _secretApiTextController.text.length.toString()),
                         if(_publicApiTextController.text.length != 64) {
                           if(_secretApiTextController.text.length != 64) {
                             setState(() {

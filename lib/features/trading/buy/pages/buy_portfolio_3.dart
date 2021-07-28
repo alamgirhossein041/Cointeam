@@ -21,8 +21,6 @@ class BuyPortfolioScreenThree extends StatefulWidget {
 class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
   Map<String, dynamic> coinDataStructure = {};
   List<String> keyString = [];
-  double toSpend = 0.0;
-  double usdBalance = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +29,6 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
       log("Arguments is null in snapshot_log.dart");
     } else {
       coinDataStructure = arguments['coinDataStructure'];
-      toSpend = double.parse(arguments['toSpend']) ?? 0.0;
-      usdBalance = arguments['usdBalance'] ?? 0.0;
     }
     if(coinDataStructure['coins'] != null) {
       keyString = coinDataStructure['coins'].keys.toList();
@@ -44,7 +40,6 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
-          appBar: AppBar(title: Text('Buy from Snapshot')),
           backgroundColor: primaryBlue,
           body: Stack(
             children: <Widget> [
@@ -59,7 +54,7 @@ class BuyPortfolioScreenThreeState extends State<BuyPortfolioScreenThree> {
                     Flexible(
                       flex: 1,
                       fit: FlexFit.tight,
-                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString, toSpend: toSpend, usdBalance: usdBalance)
+                      child: BuyPortfolioReviewLog(coinDataStructure: coinDataStructure, keyString: keyString)
                     ),
                   ],
                 ),
@@ -78,14 +73,10 @@ class BuyPortfolioReviewLog extends StatefulWidget {
     Key key,
     @required this.keyString,
     @required this.coinDataStructure,
-    @required this.toSpend,
-    @required this.usdBalance,
   }) : super(key: key);
   
   final Map<String, dynamic> coinDataStructure;
   final List<String> keyString;
-  final double toSpend;
-  final double usdBalance;
 
   @override
   BuyPortfolioReviewLogState createState() => BuyPortfolioReviewLogState();
@@ -165,24 +156,22 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                     child: Padding(
                                       padding: EdgeInsets.only(left: displayWidth(context) * 0.1),
                                       // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                      // child: Text("12 coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
-                                      child: Text(widget.keyString.length.toString() + " Coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                      child: Text("12 coins", style: TextStyle(color: Color(0x800B2940), fontSize: 14))
                                     ),
                                   ),
                                   Flexible(
                                     flex: 1,
                                     fit: FlexFit.tight,
-                                    child: Container()
-                                    // Align(
-                                    //   alignment: Alignment.centerRight,
-                                    //   // child: Padding(
-                                    //   //   padding: EdgeInsets.only(left: 20),
-                                    //     child: Padding(
-                                    //       padding: EdgeInsets.only(right: 20),
-                                    //       child: Text("%", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
-                                    //     ),
-                                    //   // ),
-                                    // ),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      // child: Padding(
+                                      //   padding: EdgeInsets.only(left: 20),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(right: 20),
+                                          child: Text("%", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                        ),
+                                      // ),
+                                    ),
                                     // child: Container(),
                                   ),
                                   Flexible(
@@ -192,7 +181,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                       alignment: Alignment.centerRight,
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 35),
-                                        child: Text("Value", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
+                                        child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
                                       ),
                                     )
                                   )
@@ -222,33 +211,28 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                       Flexible(
                                         flex: 3,
                                         fit: FlexFit.tight,
-                                        child: Container(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Align(
+                                          // alignment: Alignment.centerRight,
+                                            alignment: Alignment.centerRight,
+                                            // child: Padding(
+                                              // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                              child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
+                                              // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
+                                              // child: Builder(
+                                              //   builder: (context) {
+                                              //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
+                                              //     return Text("\$" + text);
+                                              //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
+                                              //     // return condition ? Text("\$" + 
+                                              //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                              //       // : Text("No USDT Pair");
+                                              //   }
+                                              // ),
+                                          ),
+                                        ),
                                       ),
-                                      // Flexible(
-                                      //   flex: 3,
-                                      //   fit: FlexFit.tight,
-                                      //   child: Padding(
-                                      //     padding: EdgeInsets.only(left: 10),
-                                      //     child: Align(
-                                      //     // alignment: Alignment.centerRight,
-                                      //       alignment: Alignment.centerRight,
-                                      //       // child: Padding(
-                                      //         // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                      //         child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
-                                      //         // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
-                                      //         // child: Builder(
-                                      //         //   builder: (context) {
-                                      //         //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
-                                      //         //     return Text("\$" + text);
-                                      //         //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
-                                      //         //     // return condition ? Text("\$" + 
-                                      //         //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
-                                      //         //       // : Text("No USDT Pair");
-                                      //         //   }
-                                      //         // ),
-                                      //     ),
-                                      //   ),
-                                      // ),
                                       Flexible(
                                         flex: 3,
                                         fit: FlexFit.tight,
@@ -256,8 +240,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                           alignment: Alignment.centerRight,
                                           child: Padding(
                                             padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                            // child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
-                                            child: Text('\$' + (widget.coinDataStructure['coins'][widget.keyString[index]]['value']/widget.coinDataStructure['total'] * widget.toSpend).toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                            child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
                                           ),
                                         ),
                                       ),
@@ -304,24 +287,23 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  // child: BlocConsumer<StartupBloc, StartupState>(
-                                  //   listener: (context, state) {
-                                  //     if (state is StartupErrorState) {
-                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                  //     }
-                                  //   },
-                                  //   builder: (context, state) {
-                                  //     if (state is StartupLoadedState) {
-                                  //       usdTempQuote = state.usdTotal;
-                                  //       return Text('\$' + state.usdTotal.toStringAsFixed(2));
-                                  //     } else if (state is StartupErrorState) {
-                                  //       return Text("An Error has occurred in Binance");
-                                  //     } else {
-                                  //       return loadingTemplateWidget();
-                                  //     }
-                                  //   }
-                                  // )
-                                  child: Text('\$' + widget.usdBalance.toStringAsFixed(2))
+                                  child: BlocConsumer<StartupBloc, StartupState>(
+                                    listener: (context, state) {
+                                      if (state is StartupErrorState) {
+                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      if (state is StartupLoadedState) {
+                                        usdTempQuote = state.usdTotal;
+                                        return Text('\$' + state.usdTotal.toStringAsFixed(2));
+                                      } else if (state is StartupErrorState) {
+                                        return Text("An Error has occurred in Binance");
+                                      } else {
+                                        return loadingTemplateWidget();
+                                      }
+                                    }
+                                  )
                                 )
                               )
                             )
@@ -345,23 +327,22 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  // child: BlocConsumer<StartupBloc, StartupState>(
-                                  //   listener: (context, state) {
-                                  //     if (state is StartupErrorState) {
-                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                  //     }
-                                  //   },
-                                  //   builder: (context, state) {
-                                  //     if (state is StartupLoadedState) {
-                                  //       return Text('-\$' + state.usdTotal.toStringAsFixed(2));
-                                  //     } else if (state is StartupErrorState) {
-                                  //       return Text("An Error has occurred in Binance");
-                                  //     } else {
-                                  //       return loadingTemplateWidget();
-                                  //     }
-                                  //   }
-                                  // )
-                                  child: Text('\$' + widget.toSpend.toStringAsFixed(2))
+                                  child: BlocConsumer<StartupBloc, StartupState>(
+                                    listener: (context, state) {
+                                      if (state is StartupErrorState) {
+                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      if (state is StartupLoadedState) {
+                                        return Text('-\$' + state.usdTotal.toStringAsFixed(2));
+                                      } else if (state is StartupErrorState) {
+                                        return Text("An Error has occurred in Binance");
+                                      } else {
+                                        return loadingTemplateWidget();
+                                      }
+                                    }
+                                  )
                                 )
                               )
                             )
@@ -385,23 +366,22 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
                                   // child: Text("-\$250.00")
-                                  // child: BlocConsumer<StartupBloc, StartupState>(
-                                  //   listener: (context, state) {
-                                  //     if (state is StartupErrorState) {
-                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                  //     }
-                                  //   },
-                                  //   builder: (context, state) {
-                                  //     if (state is StartupLoadedState) {
-                                  //       return Text('-\$' + (state.usdTotal * 0.001).toStringAsFixed(2));
-                                  //     } else if (state is StartupErrorState) {
-                                  //       return Text("An Error has occurred in Binance");
-                                  //     } else {
-                                  //       return loadingTemplateWidget();
-                                  //     }
-                                  //   }
-                                  // )
-                                  child: Text('\$' + (widget.toSpend * 0.001).toStringAsFixed(2))
+                                  child: BlocConsumer<StartupBloc, StartupState>(
+                                    listener: (context, state) {
+                                      if (state is StartupErrorState) {
+                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      if (state is StartupLoadedState) {
+                                        return Text('-\$' + (state.usdTotal * 0.001).toStringAsFixed(2));
+                                      } else if (state is StartupErrorState) {
+                                        return Text("An Error has occurred in Binance");
+                                      } else {
+                                        return loadingTemplateWidget();
+                                      }
+                                    }
+                                  )
                                 )
                               )
                             )
@@ -436,23 +416,22 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                                 alignment: Alignment.centerRight,
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 50),
-                                  // child: BlocConsumer<StartupBloc, StartupState>(
-                                  //   listener: (context, state) {
-                                  //     if (state is StartupErrorState) {
-                                  //       log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
-                                  //     }
-                                  //   },
-                                  //   builder: (context, state) {
-                                  //     if (state is StartupLoadedState) {
-                                  //       return Text('\$' + state.usdTotal.toStringAsFixed(2), style: TextStyle(color: Colors.black));
-                                  //     } else if (state is StartupErrorState) {
-                                  //       return Text("An Error has occurred in Binance");
-                                  //     } else {
-                                  //       return loadingTemplateWidget();
-                                  //     }
-                                  //   }
-                                  // )
-                                  child: Text('\$' + (widget.toSpend * 0.999).toStringAsFixed(2))
+                                  child: BlocConsumer<StartupBloc, StartupState>(
+                                    listener: (context, state) {
+                                      if (state is StartupErrorState) {
+                                        log("An error has occurred in buy_portfolio_3.dart BuyPortfolioReviewLog");
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      if (state is StartupLoadedState) {
+                                        return Text('\$' + state.usdTotal.toStringAsFixed(2), style: TextStyle(color: Colors.black));
+                                      } else if (state is StartupErrorState) {
+                                        return Text("An Error has occurred in Binance");
+                                      } else {
+                                        return loadingTemplateWidget();
+                                      }
+                                    }
+                                  )
                                 )
                               )
                             )
@@ -515,8 +494,7 @@ class BuyPortfolioReviewLogState extends State<BuyPortfolioReviewLog> {
                           ),
                           onTap: () => {
                             buySnapshotData = GetPortfolioModel.fromJson(widget.coinDataStructure),
-                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: widget.toSpend, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
-                            Navigator.pushNamed(context, '/buyportfolio4', arguments: {'usdBalance': widget.usdBalance})
+                            BlocProvider.of<BuyPortfolioBloc>(context).add(FetchBuyPortfolioEvent(totalBuyQuote: usdTempQuote, coinTicker: 'USDT', portfolioList: widget.keyString, portfolioDataMap: buySnapshotData)), /// TODO: update temporary 7th July
                           }
                         )
                       ),

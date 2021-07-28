@@ -27,30 +27,7 @@ class CoingeckoListTop100Bloc extends Bloc<CoingeckoListTop100Event, CoingeckoLi
         
         List<CoingeckoListTop100Model> data = await coingeckoListTop100Repository.getCoinMarketCapCoinLatest('1');
 
-        // List<CoingeckoListTop100Model> firstTen = data.take(10);
-        String coinTickerMarqueeText = '';
-        List<String> stablecoins = ['USDT', 'USDC', 'BUSD'];        
-
-        /// List<Stuff> = [BTC, ETH, XRP, ADA, USDT, USDC, BUSD, DOGE]
-        for(int i = 0; i < 10; i++) {
-          bool stablecoinCheck = true;
-          // firstTen.forEach((v) => {
-          while(stablecoinCheck) {
-            if(stablecoins.contains(data[i].symbol)) {
-              stablecoins.remove(data[i].symbol);
-              data.removeAt(i);
-            } else {
-              stablecoinCheck = false;
-            }
-          }
-          // coinTickerMarqueeText += i.toString() + ". " + data[i].symbol;
-          coinTickerMarqueeText += data[i].symbol;
-          // coinTickerMarqueeText += ": \$";
-          coinTickerMarqueeText += " \$";
-          coinTickerMarqueeText += data[i].currentPrice.toStringAsFixed(2);
-          coinTickerMarqueeText += "    ";
-        }
-        yield CoingeckoListTop100LoadedState(coingeckoModelList: data, coinTickerMarqueeText: coinTickerMarqueeText);
+        yield CoingeckoListTop100LoadedState(coingeckoModelList: data);
       } catch (e) {
         debugPrint(e.toString());
         yield CoingeckoListTop100ErrorState(errorMessage : e.toString());

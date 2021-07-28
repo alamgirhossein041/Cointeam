@@ -13,8 +13,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
   String coinTicker = "USDT";
   double divisor = 1.0;
   String originalCoinTicker = "";
-  double totalValue = 0.0; /// value being purchased (resets each loop)
-  double yieldValue = 0.0; /// true totalValue
+  double totalValue = 0.0;
 
   List<String> portfolioList = [];
   GetPortfolioModel portfolioDataMap;
@@ -71,7 +70,6 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
               if (totalValue >= divisor && totalValue > 10) {
                 if(v == 'USDT') {
                   if(v != coinTicker) {
-                    yieldValue += totalValue;
                     log(coinTicker);
                     log(v);
                     log(totalValue.toString());
@@ -79,7 +77,6 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
                     log(result.toString());
                   }
                 } else {
-                  yieldValue += totalValue;
                   log("else" + coinTicker);
                   log("else" + v);
                   log("else" + totalValue.toString());
@@ -142,7 +139,7 @@ class BuyPortfolioBloc extends Bloc<BuyPortfolioEvent, BuyPortfolioState> {
 
 /// ### Uncomment above for ftx integration ### ///
 
-        yield BuyPortfolioLoadedState(totalValue: yieldValue);
+        yield BuyPortfolioLoadedState(totalValue: totalValue);
       } catch (e) {
         log("Error in BuyPortfolioBloc");
         debugPrint("Error in BuyPortfolioBloc");

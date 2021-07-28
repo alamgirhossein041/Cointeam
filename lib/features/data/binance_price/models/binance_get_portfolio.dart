@@ -16,7 +16,6 @@ class BinanceGetAllModel {  /// Repository returns a List of this model
   double btcValue;
   double usdValue;
   double totalUsdValue;
-  String image;
 
   BinanceGetAllModel(
       {this.coin,
