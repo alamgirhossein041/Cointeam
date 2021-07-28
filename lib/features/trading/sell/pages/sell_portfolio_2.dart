@@ -287,7 +287,10 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                   // log("12312313");
                                                   coinsToRemove.add(binanceModel[index].coin);
                                                   return Container();
-                                                } else if (pmt > 10) {
+                                                } else if (state.securitiesFilter.contains(binanceModel[index].coin)) {
+                                                  coinsToRemove.add(binanceModel[index].coin);
+                                                  return Container();
+                                                } else {
                                                   coinTotalValue += pmt;
                                                   totalValueChange.value = coinTotalValue;
                                                   return Padding(
@@ -341,8 +344,6 @@ class SellPortfolioPage2State extends State<SellPortfolioPage2> {
                                                       ]
                                                     ),
                                                   );
-                                                } else {
-                                                  return Container();
                                                 }
                                               } else {
                                                 return Container();

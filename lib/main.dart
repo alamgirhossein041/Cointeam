@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
             coinmarketcapListQuoteRepository:
                 CardCoinmarketcapCoinListRepositoryImpl(),
             binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(),
+            binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl(),
           ),
         ),
         BlocProvider<SellPortfolioBloc>(
