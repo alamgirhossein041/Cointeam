@@ -6,11 +6,15 @@ import 'package:coinsnap/features/data/coinmarketcap/coinmarketcap.dart';
 import 'package:coinsnap/features/market/market.dart';
 import 'package:coinsnap/features/my_coins/pages/my_coins.dart';
 import 'package:coinsnap/features/onboarding/pages/welcome_screen_1.dart';
+import 'package:coinsnap/features/settings/features/feedback/pages/feedback.dart';
 import 'package:coinsnap/features/settings/pages/settings.dart';
 import 'package:coinsnap/features/snapshots/snapshots.dart';
-import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_0.dart';
-import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_02.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_1.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_2.dart';
+import 'package:coinsnap/features/trading/buy/pages/buy_portfolio_4.dart';
 import 'package:coinsnap/features/trading/trading.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_failure.dart';
 // import 'package:coinsnap/modules/widgets/api_link/modal_success.dart';
 // import 'package:coinsnap/modules/widgets/api_link/pages/welcome_screen_2_select.dart';
@@ -41,7 +45,7 @@ void main() async {
   // debugDisablePhysicalShapeLayers = false;
   // debugDisableOpacityLayers = false;
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   // runApp(MyApp());
   /// ### Dev Phoenix (resets app state) ### ///
   runApp(
@@ -56,6 +60,7 @@ class MyApp extends StatelessWidget {
   // final FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
+    // FirebaseCrashlytics.instance.crash();
     return MultiBlocProvider(
       providers: [
         BlocProvider<StartupBloc>(
@@ -64,6 +69,7 @@ class MyApp extends StatelessWidget {
             coinmarketcapListQuoteRepository:
                 CardCoinmarketcapCoinListRepositoryImpl(),
             binanceGetPricesRepository: BinanceGetPricesRepositoryImpl(),
+            binanceExchangeInfoRepository: BinanceExchangeInfoRepositoryImpl(),
           ),
         ),
         BlocProvider<SellPortfolioBloc>(
@@ -102,7 +108,24 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryBlue,
           accentColor: primaryBlue,
+          highlightColor: Color(0xffccd5dc),
+          scaffoldBackgroundColor: primaryBlue,
 
+          colorScheme: ColorScheme(
+              primary: primaryBlue,
+              primaryVariant: primaryBlue,
+              secondary: primaryBlue,
+              secondaryVariant: primaryBlue,
+              surface: primaryLight,
+              background: primaryLight,
+              error: primaryRed,
+              onPrimary: primaryDark,
+              onSecondary: primaryLight,
+              onSurface: primaryDark,
+              onBackground: primaryDark,
+              onError: primaryLight,
+              brightness: Brightness.light),
+          
           // Default brightness
           // brightness: Brightness.dark
 
@@ -172,7 +195,7 @@ class MyApp extends StatelessWidget {
             // 14 Regular
             bodyText1: TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w300,
               color: primaryDark,
               letterSpacing: 0.25,
               height: 1.6,
@@ -228,7 +251,7 @@ class MyApp extends StatelessWidget {
           '/buyportfolio1': (context) => BuyPortfolioScreenOne(),
           '/buyportfolio2': (context) => BuyPortfolioScreenTwo(),
           '/buyportfolio3': (context) => BuyPortfolioScreenThree(),
-          '/buyportfolio': (context) => BuyPortfolioScreen(),
+          '/buyportfolio4': (context) => BuyPortfolioScreenFour(),
           // '/buyportfolio2': (context) => BuyPortfolioPage2(),
           // '/buyportfolio3': (context) => BuyPortfolioPage3(),
           '/sellportfolio3': (context) => SellPortfolioPage3(),
@@ -254,6 +277,7 @@ class MyApp extends StatelessWidget {
           '/marketoverview': (context) => MarketOverview(),
           '/mycoins': (context) => MyCoins(),
           '/settings': (context) => SettingsScreen(),
+          '/feedback': (context) => FeedbackScreen(),
           // '/dashboardwithcategory': (context) => DashboardWithCategory(),
         },
       ),

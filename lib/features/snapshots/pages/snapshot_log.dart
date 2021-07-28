@@ -1,6 +1,9 @@
 
+import 'package:coinsnap/features/data/startup/startup.dart';
 import 'package:coinsnap/features/utils/sizes_helper.dart';
+import 'package:coinsnap/features/widget_templates/loading_error_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'dart:developer';
 
@@ -23,10 +26,13 @@ class SnapshotLogState extends State<SnapshotLog> {
     } else {
       coinDataStructure = arguments['coinDataStructure'];
     }
-    if(coinDataStructure['coins'] != null) {
+    if(coinDataStructure['coins'] != null && coinDataStructure['coins'].length > 0) {
       key = coinDataStructure['coins'].keys.toList();
     }
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Transaction Log'),
+      ),
       body: Container(
         decoration: BoxDecoration(
           color: Color(0xFF2197F2),
@@ -35,44 +41,6 @@ class SnapshotLogState extends State<SnapshotLog> {
         width: displayWidth(context),
         child: Column(
           children: <Widget> [
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35),
-                child: Row(
-                  children: <Widget> [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          child: Icon(Icons.arrow_back, color: Colors.white),
-                          onTap: () => {
-                            Navigator.pop(context),
-                          },
-                        )
-                      ),
-                    ),
-                    Flexible(
-                      flex: 4,
-                      fit: FlexFit.tight,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text("Transaction Log", style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(),
-                    )
-                  ]
-                )
-              )
-            ),
             Flexible(
               flex: 18,
               fit: FlexFit.tight,
@@ -120,126 +88,153 @@ class SnapshotLogState extends State<SnapshotLog> {
                               alignment: Alignment.topCenter,
                               child: Text("-----------------------------------------------", style: TextStyle(color: Color(0x330B2940)))
                             ),
-                            Container(height: 20),
+
+                            key.isEmpty ? 
+                            Text('There are no coins in this snapshot.') :
+                            
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Scrollbar(
-                                controller: _scrollController,
-                                isAlwaysShown: true,
-                                thickness: 5,
-                                child: CustomScrollView(
-                                  controller: _scrollController,
-                                  slivers: <Widget> [
-                                    SliverToBoxAdapter(
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(0,0,0,30),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Row(
-                                            children: <Widget> [
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
-                                                  // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                                  child: Container(),
-                                                ),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  // child: Padding(
-                                                  //   padding: EdgeInsets.only(left: 20),
-                                                    child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
-                                                  // ),
-                                                ),
-                                                // child: Container(),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                fit: FlexFit.tight,
-                                                child: Align(
-                                                  alignment: Alignment.centerRight,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(right: 40),
-                                                    child: Text(coinDataStructure['currency'], style: TextStyle(color: Color(0x800B2940), fontSize: 14))
-                                                  ),
-                                                )
-                                              )
-                                            ]
-                                          )
-                                        ),
-                                      )
-                                    ),
-                                    SliverList(
-                                      delegate: SliverChildBuilderDelegate((context, index) {
-                                        Map<String, dynamic> text = coinDataStructure['coins'][key[index]];
-                                            return Padding(
-                                              padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
-                                              child: Row(
-                                                children: <Widget> [
-                                                  Flexible(
-                                                    flex: 1,
-                                                    fit: FlexFit.tight,
-                                                    child: Container(),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 1,
-                                                    fit: FlexFit.tight,
-                                                    child: Text(key[index].toString(), style: TextStyle(fontSize: 15, color: Colors.black)),
-                                                    // child: Container(),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    fit: FlexFit.tight,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(left: 10),
-                                                      child: Align(
-                                                      // alignment: Alignment.centerRight,
-                                                        alignment: Alignment.centerRight,
-                                                        // child: Padding(
-                                                          // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                          child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
-                                                          // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
-                                                          // child: Builder(
-                                                          //   builder: (context) {
-                                                          //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
-                                                          //     return Text("\$" + text);
-                                                          //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
-                                                          //     // return condition ? Text("\$" + 
-                                                          //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
-                                                          //       // : Text("No USDT Pair");
-                                                          //   }
+                              child: BlocConsumer<StartupBloc, StartupState>(
+                                listener: (context, state) {
+                                  if (state is StartupErrorState) {
+                                    log("There is an error on snapshot_log for StartupBloc");
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is StartupLoadedState) {
+                                    return Scrollbar(
+                                      controller: _scrollController,
+                                      isAlwaysShown: true,
+                                      thickness: 5,
+                                      child: CustomScrollView(
+                                        controller: _scrollController,
+                                        slivers: <Widget> [
+                                          SliverToBoxAdapter(
+                                            child: Padding(
+                                              padding: EdgeInsets.fromLTRB(0,0,0,30),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Container(height: 20),
+                                                    Row(
+                                                    children: <Widget> [
+                                                      Flexible(
+                                                        flex: 1,
+                                                        fit: FlexFit.tight,
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(left: displayWidth(context) * 0.14),
+                                                          // child: Text("Symbol", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                                                          child: Container(),
+                                                        ),
+                                                      ),
+                                                      Flexible(
+                                                        flex: 1,
+                                                        fit: FlexFit.tight,
+                                                        child: Align(
+                                                          alignment: Alignment.center,
+                                                          // child: Padding(
+                                                          //   padding: EdgeInsets.only(left: 20),
+                                                            child: Text("Quantity", style: TextStyle(color: Color(0x800B2940), fontSize: 14)),
                                                           // ),
+                                                        ),
+                                                        // child: Container(),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    fit: FlexFit.tight,
-                                                    child: Align(
-                                                      alignment: Alignment.centerRight,
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
-                                                        child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ]
+                                                      Flexible(
+                                                        flex: 1,
+                                                        fit: FlexFit.tight,
+                                                        child: Align(
+                                                          alignment: Alignment.centerRight,
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(right: 40),
+                                                            child: Text(coinDataStructure['currency'], style: TextStyle(color: Color(0x800B2940), fontSize: 14))
+                                                          ),
+                                                        )
+                                                      )
+                                                    ]
+                                                  ),],
+                                                )
                                               ),
-                                            );
-                                      },
-                                      childCount: (key.length),
+                                            )
+                                          ),
+                                          SliverList(
+                                            delegate: SliverChildBuilderDelegate((context, index) {
+                                              Map<String, dynamic> text = coinDataStructure['coins'][key[index]];
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(bottom: displayHeight(context) * 0.035),
+                                                    child: Row(
+                                                      children: <Widget> [
+                                                        Flexible(
+                                                          flex: 2,
+                                                          fit: FlexFit.tight,
+                                                          child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            child: Image.network(state.coingeckoModelMap[key[index]].image)
+                                                          ),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 2,
+                                                          fit: FlexFit.tight,
+                                                          child: Text(key[index].toString(), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                                          // child: Container(),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Padding(
+                                                            padding: EdgeInsets.only(left: 10),
+                                                            child: Align(
+                                                            // alignment: Alignment.centerRight,
+                                                              alignment: Alignment.centerRight,
+                                                              // child: Padding(
+                                                                // padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                                                child: Text(text['quantity'].toStringAsFixed(8), style: TextStyle(fontSize: 14, color: Colors.black)),
+                                                                // child: Text(999999999999.toStringAsFixed(8), style: TextStyle(fontSize: 15)),
+                                                                // child: Builder(
+                                                                //   builder: (context) {
+                                                                //     // return Text("\$" + binanceModel[index].totalUsdValue.toStringAsFixed(2));
+                                                                //     return Text("\$" + text);
+                                                                //     // final condition = state.binanceGetPricesMap[binanceList[index] + symbol] != null;
+                                                                //     // return condition ? Text("\$" + 
+                                                                //       // (binanceModel.data[binanceList[index]].totalUsdValue * percentageValue).toStringAsFixed(2))
+                                                                //       // : Text("No USDT Pair");
+                                                                //   }
+                                                                // ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Flexible(
+                                                          flex: 3,
+                                                          fit: FlexFit.tight,
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Padding(
+                                                              padding: EdgeInsets.only(right: displayWidth(context) * 0.1),
+                                                              child: Text(text['value'].toStringAsFixed(2), style: TextStyle(fontSize: 15, color: Colors.black)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ]
+                                                    ),
+                                                  );
+                                            },
+                                            childCount: (key.length),
+                                            ),
+                                          ),
+                                        ]
                                       ),
-                                    ),
-                                  ]
-                                ),
+                                    );
+                                  } else if (state is StartupLoadingState) {
+                                    return loadingTemplateWidget();
+                                  } else {
+                                    return Text("ERROR");
+                                  }
+                                }
                               ),
                             ),
+                              
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text("-----------------------------------------------", style: TextStyle(color: Color(0x330B2940)))

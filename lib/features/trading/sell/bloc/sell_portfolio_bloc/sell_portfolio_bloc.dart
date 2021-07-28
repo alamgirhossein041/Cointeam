@@ -21,7 +21,6 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
   bool preview = true;
   int basePrecision = 8;
   Map<String, dynamic> coinDataStructure = {};
-
   Map<String, dynamic> coinsToSave = {};
 
   final LocalStorage localStorage = LocalStorage("coinstreetapp");
@@ -49,18 +48,23 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
       yield SellPortfolioLoadingState();
       
       try {
+        // description of every trading pair on binance and trade details (min. trade value, step size, etc.)
         BinanceExchangeInfoModel binanceExchangeInfoModel = await binanceExchangeInfoRepository.getBinanceExchangeInfo();
+        // list of all the coins in the user's portfolio
         List<BinanceGetAllModel> binanceGetAllModel = await binanceGetAllRepository.getBinanceGetAll();
+        // API endpoint for all the price combinations from binance
         Map binanceSymbols = Map.fromIterable(binanceExchangeInfoModel.symbols, key: (e) => e.symbol, value: (e) => e);
+        // remove coins that user has popped off or is less than $10
         binanceGetAllModel.removeWhere((i) => coinsToRemove.contains(i.coin));
         await Future.forEach(binanceGetAllModel, (v) async {
-          log("Hi");
           debugPrint("8th April - Test 3");
           if(v.coin == coinTicker) {
             debugPrint("Skipping BTC... Because we don't sell $coinTicker to $coinTicker");
           } else {
             try {
               var result;
+              // andrew's maths to make sure the values are correct for binance's understanding
+              // otherwise it rejects the order
               if(v.coin == 'USDT') {
                 divisor = double.parse(binanceSymbols[coinTicker + v.coin].filters[2].stepSize);
               } else {
@@ -70,6 +74,8 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
               var tmp = v.free * pctToSell;
               var zeroTarget = tmp % divisor;
               tmp -= zeroTarget;
+
+              
               if (tmp >= divisor) {
                 log('Coin: ' + v.coin);
                 log('Coin Qty to sell: ' + v.free.toString());
@@ -81,30 +87,34 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 double quantityTmp;
                 double valueTmp;
                 if(v.coin == 'USDT') {
+                  // When trading BTC and USDT together, 
+                  // whether you're selling BTC into USDT, or selling USDT into BTC
+                  // it's always gonna be BTCUSDT, and never USDTBTC. 
                   debugPrint("########");
                   result = await binanceBuyCoinRepository.binanceBuyCoin(coinTicker + v.coin, tmp);
                   log("Pretending to sell");
                   quantityTmp = double.parse(result['cummulativeQuoteQty']);
                   valueTmp = double.parse(result['executedQty']);
                 } else {
-                  log("Uh hello");
                   result = await binanceSellCoinRepository.binanceSellCoin(v.coin + coinTicker, tmp, basePrecision);
                   log("Pretending to sell 2");
                   quantityTmp = double.parse(result['executedQty']);
                   valueTmp = double.parse(result['cummulativeQuoteQty']);
-                  log("????????");
                   log("quantity of " + v.coin + " is " + quantityTmp.toString());
                   log("value of " + v.coin + " is " + valueTmp.toString());
                 }
                 debugPrint(result['code'].toString());
+
+                // result['code'] = returns a code if it's unsuccessful
                 if(result['code'] == null) {
-                  totalValue += double.parse(result['cummulativeQuoteQty']);
-                  debugPrint("What's wrong now?");
+                  totalValue += valueTmp;
                   debugPrint("Running totalValue is $totalValue");
                   /// 25th
                   Map<String, dynamic> coinData = {};
                   coinData["quantity"] = quantityTmp;
                   coinData["value"] = valueTmp;
+                  coinData["name"] = v.name;
+                  coinData["exchange"] = "binance";
                   coinsToSave[v.coin] = coinData;
                   log(v.coin);
                   log(coinsToSave[v.coin].toString());
@@ -115,6 +125,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
                 }
               }
             } catch (e) {
+              log(e.toString());
               debugPrint(e.toString());
               debugPrint(v.coin + " does not have a $coinTicker pair on Binance");
             }
@@ -190,6 +201,7 @@ class SellPortfolioBloc extends Bloc<SellPortfolioEvent, SellPortfolioState> {
         // debugPrint("nothing is happening here?");
 
 /// ### Uncomment above for ftx integration ### ///
+log("14th July");
 
         yield SellPortfolioLoadedState(totalValue: totalValue, coinDataStructure: coinDataStructure);
       } catch (e) {

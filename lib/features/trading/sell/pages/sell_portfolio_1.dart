@@ -282,7 +282,7 @@ class SellPortfolioScreenState extends State<SellPortfolioScreen> {
                               padding: EdgeInsets.only(bottom: displayHeight(context) * 0.04),
                               child: TextButton(
                                 onPressed: () => {
-                                  Navigator.pushReplacementNamed(context, '/buyportfolio', arguments: {'preview': preview})
+                                  Navigator.pushReplacementNamed(context, '/buyportfolio1', arguments: {'preview': preview})
                                 },
                                 child: Text("Buy Order", style: TextStyle(color: Colors.orange)),
                               ),
